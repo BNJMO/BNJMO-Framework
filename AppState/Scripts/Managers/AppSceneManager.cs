@@ -35,7 +35,7 @@ namespace BNJMO
         {
             base.Start();
 
-            CurrentAppScene = BManager.Instance.Config.StartScene;
+            CurrentAppScene = BManager.Inst.Config.StartScene;
         }
 
         protected override void LateStart()
@@ -55,7 +55,7 @@ namespace BNJMO
         {
             base.UpdateDebugText();
 
-            DebugManager.Instance.DebugLogCanvas("AppScene", CurrentAppScene.GetType() + " : " + CurrentAppScene);
+            DebugManager.Inst.DebugLogCanvas("AppScene", CurrentAppScene.GetType() + " : " + CurrentAppScene);
         }
 
         #endregion

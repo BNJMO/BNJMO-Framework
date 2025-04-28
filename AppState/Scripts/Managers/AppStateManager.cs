@@ -43,10 +43,10 @@ namespace BNJMO
             base.InitializeEventsCallbacks();
 
 
-            BEvents.Instance.GAME_GameStarted += On_GAME_GameStarted;
-            BEvents.Instance.GAME_GamePaused += On_GAME_GamePaused;
-            BEvents.Instance.GAME_GameUnPaused += On_GAME_GameUnPaused;
-            BEvents.Instance.GAME_GameEnded += On_GAME_GameEnded;
+            BEvents.Inst.GAME_GameStarted += On_GAME_GameStarted;
+            BEvents.Inst.GAME_GamePaused += On_GAME_GamePaused;
+            BEvents.Inst.GAME_GameUnPaused += On_GAME_GameUnPaused;
+            BEvents.Inst.GAME_GameEnded += On_GAME_GameEnded;
         }
 
         #region Event Callbacks

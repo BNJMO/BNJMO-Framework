@@ -17,7 +17,7 @@ namespace BNJMO
         [FoldoutGroup("Singleton Manager")] [SerializeField] private bool getSingletonReferenceOnValidate = true;
         [FoldoutGroup("Singleton Manager")] [SerializeField] [ReadOnly] private AbstractManager singletonInstanceReference;
 
-        public static T Instance { get; private set; }
+        public static T Inst { get; private set; }
 
         /// <summary>
         /// Returns whether the instance has been initialized or not.
@@ -26,11 +26,11 @@ namespace BNJMO
         { 
             get
             { 
-                if (Instance == null)
+                if (Inst == null)
                 {
                     //Debug.Log("<color=yellow>WARNING! </color> Trying to access reference for Instance of " + "<color=gray>[" + typeof(T) + "]</color> but it was not set!");
                 }
-                return Instance != null; 
+                return Inst != null; 
             }
         }
 
@@ -67,9 +67,9 @@ namespace BNJMO
         {
             base.OnDestroy();
 
-            if (Instance == this)
+            if (Inst == this)
             {
-                Instance = null;
+                Inst = null;
             }
         }
 
@@ -77,14 +77,14 @@ namespace BNJMO
         {
             // if (overrideSingletonReference == true)
             // {
-                if (Instance != null)
+                if (Inst != null)
                 {
                     // LogConsoleWarning("Trying to instantiate a second instance of singleton class <color=cyan> " + typeof(T) + " </color> !");
                 }
                 else
                 {
-                    Instance = (T)this;
-                    singletonInstanceReference = Instance;
+                    Inst = (T)this;
+                    singletonInstanceReference = Inst;
                 }
             // }
         }

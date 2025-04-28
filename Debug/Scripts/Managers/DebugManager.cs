@@ -74,7 +74,7 @@ namespace BNJMO
                     if (reportedDebugTexts.ContainsKey(debugID) == false)
                     {
                         reportedDebugTexts.Add(debugID, true);
-                        if (BManager.Instance.Config.DebugButtonEvents)
+                        if (BManager.Inst.Config.DebugButtonEvents)
                         {
                             LogConsoleWarning("Debug text with ID <color=gray>" + debugID + "</color> not found in this scene!");
                         }

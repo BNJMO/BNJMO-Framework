@@ -193,7 +193,7 @@ namespace BNJMO
             LocalIPAddress = BUtils.GetLocalIPAddress();
 
             // Initialize dispatcher
-            SetBEventDispatcher(BManager.Instance.Config.EventDispatcherType);
+            SetBEventDispatcher(BManager.Inst.Config.EventDispatcherType);
         }
 
         protected override void Update()

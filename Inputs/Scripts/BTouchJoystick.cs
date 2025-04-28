@@ -83,7 +83,7 @@ namespace BNJMO
 
             if (InputManager.IsInstanceSet)
             {
-                TouchJoystickInputSource touchJoystickInputSource = InputManager.Instance.GetInputSource<TouchJoystickInputSource>();
+                TouchJoystickInputSource touchJoystickInputSource = InputManager.Inst.GetInputSource<TouchJoystickInputSource>();
                 if (IS_NOT_NULL(touchJoystickInputSource))
                 {
                     touchJoystickInputSource.RegisterTouchController(this);

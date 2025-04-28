@@ -52,11 +52,11 @@ namespace BNJMO
 
         protected override void InitializePlayerStats()
         {
-            PlayerStats.Clear();
-            foreach (EPlayerID playerID in PlayerManager.Instance.GetJoinedPlayers())
-            {
-                PlayerStats.Add(playerID, new TestPlayerStats(playerID, TotalLives));
-            }
+            // PlayerStats.Clear();
+            // foreach (EPlayerID playerID in PlayerManager.Inst.GetJoinedPlayers())
+            // {
+            //     PlayerStats.Add(playerID, new TestPlayerStats(playerID, TotalLives));
+            // }
         }
 
         private void On_GAME_GameTimeUpdated(int newTime)
@@ -86,74 +86,74 @@ namespace BNJMO
 
         private void On_PLAYERS_PlayerDied(EPlayerID diedPlayerID)
         {
-            if (IsRunning == false)
-            {
-                return;
-            }
-            // Update Killed Player stats
-            TestPlayerStats killedPlayerStats = PlayerStats[diedPlayerID];
-            killedPlayerStats.DecrementPlayerLives();
-            //EventManager.Instance.Invoke_GAME_PlayerStatsUpdated(killedPlayerStats, GameModeType);
-
-            // Update Killer stats
-            if (killedPlayerStats.LastHitBy != EPlayerID.NONE)
-            {
-                TestPlayerStats killingPlayer = PlayerStats[killedPlayerStats.LastHitBy];
-                killingPlayer.IncrementNumberOfKilledPlayers();
-                //EventManager.Instance.Invoke_GAME_PlayerStatsUpdated(killingPlayer, GameModeType);
-            }
-
-            // Respawn Killed Player
-            if (killedPlayerStats.RemainingLives > 0)
-            {
-                //PlayerManager.Instance.RespawnPlayer(diedPlayerID);
-            }
-            else
-            {
-                killedPlayerStats.SetTimeOfDeath(RemainingTime);
-            }
-
-            // Check if game over (only one player still alive)
-            int gameOverPlayerCounter = 0;
-            EPlayerID winnerPlayerID = EPlayerID.NONE;
-            foreach (EPlayerID playerID in PlayerStats.Keys)
-            {
-                if (PlayerStats[playerID].IsGameOver == true)
-                {
-                    gameOverPlayerCounter++;
-                }
-                else
-                {
-                    winnerPlayerID = playerID;
-                }
-            }
-
-            if (gameOverPlayerCounter == PlayerStats.Count - 1)
-            {
-                ETeamID winnerTeamID = PlayerManager.Instance.PlayersTeam[winnerPlayerID];
-
-                //Itirate through the the players time of death and set the ranking
-                foreach (TestPlayerStats playerStats in PlayerStats.Values)
-                {
-                    int counter = 0;
-                    foreach (TestPlayerStats otherPlayerStats in PlayerStats.Values)
-                    {
-                        if (playerStats != otherPlayerStats && playerStats.TimeOfDeath > otherPlayerStats.TimeOfDeath)
-                        {
-                            counter++;
-                            //  Debug.Log(" Player " + Maleficus.Utils.GetIntFrom(playerStats.PlayerID)  + " Time of Death = " + playerStats.TimeOfDeath + " died before Player " + Maleficus.Utils.GetIntFrom(otherPlayerStats.PlayerID) + " with a Time of Death = " + otherPlayerStats.TimeOfDeath);
-                        }
-                    }
-                    playerStats.SetRank(counter + 1);
-                }
-
-                //if ((NetworkManager.Instance.HasAuthority == true)
-                //     || (MotherOfManagers.Instance.ConnectionMode == EConnectionMode.PLAY_OFFLINE))
-                //{
-                //    NetEvent_GameOver gameOverEventHandle = new NetEvent_GameOver(EClientID.SERVER, teamID);
-                //    EventManager.Instance.GAME_GameOver.Invoke(gameOverEventHandle, EEventInvocationType.TO_ALL);
-                //}
-            }
+            // if (IsRunning == false)
+            // {
+            //     return;
+            // }
+            // // Update Killed Player stats
+            // TestPlayerStats killedPlayerStats = PlayerStats[diedPlayerID];
+            // killedPlayerStats.DecrementPlayerLives();
+            // //EventManager.Instance.Invoke_GAME_PlayerStatsUpdated(killedPlayerStats, GameModeType);
+            //
+            // // Update Killer stats
+            // if (killedPlayerStats.LastHitBy != EPlayerID.NONE)
+            // {
+            //     TestPlayerStats killingPlayer = PlayerStats[killedPlayerStats.LastHitBy];
+            //     killingPlayer.IncrementNumberOfKilledPlayers();
+            //     //EventManager.Instance.Invoke_GAME_PlayerStatsUpdated(killingPlayer, GameModeType);
+            // }
+            //
+            // // Respawn Killed Player
+            // if (killedPlayerStats.RemainingLives > 0)
+            // {
+            //     //PlayerManager.Instance.RespawnPlayer(diedPlayerID);
+            // }
+            // else
+            // {
+            //     killedPlayerStats.SetTimeOfDeath(RemainingTime);
+            // }
+            //
+            // // Check if game over (only one player still alive)
+            // int gameOverPlayerCounter = 0;
+            // EPlayerID winnerPlayerID = EPlayerID.NONE;
+            // foreach (EPlayerID playerID in PlayerStats.Keys)
+            // {
+            //     if (PlayerStats[playerID].IsGameOver == true)
+            //     {
+            //         gameOverPlayerCounter++;
+            //     }
+            //     else
+            //     {
+            //         winnerPlayerID = playerID;
+            //     }
+            // }
+            //
+            // if (gameOverPlayerCounter == PlayerStats.Count - 1)
+            // {
+            //     ETeamID winnerTeamID = PlayerManager.Inst.PlayersTeam[winnerPlayerID];
+            //
+            //     //Itirate through the the players time of death and set the ranking
+            //     foreach (TestPlayerStats playerStats in PlayerStats.Values)
+            //     {
+            //         int counter = 0;
+            //         foreach (TestPlayerStats otherPlayerStats in PlayerStats.Values)
+            //         {
+            //             if (playerStats != otherPlayerStats && playerStats.TimeOfDeath > otherPlayerStats.TimeOfDeath)
+            //             {
+            //                 counter++;
+            //                 //  Debug.Log(" Player " + Maleficus.Utils.GetIntFrom(playerStats.PlayerID)  + " Time of Death = " + playerStats.TimeOfDeath + " died before Player " + Maleficus.Utils.GetIntFrom(otherPlayerStats.PlayerID) + " with a Time of Death = " + otherPlayerStats.TimeOfDeath);
+            //             }
+            //         }
+            //         playerStats.SetRank(counter + 1);
+            //     }
+            //
+            //     //if ((NetworkManager.Instance.HasAuthority == true)
+            //     //     || (MotherOfManagers.Instance.ConnectionMode == EConnectionMode.PLAY_OFFLINE))
+            //     //{
+            //     //    NetEvent_GameOver gameOverEventHandle = new NetEvent_GameOver(EClientID.SERVER, teamID);
+            //     //    EventManager.Instance.GAME_GameOver.Invoke(gameOverEventHandle, EEventInvocationType.TO_ALL);
+            //     //}
+            // }
         }
     }
 }

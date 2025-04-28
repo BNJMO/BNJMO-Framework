@@ -41,26 +41,26 @@ namespace BNJMO
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.DebugEvent = debugEvent;
-            BEventManager.Instance.OnBEventInvoked(this, eventHandle, BEventReplicationType.LOCAL, targetNetworkID);
+            BEventManager.Inst.OnBEventInvoked(this, eventHandle, BEventReplicationType.LOCAL, targetNetworkID);
         }
 
         public void Invoke(H eventHandle, BEventReplicationType eventInvocationType = BEventReplicationType.LOCAL, bool debugEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.DebugEvent = debugEvent;
-            BEventManager.Instance.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
+            BEventManager.Inst.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
         }
                 
         public void OnProceedInvokation(H eventHandle)
         {
             // Debug event
             string debugMessage = eventHandle.GetDebugMessage();
-            if ((BManager.Instance.Config.IsDebugLogEvents == true)
+            if ((BManager.Inst.Config.IsDebugLogEvents == true)
                 && (debugMessage != "")
                 && (eventHandle.DebugEvent == true))
             {
                 string networkID = "";
-                if (BManager.Instance.Config.IsDebugEventsNetworkID == true)
+                if (BManager.Inst.Config.IsDebugEventsNetworkID == true)
                 {
                     networkID = " - Sent by : " + eventHandle.InvokingNetworkID;
                 }

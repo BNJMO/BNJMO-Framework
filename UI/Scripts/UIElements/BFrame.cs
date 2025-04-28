@@ -194,7 +194,7 @@ namespace BNJMO
 
             if (startWithFocus == true)
             {
-                if (BEvents.Instance)
+                if (BEvents.Inst)
                     BEvents.UI_FocusedFrameUpdated.Invoke(new BEHandle<BFrame>(this));
             }
 

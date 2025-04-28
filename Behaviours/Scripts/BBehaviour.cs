@@ -193,7 +193,7 @@ namespace BNJMO
         {
             if (DebugManager.IsInstanceSet)
             {
-                DebugManager.Instance.DebugLogCanvas(debugID, logText);
+                DebugManager.Inst.DebugLogCanvas(debugID, logText);
             }
         }
 
@@ -201,7 +201,7 @@ namespace BNJMO
         {
             if (DebugManager.IsInstanceSet)
             {
-                DebugManager.Instance.DebugLogNotification(logText);
+                DebugManager.Inst.DebugLogNotification(logText);
             }
         }
 
@@ -401,6 +401,106 @@ namespace BNJMO
         }
 
         /// <summary>
+        /// Checks if value1 is greater than value2 (i.e. value1 > value2). Both should be numbers!
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <param name="reverseLogCondition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected bool IS_GREATER<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
+        {
+            int comparisonResult = value1.CompareTo(value2);
+            if (comparisonResult > 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("The value '" + value1 + "' is not greater than '" + value2 + "'! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("The value '" + value1 + "' is greater than '" + value2 + "'! ");
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if value1 is greater or equal than value2 (i.e. value1 >= value2). Both should be numbers!
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <param name="reverseLogCondition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected bool IS_GREATER_OR_EQUAL<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
+        {
+            int comparisonResult = value1.CompareTo(value2);
+            if (comparisonResult >= 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("The value '" + value1 + "' is not greater or equal than '" + value2 + "'! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("The value '" + value1 + "' is greater or equal than '" + value2 + "'! ");
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if value1 is less than value2 (i.e. value1 < value2). Both should be numbers!
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <param name="reverseLogCondition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected bool IS_LESS<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
+        {
+            int comparisonResult = value1.CompareTo(value2);
+            if (comparisonResult < 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("The value '" + value1 + "' is not less than '" + value2 + "'! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("The value '" + value1 + "' is less than '" + value2 + "'! ");
+
+            return true;
+        }
+        
+        /// <summary>
+        /// Checks if value1 is less or equal than value2 (i.e. value1 <= value2). Both should be numbers!
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <param name="reverseLogCondition"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected bool IS_LESS_OR_EQUAL<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
+        {
+            int comparisonResult = value1.CompareTo(value2);
+            if (comparisonResult <= 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("The value '" + value1 + "' is not less or equal than '" + value2 + "'! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("The value '" + value1 + "' is less or equal than '" + value2 + "'! ");
+
+            return true;
+        }
+        
+        /// <summary>
         /// Checks if the given enum has the value NONE. 
         /// Check is performed by a simple string conversion!
         /// Prints a warning in the console if not NONE.
@@ -431,6 +531,7 @@ namespace BNJMO
         /// </summary>
         /// <typeparam name="E"> Type of the enum to check </typeparam>
         /// <param name="enumToCheck"> enum to check </param>
+        /// <param name="reverseLogCondition"></param>
         /// <returns></returns>
         protected bool IS_NOT_NONE<E>(E enumToCheck, bool reverseLogCondition = false) where E : Enum
         {
@@ -455,14 +556,21 @@ namespace BNJMO
         /// <typeparam name="E"> Type of the enum to check </typeparam>
         /// <param name="enumToCheck1"> first enum to check </param>
         /// <param name="enumToCheck2"> second enum to check with </param>
+        /// <param name="reverseLogCondition"></param>
         /// <returns></returns>
-        protected bool ARE_ENUMS_EQUAL<E>(E enumToCheck1, E enumToCheck2) where E : Enum
+        protected bool ARE_ENUMS_EQUAL<E>(E enumToCheck1, E enumToCheck2, bool reverseLogCondition = false) where E : Enum
         {
             if (enumToCheck1.ToString().Equals(enumToCheck2.ToString()) == false)
             {
-                LogConsoleWarning("Two enums of type <color=cyan>" + typeof(E) + "</color> are different! ");
+                if (!reverseLogCondition)
+                    LogConsoleWarning("Two enums of type <color=cyan>" + typeof(E) + "</color> are different! ");
+                
                 return false;
             }
+            
+            if (reverseLogCondition)
+                LogConsoleWarning("Two enums of type <color=cyan>" + typeof(E) + "</color> are the same! ");
+
             return true;
         }
 
@@ -473,6 +581,7 @@ namespace BNJMO
         /// <typeparam name="E"> Type of the enum to check </typeparam>
         /// <param name="enumToCheck1"> first enum to check </param>
         /// <param name="enumToCheck2"> second enum to check with </param>
+        /// <param name="reverseLogCondition"></param>
         /// <returns></returns>
         protected bool ARE_ENUMS_NOT_EQUAL<E>(E enumToCheck1, E enumToCheck2, bool reverseLogCondition = false) where E : Enum
         {

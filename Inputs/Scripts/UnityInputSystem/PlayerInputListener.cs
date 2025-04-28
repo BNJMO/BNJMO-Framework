@@ -66,7 +66,7 @@ namespace BNJMO
             if (IS_NOT_NULL(myPlayerInput))
             {
                 // Inform Device Input Source that a new Player Input has joined and become a ControllerID
-                DeviceInputSource deviceInputSource = InputManager.Instance.GetInputSource<DeviceInputSource>();
+                DeviceInputSource deviceInputSource = InputManager.Inst.GetInputSource<DeviceInputSource>();
                 if (IS_NOT_NULL(deviceInputSource))
                 {
                     myControllerID = deviceInputSource.OnNewDeviceJoined(this);

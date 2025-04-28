@@ -20,22 +20,22 @@ public class NetworkConnectionsUIManager : BBehaviour
 
     public void StartHost()
     {
-        BEventManager.Instance.StartHost();
+        BEventManager.Inst.StartHost();
     }
 
     public void ConnectToFoundHost()
     {
-        BEventManager.Instance.ConnectToHost(0);
+        BEventManager.Inst.ConnectToHost(0);
     }
 
     public void Disconnect()
     {
-        BEventManager.Instance.Disconnect();
+        BEventManager.Inst.Disconnect();
     }
 
     public void Ping()
     {
-        BEventManager.Instance.CalculatePing(ENetworkID.HOST);
+        BEventManager.Inst.CalculatePing(ENetworkID.HOST);
     }
 
     #region Life Cycle
@@ -109,7 +109,7 @@ public class NetworkConnectionsUIManager : BBehaviour
         base.Start();
 
         // MF hack (7chouma)
-        On_NETWORK_NewBEventDispatcherSet(new BEHandle<AbstractBEventDispatcher>(BEventManager.Instance.BEventDispatcher));
+        On_NETWORK_NewBEventDispatcherSet(new BEHandle<AbstractBEventDispatcher>(BEventManager.Inst.BEventDispatcher));
     }
 
     #endregion
@@ -215,14 +215,14 @@ public class NetworkConnectionsUIManager : BBehaviour
 
     private void On_DispatcherButton_ButtonReleased(BButton arg1, bool arg2)
     {
-        switch (BEventManager.Instance.BEventDispatcher.GetBEventDispatcherType())
+        switch (BEventManager.Inst.BEventDispatcher.GetBEventDispatcherType())
         {
             case BEventDispatcherType.MIRROR:
-                BEventManager.Instance.SetBEventDispatcher(BEventDispatcherType.UBI_INTERACT);
+                BEventManager.Inst.SetBEventDispatcher(BEventDispatcherType.UBI_INTERACT);
                 break;
 
             default:
-                BEventManager.Instance.SetBEventDispatcher(BEventDispatcherType.MIRROR);
+                BEventManager.Inst.SetBEventDispatcher(BEventDispatcherType.MIRROR);
                 break;
         }
     }

@@ -23,95 +23,111 @@ namespace BNJMO
 
         #region Inspector Variables
 
-        [BoxGroup("Mother Of Managers", centerLabel: true)]
+        [BoxGroup("BConfig", centerLabel: true)]
         /* Scene */
-        [FoldoutGroup("Mother Of Managers/Scene")]
+        [FoldoutGroup("BConfig/Scene")]
         public EAppScene StartScene = EAppScene.NONE;
 
         /* App */
-        [FoldoutGroup("Mother Of Managers/App")]
+        [FoldoutGroup("BConfig/App")]
         public int TargetFramRate = 30;
         
         /* Events (Networking) */
-        [FoldoutGroup("Mother Of Managers/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events (Networking)")]
         public BEventDispatcherType EventDispatcherType;
 
-        [FoldoutGroup("Mother Of Managers/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events (Networking)")]
         public EBEHandleSerializationMethod bEHandleSerializationMethod = EBEHandleSerializationMethod.JSON_NEWTONSOFT; // TODO: Use   
 
-        [FoldoutGroup("Mother Of Managers/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events (Networking)")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public string UbiiBackendServerIP = "localhost";
 
-        [FoldoutGroup("Mother Of Managers/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events (Networking)")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public int UbiiBackendServerPort = 8101;
 
         /* AR */
-        [FoldoutGroup("Mother Of Managers/AR")]
+        [FoldoutGroup("BConfig/AR")]
         public ARTrackingMode ARTrackingMode = ARTrackingMode.NONE;
 
-        [FoldoutGroup("Mother Of Managers/AR")]
+        [FoldoutGroup("BConfig/AR")]
         public EPlayAreaType PlayAreaType = EPlayAreaType.NONE;
 
         /* Input */
-        [FoldoutGroup("Mother Of Managers/Input")]
+        [FoldoutGroup("BConfig/Input")]
         public bool ConnectTouchController = false;
 
-        [FoldoutGroup("Mother Of Managers/Input")]
+        [FoldoutGroup("BConfig/Input")]
         public bool ConnectAIControllers = false;
 
-        [FoldoutGroup("Mother Of Managers/Input")]
+        [FoldoutGroup("BConfig/Input")]
         public bool TransformInpuAxisToCameraDirection = false;
 
         /* Game */
-        [FoldoutGroup("Mother Of Managers/Game")]
+        [FoldoutGroup("BConfig/Game")]
         public bool IsUseDebugGameMode = false;
 
-        [FoldoutGroup("Mother Of Managers/Game")]
+        [FoldoutGroup("BConfig/Game")]
         public EGameMode DebugGameMode = EGameMode.NONE;
         
-        /* Player */
-        [FormerlySerializedAs("PlayerSpawnPositionPrefab")] [FoldoutGroup("Mother Of Managers/Player")]
-        public AbstractPawnSpawnPosition PawnSpawnPositionPrefab;
+        /* Player */ 
+        [FoldoutGroup("BConfig/Player")]
+        public int MaxPlayersInTeam = 4;
         
-        [FormerlySerializedAs("PlayersPrefabObjects")] [FormerlySerializedAs("PlayersPrefab")] [FoldoutGroup("Mother Of Managers/Player")]
-        public PawnPrefabObject[] PawnPrefabObjects;
+        [FoldoutGroup("BConfig/Player")]
+        public int MaxPlayersInParty = 4;
         
-        [FoldoutGroup("Mother Of Managers/Player")]
-        public bool IsSpawnGhostPlayerPositionsIfNotFound = false;
+        [FoldoutGroup("BConfig/Player")]
+        public Transform PawnSpawnParent;
 
-        [FoldoutGroup("Mother Of Managers/Player")]
-        public bool SpawnPlayersUnderSameTransformAsSpawnPositions = false;
+        [FoldoutGroup("BConfig/Player")] 
+        public bool UseSamePrefabForAllPlayers = true;
+        
+        [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPlayers == false")]
+        public PlayerBase PlayerPrefab;     
+        
+        [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPlayers == true")]
+        public PlayerPrefabTupple[] PlayerPrefabs;
+
+        [FoldoutGroup("BConfig/Player")] 
+        public bool UseSamePrefabForAllPawns = true;
+        
+        [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPawns == false")]
+        public PawnBase PawnPrefab;   
+        
+        [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPawns == true")]
+        public PawnPrefabTupple[] PawnPrefabs;
+        
         
         /* AI */
-        [FoldoutGroup("Mother Of Managers/AI")]
+        [FoldoutGroup("BConfig/AI")]
         public int MaximumNumberOfAIToSpawn = 0;
 
         /* Debug */
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool IsDebugLogEvents = true;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool IsDebugEventsNetworkID = false;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool LogMissingDebugTexts = true;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool DebugButtonEvents = false;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool DebugJoystickEvents = false;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         public bool DebugUIButtonsEvents = false;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public bool DebugUbiiTopicPublish = false;
 
-        [FoldoutGroup("Mother Of Managers/Debug")]
+        [FoldoutGroup("BConfig/Debug")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public bool DebugUbiiTopicRecieve = false;
 

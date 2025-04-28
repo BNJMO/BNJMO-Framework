@@ -70,7 +70,7 @@ namespace BNJMO
                     float newX = newInputValues.x;
                     float newY = newInputValues.y;
 
-                    if (BManager.Instance.Config.TransformInpuAxisToCameraDirection == true)
+                    if (BManager.Inst.Config.TransformInpuAxisToCameraDirection == true)
                     {
                         BUtils.TransformAxisToCamera(ref newX, ref newY, Camera.main.transform.forward);
                     }

@@ -44,16 +44,16 @@ namespace BNJMO
         {
             base.Update();
 
-            if (joinedPlayersText)
-            {
-                string joinedPlayers = "";
-                foreach (EPlayerID playerID in PlayerManager.Instance.GetJoinedPlayers())
-                {
-                    EControllerID controllerID = PlayerManager.Instance.GetAssignedControllerID(playerID);
-                    joinedPlayers += playerID + " : " + controllerID + "\n";
-                }
-                joinedPlayersText.SetText(joinedPlayers);
-            }
+            // if (joinedPlayersText)
+            // {
+            //     string joinedPlayers = "";
+            //     foreach (EPlayerID playerID in PlayerManager.Inst.GetJoinedPlayers())
+            //     {
+            //         EControllerID controllerID = PlayerManager.Inst.GetAssignedControllerID(playerID);
+            //         joinedPlayers += playerID + " : " + controllerID + "\n";
+            //     }
+            //     joinedPlayersText.SetText(joinedPlayers);
+            // }
 
             //if (ownPlayerIDText)
             //{

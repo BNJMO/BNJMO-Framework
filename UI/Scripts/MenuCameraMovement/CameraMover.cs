@@ -105,7 +105,7 @@ namespace BNJMO
         {
             if (UIManager.IsInstanceSet)
             {
-                InvokeEventIfBound(CameraMovementEnded, UIManager.Instance.CurrentBMenuHighlighted);
+                InvokeEventIfBound(CameraMovementEnded, UIManager.Inst.CurrentBMenuHighlighted);
             }
         }
 

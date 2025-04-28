@@ -523,53 +523,53 @@ namespace BNJMO
 #endregion
 
         #region Players
-        public static AbstractPawn GetClosestPlayer(AbstractPawn toPawn)
-        {
-            AbstractPawn closestOtherPawn = null;
-            float closestDistanceToOtherPlayer = float.MaxValue;
-            foreach (AbstractPawn otherPlayer in PlayerManager.Instance.ActivePlayers.Values)
-            {
-                if ((otherPlayer.PlayerID == toPawn.PlayerID)
-                    || (otherPlayer.IsDead == true))
-                {
-                    continue;
-                }
-
-                float distanceToOtherPlayer = Vector3.Distance(toPawn.Position, otherPlayer.Position);
-                if (distanceToOtherPlayer < closestDistanceToOtherPlayer)
-                {
-                    closestOtherPawn = otherPlayer;
-                    closestDistanceToOtherPlayer = distanceToOtherPlayer;
-                }
-            }
-            return closestOtherPawn;
-        }
-
-        public static AbstractPawn GetAngularClosestPlayer(AbstractPawn toPawn)
-        {
-            AbstractPawn closestOtherPawn = null;
-            float closestAngularDistanceToOtherPlayer = float.MinValue;
-            foreach (AbstractPawn otherPlayer in PlayerManager.Instance.ActivePlayers.Values)
-            {
-                if ((otherPlayer.PlayerID == toPawn.PlayerID)
-                    || (otherPlayer.IsDead == true))
-                {
-                    continue;
-                }
-
-                Vector3 toOtherPlayerDirection = (otherPlayer.Position - toPawn.Position).normalized;
-                float angularDistanceToOtherPlayer = Vector3.Dot(toPawn.transform.forward, toOtherPlayerDirection);
-
-                Debug.Log(otherPlayer.PlayerID + " : " + angularDistanceToOtherPlayer);
-
-                if (angularDistanceToOtherPlayer > closestAngularDistanceToOtherPlayer)
-                {
-                    closestOtherPawn = otherPlayer;
-                    closestAngularDistanceToOtherPlayer = angularDistanceToOtherPlayer;
-                }
-            }
-            return closestOtherPawn;
-        }
+        // public static PawnBase GetClosestPawn(PawnBase toPawn)
+        // {
+        //     PawnBase closestOtherPawn = null;
+        //     float closestDistanceToOtherPlayer = float.MaxValue;
+        //     foreach (PawnBase otherPawn in PlayerManager.Inst.ActivePawns.Values)
+        //     {
+        //         if ((otherPawn.Player.PlayerID == toPawn.Player.PlayerID)
+        //             || (otherPawn.IsDead == true))
+        //         {
+        //             continue;
+        //         }
+        //
+        //         float distanceToOtherPlayer = Vector3.Distance(toPawn.Position, otherPawn.Position);
+        //         if (distanceToOtherPlayer < closestDistanceToOtherPlayer)
+        //         {
+        //             closestOtherPawn = otherPawn;
+        //             closestDistanceToOtherPlayer = distanceToOtherPlayer;
+        //         }
+        //     }
+        //     return closestOtherPawn;
+        // }
+        //
+        // public static AbstractPawn GetAngularClosestPlayer(AbstractPawn toPawn)
+        // {
+        //     AbstractPawn closestOtherPawn = null;
+        //     float closestAngularDistanceToOtherPlayer = float.MinValue;
+        //     foreach (AbstractPawn otherPlayer in PlayerManager.Inst.ActivePlayers.Values)
+        //     {
+        //         if ((otherPlayer.PlayerID == toPawn.PlayerID)
+        //             || (otherPlayer.IsDead == true))
+        //         {
+        //             continue;
+        //         }
+        //
+        //         Vector3 toOtherPlayerDirection = (otherPlayer.Position - toPawn.Position).normalized;
+        //         float angularDistanceToOtherPlayer = Vector3.Dot(toPawn.transform.forward, toOtherPlayerDirection);
+        //
+        //         Debug.Log(otherPlayer.PlayerID + " : " + angularDistanceToOtherPlayer);
+        //
+        //         if (angularDistanceToOtherPlayer > closestAngularDistanceToOtherPlayer)
+        //         {
+        //             closestOtherPawn = otherPlayer;
+        //             closestAngularDistanceToOtherPlayer = angularDistanceToOtherPlayer;
+        //         }
+        //     }
+        //     return closestOtherPawn;
+        // }
 #endregion
 
         #region Types Conversions
@@ -896,7 +896,7 @@ namespace BNJMO
 
             string serializedObject = "";
 
-            switch (BManager.Instance.Config.bEHandleSerializationMethod)
+            switch (BManager.Inst.Config.bEHandleSerializationMethod)
             {
                 case EBEHandleSerializationMethod.JSON_NEWTONSOFT:
                     serializedObject = JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings()
@@ -922,7 +922,7 @@ namespace BNJMO
 
             H deserializedObject = default(H);
 
-            switch (BManager.Instance.Config.bEHandleSerializationMethod)
+            switch (BManager.Inst.Config.bEHandleSerializationMethod)
             {
                 case EBEHandleSerializationMethod.JSON_NEWTONSOFT:
                     deserializedObject = JsonConvert.DeserializeObject<H>(serializedObject);

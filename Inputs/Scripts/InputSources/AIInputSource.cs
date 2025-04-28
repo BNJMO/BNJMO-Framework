@@ -36,28 +36,28 @@ namespace BNJMO
         protected override void InitializeEventsCallbacks()
         {
             base.InitializeEventsCallbacks();
-            BEvents.PLAYERS_PlayerSpawned += On_PLAYERS_PlayerSpawned;
+            BEvents.PAWNS_PawnSpawned += BEents_OnPawnsPawnSpawned;
         }
 
-        private void On_PLAYERS_PlayerSpawned(BEHandle<EPlayerID, IPlayer> bHandle)
+        private void BEents_OnPawnsPawnSpawned(BEHandle<PawnBase> beHandle)
         {
             // Add an AIPlayerController on the spawned player if he's an AI
-            EPlayerID playerID = bHandle.Arg1;
-            EControllerID controllerID = PlayerManager.Instance.GetAssignedControllerID(playerID);
-
-            if ((controllerID.ContainedIn(BConsts.AI_CONTROLLERS))
-                && (IS_KEY_CONTAINED(PlayerManager.Instance.ActivePlayers, playerID))
-                && (IS_NOT_NULL(PlayerManager.Instance.ActivePlayers[playerID])))
-            {
-                AbstractPawn pawn = PlayerManager.Instance.ActivePlayers[playerID];
-                AbstractAIPlayerController aIPlayerController = pawn.gameObject.AddComponent<AbstractAIPlayerController>();
-                aIPlayerController.AxisUpdated += On_AIPlayerController_JoystickMoved;
-                aIPlayerController.ButtonPressed += On_AIPlayerController_ButtonPressed;
-                aIPlayerController.ButtonReleased += On_AIPlayerController_ButtonReleased;
-                aIPlayerController.WillGetDestroyed += On_AIPlayerController_WillGetDestroyed;
-                aIPlayerController.InitializeAIController(this);
-                activeAIControllers.Add(aIPlayerController);
-            }
+            // EPlayerID playerID = bHandle.Arg1;
+            // EControllerID controllerID = PlayerManager.Inst.GetAssignedControllerID(playerID);
+            //
+            // if ((controllerID.ContainedIn(BConsts.AI_CONTROLLERS))
+            //     && (IS_KEY_CONTAINED(PlayerManager.Inst.ActivePlayers, playerID))
+            //     && (IS_NOT_NULL(PlayerManager.Inst.ActivePlayers[playerID])))
+            // {
+            //     AbstractPawn pawn = PlayerManager.Inst.ActivePlayers[playerID];
+            //     AbstractAIPlayerController aIPlayerController = pawn.gameObject.AddComponent<AbstractAIPlayerController>();
+            //     aIPlayerController.AxisUpdated += On_AIPlayerController_JoystickMoved;
+            //     aIPlayerController.ButtonPressed += On_AIPlayerController_ButtonPressed;
+            //     aIPlayerController.ButtonReleased += On_AIPlayerController_ButtonReleased;
+            //     aIPlayerController.WillGetDestroyed += On_AIPlayerController_WillGetDestroyed;
+            //     aIPlayerController.InitializeAIController(this);
+            //     activeAIControllers.Add(aIPlayerController);
+            // }
         }
 
         private void On_AIPlayerController_JoystickMoved(EControllerID controllerID, EInputAxis axisInput, float x, float y)

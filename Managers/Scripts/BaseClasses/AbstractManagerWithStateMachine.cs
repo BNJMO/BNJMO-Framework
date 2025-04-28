@@ -70,7 +70,7 @@ namespace BNJMO
             base.UpdateDebugText();
 
             // Debug current state
-            DebugManager.Instance.DebugLogCanvas(debugStateID, CurrentState.GetType() + " : " + CurrentState);
+            DebugManager.Inst.DebugLogCanvas(debugStateID, CurrentState.GetType() + " : " + CurrentState);
         }
 
         /// <summary>

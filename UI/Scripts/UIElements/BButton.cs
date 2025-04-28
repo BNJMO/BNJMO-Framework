@@ -188,7 +188,7 @@ namespace BNJMO
 
             if (BEvents.IsInstanceSet)
             {
-                BEvents.UI_ButtonHighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                BEvents.UI_ButtonHighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
             }
         }
 
@@ -235,7 +235,7 @@ namespace BNJMO
 
             if (BEvents.IsInstanceSet)
             {
-                BEvents.UI_ButtonReleased.Invoke(new BEHandle<BButton, bool>(this, cursorInside), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                BEvents.UI_ButtonReleased.Invoke(new BEHandle<BButton, bool>(this, cursorInside), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
             }
         }
 
@@ -285,7 +285,7 @@ namespace BNJMO
 
             if (BEvents.IsInstanceSet)
             {
-                BEvents.UI_ButtonPressed.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                BEvents.UI_ButtonPressed.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
             }
         }
 
@@ -323,7 +323,7 @@ namespace BNJMO
 
             if (BEvents.IsInstanceSet)
             {
-                BEvents.UI_ButtonUnhighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                BEvents.UI_ButtonUnhighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
             }
         }
 

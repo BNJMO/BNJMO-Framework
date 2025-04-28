@@ -135,28 +135,46 @@ namespace BNJMO
         #endregion
 
         #region Players
-        /* Lobby Join */
-        public static BEvent<BEHandle<EPlayerID, EControllerID, string>> PLAYERS_PlayerJoined // TODO: Change paramters to PlayerJoinStatus
-                = new BEvent<BEHandle<EPlayerID, EControllerID, string>>("PLAYERS_PlayerJoined");
+        /* Players */
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerConnected 
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerConnected");
 
-        public static BEvent<BEHandle<EPlayerID, EControllerID>> PLAYERS_PlayerLeft
-                = new BEvent<BEHandle<EPlayerID, EControllerID>>("PLAYERS_PlayerLeft");
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerDisconnected
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerDisconnected");
+
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerChangedControllerID
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerChangedControllerID");
+
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerChangedName
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerChangedName");
+
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerChangedTeam
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerChangedTeam");
+
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerJoinedTheParty
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerJoinedTheParty");
+        
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerLeftTheParty
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerLeftTheParty");
+        
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerBecameReady
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerReadinessChanged");
+        
+        public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerCanceledReady
+                = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerCanceledReady");
 
         public static BEvent<BEHandle> PLAYERS_AllPlayersReady
                 = new  BEvent<BEHandle>("PLAYERS_AllPlayersReady");
+        
+        
+        /* Pawns */
+        public static BEvent<BEHandle<PawnBase>> PAWNS_PawnSpawned
+                = new BEvent<BEHandle<PawnBase>>("PAWNS_PawnSpawned");
+        
+        public static BEvent<BEHandle<PawnBase>> PAWNS_PawnDestroyed
+                = new BEvent<BEHandle<PawnBase>>("PAWNS_PawnDestroyed");
+        
 
-        public static BEvent<BEHandle<EPlayerID>> PLAYERS_PlayerReady
-                = new BEvent<BEHandle<EPlayerID>>("PLAYERS_PlayerReady");
-
-        public static BEvent<BEHandle<EPlayerID>> PLAYERS_PlayerCanceledReady
-                = new BEvent<BEHandle<EPlayerID>>("PLAYERS_PlayerCanceledReady");
-
-        /* In Game */
-        public static BEvent<BEHandle<EPlayerID, IPlayer>> PLAYERS_PlayerSpawned 
-                = new BEvent<BEHandle<EPlayerID, IPlayer>>("PLAYERS_PlayerSpawned");
-
-        public static BEvent<BEHandle<EPlayerID, IPlayer>> PLAYERS_PlayerDied
-                = new BEvent<BEHandle<EPlayerID, IPlayer>>("PLAYERS_PlayerDied");
         #endregion
 
         #region UI
@@ -248,7 +266,7 @@ namespace BNJMO
         // TODO: Depricated
         private void DebugLog(string messageLog)
         {
-            if (BManager.Instance.Config.IsDebugLogEvents == true)
+            if (BManager.Inst.Config.IsDebugLogEvents == true)
             {
                 Debug.Log("<color=green>[EVENT (old)]</color> " + messageLog);
             }

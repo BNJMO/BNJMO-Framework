@@ -7,7 +7,7 @@ using BNJMO;
 /// Base class with no functionality. Mainly for instantiating.
 /// Used for testing only
 /// </summary>
-public class BasePawnSpawnPosition : AbstractPawnSpawnPosition
+public class BasePawnSpawnPositionBase : PawnSpawnPositionBase
 {
     
 }

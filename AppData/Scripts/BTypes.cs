@@ -132,6 +132,23 @@ namespace BNJMO
     #endregion
 
     #region Player
+
+    public struct SPlayerInit
+    {
+        public EPlayerID PlayerID;
+        public EControllerID ControllerID;
+        public ENetworkID NetworkID;
+        public ETeamID TeamID;
+        public string PlayerName;
+    }
+    
+    public struct SPawnInit
+    {
+        public PlayerBase Player;
+        public Vector3 Position;
+        public Quaternion Rotation;
+    }
+    
     public enum EPlayerID
     {
         NONE = 0,
@@ -139,6 +156,18 @@ namespace BNJMO
         PLAYER_2 = 2,
         PLAYER_3 = 3,
         PLAYER_4 = 4,
+        PLAYER_5 = 5,
+        PLAYER_6 = 6,
+        PLAYER_7 = 7,
+        PLAYER_8 = 8,
+        PLAYER_9 = 9,
+        PLAYER_10 = 10,
+        PLAYER_11 = 11,
+        PLAYER_12 = 12,
+        PLAYER_13 = 13,
+        PLAYER_14 = 14,
+        PLAYER_15 = 15,
+        PLAYER_16 = 16,
         SPECTATOR = 6969
     }
 
@@ -151,30 +180,27 @@ namespace BNJMO
         TEAM_4 = 4
     }
 
-    [Serializable]
-    public class PlayerJoinStatus
+    public enum EPlayerState
     {
-        public PlayerJoinStatus(EControllerID controllerID, string playerName, bool hasJoined = false, bool isReady = false)
-        {
-            PlayerName = playerName;
-            HasJoined = hasJoined;
-            IsReady = isReady;
-            ControllerID = controllerID;
-        }
-
-        public void Flush()
-        {
-            ControllerID = EControllerID.NONE;
-            PlayerName = "";
-            HasJoined = false;
-            IsReady = false;
-        }
-
-        public EControllerID ControllerID { get; set; }
-        public string PlayerName { get; set; }
-        public bool HasJoined { get; set; }
-        public bool IsReady { get; set; }
+        NONE = 0,
+        IN_LOBBY = 1,
+        IN_PARTY = 2,
     }
+    
+    [Serializable]
+    public struct PlayerPrefabTupple
+    {
+        public EPlayerID PlayerID; 
+        public PlayerBase Prefab;
+    }
+    
+    [Serializable]
+    public struct PawnPrefabTupple
+    {
+        public EPlayerID PlayerID; 
+        public PawnBase Prefab;
+    }
+    
     #endregion
 
     #region Input
@@ -365,13 +391,6 @@ namespace BNJMO
         NOT_CONNECTED = 1,
         HOST = 2,
         CLIENT = 3,
-    }
-    
-    [Serializable]
-    public struct PawnPrefabObject
-    {
-        public EPlayerID PlayerID;
-        [FormerlySerializedAs("PlayerPrefab")] public AbstractPawn pawnPrefab;
     }
     
     #endregion

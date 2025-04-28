@@ -45,7 +45,7 @@ public class EventTestButtton : BBehaviour
 
     public void OnNativeIntTest()
     {
-        AbstractBEventDispatcher bEventDispatcher = BEventManager.Instance.BEventDispatcher;
+        AbstractBEventDispatcher bEventDispatcher = BEventManager.Inst.BEventDispatcher;
         if (IS_NOT_NULL(bEventDispatcher))
         {
             switch (bEventDispatcher.GetBEventDispatcherType())
@@ -98,7 +98,7 @@ public class EventTestButtton : BBehaviour
     {
         if (networkIDText)
         {
-            networkIDText.SetText("NetworkID : " + BEventManager.Instance.LocalNetworkID);
+            networkIDText.SetText("NetworkID : " + BEventManager.Inst.LocalNetworkID);
         }
     }
 

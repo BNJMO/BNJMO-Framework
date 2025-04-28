@@ -12,10 +12,9 @@ namespace BNJMO
 
         public event Action<AbstractAIPlayerController> WillGetDestroyed;
 
-        public EControllerID controllerID { get; private set; } = EControllerID.NONE;
-        public EPlayerID playerID { get; private set; } = EPlayerID.NONE;
+        public PlayerBase Player { get; private set; } 
 
-        private AbstractPawn myPawn;
+        private PawnBase myPawn;
         //private Arena arena;
         private AIInputSource aIInputSource;
 
@@ -48,7 +47,7 @@ namespace BNJMO
         {
             base.InitializeComponents();
 
-            myPawn = GetComponentWithCheck<AbstractPawn>();
+            myPawn = GetComponentWithCheck<PawnBase>();
         }
 
         //protected override void InitializeObjecsInScene()
@@ -63,10 +62,6 @@ namespace BNJMO
         {
             base.Start();
 
-            playerID = myPawn.PlayerID;
-            controllerID = PlayerManager.Instance.GetAssignedControllerID(playerID);
-            IS_NOT_NONE(playerID);
-            IS_NOT_NONE(controllerID);
 
             //StartNewCoroutine(ref StartSpammingAllSpellButtonsEnumerator, StartSpammingAllSpellButtonsCoroutine());
         }

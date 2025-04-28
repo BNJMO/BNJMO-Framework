@@ -141,12 +141,12 @@ namespace BNJMO
         {
             base.LateStart();
 
-            if (BManager.Instance.Config.ConnectTouchController == true)
+            if (BManager.Inst.Config.ConnectTouchController == true)
             {
                 ConnectController(EControllerID.TOUCH, EControllerType.TouchScreen);
             }
 
-            if (BManager.Instance.Config.ConnectAIControllers == true)
+            if (BManager.Inst.Config.ConnectAIControllers == true)
             {
                 ConnectAllAIControllers();
             }
@@ -172,11 +172,9 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
             {
-                EPlayerID playerID = PlayerManager.Instance.GetAssignedPlayerID(controllerID);
-
                 if (inputButton != EInputButton.NONE)
                 {
-                    BEvents.INPUT_ButtonPressed.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                    BEvents.INPUT_ButtonPressed.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
                 }
             }
         }
@@ -185,11 +183,9 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
             {
-                EPlayerID playerID = PlayerManager.Instance.GetAssignedPlayerID(controllerID);
-
                 if (inputButton != EInputButton.NONE)
                 {
-                    BEvents.INPUT_ButtonReleased.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugButtonEvents);
+                    BEvents.INPUT_ButtonReleased.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
                 }
             }
         }
@@ -198,11 +194,9 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
             {
-                EPlayerID playerID = PlayerManager.Instance.GetAssignedPlayerID(controllerID);
-
                 if (inputAxis != EInputAxis.NONE)
                 {
-                    BEvents.INPUT_AxisUpdated.Invoke(new BEHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y), BEventReplicationType.LOCAL, BManager.Instance.Config.DebugJoystickEvents);
+                    BEvents.INPUT_AxisUpdated.Invoke(new BEHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugJoystickEvents);
                 }
             }
         }

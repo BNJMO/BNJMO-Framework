@@ -16,9 +16,9 @@ namespace BNJMO
         {
             base.Start();
 
-            if (BManager.Instance.Config.IsUseDebugGameMode == true)
+            if (BManager.Inst.Config.IsUseDebugGameMode == true)
             {
-                SetGameMode(BManager.Instance.Config.DebugGameMode);
+                SetGameMode(BManager.Inst.Config.DebugGameMode);
             }
         }
 
@@ -26,7 +26,7 @@ namespace BNJMO
         {
             base.InitializeEventsCallbacks();
 
-            BEvents.Instance.GAME_GameTimeUpdated += On_GAME_GameTimeUpdated;
+            BEvents.Inst.GAME_GameTimeUpdated += On_GAME_GameTimeUpdated;
             BEvents.APP_AppSceneUpdated.Event += On_APP_SceneChanged;
         }
 
@@ -83,7 +83,7 @@ namespace BNJMO
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 
-            BEvents.Instance.Invoke_GAME_GameStarted(CurrentGameMode);
+            BEvents.Inst.Invoke_GAME_GameStarted(CurrentGameMode);
         }
 
         /// <summary>
@@ -113,13 +113,13 @@ namespace BNJMO
 
         public void PauseOrUnpauseGame()
         {
-            if (AppStateManager.Instance.CurrentState == EAppState.IN_GAME_IN_RUNNING)
+            if (AppStateManager.Inst.CurrentState == EAppState.IN_GAME_IN_RUNNING)
             {
-                BEvents.Instance.Invoke_GAME_GamePaused(CurrentGameMode);
+                BEvents.Inst.Invoke_GAME_GamePaused(CurrentGameMode);
             }
-            else if (AppStateManager.Instance.CurrentState == EAppState.IN_GAME_IN_PAUSED)
+            else if (AppStateManager.Inst.CurrentState == EAppState.IN_GAME_IN_PAUSED)
             {
-                BEvents.Instance.Invoke_GAME_GameUnPaused(CurrentGameMode);
+                BEvents.Inst.Invoke_GAME_GameUnPaused(CurrentGameMode);
             }
         }
 
@@ -131,7 +131,7 @@ namespace BNJMO
                 Destroy(CurrentGameMode);
             }
 
-            BEvents.Instance.Invoke_GAME_GameEnded(CurrentGameMode, wasAborted);
+            BEvents.Inst.Invoke_GAME_GameEnded(CurrentGameMode, wasAborted);
         }
 
         #endregion

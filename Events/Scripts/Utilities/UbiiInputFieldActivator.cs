@@ -80,8 +80,8 @@ namespace BNJMO
             if (IS_NOT_NULL(inputField_IP)
                         && IS_NOT_NULL(inputField_Port))
             {
-                inputField_IP.text = BManager.Instance.Config.UbiiBackendServerIP;
-                inputField_Port.text = BManager.Instance.Config.UbiiBackendServerPort.ToString();
+                inputField_IP.text = BManager.Inst.Config.UbiiBackendServerIP;
+                inputField_Port.text = BManager.Inst.Config.UbiiBackendServerPort.ToString();
             }
 
             //UpdateUIObjectContainer(MotherOfManagers.Instance.EventDispatcherType);
@@ -106,8 +106,8 @@ namespace BNJMO
                     if (IS_NOT_NULL(inputField_IP)
                         && IS_NOT_NULL(inputField_Port))
                     {
-                        inputField_IP.text = BManager.Instance.Config.UbiiBackendServerIP;
-                        inputField_Port.text = BManager.Instance.Config.UbiiBackendServerPort.ToString();
+                        inputField_IP.text = BManager.Inst.Config.UbiiBackendServerIP;
+                        inputField_Port.text = BManager.Inst.Config.UbiiBackendServerPort.ToString();
                     }
                 }
                 else
@@ -119,12 +119,12 @@ namespace BNJMO
 
         private void On_inputField_IP_ValueChanged(string newValue)
         {
-            BManager.Instance.Config.UbiiBackendServerIP = newValue;
+            BManager.Inst.Config.UbiiBackendServerIP = newValue;
         }
         
         private void On_inputField_Port_ValueChanged(string newValue)
         {
-            BManager.Instance.Config.UbiiBackendServerPort = int.Parse(newValue);
+            BManager.Inst.Config.UbiiBackendServerPort = int.Parse(newValue);
         }
 
         #endregion

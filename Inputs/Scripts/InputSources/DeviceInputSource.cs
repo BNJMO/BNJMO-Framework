@@ -45,7 +45,7 @@ namespace BNJMO
                 EControllerType controllerType = GetControllerTypeFromName(playerInputListener.DeviceName);
                 
                 // Connect controller on Input Manager
-                if (InputManager.Instance.ConnectController(controllerID, controllerType) == true)
+                if (InputManager.Inst.ConnectController(controllerID, controllerType) == true)
                 {
                     connectedDeviceControllers.Add(controllerID, playerInputListener);
 

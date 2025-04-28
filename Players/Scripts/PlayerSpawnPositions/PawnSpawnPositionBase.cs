@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BNJMO
 {
-    public abstract class AbstractPawnSpawnPosition : BBehaviour
+    public class PawnSpawnPositionBase : BBehaviour
     {
         public EPlayerID PayerID    { get { return playerID; } set { playerID = value; } }
         public Vector3 Position     { get { return transform.position; } set { transform.position = value; } }
