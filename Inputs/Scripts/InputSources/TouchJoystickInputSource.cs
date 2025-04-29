@@ -51,7 +51,7 @@ namespace BNJMO
         {
             if (inputButton != EInputButton.NONE)
             {
-                InvokeButtonPressed(EControllerID.TOUCH, inputButton);
+                InvokeButtonPressed(EControllerID.TOUCH_1, inputButton);
             }
         }
 
@@ -78,7 +78,7 @@ namespace BNJMO
 
                     oldInputValuesMap[inputAxis] = new Vector2(newX, newY);
 
-                    InvokeAxisUpdated(EControllerID.TOUCH, EInputAxis.MOVEMENT, newX, newY);
+                    InvokeAxisUpdated(EControllerID.TOUCH_1, EInputAxis.MOVEMENT, newX, newY);
                 //}
             }
         }
@@ -88,7 +88,7 @@ namespace BNJMO
             // Reinitialize Movement and Rotation
             if (inputAxis != EInputAxis.NONE)
             {
-                InvokeAxisUpdated(EControllerID.TOUCH, inputAxis, 0.0f, 0.0f);
+                InvokeAxisUpdated(EControllerID.TOUCH_1, inputAxis, 0.0f, 0.0f);
 
                 // Reinitialize old input values map
                 if (IS_KEY_CONTAINED(oldInputValuesMap, inputAxis))
@@ -100,7 +100,7 @@ namespace BNJMO
             // Button Released event
             if (inputButton != EInputButton.NONE)
             {
-                InvokeButtonReleased(EControllerID.TOUCH, inputButton);
+                InvokeButtonReleased(EControllerID.TOUCH_1, inputButton);
             }
         }
     }

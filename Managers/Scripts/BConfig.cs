@@ -73,13 +73,25 @@ namespace BNJMO
         
         /* Player */ 
         [FoldoutGroup("BConfig/Player")]
-        public int MaxPlayersInTeam = 4;
+        public int MaxNumberOfTeams = 4;
         
         [FoldoutGroup("BConfig/Player")]
-        public int MaxPlayersInParty = 4;
+        [MinMaxSlider(1, 16)]
+        public int MaxNumberOfPlayersInTeam = 4;
+        
+        [FoldoutGroup("BConfig/Player")]
+        [MinMaxSlider(1, 16)]
+        public int MaxNumberOfSpectators = 16;
+                
+        [FoldoutGroup("BConfig/Player")]
+        [MinMaxSlider(1, 16)]
+        public int MaxNumberOfPlayersInParty = 4;
         
         [FoldoutGroup("BConfig/Player")]
         public Transform PawnSpawnParent;
+
+        [FormerlySerializedAs("MatchPlayerNameToPlayerID")] [FoldoutGroup("BConfig/Player")] 
+        public bool MatchPlayerNameToPartyState = true;        
 
         [FoldoutGroup("BConfig/Player")] 
         public bool UseSamePrefabForAllPlayers = true;

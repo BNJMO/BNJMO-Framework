@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5130495339388428924}
   - component: {fileID: 6495008128666290585}
   m_Layer: 0
-  m_Name: BasePawnSpawnPosition
+  m_Name: PawnSpawnPositionBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

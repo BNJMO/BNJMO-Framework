@@ -136,6 +136,7 @@ namespace BNJMO
     public struct SPlayerInit
     {
         public EPlayerID PlayerID;
+        public ESpectatorID SpectatorID;
         public EControllerID ControllerID;
         public ENetworkID NetworkID;
         public ETeamID TeamID;
@@ -168,7 +169,27 @@ namespace BNJMO
         PLAYER_14 = 14,
         PLAYER_15 = 15,
         PLAYER_16 = 16,
-        SPECTATOR = 6969
+    }
+
+    public enum ESpectatorID
+    {
+        NONE = 0,
+        SPECTATOR_1 = 1,
+        SPECTATOR_2 = 2,
+        SPECTATOR_3 = 3,
+        SPECTATOR_4 = 4,
+        SPECTATOR_5 = 5,
+        SPECTATOR_6 = 6,
+        SPECTATOR_7 = 7,
+        SPECTATOR_8 = 8,
+        SPECTATOR_9 = 9,
+        SPECTATOR_10 = 10,
+        SPECTATOR_11 = 11,
+        SPECTATOR_12 = 12,
+        SPECTATOR_13 = 13,
+        SPECTATOR_14 = 14,
+        SPECTATOR_15 = 15,
+        SPECTATOR_16 = 16,
     }
 
     public enum ETeamID
@@ -180,7 +201,7 @@ namespace BNJMO
         TEAM_4 = 4
     }
 
-    public enum EPlayerState
+    public enum EPlayerPartyState
     {
         NONE = 0,
         IN_LOBBY = 1,
@@ -208,7 +229,10 @@ namespace BNJMO
     {
         NONE = 0,
         /* Touch */
-        TOUCH = 1,
+        TOUCH_1 = 80,
+        TOUCH_2 = 81,
+        TOUCH_3 = 82,
+        TOUCH_4 = 83,
         /* AI */
         AI_1 = 2,
         AI_2 = 3,
@@ -252,10 +276,10 @@ namespace BNJMO
         MouseKeyboard = 3,
         TouchScreen = 4,
         AI = 5,
-        Dualsense = 4,
-        XboxSeries = 5,
-        MiscController = 6,
-        NetworkController = 7,
+        Dualsense = 6,
+        XboxSeries = 7,
+        MiscController = 8,
+        NetworkController = 9,
     }
 
     public enum EInputButton

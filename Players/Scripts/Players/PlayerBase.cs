@@ -17,23 +17,29 @@ namespace BNJMO
         public void Init(SPlayerInit playerInit)
         {
             playerID = playerInit.PlayerID;
+            spectatorID = playerInit.SpectatorID;
             controllerID = playerInit.ControllerID;
             networkID = playerInit.NetworkID;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
+            UpdateObjectNameOnPartyStateChange(false);
         }
         
-        public void SetPlayerName(string newPlayerName)
+        public void SetPlayerName(string newPlayerName, bool invokeBEvent = true)
         {
             playerName = newPlayerName;
-            
-            BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
+            name = playerName;
+
+            if (invokeBEvent)
+            {
+                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
+            }
         }
         
         public bool SetControllerID(EControllerID newControllerID)
         {
             if (ARE_ENUMS_EQUAL(ControllerID, newControllerID, true)
-                || PlayerManager.Inst.CanChangeControllerID(playerID, newControllerID) == false)
+                || PlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
                 return false;
             
             controllerID = newControllerID;
@@ -45,8 +51,9 @@ namespace BNJMO
 
         public bool SetTeamID(ETeamID newTeamID)
         {
-            if (ARE_ENUMS_EQUAL(newTeamID, teamID)
-                || PlayerManager.Inst.CanJoinTeam(playerID, newTeamID) == false)
+            if (ARE_ENUMS_EQUAL(newTeamID, teamID, true)
+                || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
+                || PlayerManager.Inst.CanJoinTeam(newTeamID) == false)
                 return false;
             
             teamID = newTeamID;
@@ -58,33 +65,45 @@ namespace BNJMO
         
         public bool JoinParty()
         {
-            if (ARE_ENUMS_EQUAL(PlayerState, EPlayerState.IN_PARTY, true))
+            if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
                 return false;
             
-            playerID = PlayerManager.Inst.GetNextPlayerIDAvailable();
-            if (ARE_ENUMS_EQUAL(playerID, EPlayerID.NONE, true))
+            EPlayerID newPlayerID = PlayerManager.Inst.JoinParty(this);
+            if (ARE_ENUMS_EQUAL(newPlayerID, EPlayerID.NONE, true))
                 return false;
+
+            playerID = newPlayerID;
+            spectatorID = ESpectatorID.NONE;
             
             BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this));
+
+            UpdateObjectNameOnPartyStateChange();
             
             return true;
         }
 
         public bool LeaveParty()
         {
-            if (ARE_ENUMS_NOT_EQUAL(PlayerState, EPlayerState.IN_PARTY, true))
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
+                return false;
+
+            ESpectatorID newSpectatorID = PlayerManager.Inst.LeaveParty(this);
+            if (ARE_ENUMS_EQUAL(newSpectatorID, ESpectatorID.NONE, true))
                 return false;
             
-            playerID = EPlayerID.SPECTATOR;
-
+            playerID = EPlayerID.NONE;
+            spectatorID = newSpectatorID;
+            
             BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this));
 
+            UpdateObjectNameOnPartyStateChange();
+            
             return true;
         }
 
         public bool SetReady()
         {
-            if (ARE_ENUMS_NOT_EQUAL(PlayerState, EPlayerState.IN_PARTY, true)
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                  || ARE_EQUAL(isReady, true, true))
                 return false;
             
@@ -97,7 +116,7 @@ namespace BNJMO
         
         public bool CancelReady()
         {
-            if (ARE_ENUMS_NOT_EQUAL(PlayerState, EPlayerState.IN_PARTY, true)
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                 || ARE_EQUAL(isReady, false, true))
                 return false;
             
@@ -128,11 +147,11 @@ namespace BNJMO
         #region Inspector Variables
 
         [SerializeField] [ReadOnly] private EPlayerID playerID;
+        [SerializeField] [ReadOnly] private ESpectatorID spectatorID;
         [SerializeField] [ReadOnly] private EControllerID controllerID;
         [SerializeField] [ReadOnly] private ENetworkID networkID;
         [SerializeField] [ReadOnly] private ETeamID teamID;
         [SerializeField] [ReadOnly] private string playerName;
-        [SerializeField] [ReadOnly] private bool hasJoinedParty;
         [SerializeField] [ReadOnly] private bool isReady;
 
         #endregion
@@ -141,7 +160,9 @@ namespace BNJMO
 
 
         public EPlayerID PlayerID => playerID;
-        
+
+        public ESpectatorID SpectatorID => spectatorID;
+
         public EControllerID ControllerID => controllerID;
         
         public ENetworkID NetworkID => networkID;
@@ -150,21 +171,23 @@ namespace BNJMO
         
         public string PlayerName => playerName;
         
-        public EPlayerState PlayerState
+        public EPlayerPartyState PartyState
         {
             get
             {
-                if (PlayerID == EPlayerID.NONE)
+                if (PlayerID == EPlayerID.NONE
+                    && SpectatorID != ESpectatorID.NONE)
                 {
-                    return EPlayerState.NONE;
+                    return EPlayerPartyState.IN_LOBBY;
                 }
-                if (PlayerID == EPlayerID.SPECTATOR)
+                
+                if (PlayerID != EPlayerID.NONE
+                         && SpectatorID == ESpectatorID.NONE)
                 {
-                    return EPlayerState.IN_LOBBY;
+                    return EPlayerPartyState.IN_PARTY;
                 }
-                {
-                    return EPlayerState.IN_PARTY;
-                }
+  
+                return EPlayerPartyState.NONE;
             }
         }
 
@@ -184,6 +207,22 @@ namespace BNJMO
 
         #region Others
 
+        protected virtual void UpdateObjectNameOnPartyStateChange(bool invokeBEvent = true)
+        {
+            if (BManager.Inst.Config.MatchPlayerNameToPartyState == false)
+                return;
+            
+            switch (PartyState)
+            {
+                case EPlayerPartyState.IN_LOBBY:
+                    SetPlayerName(spectatorID.ToString(), invokeBEvent); 
+                    break;
+                
+                case EPlayerPartyState.IN_PARTY:
+                    SetPlayerName(playerID.ToString(), invokeBEvent);
+                    break;
+            }
+        }
 
         #endregion
 

@@ -13,10 +13,43 @@ namespace BNJMO
         public event Action<EControllerID, EInputButton> ButtonReleased;
         // JoystickMoved event not needed as input is evaluated directly inside DeviceInputSource using MoveAxis and RotateAxis
 
-        public Vector2 MoveAxis         { get { return inputAction_Move.ReadValue<Vector2>(); } }
-        public Vector2 RotateAxis       { get { return inputAction_Rotate.ReadValue<Vector2>(); } }
-        public Vector2 Trigger_L_Axis   { get { return inputAction_Trigger_Axis_L.ReadValue<Vector2>(); } }
-        public Vector2 Trigger_R_Axis   { get { return inputAction_Trigger_Axis_R.ReadValue<Vector2>(); } }
+        public Vector2 MoveAxis
+        {
+            get
+            {
+                return isDisconnected || inputAction_Move == null ? Vector2.zero : inputAction_Move.ReadValue<Vector2>();
+            }
+        }        
+        public Vector2 RotateAxis
+        {
+            get
+            {
+                if (isDisconnected || inputAction_Rotate == null)
+                    return Vector2.zero;
+
+                return inputAction_Rotate.ReadValue<Vector2>();
+            }
+        }
+        public Vector2 Trigger_L_Axis
+        {
+            get
+            {
+                if (isDisconnected || inputAction_Trigger_Axis_L == null)
+                    return Vector2.zero;
+
+                return inputAction_Trigger_Axis_L.ReadValue<Vector2>();
+            }
+        }
+        public Vector2 Trigger_R_Axis
+        {
+            get
+            {
+                if (isDisconnected || inputAction_Trigger_Axis_R == null)
+                    return Vector2.zero;
+
+                return inputAction_Trigger_Axis_R.ReadValue<Vector2>();
+            }
+        }
 
         public string DeviceName { get; private set; } = "";
 
@@ -31,6 +64,7 @@ namespace BNJMO
 
         private bool canPerformDirectionalButton = true;
         private EInputButton lastPerformedDirectionalButton = EInputButton.NONE;
+        private bool isDisconnected = false;
 
         protected override void Awake()
         {
@@ -63,8 +97,9 @@ namespace BNJMO
         {
             base.Start();
 
-            if (IS_NOT_NULL(myPlayerInput))
-            {
+            
+            if (IS_NULL(myPlayerInput,true)) return;
+            
                 // Inform Device Input Source that a new Player Input has joined and become a ControllerID
                 DeviceInputSource deviceInputSource = InputManager.Inst.GetInputSource<DeviceInputSource>();
                 if (IS_NOT_NULL(deviceInputSource))
@@ -72,7 +107,7 @@ namespace BNJMO
                     myControllerID = deviceInputSource.OnNewDeviceJoined(this);
                     IS_NOT_NONE(myControllerID);
                 }
-            }
+                
         }
 
         protected override void FixedUpdate()
@@ -97,7 +132,7 @@ namespace BNJMO
             {
                 foreach (InputDevice inputDevice in myPlayerInput.devices)
                 {
-                    DeviceName += inputDevice.displayName + " ";
+                    DeviceName += inputDevice.displayName + inputDevice.name;
                 }
             }
             else
@@ -187,16 +222,34 @@ namespace BNJMO
 
             myPlayerInput.onDeviceLost += (PlayerInput playerInput) =>
             {
-                LogConsole("Device '" + playerInput.devices[0].name + "' lost!");
-            };
+                LogConsole("Device lost!");
 
-            myPlayerInput.onDeviceRegained += (PlayerInput playerInput) =>
-            {
-                LogConsole("Device '" + playerInput.devices[0].name + "' lost!");
+                isDisconnected = true;
 
+                try
+                {
+                    playerInput.DeactivateInput();
+                    playerInput.user.UnpairDevicesAndRemoveUser();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("onDeviceLost error: " + ex.Message);
+                }
+
+                // Don't access myPlayerInput after this point!
+                myPlayerInput = null;
+
+                // Clean up from DeviceInputSource
+                DeviceInputSource deviceInputSource = InputManager.Inst.GetInputSource<DeviceInputSource>();
+                if (deviceInputSource != null)
+                {
+                    deviceInputSource.OnDeviceHasLeft(myControllerID, this);
+                }
+
+                Destroy(gameObject);
             };
+            
         }
-
 
         private void ProcessButtonEvent(InputActionPhase actionPhase, EInputButton inputButton)
         {

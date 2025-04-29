@@ -68,20 +68,29 @@ namespace BNJMO
             return controllerID;
         }
         
-        // TODO
         public void OnDeviceHasLeft(EControllerID controllerID, PlayerInputListener playerInputListener)
         {
-            //IS_VALID(playerInputListener);
+            IS_VALID(playerInputListener);
 
-            //if ((connectedControllers.ContainsKey(controllerID)
-            //    && (connectedControllers[controllerID] == playerInputListener))
-            //{
+            if (connectedDeviceControllers.ContainsKey(controllerID) &&
+                connectedDeviceControllers[controllerID] == playerInputListener)
+            {
+                // Unsubscribe input events
+                playerInputListener.ButtonPressed -= On_PlayerInputListener_ButtonPressed;
+                playerInputListener.ButtonReleased -= On_PlayerInputListener_ButtonReleased;
 
-            //}
-            //else
-            //{
-            //    LogConsoleWarning("An invalid device has left : " + playerInputListener.DeviceName);
-            //}
+                // Remove from dictionary
+                connectedDeviceControllers.Remove(controllerID);
+
+                // Disconnect from InputManager
+                InputManager.Inst.DisconnectController(controllerID);
+
+                LogConsole($"Device '{playerInputListener.DeviceName}' has disconnected from: {controllerID}");
+            }
+            else
+            {
+                LogConsoleWarning("Attempted to remove untracked or mismatched device: " + playerInputListener.DeviceName);
+            }
         }
         
         private void On_PlayerInputListener_ButtonPressed(EControllerID controllerID, EInputButton inputButton)
@@ -101,7 +110,18 @@ namespace BNJMO
         
         private void INPUT_OnControllerDisconnected(BEHandle<EControllerID> handle)
         {
-            // TODO: Remove or destroy PlayerInputListener to intercept when controller is trying to connect again
+            EControllerID disconnectedID = handle.Arg1;
+
+            if (connectedDeviceControllers.TryGetValue(disconnectedID, out var playerInputListener))
+            {
+                LogConsole($"Handling controller disconnection: {disconnectedID}");
+                OnDeviceHasLeft(disconnectedID, playerInputListener);
+            }
+            else
+            {
+                // Already removed, likely from PlayerInputListener.onDeviceLost
+                LogConsole($"Disconnected controller ID {disconnectedID} was already cleaned up.");
+            }
         }
 
         private EControllerID GetNextFreeDeviceControllerID()
@@ -118,10 +138,32 @@ namespace BNJMO
             return controllerID;
         }
 
-        // TODO:
-        private EControllerType GetControllerTypeFromName(string name)
+        public EControllerType GetControllerTypeFromName(string name)
         {
-            return EControllerType.None;
+            name = name.ToLower();
+
+            if (name.Contains("xinput") || name.Contains("xbox one"))
+            {
+                return EControllerType.XboxOne;
+            }
+            if (name.Contains("xbox") || name.Contains("series"))
+            {
+                return EControllerType.XboxSeries;
+            }
+            if (name.Contains("dualshock4") || name.Contains("ps4") || name.Contains("playstation 4"))
+            {
+                return EControllerType.Dualshock4;
+            }
+            if (name.Contains("dualsense") || name.Contains("ps5") || name.Contains("playstation 5"))
+            {
+                return EControllerType.Dualsense;
+            }
+            if (name.Contains("keyboard") || name.Contains("mouse"))
+            {
+                return EControllerType.MouseKeyboard;
+            }
+
+            return EControllerType.MiscController;
         }
     }
 }

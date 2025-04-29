@@ -4,6 +4,8 @@
     {
         EPlayerID PlayerID { get; }
         
+        ESpectatorID SpectatorID { get; }
+        
         EControllerID ControllerID { get; }
         
         ENetworkID NetworkID { get; }
@@ -12,7 +14,7 @@
 
         string PlayerName { get; }
         
-        EPlayerState PlayerState { get; }
+        EPlayerPartyState PartyState { get; }
 
         bool IsReady { get; }
         

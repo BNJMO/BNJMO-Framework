@@ -170,7 +170,7 @@ namespace BNJMO
         /// <param name="category"> Category of the log text </param>
         protected void LogConsoleWarning(string logText)
         {
-            Debug.Log("<color=yellow>WARNING! </color>" + "<color=gray>[" + name + "]</color> " + logText);
+            Debug.Log("<color=yellow>WARNING! </color>" + "<color=white>[" + name + "]</color> " + logText);
 
         }
 
@@ -181,7 +181,7 @@ namespace BNJMO
         /// <param name="category"> Category of the log text </param>
         protected void LogConsoleError(string logText)
         {
-            Debug.Log("<color=red>ERROR! </color>" + "<color=gray>[" + name + "]</color> " + logText);
+            Debug.Log("<color=red>ERROR! </color>" + "<color=white>[" + name + "]</color> " + logText);
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace BNJMO
         protected bool IS_GREATER<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
         {
             int comparisonResult = value1.CompareTo(value2);
-            if (comparisonResult > 0)
+            if (comparisonResult <= 0)
             {
                 if (!reverseLogCondition)
                     LogConsoleWarning("The value '" + value1 + "' is not greater than '" + value2 + "'! ");
@@ -436,7 +436,7 @@ namespace BNJMO
         protected bool IS_GREATER_OR_EQUAL<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
         {
             int comparisonResult = value1.CompareTo(value2);
-            if (comparisonResult >= 0)
+            if (comparisonResult < 0)
             {
                 if (!reverseLogCondition)
                     LogConsoleWarning("The value '" + value1 + "' is not greater or equal than '" + value2 + "'! ");
@@ -461,7 +461,7 @@ namespace BNJMO
         protected bool IS_LESS<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
         {
             int comparisonResult = value1.CompareTo(value2);
-            if (comparisonResult < 0)
+            if (comparisonResult >= 0)
             {
                 if (!reverseLogCondition)
                     LogConsoleWarning("The value '" + value1 + "' is not less than '" + value2 + "'! ");
@@ -486,7 +486,7 @@ namespace BNJMO
         protected bool IS_LESS_OR_EQUAL<T>(T value1, T value2, bool reverseLogCondition = false) where T : IComparable<T>
         {
             int comparisonResult = value1.CompareTo(value2);
-            if (comparisonResult <= 0)
+            if (comparisonResult < 0)
             {
                 if (!reverseLogCondition)
                     LogConsoleWarning("The value '" + value1 + "' is not less or equal than '" + value2 + "'! ");

@@ -25,18 +25,15 @@ MonoBehaviour:
   TransformInpuAxisToCameraDirection: 0
   IsUseDebugGameMode: 0
   DebugGameMode: 0
-  PlayerSpawnPositionPrefab: {fileID: 3187874392596271182, guid: 2e6436d680f7e664d8560c4317004bea, type: 3}
-  PlayersPrefabObjects:
-  - PlayerID: 1
-    PlayerPrefab: {fileID: 2795121734374309191, guid: de768047898b4e74f8b993bc8cb7b0e1, type: 3}
-  - PlayerID: 2
-    PlayerPrefab: {fileID: 2795121734374309191, guid: 3a2f17c48aa12784b81588b15662162d, type: 3}
-  - PlayerID: 3
-    PlayerPrefab: {fileID: 2795121734374309191, guid: a78de044a02896c4b979a878ab0e8bd6, type: 3}
-  - PlayerID: 4
-    PlayerPrefab: {fileID: 2795121734374309191, guid: f2d20585edcb6734588a106702876d8b, type: 3}
-  IsSpawnGhostPlayerPositionsIfNotFound: 0
-  SpawnPlayersUnderSameTransformAsSpawnPositions: 0
+  MaxPlayersInTeam: 4
+  MaxPlayersInParty: 4
+  PawnSpawnParent: {fileID: 0}
+  UseSamePrefabForAllPlayers: 1
+  PlayerPrefab: {fileID: -2459690542888083050, guid: 48337d2093f81fa498ff30b5aaf1e90a, type: 3}
+  PlayerPrefabs: []
+  UseSamePrefabForAllPawns: 1
+  PawnPrefab: {fileID: 4584618283913816630, guid: 7cf988a7d156f5e41948243cdf00b579, type: 3}
+  PawnPrefabs: []
   MaximumNumberOfAIToSpawn: 0
   IsDebugLogEvents: 1
   IsDebugEventsNetworkID: 1

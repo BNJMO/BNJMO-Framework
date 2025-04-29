@@ -10,10 +10,29 @@ namespace BNJMO
     {
         #region Public Events
 
+        public void RegisterControllerType(EControllerID id, EControllerType type)
+        {
+            if (connectedControllerTypes.ContainsKey(id))
+            {
+                connectedControllerTypes[id] = type;
+                LogConsole($"Updated controller type: {id} -> {type}");
+            }
+            else
+            {
+                connectedControllerTypes.Add(id, type);
+                LogConsole($"Registered new controller type: {id} -> {type}");
+            }
+        }
+
+        public EControllerType GetControllerType(EControllerID id)
+        {
+            return connectedControllerTypes.TryGetValue(id, out var type) ? type : EControllerType.None;
+        }
+
         #endregion
 
         #region Public Methods
-        
+
         public bool ConnectController(EControllerID controllerID, EControllerType controllerType)
         {
             if (controllerID == EControllerID.NONE)
@@ -21,6 +40,7 @@ namespace BNJMO
                 LogConsoleError("Trying to connect a controller that is NONE.");
                 return false;
             }
+
             if (connectedControllers.Contains(controllerID))
             {
                 LogConsoleError("Trying to connect a controller that is already connected.");
@@ -28,32 +48,25 @@ namespace BNJMO
             }
 
             connectedControllers.Add(controllerID);
-            connectedControllerTypes.Add(controllerID, controllerType);
-            
-            // Invoke event
-            BEHandle<EControllerID> controllerConnected = new BEHandle<EControllerID>(controllerID);
-            BEvents.INPUT_ControllerConnected.Invoke(controllerConnected);
+            RegisterControllerType(controllerID, controllerType);
 
+            // Invoke event
+            BEvents.INPUT_ControllerConnected.Invoke(new BEHandle<EControllerID>(controllerID));
             return true;
         }
 
         public bool DisconnectController(EControllerID controllerID)
         {
-            if (connectedControllers.Contains(controllerID) == false)
+            if (!connectedControllers.Contains(controllerID))
             {
                 LogConsoleError("Trying to disconnect a controller that is not connected.");
                 return false;
             }
 
             connectedControllers.Remove(controllerID);
-            if (connectedControllerTypes.ContainsKey(controllerID))
-            {
-                connectedControllerTypes.Remove(controllerID);
-            }
+            connectedControllerTypes.Remove(controllerID);
 
-            // Invoke event
-            BEHandle<EControllerID> controllerDisconnected = new BEHandle<EControllerID>(controllerID);
-            BEvents.INPUT_ControllerDisconnected.Invoke(controllerDisconnected);
+            BEvents.INPUT_ControllerDisconnected.Invoke(new BEHandle<EControllerID>(controllerID));
             return true;
         }
 
@@ -61,28 +74,11 @@ namespace BNJMO
         {
             return connectedControllers.Contains(controllerID);
         }
-
-        public EControllerType GetControllerType(EControllerID controllerID)
-        {
-            if (connectedControllers.Contains(controllerID) == false)
-            {
-                LogConsoleError($"No controller connected with the id {controllerID}");
-                return EControllerType.None;
-            }
-            if (connectedControllerTypes.ContainsKey(controllerID) == false)
-            {
-                LogConsoleError($"{controllerID} has no valid controller type!");
-                return EControllerType.None;
-            }
-            
-            return connectedControllerTypes[controllerID];
-        }
-
         /// <summary>
         /// Returns (the first) Input Source of type "A" attached on the Input Manager.
         /// </summary>
         /// <typeparam name="A"> Specification from AbstractInputSource </typeparam>
-        /// <returns> The first Inpupt Source found </returns>
+        /// <returns> The first Input Source found </returns>
         public A GetInputSource<A>() where A : AbstractInputSource
         {
             A result = null;
@@ -103,7 +99,7 @@ namespace BNJMO
 
             return result;
         }
-        
+
         #endregion
 
         #region Inspector Variables
@@ -111,19 +107,17 @@ namespace BNJMO
         #endregion
 
         #region Private Variables
-        
-        public EControllerID[] ConnectedControllers { get => connectedControllers.ToArray(); }
-        
-        private List<EControllerID> connectedControllers { get; } = new List<EControllerID>();
 
-        private Dictionary<EControllerID, EControllerType> connectedControllerTypes =
-            new Dictionary<EControllerID, EControllerType>();
+        public EControllerID[] ConnectedControllers => connectedControllers.ToArray();
+
+        private List<EControllerID> connectedControllers = new();
+        private Dictionary<EControllerID, EControllerType> connectedControllerTypes = new();
         private AbstractInputSource[] inputSources;
-        
+
         #endregion
 
         #region Life Cycle
-        
+
         protected override void Start()
         {
             base.Start();
@@ -141,12 +135,12 @@ namespace BNJMO
         {
             base.LateStart();
 
-            if (BManager.Inst.Config.ConnectTouchController == true)
+            if (BManager.Inst.Config.ConnectTouchController)
             {
-                ConnectController(EControllerID.TOUCH, EControllerType.TouchScreen);
+                ConnectController(EControllerID.TOUCH_1, EControllerType.TouchScreen);
             }
 
-            if (BManager.Inst.Config.ConnectAIControllers == true)
+            if (BManager.Inst.Config.ConnectAIControllers)
             {
                 ConnectAllAIControllers();
             }
@@ -162,54 +156,57 @@ namespace BNJMO
         protected override void OnNewSceneReinitialize(EAppScene newScene, EAppScene lastScene)
         {
             base.OnNewSceneReinitialize(newScene, lastScene);
-
         }
+
         #endregion
 
         #region Events Callbacks
-        
+
         private void On_InputSource_ButtonPressed(EControllerID controllerID, EInputButton inputButton)
         {
-            if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
+            if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
-                if (inputButton != EInputButton.NONE)
-                {
-                    BEvents.INPUT_ButtonPressed.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-                }
+                BEvents.INPUT_ButtonPressed.Invoke(
+                    new BEHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    BEventReplicationType.LOCAL,
+                    BManager.Inst.Config.DebugButtonEvents
+                );
             }
         }
 
         private void On_InputSource_ButtonReleased(EControllerID controllerID, EInputButton inputButton)
         {
-            if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
+            if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
-                if (inputButton != EInputButton.NONE)
-                {
-                    BEvents.INPUT_ButtonReleased.Invoke(new BEHandle<EControllerID, EInputButton>(controllerID, inputButton), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-                }
+                BEvents.INPUT_ButtonReleased.Invoke(
+                    new BEHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    BEventReplicationType.LOCAL,
+                    BManager.Inst.Config.DebugButtonEvents
+                );
             }
         }
 
         private void On_InputSource_JoystickMoved(EControllerID controllerID, EInputAxis inputAxis, float x, float y)
         {
-            if (IS_VALUE_CONTAINED(connectedControllers, controllerID))
+            if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputAxis != EInputAxis.NONE)
             {
-                if (inputAxis != EInputAxis.NONE)
-                {
-                    BEvents.INPUT_AxisUpdated.Invoke(new BEHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugJoystickEvents);
-                }
+                BEvents.INPUT_AxisUpdated.Invoke(
+                    new BEHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y),
+                    BEventReplicationType.LOCAL,
+                    BManager.Inst.Config.DebugJoystickEvents
+                );
             }
         }
-        
+
         #endregion
 
         #region Others
-        
+
         private void ConnectAllAIControllers()
         {
-            foreach (EControllerID aIControllerID in BConsts.AI_CONTROLLERS)
+            foreach (EControllerID aiControllerID in BConsts.AI_CONTROLLERS)
             {
-                ConnectController(aIControllerID, EControllerType.AI);
+                ConnectController(aiControllerID, EControllerType.AI);
             }
         }
 
@@ -220,9 +217,10 @@ namespace BNJMO
             {
                 controllersLog += controllerID + "\n";
             }
+
             LogCanvas(BConsts.DEBUGTEXT_ConnectedControllers, controllersLog);
         }
-        
+
         #endregion
     }
 }

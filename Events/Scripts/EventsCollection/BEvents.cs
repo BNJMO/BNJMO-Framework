@@ -163,10 +163,6 @@ namespace BNJMO
         public static BEvent<BEHandle<PlayerBase>> PLAYERS_PlayerCanceledReady
                 = new BEvent<BEHandle<PlayerBase>>("PLAYERS_PlayerCanceledReady");
 
-        public static BEvent<BEHandle> PLAYERS_AllPlayersReady
-                = new  BEvent<BEHandle>("PLAYERS_AllPlayersReady");
-        
-        
         /* Pawns */
         public static BEvent<BEHandle<PawnBase>> PAWNS_PawnSpawned
                 = new BEvent<BEHandle<PawnBase>>("PAWNS_PawnSpawned");
