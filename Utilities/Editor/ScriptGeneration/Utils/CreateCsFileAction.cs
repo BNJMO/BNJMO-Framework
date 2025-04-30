@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using BNJMO;
 using UnityEditor;
 using UnityEngine;
 
@@ -285,7 +286,16 @@ public class #CLASS# : BBehaviour
         }
 
         [XmlElement(ElementName = "Namespace")]
-        public string @namespace = "Maleficus";
+        public string @namespace
+        {
+            get
+            {
+                string value = BConfig.GetValueFromProjectConfigFile("NameSpace"); 
+                return value != "" ? value : "BNJMO";
+            }
+            
+            set => @namespace = value;
+        }
 
         [XmlElement(ElementName = "HeaderComment")]
         public string headerComment;

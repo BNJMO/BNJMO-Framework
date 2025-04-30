@@ -18,6 +18,37 @@ namespace BNJMO
 
         #region Public Methods
 
+        public static string GetValueFromProjectConfigFile(string key)
+        {
+            TextAsset configFile = Resources.Load<TextAsset>("ProjectConfig"); 
+            string[] lines = configFile.text.Split('\n');
+            foreach (string rawLineItr in lines)
+            {
+                string lineItr = rawLineItr.Trim();
+
+                // Skip empty lines and comment lines
+                if (string.IsNullOrEmpty(lineItr) || lineItr.StartsWith("#"))
+                    continue;
+
+                // Remove comments from end of line
+                int commentIndex = lineItr.IndexOf('#');
+                if (commentIndex >= 0)
+                    lineItr = lineItr.Substring(0, commentIndex).Trim();
+
+                // Split by '=' to get key and value
+                int separatorIndex = lineItr.IndexOf('=');
+                if (separatorIndex < 0)
+                    continue; // malformed line
+
+                string keyItr = lineItr.Substring(0, separatorIndex).Trim();
+                if (keyItr != key)
+                    continue;
+                
+                return lineItr.Substring(separatorIndex + 1).Trim();
+            }
+
+            return "";
+        }
 
         #endregion
 
