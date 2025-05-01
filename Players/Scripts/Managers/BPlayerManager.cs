@@ -277,6 +277,7 @@ namespace BNJMO
             base.Start();
 
             InitializePrefabs();
+            FindPlayerSpawnPositionsInScene();
         }
 
         protected override void OnEnable()
