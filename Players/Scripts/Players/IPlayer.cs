@@ -9,6 +9,8 @@
         EControllerID ControllerID { get; }
         
         ENetworkID NetworkID { get; }
+        
+        public bool IsLocalPlayer { get; }
 
         ETeamID TeamID { get; }
 

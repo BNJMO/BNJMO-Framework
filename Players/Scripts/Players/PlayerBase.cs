@@ -20,6 +20,7 @@ namespace BNJMO
             spectatorID = playerInit.SpectatorID;
             controllerID = playerInit.ControllerID;
             networkID = playerInit.NetworkID;
+            isLocalPlayer = playerInit.IsLocalPlayer;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
             UpdateObjectNameOnPartyStateChange(false);
@@ -150,6 +151,7 @@ namespace BNJMO
         [SerializeField] [ReadOnly] private ESpectatorID spectatorID;
         [SerializeField] [ReadOnly] private EControllerID controllerID;
         [SerializeField] [ReadOnly] private ENetworkID networkID;
+        [SerializeField] [ReadOnly] private bool isLocalPlayer;
         [SerializeField] [ReadOnly] private ETeamID teamID;
         [SerializeField] [ReadOnly] private string playerName;
         [SerializeField] [ReadOnly] private bool isReady;
@@ -166,7 +168,9 @@ namespace BNJMO
         public EControllerID ControllerID => controllerID;
         
         public ENetworkID NetworkID => networkID;
-        
+
+        public bool IsLocalPlayer => isLocalPlayer;
+
         public ETeamID TeamID => teamID;
         
         public string PlayerName => playerName;

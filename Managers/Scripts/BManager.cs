@@ -42,14 +42,14 @@ namespace BNJMO
         #endregion
 
         #region Life Cycle
-        
-        protected override void Start()
+
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             
-            // Application.targetFrameRate = Config.TargetFramRate;
-            // QualitySettings.vSyncCount = 0;
-            // Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            QualitySettings.vSyncCount = Config.VSyncCount;
+            Application.targetFrameRate = Config.TargetFramRate;
+            Screen.sleepTimeout = Config.SleepTimeout;
         }
 
         #endregion

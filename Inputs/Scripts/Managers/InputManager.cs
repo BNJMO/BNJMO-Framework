@@ -15,12 +15,10 @@ namespace BNJMO
             if (connectedControllerTypes.ContainsKey(id))
             {
                 connectedControllerTypes[id] = type;
-                LogConsole($"Updated controller type: {id} -> {type}");
             }
             else
             {
                 connectedControllerTypes.Add(id, type);
-                LogConsole($"Registered new controller type: {id} -> {type}");
             }
         }
 

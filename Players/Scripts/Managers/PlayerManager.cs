@@ -17,9 +17,9 @@ namespace BNJMO
         #region Public Methods
 
         /* Controller */
-        public PlayerBase GetPlayer(EControllerID controllerID, bool logWarnings = true)
+        public PlayerBase GetPlayer(EControllerID controllerID)
         {
-            if (ARE_ENUMS_EQUAL(controllerID, EControllerID.NONE, !logWarnings))
+            if (controllerID == EControllerID.NONE)
                 return null;
             
             PlayerBase player = null;
@@ -311,7 +311,7 @@ namespace BNJMO
         private void On_INPUT_ControllerConnected(BEHandle<EControllerID> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
-            if (IS_NOT_NULL(GetPlayer(controllerID, false), true))
+            if (IS_NOT_NULL(GetPlayer(controllerID), true))
                 return;
 
             ESpectatorID spectatorID = GetNextFreeSpectatorID();
@@ -353,7 +353,7 @@ namespace BNJMO
                     return null;
             }
 
-            PlayerBase playerWithSameControllerID = GetPlayer(controllerID, false);
+            PlayerBase playerWithSameControllerID = GetPlayer(controllerID);
             if (IS_NOT_NULL(playerWithSameControllerID, true))
                 return null;
 
@@ -378,6 +378,7 @@ namespace BNJMO
                 PlayerID = playerID,
                 SpectatorID = spectatorID,
                 ControllerID = controllerID,
+                IsLocalPlayer = true,
                 NetworkID = networkID,
                 TeamID = ETeamID.NONE,
                 PlayerName = "Player",
@@ -493,8 +494,7 @@ namespace BNJMO
                 }
             }
         }
-        
-        #endregion
 
+        #endregion
     }
 }

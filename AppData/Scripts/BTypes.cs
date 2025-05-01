@@ -138,6 +138,7 @@ namespace BNJMO
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
         public EControllerID ControllerID;
+        public bool IsLocalPlayer;
         public ENetworkID NetworkID;
         public ETeamID TeamID;
         public string PlayerName;
@@ -198,7 +199,19 @@ namespace BNJMO
         TEAM_1 = 1,
         TEAM_2 = 2,
         TEAM_3 = 3,
-        TEAM_4 = 4
+        TEAM_4 = 4,
+        TEAM_5 = 5,
+        TEAM_6 = 6,
+        TEAM_7 = 7,
+        TEAM_8 = 8,
+        TEAM_9 = 9,
+        TEAM_10 = 10,
+        TEAM_11 = 11,
+        TEAM_12 = 12,
+        TEAM_13 = 13,
+        TEAM_14 = 14,
+        TEAM_15 = 15,
+        TEAM_16 = 16,
     }
 
     public enum EPlayerPartyState

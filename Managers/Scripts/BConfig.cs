@@ -63,6 +63,13 @@ namespace BNJMO
         [FoldoutGroup("BConfig/App")]
         public int TargetFramRate = 30;
         
+        [FoldoutGroup("BConfig/App")]
+        [InfoBox("-1 : Prevent screen dimming, -2 : Set the sleep timeout to whatever the user has specified in the system settings")]
+        public int SleepTimeout = -1;
+                
+        [FoldoutGroup("BConfig/App")]
+        public int VSyncCount = 0;
+        
         /* Events (Networking) */
         [FoldoutGroup("BConfig/Events (Networking)")]
         public BEventDispatcherType EventDispatcherType;
@@ -102,26 +109,25 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Game")]
         public EGameMode DebugGameMode = EGameMode.NONE;
         
-        /* Player */ 
+        /* Player */
         [FoldoutGroup("BConfig/Player")]
-        public int MaxNumberOfTeams = 4;
-        
-        [FoldoutGroup("BConfig/Player")]
-        [MinMaxSlider(1, 16)]
-        public int MaxNumberOfPlayersInTeam = 4;
-        
-        [FoldoutGroup("BConfig/Player")]
-        [MinMaxSlider(1, 16)]
+        [Range(1, 16)]
         public int MaxNumberOfSpectators = 16;
                 
         [FoldoutGroup("BConfig/Player")]
-        [MinMaxSlider(1, 16)]
+        [Range(1, 16)]
         public int MaxNumberOfPlayersInParty = 4;
         
         [FoldoutGroup("BConfig/Player")]
-        public Transform PawnSpawnParent;
-
-        [FormerlySerializedAs("MatchPlayerNameToPlayerID")] [FoldoutGroup("BConfig/Player")] 
+        [Range(0, 16)]
+        public int MaxNumberOfTeams = 4;
+        
+        [FoldoutGroup("BConfig/Player")]
+        [Range(1, 16)]
+        public int MaxNumberOfPlayersInTeam = 4;
+        
+        [Title("Player Prefabs")]
+        [FoldoutGroup("BConfig/Player")] 
         public bool MatchPlayerNameToPartyState = true;        
 
         [FoldoutGroup("BConfig/Player")] 
@@ -133,6 +139,7 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPlayers == true")]
         public PlayerPrefabTupple[] PlayerPrefabs;
 
+        [Title("Pawn Prefabs")]
         [FoldoutGroup("BConfig/Player")] 
         public bool UseSamePrefabForAllPawns = true;
         
@@ -141,7 +148,11 @@ namespace BNJMO
         
         [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPawns == true")]
         public PawnPrefabTupple[] PawnPrefabs;
-        
+                
+        [FoldoutGroup("BConfig/Player")]
+        [ReadOnly]
+        [InfoBox("Must be set in realtime")]
+        public Transform PawnSpawnParent;
         
         /* AI */
         [FoldoutGroup("BConfig/AI")]
