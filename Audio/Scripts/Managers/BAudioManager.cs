@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BNJMO
 {
-    public class AudioManager : AbstractSingletonManager<AudioManager>
+    public class BAudioManager : AbstractSingletonManager<BAudioManager>
     {
         private List<SoundObject> aliveSoundObjects = new List<SoundObject>();
         private SoundObject soundObjectPrefab;

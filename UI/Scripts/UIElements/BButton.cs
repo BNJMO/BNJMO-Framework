@@ -223,7 +223,7 @@ namespace BNJMO
             if ((onPressedSound)
                 && (cursorInside == true))
             {
-                AudioManager.SpawnSoundObject(onSuccessfullyReleasedSound);
+                BAudioManager.SpawnSoundObject(onSuccessfullyReleasedSound);
             }
 
             InvokeEventIfBound(Released, this, cursorInside);
@@ -268,7 +268,7 @@ namespace BNJMO
 
             if (onPressedSound)
             {
-                AudioManager.SpawnSoundObject(onPressedSound);
+                BAudioManager.SpawnSoundObject(onPressedSound);
             }
 
             if (parentBMenu)

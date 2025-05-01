@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BNJMO
 {
 
-    public class PlayerManager : AbstractSingletonManager<PlayerManager>
+    public class BPlayerManager : AbstractSingletonManager<BPlayerManager>
     {
         #region Public Events
 
@@ -283,32 +283,25 @@ namespace BNJMO
         {
             base.OnEnable();
 
-            /* Input events */
-            BEvents.INPUT_ControllerConnected += On_INPUT_ControllerConnected;
-            BEvents.INPUT_ControllerDisconnected += On_INPUT_ControllerDisconnected;
+            BEvents.INPUT_ControllerConnected += BEvents_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected += BEvents_OnControllerDisconnected;
+            BEvents.APP_SceneUpdated += BEvents_OnSceneUpdated;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            // Input events
-            BEvents.INPUT_ControllerConnected.Event -= On_INPUT_ControllerConnected;
-            BEvents.INPUT_ControllerDisconnected.Event -= On_INPUT_ControllerDisconnected;
+            BEvents.INPUT_ControllerConnected.Event -= BEvents_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected.Event -= BEvents_OnControllerDisconnected;
+            BEvents.APP_SceneUpdated -= BEvents_OnSceneUpdated;
         }
 
-        protected override void OnNewSceneReinitialize(EAppScene newScene, EAppScene lastScene)
-        {
-            base.OnNewSceneReinitialize(newScene, lastScene);
-
-            FindPlayerSpawnPositionsInScene();
-        }
-        
         #endregion
 
         #region Events Callbacks
         
-        private void On_INPUT_ControllerConnected(BEHandle<EControllerID> eventHandle)
+        private void BEvents_OnControllerConnected(BEHandle<EControllerID> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             if (IS_NOT_NULL(GetPlayer(controllerID), true))
@@ -318,10 +311,15 @@ namespace BNJMO
             SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID);
         }
 
-        private void On_INPUT_ControllerDisconnected(BEHandle<EControllerID> eventHandle)
+        private void BEvents_OnControllerDisconnected(BEHandle<EControllerID> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             DestroyPlayer(controllerID);
+        }
+        
+        private void BEvents_OnSceneUpdated(BEHandle<SScene> beHandle)
+        {
+            FindPlayerSpawnPositionsInScene();
         }
 
         #endregion

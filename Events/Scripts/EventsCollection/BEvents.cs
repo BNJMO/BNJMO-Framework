@@ -48,15 +48,12 @@ namespace BNJMO
 
         #endregion
 
-        #region App State
-        public static BEvent<StateBEHandle<EAppState>> APP_AppStateUpdated
-            = new BEvent<StateBEHandle<EAppState>>("APP_AppStateUpdated");
+        #region Scene
+        public static BEvent<BEHandle<SScene>> APP_SceneWillChange
+            = new BEvent<BEHandle<SScene>>("APP_SceneWillChange");
 
-        public static BEvent<StateBEHandle<EAppScene>> APP_SceneWillChange
-            = new BEvent<StateBEHandle<EAppScene>>("APP_SceneWillChange");
-
-        public static BEvent<StateBEHandle<EAppScene>> APP_AppSceneUpdated
-            = new BEvent<StateBEHandle<EAppScene>>("APP_AppSceneUpdated");
+        public static BEvent<BEHandle<SScene>> APP_SceneUpdated
+            = new BEvent<BEHandle<SScene>>("APP_SceneUpdated");
 
         #endregion
      

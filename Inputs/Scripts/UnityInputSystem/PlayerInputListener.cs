@@ -101,7 +101,7 @@ namespace BNJMO
             if (IS_NULL(myPlayerInput,true)) return;
             
                 // Inform Device Input Source that a new Player Input has joined and become a ControllerID
-                DeviceInputSource deviceInputSource = InputManager.Inst.GetInputSource<DeviceInputSource>();
+                DeviceInputSource deviceInputSource = BInputManager.Inst.GetInputSource<DeviceInputSource>();
                 if (IS_NOT_NULL(deviceInputSource))
                 {
                     myControllerID = deviceInputSource.OnNewDeviceJoined(this);
@@ -240,7 +240,7 @@ namespace BNJMO
                 myPlayerInput = null;
 
                 // Clean up from DeviceInputSource
-                DeviceInputSource deviceInputSource = InputManager.Inst.GetInputSource<DeviceInputSource>();
+                DeviceInputSource deviceInputSource = BInputManager.Inst.GetInputSource<DeviceInputSource>();
                 if (deviceInputSource != null)
                 {
                     deviceInputSource.OnDeviceHasLeft(myControllerID, this);

@@ -45,7 +45,7 @@ namespace BNJMO
                 EControllerType controllerType = GetControllerTypeFromName(playerInputListener.DeviceName);
                 
                 // Connect controller on Input Manager
-                if (InputManager.Inst.ConnectController(controllerID, controllerType) == true)
+                if (BInputManager.Inst.ConnectController(controllerID, controllerType) == true)
                 {
                     connectedDeviceControllers.Add(controllerID, playerInputListener);
 
@@ -83,7 +83,7 @@ namespace BNJMO
                 connectedDeviceControllers.Remove(controllerID);
 
                 // Disconnect from InputManager
-                InputManager.Inst.DisconnectController(controllerID);
+                BInputManager.Inst.DisconnectController(controllerID);
 
                 LogConsole($"Device '{playerInputListener.DeviceName}' has disconnected from: {controllerID}");
             }

@@ -22,6 +22,5 @@ namespace BNJMO
 
         public abstract void Disconnect();
 
-    
     }
 }

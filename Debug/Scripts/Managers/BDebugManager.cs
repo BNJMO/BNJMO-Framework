@@ -19,7 +19,7 @@ namespace BNJMO
     /// - JoinedPlayers
     /// - MirrorPlayers
     /// </summary>
-    public class DebugManager : AbstractSingletonManager<DebugManager>
+    public class BDebugManager : AbstractSingletonManager<BDebugManager>
     {
         private Dictionary<string, DebugText> debugTexts = new Dictionary<string, DebugText>();
         private Dictionary<string, bool> reportedDebugTexts = new Dictionary<string, bool>();
@@ -27,10 +27,15 @@ namespace BNJMO
 
         private NotifcationWindow notifcationWindow;
 
-        protected override void OnNewSceneReinitialize(EAppScene newScene, EAppScene lastScene)
+        protected override void Start()
         {
-            base.OnNewSceneReinitialize(newScene, lastScene);
+            base.Start();
+            
+            BEvents.APP_SceneUpdated += BEvents_SceneUpdated;
+        }
 
+        private void BEvents_SceneUpdated(BEHandle<SScene> beHandle)
+        {
             ReinitializeDebugTexts();
 
             notifcationWindow = FindObjectOfType<NotifcationWindow>();

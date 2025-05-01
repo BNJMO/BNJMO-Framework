@@ -103,9 +103,9 @@ namespace BNJMO
 
         private void On_LerpTransform_AnimationEnded(AnimationLerp<Transform> animationLerp)
         {
-            if (UIManager.IsInstanceSet)
+            if (BUIManager.IsInstanceSet)
             {
-                InvokeEventIfBound(CameraMovementEnded, UIManager.Inst.CurrentBMenuHighlighted);
+                InvokeEventIfBound(CameraMovementEnded, BUIManager.Inst.CurrentBMenuHighlighted);
             }
         }
 

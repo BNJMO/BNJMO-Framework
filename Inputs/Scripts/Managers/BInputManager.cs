@@ -6,7 +6,7 @@ namespace BNJMO
     /// <summary>
     /// Responsible for managing input controller sources attached to the same gameobject
     /// </summary>
-    public class InputManager : AbstractSingletonManager<InputManager>
+    public class BInputManager : AbstractSingletonManager<BInputManager>
     {
         #region Public Events
 
@@ -149,11 +149,6 @@ namespace BNJMO
             base.Update();
 
             UpdateControllersDebugText();
-        }
-
-        protected override void OnNewSceneReinitialize(EAppScene newScene, EAppScene lastScene)
-        {
-            base.OnNewSceneReinitialize(newScene, lastScene);
         }
 
         #endregion

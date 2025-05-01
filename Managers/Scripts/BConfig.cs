@@ -57,7 +57,10 @@ namespace BNJMO
         [BoxGroup("BConfig", centerLabel: true)]
         /* Scene */
         [FoldoutGroup("BConfig/Scene")]
-        public EAppScene StartScene = EAppScene.NONE;
+        public int StartSceneBuildID;
+        
+        [FoldoutGroup("BConfig/Scene")]
+        public SScene[] Scenes;
 
         /* App */
         [FoldoutGroup("BConfig/App")]

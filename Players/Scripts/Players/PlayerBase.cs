@@ -40,7 +40,7 @@ namespace BNJMO
         public bool SetControllerID(EControllerID newControllerID)
         {
             if (ARE_ENUMS_EQUAL(ControllerID, newControllerID, true)
-                || PlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
+                || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
                 return false;
             
             controllerID = newControllerID;
@@ -54,7 +54,7 @@ namespace BNJMO
         {
             if (ARE_ENUMS_EQUAL(newTeamID, teamID, true)
                 || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
-                || PlayerManager.Inst.CanJoinTeam(newTeamID) == false)
+                || BPlayerManager.Inst.CanJoinTeam(newTeamID) == false)
                 return false;
             
             teamID = newTeamID;
@@ -69,7 +69,7 @@ namespace BNJMO
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
                 return false;
             
-            EPlayerID newPlayerID = PlayerManager.Inst.JoinParty(this);
+            EPlayerID newPlayerID = BPlayerManager.Inst.JoinParty(this);
             if (ARE_ENUMS_EQUAL(newPlayerID, EPlayerID.NONE, true))
                 return false;
 
@@ -88,7 +88,7 @@ namespace BNJMO
             if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
                 return false;
 
-            ESpectatorID newSpectatorID = PlayerManager.Inst.LeaveParty(this);
+            ESpectatorID newSpectatorID = BPlayerManager.Inst.LeaveParty(this);
             if (ARE_ENUMS_EQUAL(newSpectatorID, ESpectatorID.NONE, true))
                 return false;
             
@@ -130,12 +130,12 @@ namespace BNJMO
 
         public bool SpawnPawn()
         {
-            return PlayerManager.Inst.SpawnPawn(PlayerID);
+            return BPlayerManager.Inst.SpawnPawn(PlayerID);
         }
         
         public bool DestroyPawn()
         {
-            return PlayerManager.Inst.DestroyPawn(PlayerID);
+            return BPlayerManager.Inst.DestroyPawn(PlayerID);
         }
 
         public void DestroyPlayer()

@@ -4,23 +4,12 @@ using System.Collections.Generic;
 
 namespace BNJMO
 {
-    [Serializable]
-    public struct SStartUIState
-    {
-        public EAppScene AppScene;
-        public EUIState UIState;
-    }
-
-    public class UIManager : AbstractSingletonManager<UIManager>
+    public class BUIManager : AbstractSingletonManager<BUIManager>
     {
         public BFrame CurrentBFrameFocused          { get; private set; }
         public BMenu CurrentBMenuHighlighted        { get; private set; }
         public BButton CurrentBButtonHighlighted    { get; private set; }
 
-        [Header("UIState")]
-        [SerializeField] private SStartUIState[] startStates = new SStartUIState[0];
-
-        private Dictionary<EUIState, BButton> highlightButtonsMap = new Dictionary<EUIState, BButton>();
         private bool canPressButton;
 
         protected override void Start()

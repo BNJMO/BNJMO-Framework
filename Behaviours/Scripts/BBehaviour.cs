@@ -191,17 +191,17 @@ namespace BNJMO
         /// <param name="logText"> Log text to print </param>
         protected void LogCanvas(string debugID, string logText)
         {
-            if (DebugManager.IsInstanceSet)
+            if (BDebugManager.IsInstanceSet)
             {
-                DebugManager.Inst.DebugLogCanvas(debugID, logText);
+                BDebugManager.Inst.DebugLogCanvas(debugID, logText);
             }
         }
 
         protected void LogNotification(string logText)
         {
-            if (DebugManager.IsInstanceSet)
+            if (BDebugManager.IsInstanceSet)
             {
-                DebugManager.Inst.DebugLogNotification(logText);
+                BDebugManager.Inst.DebugLogNotification(logText);
             }
         }
 

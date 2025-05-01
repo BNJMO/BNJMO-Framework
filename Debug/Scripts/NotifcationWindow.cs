@@ -219,7 +219,7 @@ namespace BNJMO
                 // Play notification sound
                 if (notificationSound)
                 {
-                    AudioManager.SpawnSoundObject(notificationSound);
+                    BAudioManager.SpawnSoundObject(notificationSound);
                 }
             }
         }

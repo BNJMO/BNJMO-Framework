@@ -83,19 +83,15 @@ namespace BNJMO
         IN_GAME_IN_OVER = 304,
     }
 
-    public enum EAppScene
+
+    
+    [Serializable]
+    public struct SScene
     {
-        NONE = 0,
-
-        /* Entry */
-        ENTRY = 100,
-
-        /* Menu */
-        MENU = 200,
-
-        /* Game */
-        GAME = 300,
+        public string SceneName;
+        public int SceneBuildID;
     }
+
 
     /// <summary>
     /// State of the UI menu.

@@ -14,21 +14,5 @@
                 DontDestroyOnLoad(gameObject);
             }
         }
-
-        protected override void InitializeEventsCallbacks()
-        {
-            base.InitializeEventsCallbacks();
-
-            BEvents.APP_AppSceneUpdated += On_APP_AppSceneUpdated;
-        }
-
-        private void On_APP_AppSceneUpdated(StateBEHandle<EAppScene> bEHandle)
-        {
-            OnNewSceneReinitialize(bEHandle.NewState, bEHandle.LastState);
-        }
-
-        protected virtual void OnNewSceneReinitialize(EAppScene newScene, EAppScene lastScene)
-        {
-        }
     }
 }

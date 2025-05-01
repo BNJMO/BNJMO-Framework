@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5681681575506708033}
   - component: {fileID: 8718420935579642568}
   m_Layer: 0
-  m_Name: AppSceneManager
+  m_Name: BSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,13 +47,6 @@ MonoBehaviour:
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 8718420935579642568}
-  sceneBuildNames:
-  - AppScene: 100
-    SceneBuildName: ENTRY
-  - AppScene: 200
-    SceneBuildName: MENU
-  - AppScene: 300
-    SceneBuildName: GAME
 --- !u!1 &1848495413779523812
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +77,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5040951269368504735}
+  m_Father: {fileID: 4335998295998743996}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6904663056917524374
 MonoBehaviour:
@@ -160,15 +153,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4335998295998743996}
+  - {fileID: 4335998296438487354}
   - {fileID: 5681681575506708033}
   - {fileID: 4335998296063043095}
   - {fileID: 4335998295768301884}
-  - {fileID: 5889587382612739557}
-  - {fileID: 4335998295998743996}
-  - {fileID: 4820143951454563959}
-  - {fileID: 4335998296438487354}
-  - {fileID: 1230836642821334467}
   - {fileID: 7140744973992432358}
+  - {fileID: 9105520494895256689}
   m_Father: {fileID: 4335998295704777601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4151174934001310998
@@ -182,7 +173,7 @@ GameObject:
   - component: {fileID: 7140744973992432358}
   - component: {fileID: 1642504072791720918}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: BUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,13 +209,6 @@ MonoBehaviour:
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 1642504072791720918}
-  startStates:
-  - AppScene: 100
-    UIState: 100
-  - AppScene: 200
-    UIState: 200
-  - AppScene: 300
-    UIState: 300
 --- !u!1 &4335998295704777600
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +270,7 @@ GameObject:
   - component: {fileID: 8089043688875718612}
   - component: {fileID: 7308099476106723497}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: BEventManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -351,7 +335,7 @@ GameObject:
   - component: {fileID: 6116107700635518129}
   - component: {fileID: 7002237378826352229}
   m_Layer: 0
-  m_Name: InputHandler
+  m_Name: BInputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -369,7 +353,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4820143951454563959}
   m_Father: {fileID: 5040951269368504735}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7589378005590778989
@@ -472,7 +457,7 @@ GameObject:
   - component: {fileID: 4335998296063043095}
   - component: {fileID: 8590260387160592060}
   m_Layer: 0
-  m_Name: DebugManager
+  m_Name: BDebugManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +504,7 @@ GameObject:
   - component: {fileID: 4335998296438487354}
   - component: {fileID: 4568427878466242402}
   m_Layer: 0
-  m_Name: PlayerManager
+  m_Name: BPlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,7 +540,7 @@ MonoBehaviour:
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 4568427878466242402}
---- !u!1 &6038580554703030730
+--- !u!1 &8363601110572430263
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -563,73 +548,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1230836642821334467}
+  - component: {fileID: 9105520494895256689}
+  - component: {fileID: 304480887967926538}
   m_Layer: 0
-  m_Name: SoundManager
+  m_Name: BAudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1230836642821334467
+--- !u!4 &9105520494895256689
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6038580554703030730}
+  m_GameObject: {fileID: 8363601110572430263}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5040951269368504735}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8098184902868246776
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5889587382612739557}
-  - component: {fileID: 3462674341387626230}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5889587382612739557
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8098184902868246776}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5040951269368504735}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3462674341387626230
+--- !u!114 &304480887967926538
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8098184902868246776}
+  m_GameObject: {fileID: 8363601110572430263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7566e599626ff4842904c0acc8dfcb81, type: 3}
+  m_Script: {fileID: 11500000, guid: ca429370d6935d44d89dee5164d2aecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
-  singletonInstanceReference: {fileID: 3462674341387626230}
+  singletonInstanceReference: {fileID: 0}

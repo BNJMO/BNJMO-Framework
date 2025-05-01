@@ -44,7 +44,6 @@ namespace BNJMO
             return new string[0];
         }
 
-
         #endregion
 
         #region Life Cycle

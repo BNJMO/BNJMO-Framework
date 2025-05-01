@@ -14,33 +14,6 @@ namespace BNJMO
         #endregion
 
         #region Public Methods
-        
-        public AbstractBEventDispatcher BEventDispatcher { get; private set; }
-
-        public ENetworkState NetworkState { get; private set; } = ENetworkState.NOT_CONNECTED;
-
-        public ENetworkID LocalNetworkID
-        {
-            get
-            {
-                if (IS_NOT_NULL(BEventDispatcher))
-                {
-                    return BEventDispatcher.LocalNetworkID;
-                }
-                return ENetworkID.NONE;
-            }
-        }
-
-        public string LocalIPAddress { get; private set; } = "localhost";
-
-        public ENetworkID[] GetConnectedNetworkIDs()
-        {
-            if (IS_NOT_NULL(BEventDispatcher))
-            {
-                return BEventDispatcher.GetConnectedNetworkIDs();
-            }
-            return new ENetworkID[0];
-        }
 
         public void StartHost()
         {
@@ -151,9 +124,36 @@ namespace BNJMO
 
         #endregion
 
-        #region Private Variables
+        #region Variables
         
-        private Dictionary<string, AbstractBEvent> allReplicatedBEvents = new Dictionary<string, AbstractBEvent>();
+        public AbstractBEventDispatcher BEventDispatcher { get; private set; }
+        
+        public ENetworkState NetworkState { get; private set; } = ENetworkState.NOT_CONNECTED;
+        
+        public ENetworkID LocalNetworkID
+        {
+            get
+            {
+                if (IS_NOT_NULL(BEventDispatcher))
+                {
+                    return BEventDispatcher.LocalNetworkID;
+                }
+                return ENetworkID.NONE;
+            }
+        }
+        
+        public string LocalIPAddress { get; private set; } = "localhost";
+
+        public ENetworkID[] GetConnectedNetworkIDs()
+        {
+            if (IS_NOT_NULL(BEventDispatcher))
+            {
+                return BEventDispatcher.GetConnectedNetworkIDs();
+            }
+            return new ENetworkID[0];
+        }
+        
+        private Dictionary<string, AbstractBEvent> allReplicatedBEvents = new ();
 
         #endregion
 
