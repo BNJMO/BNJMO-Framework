@@ -43,6 +43,16 @@ namespace BNJMO
         {
             PlayerPrefs.SetString(saveName.ToString(), value);
         }
+        
+        public E GetSavedEnum<E>(T saveName, E defaultValue = default(E)) where E : Enum
+        {
+            return (E)Enum.ToObject(typeof(E), GetSavedInt(saveName, Convert.ToInt32(defaultValue)));
+        }
+        
+        public void SaveEnum<E>(T saveName, E value) where E : Enum
+        {
+            SaveInt(saveName, Convert.ToInt32(value));
+        }
 
         #endregion
 
