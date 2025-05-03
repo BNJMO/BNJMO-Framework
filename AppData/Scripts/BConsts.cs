@@ -66,6 +66,9 @@ namespace BNJMO
         ENetworkID.CLIENT_11,
         ENetworkID.CLIENT_12,
         ENetworkID.CLIENT_13,
+        ENetworkID.CLIENT_14,
+        ENetworkID.CLIENT_15,
+        ENetworkID.CLIENT_16,
         };
 
         public static EControllerID[] DEVICE_CONTROLLERS = new EControllerID[]
@@ -82,6 +85,10 @@ namespace BNJMO
         EControllerID.DEVICE_10,
         EControllerID.DEVICE_11,
         EControllerID.DEVICE_12,
+        EControllerID.DEVICE_13,
+        EControllerID.DEVICE_14,
+        EControllerID.DEVICE_15,
+        EControllerID.DEVICE_16,
         };
 
         public static EControllerID[] AI_CONTROLLERS = new EControllerID[]
@@ -89,9 +96,50 @@ namespace BNJMO
         EControllerID.AI_1,
         EControllerID.AI_2,
         EControllerID.AI_3,
-        EControllerID.AI_4
+        EControllerID.AI_4,
+        EControllerID.AI_5,
+        EControllerID.AI_6,
+        EControllerID.AI_7,
+        EControllerID.AI_8,
+        EControllerID.AI_9,
+        EControllerID.AI_10,
+        EControllerID.AI_11,
+        EControllerID.AI_12,
+        EControllerID.AI_13,
+        EControllerID.AI_14,
+        EControllerID.AI_15,
+        EControllerID.AI_16,
         };
 
+        public static EControllerID[] TOUCH_CONTROLLERS = new EControllerID[]
+        {
+            EControllerID.TOUCH_1,
+            EControllerID.TOUCH_2,
+            EControllerID.TOUCH_3,
+            EControllerID.TOUCH_4,
+        };
+        
+        public static EControllerID[] REMOTE_CONTROLLERS = new EControllerID[]
+        {
+            EControllerID.REMOTE_HOST,
+            EControllerID.REMOTE_1,
+            EControllerID.REMOTE_2,
+            EControllerID.REMOTE_3,
+            EControllerID.REMOTE_4,
+            EControllerID.REMOTE_5,
+            EControllerID.REMOTE_6,
+            EControllerID.REMOTE_7,
+            EControllerID.REMOTE_8,
+            EControllerID.REMOTE_9,
+            EControllerID.REMOTE_10,
+            EControllerID.REMOTE_11,
+            EControllerID.REMOTE_12,
+            EControllerID.REMOTE_13,
+            EControllerID.REMOTE_14,
+            EControllerID.REMOTE_15,
+            EControllerID.REMOTE_16,
+        };
+        
         public const string None = "None";
 
     }
