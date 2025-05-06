@@ -20,4 +20,12 @@ public class StateMachine<T> where T : Enum
         CurrentState = newState;
         Handler.Update(CurrentState, PreviousState);
     }
+    
+    public void RevertState()
+    {
+        T temp = CurrentState;
+        CurrentState = PreviousState;
+        PreviousState = temp;
+        Handler.Update(CurrentState, PreviousState);
+    }
 }
