@@ -20,12 +20,12 @@ public class EventTestButtton : BBehaviour
     
     public void OnIncrementToHost()
     {
-        BEvents.TEST_CounterIncrement.Invoke(new BEHandle<int>(counter), BEventReplicationType.TO_TARGET, true, ENetworkID.HOST);
+        BEvents.TEST_CounterIncrement.Invoke(new BEHandle<int>(counter), BEventReplicationType.TO_TARGET, true, ENetworkID.HOST_1);
     }
 
     public void OnIncrementToTarget()
     {
-        BEvents.TEST_CounterIncrement.Invoke(new BEHandle<int>(counter), BEventReplicationType.TO_TARGET, true, ENetworkID.CLIENT_1);
+        BEvents.TEST_CounterIncrement.Invoke(new BEHandle<int>(counter), BEventReplicationType.TO_TARGET, true, ENetworkID.CLIENT_2);
     }
 
     /* Benchmark */

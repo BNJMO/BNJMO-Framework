@@ -53,7 +53,7 @@ namespace BNJMO
 
         public static ENetworkID[] NETWORK_CLIENTS = new ENetworkID[]
         {
-        ENetworkID.CLIENT_1,
+        ENetworkID.HOST_1,
         ENetworkID.CLIENT_2,
         ENetworkID.CLIENT_3,
         ENetworkID.CLIENT_4,
@@ -121,8 +121,7 @@ namespace BNJMO
         
         public static EControllerID[] REMOTE_CONTROLLERS = new EControllerID[]
         {
-            EControllerID.REMOTE_HOST,
-            EControllerID.REMOTE_1,
+            EControllerID.REMOTE_HOST_1,
             EControllerID.REMOTE_2,
             EControllerID.REMOTE_3,
             EControllerID.REMOTE_4,

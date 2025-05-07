@@ -35,7 +35,7 @@ public class NetworkConnectionsUIManager : BBehaviour
 
     public void Ping()
     {
-        BEventManager.Inst.CalculatePing(ENetworkID.HOST);
+        BEventManager.Inst.CalculatePing(ENetworkID.HOST_1);
     }
 
     #region Life Cycle

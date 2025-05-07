@@ -772,66 +772,13 @@ namespace BNJMO
             }
         }
 
-        public static EControllerID GetControllerIDFrom(ENetworkID networkID)
-        {
-            switch (networkID)
-            {
-                case ENetworkID.HOST:
-                    return EControllerID.REMOTE_HOST;
-
-                case ENetworkID.CLIENT_1:
-                    return EControllerID.REMOTE_1;
-
-                case ENetworkID.CLIENT_2:
-                    return EControllerID.REMOTE_2;
-
-                case ENetworkID.CLIENT_3:
-                    return EControllerID.REMOTE_3;
-
-                case ENetworkID.CLIENT_4:
-                    return EControllerID.REMOTE_4;
-
-                case ENetworkID.CLIENT_5:
-                    return EControllerID.REMOTE_5;
-
-                case ENetworkID.CLIENT_6:
-                    return EControllerID.REMOTE_6;
-
-                case ENetworkID.CLIENT_7:
-                    return EControllerID.REMOTE_7;
-
-                case ENetworkID.CLIENT_8:
-                    return EControllerID.REMOTE_8;
-
-                case ENetworkID.CLIENT_9:
-                    return EControllerID.REMOTE_9;
-
-                case ENetworkID.CLIENT_10:
-                    return EControllerID.REMOTE_10;
-
-                case ENetworkID.CLIENT_11:
-                    return EControllerID.REMOTE_11;
-
-                case ENetworkID.CLIENT_12:
-                    return EControllerID.REMOTE_12;
-
-                case ENetworkID.CLIENT_13:
-                    return EControllerID.REMOTE_13;
-
-                default:
-                    return EControllerID.NONE;
-            }
-        }
 
         public static ENetworkID GetNetworkIDFrom(EControllerID controllerID)
         {
             switch (controllerID)
             {
-                case EControllerID.REMOTE_HOST:
-                    return ENetworkID.HOST;
-
-                case EControllerID.REMOTE_1:
-                    return ENetworkID.CLIENT_1;
+                case EControllerID.REMOTE_HOST_1:
+                    return ENetworkID.HOST_1;
 
                 case EControllerID.REMOTE_2:
                     return ENetworkID.CLIENT_2;
@@ -868,6 +815,15 @@ namespace BNJMO
 
                 case EControllerID.REMOTE_13:
                     return ENetworkID.CLIENT_13;
+                
+                case EControllerID.REMOTE_14:
+                    return ENetworkID.CLIENT_14;
+                
+                case EControllerID.REMOTE_15:
+                    return ENetworkID.CLIENT_15;
+                
+                case EControllerID.REMOTE_16:
+                    return ENetworkID.CLIENT_16;
 
                 default:
                     return ENetworkID.NONE;
