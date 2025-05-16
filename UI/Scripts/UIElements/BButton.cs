@@ -500,13 +500,22 @@ namespace BNJMO
         #region Variables
 
         public bool IsHighlighted { get; private set; }
+        
+        
         public bool IsButtonDisabled { get { return isButtonDisabled; } private set { isButtonDisabled = value; } }
+        
         public bool UseImageSpecialColors { get { return useImageSpecialColors; } set { useImageSpecialColors = value; } }
+        
         public BImage BImage { get { return bImageReference; } }
+        
         public BText BText { get { return bTextReference; } }
+        
         public BButton LeftButton { get { return leftButton; } set { leftButton = value; } }
+        
         public BButton RightButton { get { return rightButton; } set { rightButton = value; } }
+        
         public BButton UpperButton { get { return upperButton; } set { upperButton = value; } }
+        
         public BButton BottomButton { get { return bottomButton; } set { bottomButton = value; } }
         
         #endregion

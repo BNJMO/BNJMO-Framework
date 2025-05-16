@@ -20,6 +20,7 @@ public class BText : BUIElement
     #endregion
 
     #region Public Methods
+    
     public void SetText(string newText, bool isArabicRTL = false)
     {
         if (writeTextUppercase == true)
@@ -68,6 +69,12 @@ public class BText : BUIElement
         }
     }
 
+    public void SetOpacity(float alpha)
+    {
+        Color newColor = new Color(color.r, color.g, color.b, alpha);
+        SetColor(newColor);
+    }
+    
     public void SetLanguage(ELanguage language)
     {
         if (useLanguages == true)
@@ -159,6 +166,10 @@ public class BText : BUIElement
     public bool WriteTextUppercase { get { return writeTextUppercase; } set { writeTextUppercase = value; } }
 
     public string Text { get { return text; } }
+    
+    public Color TextColor { get { return color; } }
+    
+    public float TextOpacity { get { return color.a; } }
 
     public TMP_Text TextMeshPro { get { return textMeshPro; } }
 
