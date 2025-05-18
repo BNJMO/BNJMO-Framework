@@ -61,6 +61,7 @@ namespace BNJMO
         
         [FoldoutGroup("BConfig/Scene")]
         public SScene[] Scenes;
+        
 
         /* App */
         [FoldoutGroup("BConfig/App")]
@@ -73,28 +74,31 @@ namespace BNJMO
         [FoldoutGroup("BConfig/App")]
         public int VSyncCount = 0;
         
-        /* Events (Networking) */
-        [FoldoutGroup("BConfig/Events (Networking)")]
+        
+        /* Events */
+        [FoldoutGroup("BConfig/Events")]
         public BEventDispatcherType EventDispatcherType;
 
-        [FoldoutGroup("BConfig/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events")]
         public EBEHandleSerializationMethod bEHandleSerializationMethod = EBEHandleSerializationMethod.JSON_NEWTONSOFT; // TODO: Use   
 
-        [FoldoutGroup("BConfig/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public string UbiiBackendServerIP = "localhost";
 
-        [FoldoutGroup("BConfig/Events (Networking)")]
+        [FoldoutGroup("BConfig/Events")]
         [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
         public int UbiiBackendServerPort = 8101;
+        
 
-        /* AR */
-        [FoldoutGroup("BConfig/AR")]
-        public ARTrackingMode ARTrackingMode = ARTrackingMode.NONE;
+        /* Game */
+        [FoldoutGroup("BConfig/Game")]
+        public bool IsUseDebugGameMode = false;
 
-        [FoldoutGroup("BConfig/AR")]
-        public EPlayAreaType PlayAreaType = EPlayAreaType.NONE;
-
+        [FoldoutGroup("BConfig/Game")]
+        public EGameMode DebugGameMode = EGameMode.NONE;
+        
+                
         /* Input */
         [FoldoutGroup("BConfig/Input")]
         public bool ConnectTouchController = false;
@@ -104,14 +108,8 @@ namespace BNJMO
 
         [FoldoutGroup("BConfig/Input")]
         public bool TransformInpuAxisToCameraDirection = false;
-
-        /* Game */
-        [FoldoutGroup("BConfig/Game")]
-        public bool IsUseDebugGameMode = false;
-
-        [FoldoutGroup("BConfig/Game")]
-        public EGameMode DebugGameMode = EGameMode.NONE;
         
+
         /* Player */
         [FoldoutGroup("BConfig/Player")]
         [Range(1, 16)]
@@ -157,10 +155,24 @@ namespace BNJMO
         [InfoBox("Must be set in realtime")]
         public Transform PawnSpawnParent;
         
-        /* AI */
-        [FoldoutGroup("BConfig/AI")]
-        public int MaximumNumberOfAIToSpawn = 0;
+        
+        /* Multiplayer */
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public EMultiplayerBackend MultiplayerBackend = EMultiplayerBackend.Netcode;
+        
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public bool AutomaticallyLaunchMultiplayerSession = false;
+        
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public int NumberOfPlayersInLobbyToStartMultiplayerSession = 2;     
+        
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public float LobbyUpdateTimeSeconds = 2.0f;    
+        
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public float JoinMultiplayerTimeout = 30.0f;
 
+        
         /* Debug */
         [FoldoutGroup("BConfig/Debug")]
         public bool IsDebugLogEvents = true;

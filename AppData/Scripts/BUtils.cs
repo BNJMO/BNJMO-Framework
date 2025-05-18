@@ -777,7 +777,7 @@ namespace BNJMO
         {
             switch (controllerID)
             {
-                case EControllerID.REMOTE_HOST_1:
+                case EControllerID.REMOTE_1:
                     return ENetworkID.HOST_1;
 
                 case EControllerID.REMOTE_2:

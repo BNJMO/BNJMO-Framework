@@ -47,14 +47,14 @@ namespace BNJMO
         }
         
         /* Netcode Player Listener */
-        public void OnPlayerConnected(NetcodePlayerListener playerListener)
-        {
-            ENetworkID newNetworkID;
-            //
-            // bool isHost = playerListener.Is
-            // if (playerListener)
-            // playerListenersMap.Add(playerListener, playerListener.NetworkObjectId);
-        }
+        // public void OnPlayerConnected(NetcodePlayerListener playerListener)
+        // {
+        //     ENetworkID newNetworkID;
+        //     //
+        //     // bool isHost = playerListener.Is
+        //     // if (playerListener)
+        //     // playerListenersMap.Add(playerListener, playerListener.NetworkObjectId);
+        // }
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace BNJMO
 
         #region Others
 
-        private Dictionary<NetcodePlayerListener, ENetworkID> playerListenersMap = new();
+        // private Dictionary<NetcodePlayerListener, ENetworkID> playerListenersMap = new();
 
 
         #endregion

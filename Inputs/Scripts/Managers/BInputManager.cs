@@ -53,6 +53,32 @@ namespace BNJMO
             return true;
         }
 
+        
+        
+        public EControllerID ConnectNextDeviceController(EControllerType controllerType)
+        {
+            EControllerID controllerID = GetNextFreeDeviceControllerID();
+            if (ConnectController(controllerID, controllerType))
+            {
+                return controllerID;
+            }
+
+            LogConsoleWarning("No free ControllerID of type Device found to connect new controller");
+            return EControllerID.NONE;
+        }
+           
+        public EControllerID ConnectNextRemoteController()
+        {
+            EControllerID controllerID = GetNextFreeRemoteControllerID();
+            if (ConnectController(controllerID, EControllerType.NetworkController))
+            {
+                return controllerID;
+            }
+            
+            LogConsoleWarning("No free ControllerID of type Remote found to connect new controller");
+            return EControllerID.NONE;
+        }
+        
         public bool DisconnectController(EControllerID controllerID)
         {
             if (!connectedControllers.Contains(controllerID))
@@ -72,6 +98,7 @@ namespace BNJMO
         {
             return connectedControllers.Contains(controllerID);
         }
+        
         /// <summary>
         /// Returns (the first) Input Source of type "A" attached on the Input Manager.
         /// </summary>
@@ -214,6 +241,35 @@ namespace BNJMO
             LogCanvas(BConsts.DEBUGTEXT_ConnectedControllers, controllersLog);
         }
 
+        private EControllerID GetNextFreeDeviceControllerID()
+        {
+            EControllerID controllerID = EControllerID.NONE;
+            foreach (EControllerID controllerIDitr in BConsts.DEVICE_CONTROLLERS)
+            {
+                if (connectedControllers.Contains(controllerIDitr) == false)
+                {
+                    controllerID = controllerIDitr;
+                    break;
+                }
+            }
+            return controllerID;
+        }
+        
+        private EControllerID GetNextFreeRemoteControllerID()
+        {
+            EControllerID controllerID = EControllerID.NONE;
+            foreach (EControllerID controllerIDitr in BConsts.REMOTE_CONTROLLERS)
+            {
+                if (connectedControllers.Contains(controllerIDitr) == false)
+                {
+                    controllerID = controllerIDitr;
+                    break;
+                }
+            }
+            return controllerID;
+        }
+        
+        
         #endregion
     }
 }

@@ -1,5 +1,3 @@
-#define B_VUFORIA
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +12,7 @@ using Unity.Netcode;
 
 namespace BNJMO
 {
-    public class BNetCodeBehaviour : NetworkBehaviour
+    public class NetcodeBBehaviour : NetworkBehaviour
     {
         #region Life Cycle
 

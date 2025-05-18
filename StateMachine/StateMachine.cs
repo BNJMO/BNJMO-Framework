@@ -57,8 +57,6 @@ namespace BNJMO
         public T PreviousState { get; private set; }
         
         public bool DebugStateChange { get; set; }
-        
-        private Dictionary<NetcodePlayerListener, ENetworkID> playerListenersMap = new();
 
         #endregion
 

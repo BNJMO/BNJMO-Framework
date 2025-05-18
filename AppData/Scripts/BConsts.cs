@@ -32,6 +32,9 @@ namespace BNJMO
         public const string PATH_BSpriteRenderer = "I_BSpriteRenderer";
         public const string PATH_B3DText = "T_B3DText";
         public const string PATH_BText = "T_BText";
+        
+        /* Multiplayer */
+        public const string PATH_NetcodeNetworkManager = "NetcodeNetworkManager";
 
         /* DropZone */
         public const string PATH_DZ_DropZonePlane = "DropZonePlane";
@@ -53,7 +56,6 @@ namespace BNJMO
 
         public static ENetworkID[] NETWORK_CLIENTS = new ENetworkID[]
         {
-        ENetworkID.HOST_1,
         ENetworkID.CLIENT_2,
         ENetworkID.CLIENT_3,
         ENetworkID.CLIENT_4,
@@ -121,7 +123,7 @@ namespace BNJMO
         
         public static EControllerID[] REMOTE_CONTROLLERS = new EControllerID[]
         {
-            EControllerID.REMOTE_HOST_1,
+            EControllerID.REMOTE_1,
             EControllerID.REMOTE_2,
             EControllerID.REMOTE_3,
             EControllerID.REMOTE_4,

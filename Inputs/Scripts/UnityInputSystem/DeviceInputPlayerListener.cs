@@ -7,11 +7,27 @@ namespace BNJMO
     /// <summary>
     /// Spawned when a new device has joined and responsible for transmetting the input controls to the DeviceInputSource
     /// </summary>
-    public class PlayerInputListener : BBehaviour
+    public class DeviceInputPlayerListener : BBehaviour
     {
+        #region Public Events
+
         public event Action<EControllerID, EInputButton> ButtonPressed;
         public event Action<EControllerID, EInputButton> ButtonReleased;
         // JoystickMoved event not needed as input is evaluated directly inside DeviceInputSource using MoveAxis and RotateAxis
+
+        #endregion
+
+        #region Public Methods
+
+
+        #endregion
+
+        #region Inspector Variables
+
+
+        #endregion
+
+        #region Variables
 
         public Vector2 MoveAxis
         {
@@ -19,7 +35,8 @@ namespace BNJMO
             {
                 return isDisconnected || inputAction_Move == null ? Vector2.zero : inputAction_Move.ReadValue<Vector2>();
             }
-        }        
+        }   
+        
         public Vector2 RotateAxis
         {
             get
@@ -30,6 +47,7 @@ namespace BNJMO
                 return inputAction_Rotate.ReadValue<Vector2>();
             }
         }
+        
         public Vector2 Trigger_L_Axis
         {
             get
@@ -40,6 +58,7 @@ namespace BNJMO
                 return inputAction_Trigger_Axis_L.ReadValue<Vector2>();
             }
         }
+        
         public Vector2 Trigger_R_Axis
         {
             get
@@ -50,7 +69,7 @@ namespace BNJMO
                 return inputAction_Trigger_Axis_R.ReadValue<Vector2>();
             }
         }
-
+        
         public string DeviceName { get; private set; } = "";
 
         private PlayerInput myPlayerInput;
@@ -65,6 +84,10 @@ namespace BNJMO
         private bool canPerformDirectionalButton = true;
         private EInputButton lastPerformedDirectionalButton = EInputButton.NONE;
         private bool isDisconnected = false;
+        
+        #endregion
+
+        #region Life Cycle
 
         protected override void Awake()
         {
@@ -100,13 +123,13 @@ namespace BNJMO
             
             if (IS_NULL(myPlayerInput,true)) return;
             
-                // Inform Device Input Source that a new Player Input has joined and become a ControllerID
-                DeviceInputSource deviceInputSource = BInputManager.Inst.GetInputSource<DeviceInputSource>();
-                if (IS_NOT_NULL(deviceInputSource))
-                {
-                    myControllerID = deviceInputSource.OnNewDeviceJoined(this);
-                    IS_NOT_NONE(myControllerID);
-                }
+            // Inform Device Input Source that a new Player Input has joined and become a ControllerID
+            DeviceInputSource deviceInputSource = BInputManager.Inst.GetInputSource<DeviceInputSource>();
+            if (IS_NOT_NULL(deviceInputSource))
+            {
+                myControllerID = deviceInputSource.OnNewDeviceJoined(this);
+                IS_NOT_NONE(myControllerID);
+            }
                 
         }
 
@@ -114,9 +137,18 @@ namespace BNJMO
         {
             base.FixedUpdate();
 
-            //UpdateAxisInput();
+            //UpdateAxisInput();            // TODO: Why was this commented out?
             UpdateDirectionalInput();
         }
+
+        #endregion
+
+        #region Events Callbacks
+
+
+        #endregion
+
+        #region Others
 
         private void InitializePlayerInputAxes()
         {
@@ -265,7 +297,7 @@ namespace BNJMO
             }
         }
 
-        //private void UpdateAxisInput()
+        //private void UpdateAxisInput()            // TODO: Why was this commented out?
         //{
         //    MoveAxis = inputAction_Move.ReadValue<Vector2>();
         //    RotateAxis = inputAction_Rotate.ReadValue<Vector2>();
@@ -323,5 +355,7 @@ namespace BNJMO
                 }
             }
         }
+
+        #endregion
     }
 }

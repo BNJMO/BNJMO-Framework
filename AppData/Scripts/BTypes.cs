@@ -28,63 +28,54 @@ namespace BNJMO
         OTHER_STAGE, // (like in a Preview Scene)
     }
     #endregion
+    
+    #region Multiplayer
 
-    #region AR
-    public enum ARTrackingMode
+    public enum EMultiplayerBackend
     {
-        NONE = 0,
-        AR_FOUNDATION = 4,
+        None = 0,
+        Netcode,
+    }
+    
+    public enum EMultiplayerState
+    {
+        None,
+        NotConnected,
+        InLobby,
+        InParty,
     }
 
-    public enum BTrackerType
+    public enum ELobbyType
     {
-        NONE = 0,
-        IMAGE = 1,
-        OBJECT = 2,
+        None,
+        QuickMatch,
+        Private,
+    }
+    
+    public enum EJoinMultiplayerFailureType
+    {
+        None = 0,
+        CreateLobby,
+        JoinLobbyByQuickMatch,
+        JoinLobbyByCode,
+        CreateRelay,
+        JoinRelay,
+        StartMultiplayer,
+        JoinLobbyTimeout,
+        JoinMultiplayerTimeout,
     }
 
-    public enum EPlayAreaType
+    public enum ELeaveMultiplayerReason
     {
-        NONE = 0,
-        RECTANGLE = 1,
-
+        None = 0,
+        LeaveFromUI,
+        JoinMultiplayerFailure,
+        HostLeft,
     }
-
-    public enum EPlayAreaState
-    {
-        NOT_INITIALIZED = 0,
-        SETTING_ANCHORS = 1,
-        READY = 2,
-    }
-
+    
     #endregion
 
     #region States
-    /// <summary>
-    /// State of the whole application. 
-    /// "IN" is used a hierarchy separator. A state can either be in MENU or in GAME.
-    /// Note: Update the states classifications lists inside the class when more states are added to AppState!
-    /// </summary>
-    public enum EAppState
-    {
-        NONE = 0,
-
-        /* Entry */
-        IN_ENTRY = 100,
-
-        /* Menu */
-        IN_MENU_IN_MAIN = 200,
-
-        /* Game */
-        IN_GAME_IN_NOT_STARTED = 300,
-        IN_GAME_IN_COUNTDOWN = 301,
-        IN_GAME_IN_RUNNING = 302,
-        IN_GAME_IN_PAUSED = 303,
-        IN_GAME_IN_OVER = 304,
-    }
-
-
-    
     [Serializable]
     public struct SScene
     {
@@ -92,29 +83,6 @@ namespace BNJMO
         public int SceneBuildID;
     }
 
-
-    /// <summary>
-    /// State of the UI menu.
-    /// "IN" is used here as a hierarchy separator. Generally second IN refers to a pop-up context on top of the original menu state.
-    /// </summary>
-    public enum EUIState
-    {
-        NONE = 0,
-
-        /* Entry */
-        IN_ENTRY = 100,
-
-        /* Menu */
-        IN_MENU_MAIN = 200,
-        IN_MENU_EXAMPLE_TEXTS = 250,
-
-        /* Game */
-        IN_GAME_IN_NOT_STARTED = 300,
-        IN_GAME_IN_COUNTDOWN = 301,
-        IN_GAME_IN_RUNNING = 302,
-        IN_GAME_IN_PAUSED = 303,
-        IN_GAME_OVER = 304
-    }
     #endregion
 
     #region Game
@@ -134,7 +102,6 @@ namespace BNJMO
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
         public EControllerID ControllerID;
-        public bool IsLocalPlayer;
         public ENetworkID NetworkID;
         public ETeamID TeamID;
         public string PlayerName;
@@ -277,7 +244,7 @@ namespace BNJMO
         DEVICE_15 = 115,
         DEVICE_16 = 116,
         /* Network */
-        REMOTE_HOST_1 = 1001,
+        REMOTE_1 = 1001,
         REMOTE_2 = 1002,
         REMOTE_3 = 1003,
         REMOTE_4 = 1004,
@@ -402,19 +369,6 @@ namespace BNJMO
         TO_ALL,         // The event invocation is replicated to every instance on the network including the one where it got initially called.
         TO_ALL_OTHERS,  // The event invocation is replicated to every instance on the network expect the one where it got initially called.
         TO_TARGET       // The event invocation is only replicated on a specific targeted client (the designated client is specified as a parameter in the event invocation method).
-    }
-
-    public enum BEHandleType
-    {
-        NONE,
-        GENERIC_0,
-        GENERIC_1,
-        GENERIC_2,
-        GENERIC_3,
-        GENERIC_4,
-        GENERIC_5,
-        STATE_UPDATE,
-        TEST
     }
 
     public enum ENetworkID

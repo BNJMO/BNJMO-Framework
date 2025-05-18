@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5681681575506708033}
   - component: {fileID: 8718420935579642568}
   m_Layer: 0
-  m_Name: BSceneManager
+  m_Name: SceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,15 +153,63 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4335998295998743996}
-  - {fileID: 4335998296438487354}
   - {fileID: 5681681575506708033}
-  - {fileID: 4335998296063043095}
   - {fileID: 4335998295768301884}
   - {fileID: 7140744973992432358}
+  - {fileID: 4335998295998743996}
+  - {fileID: 4335998296438487354}
+  - {fileID: 2292833682318646804}
+  - {fileID: 4335998296063043095}
   - {fileID: 9105520494895256689}
   m_Father: {fileID: 4335998295704777601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3030551581687273704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2292833682318646804}
+  - component: {fileID: 7670290176053291407}
+  m_Layer: 0
+  m_Name: MultiplayerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2292833682318646804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030551581687273704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5040951269368504735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7670290176053291407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030551581687273704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f15e7beec74c442b6daf64fb5f6f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideSingletonReference: 1
+  getSingletonReferenceOnValidate: 1
+  singletonInstanceReference: {fileID: 0}
 --- !u!1 &4151174934001310998
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +221,7 @@ GameObject:
   - component: {fileID: 7140744973992432358}
   - component: {fileID: 1642504072791720918}
   m_Layer: 0
-  m_Name: BUIManager
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +318,7 @@ GameObject:
   - component: {fileID: 8089043688875718612}
   - component: {fileID: 7308099476106723497}
   m_Layer: 0
-  m_Name: BEventManager
+  m_Name: EventManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,7 +383,7 @@ GameObject:
   - component: {fileID: 6116107700635518129}
   - component: {fileID: 7002237378826352229}
   m_Layer: 0
-  m_Name: BInputManager
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,7 +505,7 @@ GameObject:
   - component: {fileID: 4335998296063043095}
   - component: {fileID: 8590260387160592060}
   m_Layer: 0
-  m_Name: BDebugManager
+  m_Name: DebugManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,7 +552,7 @@ GameObject:
   - component: {fileID: 4335998296438487354}
   - component: {fileID: 4568427878466242402}
   m_Layer: 0
-  m_Name: BPlayerManager
+  m_Name: PlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,7 +599,7 @@ GameObject:
   - component: {fileID: 9105520494895256689}
   - component: {fileID: 304480887967926538}
   m_Layer: 0
-  m_Name: BAudioManager
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

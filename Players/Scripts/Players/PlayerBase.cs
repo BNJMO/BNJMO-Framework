@@ -20,7 +20,6 @@ namespace BNJMO
             spectatorID = playerInit.SpectatorID;
             controllerID = playerInit.ControllerID;
             networkID = playerInit.NetworkID;
-            isLocalPlayer = playerInit.IsLocalPlayer;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
             UpdateObjectNameOnPartyStateChange(false);
@@ -169,7 +168,26 @@ namespace BNJMO
         
         public ENetworkID NetworkID => networkID;
 
-        public bool IsLocalPlayer => isLocalPlayer;
+        public bool IsLocalPlayer
+        {
+            get
+            {
+                if (networkID == ENetworkID.LOCAL)
+                    return true;
+
+                if (BMultiplayerManager.Inst
+                    && BMultiplayerManager.Inst.MultiplayerHandler)
+                {
+                    return BMultiplayerManager.Inst.MultiplayerHandler.LocalNetworkID == networkID;
+                }
+
+                return true;
+            }
+        }
+        
+        public bool IsAI => BUtils.IsControllerIDAI(ControllerID);
+
+        public bool IsRemote => BUtils.IsControllerIDRemote(ControllerID); 
 
         public ETeamID TeamID => teamID;
         

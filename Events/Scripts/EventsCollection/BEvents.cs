@@ -215,6 +215,28 @@ namespace BNJMO
 
         #endregion
 
+        #region Multiplayer
+        public static BEvent<BEHandle> MULTIPLAYER_JoinMultiplayerSucceeded
+            = new ("MULTIPLAYER_JoinMultiplayerSucceeded");
+  
+        public static BEvent<BEHandle<EJoinMultiplayerFailureType>> MULTIPLAYER_JoinMultiplayerFailed
+            = new ("MULTIPLAYER_JoinMultiplayerFailed");
+  
+        public static BEvent<BEHandle<ELeaveMultiplayerReason>> MULTIPLAYER_LeftMultiplayer
+            = new ("MULTIPLAYER_LeftMultiplayer");
+  
+        public static BEvent<BEHandle<ENetworkID>> MULTIPLAYER_RemotePlayerJoined
+            = new ("MULTIPLAYER_RemotePlayerJoined");
+
+        public static BEvent<BEHandle<ENetworkID>> MULTIPLAYER_RemotePlayerLeft
+            = new ("MULTIPLAYER_RemotePlayerLeft");
+
+
+
+        
+        
+        #endregion
+        
         #region Network
         public static BEvent<BEHandle<AbstractBEventDispatcher>> NETWORK_NewBEventDispatcherSet
         = new BEvent<BEHandle<AbstractBEventDispatcher>>("NETWORK_NewBEventDispatcherSet");
