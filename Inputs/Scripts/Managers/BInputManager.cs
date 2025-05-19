@@ -49,7 +49,7 @@ namespace BNJMO
             RegisterControllerType(controllerID, controllerType);
 
             // Invoke event
-            BEvents.INPUT_ControllerConnected.Invoke(new BEHandle<EControllerID>(controllerID));
+            BEvents.INPUT_ControllerConnected.Invoke(new BEventHandle<EControllerID>(controllerID));
             return true;
         }
 
@@ -90,7 +90,7 @@ namespace BNJMO
             connectedControllers.Remove(controllerID);
             connectedControllerTypes.Remove(controllerID);
 
-            BEvents.INPUT_ControllerDisconnected.Invoke(new BEHandle<EControllerID>(controllerID));
+            BEvents.INPUT_ControllerDisconnected.Invoke(new BEventHandle<EControllerID>(controllerID));
             return true;
         }
 
@@ -187,8 +187,8 @@ namespace BNJMO
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
                 BEvents.INPUT_ButtonPressed.Invoke(
-                    new BEHandle<EControllerID, EInputButton>(controllerID, inputButton),
-                    BEventReplicationType.LOCAL,
+                    new BEventHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    BEventBroadcastType.LOCAL,
                     BManager.Inst.Config.DebugButtonEvents
                 );
             }
@@ -199,8 +199,8 @@ namespace BNJMO
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
                 BEvents.INPUT_ButtonReleased.Invoke(
-                    new BEHandle<EControllerID, EInputButton>(controllerID, inputButton),
-                    BEventReplicationType.LOCAL,
+                    new BEventHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    BEventBroadcastType.LOCAL,
                     BManager.Inst.Config.DebugButtonEvents
                 );
             }
@@ -211,8 +211,8 @@ namespace BNJMO
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputAxis != EInputAxis.NONE)
             {
                 BEvents.INPUT_AxisUpdated.Invoke(
-                    new BEHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y),
-                    BEventReplicationType.LOCAL,
+                    new BEventHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y),
+                    BEventBroadcastType.LOCAL,
                     BManager.Inst.Config.DebugJoystickEvents
                 );
             }

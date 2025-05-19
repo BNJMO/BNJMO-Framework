@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BNJMO;
 using Sirenix.OdinInspector;
+using Unity.Netcode;
 using UnityEngine.Serialization;
 
 namespace BNJMO
@@ -171,14 +172,21 @@ namespace BNJMO
         
         [FoldoutGroup("BConfig/Multiplayer")] 
         public float JoinMultiplayerTimeout = 30.0f;
-
+  
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        [InfoBox("Only possible when still in Lobby state and Party not started yet (i.e. the relay hasn't been created yet")]
+        public bool HandoffLobbyWhenHostDisconnects = true;
+        
+        [Header("Netcode")]
+        [FoldoutGroup("BConfig/Multiplayer")] 
+        public NetworkManager NetcodeNetworkManagerPrefab;
         
         /* Debug */
-        [FoldoutGroup("BConfig/Debug")]
-        public bool IsDebugLogEvents = true;
+        [FormerlySerializedAs("IsDebugLogEvents")] [FoldoutGroup("BConfig/Debug")]
+        public bool IsLogEvents = true;
 
-        [FoldoutGroup("BConfig/Debug")]
-        public bool IsDebugEventsNetworkID = false;
+        [FormerlySerializedAs("IsDebugEventsNetworkID")] [FoldoutGroup("BConfig/Debug")]
+        public bool IsLogEventsNetworkID = false;
 
         [FoldoutGroup("BConfig/Debug")]
         public bool LogMissingDebugTexts = true;

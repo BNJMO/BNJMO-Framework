@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BNJMO
@@ -13,6 +15,7 @@ namespace BNJMO
 
         #region Public Methods
 
+        /* Match making */
         public void CreatePrivateLobby()
         {
             if (IS_NULL(MultiplayerHandler, true))
@@ -53,6 +56,16 @@ namespace BNJMO
             MultiplayerHandler.ShutdownLobbyAndMultiplayer(leaveReason);
         }
 
+        /* Event Replication */
+        public void RequestBroadcastEvent(AbstractBEventHandle eventHandle, BEventBroadcastType broadcastType,
+            ENetworkID targetNetworkID)
+        {
+            if (IS_NULL(MultiplayerHandler, true))
+                return;
+            
+            MultiplayerHandler.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
+        }
+        
         #endregion
 
         #region Inspector Variables
@@ -61,6 +74,19 @@ namespace BNJMO
         #endregion
 
         #region Variables
+        
+        public AbstractMultiplayerHandler MultiplayerHandler { get; private set; }
+
+        public EAuthority Authority 
+        {
+            get
+            {
+                if (IS_NULL(MultiplayerHandler, true))
+                    return EAuthority.LOCAL;
+
+                return MultiplayerHandler.Authority;
+            }
+        }
 
         public string LobbyCode
         {
@@ -84,17 +110,6 @@ namespace BNJMO
             }
         }
 
-        public bool IsLocalPlayerHost
-        {
-            get
-            {
-                if (IS_NULL(MultiplayerHandler, true))
-                    return false;
-
-                return MultiplayerHandler.IsLocalPlayerHost;
-            }
-        }
-
         public ENetworkID LocalNetworkID
         {
             get
@@ -106,6 +121,18 @@ namespace BNJMO
             }
         }
 
+        public ENetworkID[] ConnectedPlayers
+        {
+            get
+            {
+                if (IS_NULL(MultiplayerHandler, true)
+                    || ARE_NOT_EQUAL(MultiplayerHandler.StateMachine.CurrentState, EMultiplayerState.InParty, true))
+                    return Array.Empty<ENetworkID>();
+
+                return MultiplayerHandler.ConnectedPlayerListeners.Keys.ToArray();
+            }
+        }
+        
         public StateMachine<EMultiplayerState> HandlerStateMachine
         {
             get
@@ -117,15 +144,15 @@ namespace BNJMO
             }
         }
         
-        public AbstractMultiplayerHandler MultiplayerHandler { get; private set; }
+        public string LocalIPAddress => BUtils.GetLocalIPAddress();
 
         #endregion
 
         #region Life Cycle
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
 
             switch (BManager.Inst.Config.MultiplayerBackend)
             {

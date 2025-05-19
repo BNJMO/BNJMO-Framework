@@ -6,13 +6,9 @@ namespace BNJMO
     /// A generic event handle with no parameter
     /// </summary>
     [Serializable]
-    public class BEHandle : AbstractBEHandle
+    public class BEventHandle : AbstractBEventHandle
     {
-        public BEHandle() : base()
-        {
-        }
-
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
             return "";
         }
@@ -22,20 +18,20 @@ namespace BNJMO
     /// A generic event handle with 1 parameter
     /// </summary>
     [Serializable]
-    public class BEHandle<A> : AbstractBEHandle
+    public class BEventHandle<A> : AbstractBEventHandle
     {
         public A Arg1 { get; set; }
 
-        public BEHandle() : base()
+        public BEventHandle()
         {
         }
 
-        public BEHandle(A arg1) : base()
+        public BEventHandle(A arg1)
         {
             Arg1 = arg1;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
             return Arg1.ToString();
         }
@@ -45,24 +41,24 @@ namespace BNJMO
     /// A generic event handle with 2 parameters
     /// </summary>
     [Serializable]
-    public class BEHandle<A, B> : AbstractBEHandle
+    public class BEventHandle<A, B> : AbstractBEventHandle
     {
         public A Arg1 { get; set; }
         public B Arg2 { get; set; }
 
-        public BEHandle() : base()
+        public BEventHandle()
         {
         }
 
-        public BEHandle(A arg1, B arg2) : base()
+        public BEventHandle(A arg1, B arg2)
         {
             Arg1 = arg1;
             Arg2 = arg2;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
-            return Arg1.ToString() + " | " + Arg2.ToString();
+            return Arg1 + " | " + Arg2;
         }
     }
 
@@ -70,26 +66,26 @@ namespace BNJMO
     /// A generic event handle with 3 parameters
     /// </summary>
     [Serializable]
-    public class BEHandle<A, B, C> : AbstractBEHandle
+    public class BEventHandle<A, B, C> : AbstractBEventHandle
     {
         public A Arg1 { get; set; }
         public B Arg2 { get; set; }
         public C Arg3 { get; set; }
 
-        public BEHandle() : base()
+        public BEventHandle()
         {
         }
 
-        public BEHandle(A arg1, B arg2, C arg3) : base()
+        public BEventHandle(A arg1, B arg2, C arg3)
         {
             Arg1 = arg1;
             Arg2 = arg2;
             Arg3 = arg3;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
-            return Arg1.ToString() + " | " + Arg2.ToString() + " | " + Arg3.ToString();
+            return Arg1 + " | " + Arg2 + " | " + Arg3;
         }
     }
 
@@ -97,18 +93,18 @@ namespace BNJMO
     /// A generic event handle with 4 parameters
     /// </summary>
     [Serializable]
-    public class BEHandle<A, B, C, D> : AbstractBEHandle
+    public class BEventHandle<A, B, C, D> : AbstractBEventHandle
     {
         public A Arg1 { get; set; }
         public B Arg2 { get; set; }
         public C Arg3 { get; set; }
         public D Arg4 { get; set; }
 
-        public BEHandle() : base()
+        public BEventHandle()
         {
         }
 
-        public BEHandle(A arg1, B arg2, C arg3, D arg4) : base()
+        public BEventHandle(A arg1, B arg2, C arg3, D arg4)
         {
             Arg1 = arg1;
             Arg2 = arg2;
@@ -116,9 +112,9 @@ namespace BNJMO
             Arg4 = arg4;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
-            return Arg1.ToString() + " | " + Arg2.ToString() + " | " + Arg3.ToString() + " | " + Arg4.ToString();
+            return Arg1 + " | " + Arg2 + " | " + Arg3 + " | " + Arg4;
         }
     }
 
@@ -126,7 +122,7 @@ namespace BNJMO
     /// A generic event handle with 5 parameters
     /// </summary>
     [Serializable]
-    public class BEHandle<A, B, C, D, E> : AbstractBEHandle
+    public class BEventHandle<A, B, C, D, E> : AbstractBEventHandle
     {
         public A Arg1 { get; set; }
         public B Arg2 { get; set; }
@@ -134,11 +130,11 @@ namespace BNJMO
         public D Arg4 { get; set; }
         public E Arg5 { get; set; }
 
-        public BEHandle() : base()
+        public BEventHandle()
         {
         }
 
-        public BEHandle(A arg1, B arg2, C arg3, D arg4, E arg5) : base()
+        public BEventHandle(A arg1, B arg2, C arg3, D arg4, E arg5)
         {
             Arg1 = arg1;
             Arg2 = arg2;
@@ -147,9 +143,9 @@ namespace BNJMO
             Arg5 = arg5;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
-            return Arg1.ToString() + " | " + Arg2.ToString() + " | " + Arg3.ToString() + " | " + Arg4.ToString() + " | " + Arg5.ToString();
+            return Arg1 + " | " + Arg2 + " | " + Arg3 + " | " + Arg4 + " | " + Arg5;
         }
     }
 }

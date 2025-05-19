@@ -16,10 +16,10 @@ namespace BNJMO
 
         #region Public Methods
 
-        /* Controller */
-        public PlayerBase GetPlayer(EControllerID controllerID)
+        /* ControllerID */
+        public PlayerBase GetPlayer(EControllerID controllerID, bool logWarnings = true)
         {
-            if (controllerID == EControllerID.NONE)
+            if (IS_NONE(controllerID, logWarnings))
                 return null;
             
             PlayerBase player = null;
@@ -47,6 +47,24 @@ namespace BNJMO
             return true;
         }
 
+        /* NetworkID */
+        public PlayerBase GetPlayer(ENetworkID networkID, bool logWarnings = true)
+        {
+            if (IS_NONE(networkID, logWarnings))
+                return null;
+            
+            PlayerBase player = null;
+            foreach (PlayerBase playerItr in ConnectedPlayers)
+            {
+                if (playerItr.NetworkID == networkID)
+                {
+                    player = playerItr;
+                    break;
+                }
+            }
+            return player;
+        }
+        
         /* Team */
         public bool CanJoinTeam(ETeamID teamID, bool logWarnings = true)
         {
@@ -284,29 +302,29 @@ namespace BNJMO
         {
             base.OnEnable();
 
-            BEvents.INPUT_ControllerConnected += BEvents_OnControllerConnected;
-            BEvents.INPUT_ControllerDisconnected += BEvents_OnControllerDisconnected;
-            BEvents.MULTIPLAYER_RemotePlayerJoined += BEvents_OnMultiplayerRemotePlayerJoined;
-            BEvents.MULTIPLAYER_RemotePlayerLeft += BEvents_OnMultiplayerRemotePlayerLeft;
-            BEvents.APP_SceneUpdated += BEvents_OnSceneUpdated;
+            BEvents.INPUT_ControllerConnected += BEvents_INPUT_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected += BEvents_INPUT_OnControllerDisconnected;
+            BEvents.MULTIPLAYER_RemotePlayerJoined += BEvents_MULTIPLAYER_OnRemotePlayerJoined;
+            BEvents.MULTIPLAYER_RemotePlayerLeft += BEvents_MULTIPLAYER_OnRemotePlayerLeft;
+            BEvents.APP_SceneUpdated += BEvents_APP_OnSceneUpdated;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            BEvents.INPUT_ControllerConnected -= BEvents_OnControllerConnected;
-            BEvents.INPUT_ControllerDisconnected -= BEvents_OnControllerDisconnected;
-            BEvents.MULTIPLAYER_RemotePlayerJoined -= BEvents_OnMultiplayerRemotePlayerJoined;
-            BEvents.MULTIPLAYER_RemotePlayerLeft -= BEvents_OnMultiplayerRemotePlayerLeft;
-            BEvents.APP_SceneUpdated -= BEvents_OnSceneUpdated;
+            BEvents.INPUT_ControllerConnected -= BEvents_INPUT_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected -= BEvents_INPUT_OnControllerDisconnected;
+            BEvents.MULTIPLAYER_RemotePlayerJoined -= BEvents_MULTIPLAYER_OnRemotePlayerJoined;
+            BEvents.MULTIPLAYER_RemotePlayerLeft -= BEvents_MULTIPLAYER_OnRemotePlayerLeft;
+            BEvents.APP_SceneUpdated -= BEvents_APP_OnSceneUpdated;
         }
 
         #endregion
 
         #region Events Callbacks
         
-        private void BEvents_OnControllerConnected(BEHandle<EControllerID> eventHandle)
+        private void BEvents_INPUT_OnControllerConnected(BEventHandle<EControllerID> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             if (IS_NOT_NULL(GetPlayer(controllerID), true))
@@ -319,13 +337,13 @@ namespace BNJMO
             SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID);
         }
 
-        private void BEvents_OnControllerDisconnected(BEHandle<EControllerID> eventHandle)
+        private void BEvents_INPUT_OnControllerDisconnected(BEventHandle<EControllerID> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             DestroyPlayer(controllerID);
         }
         
-        private void BEvents_OnMultiplayerRemotePlayerJoined(BEHandle<ENetworkID> eventHandle)
+        private void BEvents_MULTIPLAYER_OnRemotePlayerJoined(BEventHandle<ENetworkID> eventHandle)
         {
             ENetworkID networkID = eventHandle.Arg1;
             if (IS_NONE(networkID, true))
@@ -342,13 +360,20 @@ namespace BNJMO
             SpawnPlayer(playerID, ESpectatorID.NONE, controllerID, networkID);
         }
 
-        private void BEvents_OnMultiplayerRemotePlayerLeft(BEHandle<ENetworkID> eventHandle)
+        private void BEvents_MULTIPLAYER_OnRemotePlayerLeft(BEventHandle<ENetworkID> eventHandle)
         {
             ENetworkID networkID = eventHandle.Arg1;
+            if (IS_NONE(networkID, true))
+                return;
 
+            PlayerBase player = GetPlayer(networkID);
+            if (IS_NULL(player, true))
+                return;
+            
+            BInputManager.Inst.DisconnectController(player.ControllerID);
         }
         
-        private void BEvents_OnSceneUpdated(BEHandle<SScene> beHandle)
+        private void BEvents_APP_OnSceneUpdated(BEventHandle<SScene> bEventHandle)
         {
             FindPlayerSpawnPositionsInScene();
         }
@@ -425,7 +450,7 @@ namespace BNJMO
                     break;
             }
             
-            BEvents.PLAYERS_PlayerConnected.Invoke(new BEHandle<PlayerBase>(spawnedPlayer));
+            BEvents.PLAYERS_PlayerConnected.Invoke(new BEventHandle<PlayerBase>(spawnedPlayer));
 
             return spawnedPlayer;
         }
@@ -453,7 +478,7 @@ namespace BNJMO
             
             ConnectedPlayers.Remove(player);
             
-            BEvents.PLAYERS_PlayerDisconnected.Invoke(new BEHandle<PlayerBase>(player));
+            BEvents.PLAYERS_PlayerDisconnected.Invoke(new BEventHandle<PlayerBase>(player));
 
             player.DestroyPlayer();
             return true;

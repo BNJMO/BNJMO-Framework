@@ -26,6 +26,8 @@ namespace BNJMO
         /* Lobby and Matching making */
         public override void CreatePrivateLobby()
         {
+            BEvents.MULTIPLAYER_StartedLaunchingMultiplayer.Invoke(new (ELobbyType.Private));
+
             CreateLobby(true);
         }
 
@@ -34,6 +36,8 @@ namespace BNJMO
             if (ARE_EQUAL(lobbyCode, "", true)
                 || ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EMultiplayerState.NotConnected, true)) 
                 return;
+            
+            BEvents.MULTIPLAYER_StartedLaunchingMultiplayer.Invoke(new (ELobbyType.Private));
             
             StartNewCoroutine(ref joiningMultiplayerTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
             
@@ -61,6 +65,8 @@ namespace BNJMO
             if (ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EMultiplayerState.NotConnected, true))
                 return;
             
+            BEvents.MULTIPLAYER_StartedLaunchingMultiplayer.Invoke(new (ELobbyType.QuickMatch));
+            
             StartNewCoroutine(ref joiningMultiplayerTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
             
             try
@@ -85,6 +91,7 @@ namespace BNJMO
                 };
                 QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync(queryOptions);
                 LogConsoleYellow($"Found {response.Results.Count} lobbies");
+                
                 // 2) Keep only the public ones
                 List<Lobby> publicLobbies = response.Results
                     .Where(lobby => lobby.IsPrivate == false)
@@ -140,22 +147,25 @@ namespace BNJMO
             {
                 try
                 {
-                    // HANDOFF LOGIC�
-                    // if (IsLocalPlayerHost 
-                    //     && joinedLobby.Players.Count > 1)
-                    // {
-                    //     var players = joinedLobby.Players;
-                    //     int myIndex = players.FindIndex(p => p.Id == AuthenticationService.Instance.PlayerId);
-                    //     int nextIndex = (myIndex + 1) % players.Count;
-                    //     string newHost = players[nextIndex].Id;
-                    //
-                    //     joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(
-                    //         joinedLobby.Id,
-                    //         new UpdateLobbyOptions { HostId = newHost }
-                    //     );
-                    // }
+                    // Hand off lobby
+                    // // TODO: Needs to be tested properly
+                    if (bConfig.HandoffLobbyWhenHostDisconnects
+                        && StateMachine.CurrentState == EMultiplayerState.InLobby
+                        && Authority == EAuthority.HOST 
+                        && joinedLobby.Players.Count > 1)
+                    {
+                        var players = joinedLobby.Players;
+                        int myIndex = players.FindIndex(p => p.Id == AuthenticationService.Instance.PlayerId);
+                        int nextIndex = (myIndex + 1) % players.Count;
+                        string newHost = players[nextIndex].Id;
+                    
+                        joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(
+                            joinedLobby.Id,
+                            new UpdateLobbyOptions { HostId = newHost }
+                        );
+                    }
 
-                    if (IsLocalPlayerHost)
+                    if (Authority == EAuthority.HOST)
                     {
                         await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
                         LogConsole("Shut down lobby");
@@ -171,84 +181,22 @@ namespace BNJMO
                 }
                 catch (LobbyServiceException e)
                 {
-                    LogConsoleError($"Failed to leave/cleanup lobby: {e}");
+                    if (Authority == EAuthority.HOST)
+                    {
+                        LogConsoleError($"Failed to leave/cleanup lobby: {e}");
+                    }
                 }
             }
       
             DisconnectFromRelay();
             joinedLobby = null;
             isStartingParty = false;
-            connectedPlayerListeners.Clear();
+            ConnectedPlayerListeners.Clear();
             StopCoroutineIfRunning(ref joiningMultiplayerTimeoutEnumerator);
             StateMachine.UpdateState(EMultiplayerState.NotConnected);
-            BEvents.MULTIPLAYER_LeftMultiplayer.Invoke(new(leaveReason));
+            BEvents.MULTIPLAYER_ShutdownMultiplayer.Invoke(new(leaveReason));
         }
-
-        /* Player Listener - NetworkID */
-        public ENetworkID OnNewPlayerListenerJoined(NetcodePlayerListener newPlayerListener)
-        {
-            if (!IsLocalPlayerHost)
-                return ENetworkID.NONE;
-
-            ENetworkID networkID = ENetworkID.NONE;
-            if (newPlayerListener.IsHost)
-            {
-                if (IS_KEY_CONTAINED(connectedPlayerListeners, ENetworkID.HOST_1, true))
-                    return ENetworkID.NONE;
-                
-                networkID = ENetworkID.HOST_1;
-
-            }
-            else
-            {
-                networkID = GetNextFreeClientNetworkID();
-                if (IS_NONE(networkID, true))
-                    return ENetworkID.NONE;
-            }
-            
-            connectedPlayerListeners.Add(networkID, newPlayerListener);
-            if (newPlayerListener.IsLocalPlayer)
-            {
-                localPlayerListener = newPlayerListener;
-            }
-
-            // Let all connected player listeners communicate their ENetworkIDs to everyone else in the party
-            foreach (var playerListenerPairItr in connectedPlayerListeners)
-            {
-                ENetworkID networkIDItr = playerListenerPairItr.Key;
-                NetcodePlayerListener playerListenerItr = playerListenerPairItr.Value;
-                playerListenerItr.CommunicateNetworkID_ClientRpc(networkIDItr);
-            }
-            return networkID;
-        }
-
-        public void OnPlayerListenerLeft(NetcodePlayerListener playerListener)
-        {
-            if (!IsLocalPlayerHost)
-                return;
-
-            ENetworkID networkID = playerListener.NetworkID;
-            if (connectedPlayerListeners.ContainsKey(networkID) == false)
-                return;
-
-            connectedPlayerListeners.Remove(networkID);
-        }
-                
-        public void PrintPlayers()      // TODO: Remove
-        {
-            if (joinedLobby == null)
-            {
-                Debug.Log("PrintPlayers: no lobby joined.");
-                return;
-            }
-
-            Debug.Log($"PrintPlayers: {joinedLobby.Players.Count} player(s) in lobby {joinedLobby.Id}:");
-            foreach (var p in joinedLobby.Players)
-            {
-                Debug.Log($" � ID: {p.Id}");
-            }
-        }
-
+     
         #endregion
 
         #region Inspector Variables
@@ -282,35 +230,36 @@ namespace BNJMO
             protected set { }
         }
 
-        public override bool IsLocalPlayerHost
+        public override EAuthority Authority 
         {
             get
             {
-                return joinedLobby != null 
-                       && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+                if (StateMachine.CurrentState is EMultiplayerState.NotConnected or EMultiplayerState.None)
+                {
+                    return EAuthority.LOCAL;
+                }
+                
+                if (joinedLobby != null
+                    && joinedLobby.HostId == AuthenticationService.Instance.PlayerId)
+                {
+                    return EAuthority.HOST;
+                }
+                    
+                return EAuthority.CLIENT;
             }
             protected set { }
         }
 
-        public override ENetworkID LocalNetworkID
-        {
-            get
-            {
-                return localPlayerListener? localPlayerListener.NetworkID : ENetworkID.NONE;
-            }
-            protected set { }
-        }
+        public override IMultiplayerPlayerListener LocalPlayerListener { get; protected set; }
 
         public int RemainingAvailableSpotsInLobby { get; set; }
         
-        private Dictionary<ENetworkID, NetcodePlayerListener> connectedPlayerListeners = new();
         private const string RELAY_CODE = "RELAY_CODE";
         
         private Lobby joinedLobby;
         private float heartBeatTimer;
         private float lobbyUpdateTimer;
         private bool isStartingParty;
-        private NetcodePlayerListener localPlayerListener;
         private BConfig bConfig => BManager.Inst.Config;
         private IEnumerator joiningMultiplayerTimeoutEnumerator;
 
@@ -321,8 +270,8 @@ namespace BNJMO
         protected override void Awake()
         {
             base.Awake();
-            
-            // TODO: Spawn NetcodeNetworkManager from Resources
+
+            FetchOrSpawnNetworkManager();
         }
 
         protected override async void Start()
@@ -392,13 +341,13 @@ namespace BNJMO
         #endregion
 
         #region Others
-                
+        
         /* Update */
         private async void UpdateLobbyHeartbeat()   // TODO: Is this necessary? What does it even do?
         {
             if (StateMachine.CurrentState == EMultiplayerState.NotConnected
                 || joinedLobby == null
-                || !IsLocalPlayerHost)
+                || Authority != EAuthority.HOST)
                 return;
             
             heartBeatTimer -= Time.deltaTime;
@@ -429,7 +378,7 @@ namespace BNJMO
                 // Auto start Multiplayer 
                 if (StateMachine.CurrentState == EMultiplayerState.InLobby)
                 {
-                    if (IsLocalPlayerHost)
+                    if (Authority == EAuthority.HOST)
                     {
                         if (bConfig.AutomaticallyLaunchMultiplayerSession
                             && joinedLobby.Players.Count >= bConfig.NumberOfPlayersInLobbyToStartMultiplayerSession
@@ -439,7 +388,7 @@ namespace BNJMO
                             StartParty();
                         }
                     }
-                    else // client
+                    else if (Authority == EAuthority.CLIENT)
                     {
                         if (joinedLobby.Data[RELAY_CODE].Value != "0")
                         {
@@ -458,20 +407,7 @@ namespace BNJMO
             }
         }
 
-        /* NetworkID */
-        private ENetworkID GetNextFreeClientNetworkID()
-        {
-            ENetworkID networkID = ENetworkID.NONE;
-            foreach (ENetworkID networkIDitr in BConsts.NETWORK_CLIENTS)
-            {
-                if (connectedPlayerListeners.ContainsKey(networkIDitr) == false)
-                {
-                    networkID = networkIDitr;
-                    break;
-                }
-            }
-            return networkID;
-        }
+
         
         /* Lobby */
         private async void CreateLobby(bool isPrivate = false)
@@ -519,7 +455,7 @@ namespace BNJMO
         private async void StartParty()
         {
             if (StateMachine.CurrentState != EMultiplayerState.InLobby
-                || IsLocalPlayerHost == false)
+                || Authority != EAuthority.HOST)
                 return;
 
             try
@@ -546,7 +482,7 @@ namespace BNJMO
                 joinedLobby = lobby;
                 StateMachine.UpdateState(EMultiplayerState.InParty);
                 isStartingParty = false;
-                BEvents.MULTIPLAYER_JoinMultiplayerSucceeded.Invoke(new());
+                BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
             }
             catch (LobbyServiceException e)
             {
@@ -620,7 +556,7 @@ namespace BNJMO
                 NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnected;
                 
                 StateMachine.UpdateState(EMultiplayerState.InParty);
-                BEvents.MULTIPLAYER_JoinMultiplayerSucceeded.Invoke(new());
+                BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
             }
             catch (RelayServiceException e)
             {
@@ -648,9 +584,34 @@ namespace BNJMO
         {
             LogConsoleError($"Couldn't join multiplayer . Reason {joinMultiplayerFailureType.ToString()}");
             StopCoroutineIfRunning(ref joiningMultiplayerTimeoutEnumerator);
-            BEvents.MULTIPLAYER_JoinMultiplayerFailed.Invoke(new(joinMultiplayerFailureType));
+            BEvents.MULTIPLAYER_LaunchMultiplayerFailed.Invoke(new(joinMultiplayerFailureType));
 
             ShutdownLobbyAndMultiplayer(ELeaveMultiplayerReason.JoinMultiplayerFailure);
+        }
+        
+        /* Network Manager */
+        private void FetchOrSpawnNetworkManager()
+        {
+            // Look if existing in scene
+            NetworkManager networkManager = FindAnyObjectByType<NetworkManager>();
+            
+            // Try to load prefab from BConfig
+            if (networkManager == null)
+            {
+                NetworkManager networkManagerPrefab = BManager.Inst.Config.NetcodeNetworkManagerPrefab;
+                
+                // Try to load prefab from Resources
+                if (networkManagerPrefab == null)
+                {
+                    networkManagerPrefab = Resources.Load<NetworkManager>(BConsts.PATH_NetcodeNetworkManager);
+                }
+                    
+                if (IS_NULL(networkManagerPrefab, true))
+                    return;
+
+                networkManager = Instantiate(networkManagerPrefab);
+                IS_NOT_NULL(networkManager);
+            }
         }
 
         #endregion

@@ -48,10 +48,7 @@ namespace BNJMO
                 BMenu oldHighlightedBMenu = highlightedBMenuReference;
                 highlightedBMenuReference = newBBMenu;
 
-                if (BEvents.IsInstanceSet)
-                {
-                    BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu));
-                }
+                BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu));
 
                 highlightedBMenuReference.OnBecameActive();
 
@@ -192,10 +189,9 @@ namespace BNJMO
         {
             base.LateStart();
 
-            if (startWithFocus == true)
+            if (startWithFocus)
             {
-                if (BEvents.Inst)
-                    BEvents.UI_FocusedFrameUpdated.Invoke(new BEHandle<BFrame>(this));
+                BEvents.UI_FocusedFrameUpdated.Invoke(new BEventHandle<BFrame>(this));
             }
 
             if (highlightedBMenuReference)

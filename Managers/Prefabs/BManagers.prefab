@@ -316,7 +316,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4335998295768301884}
   - component: {fileID: 8089043688875718612}
-  - component: {fileID: 7308099476106723497}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -354,21 +353,6 @@ MonoBehaviour:
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 8089043688875718612}
---- !u!114 &7308099476106723497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335998295768301887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 543ec40aa1ae3e2419d67a2409ac0fa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overrideSingletonReference: 1
-  getSingletonReferenceOnValidate: 1
-  singletonInstanceReference: {fileID: 7308099476106723497}
 --- !u!1 &4335998295998743998
 GameObject:
   m_ObjectHideFlags: 0

@@ -154,7 +154,7 @@ namespace BNJMO
             InvokeAxisUpdated(controllerID, inputAxis, axisValues.x, axisValues.y);
         }
         
-        private void INPUT_OnControllerDisconnected(BEHandle<EControllerID> handle)
+        private void INPUT_OnControllerDisconnected(BEventHandle<EControllerID> handle)
         {
             EControllerID disconnectedID = handle.Arg1;
 

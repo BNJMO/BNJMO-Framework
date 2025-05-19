@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace BNJMO
 {
-    public class StateBEHandle<E> : AbstractBEHandle
+    public class StateBEventHandle<E> : AbstractBEventHandle
     {
         public E NewState { get; }
         public E LastState { get; }
 
-        public StateBEHandle(E newState, E lastState) : base()
+        public StateBEventHandle(E newState, E lastState) : base()
         {
             NewState = newState;
             LastState = lastState;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
             return "State updated from " + LastState + " to " + NewState;
         }

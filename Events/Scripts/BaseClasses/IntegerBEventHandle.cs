@@ -3,24 +3,24 @@
 namespace BNJMO
 {
     [Serializable]
-    public class IntegerBEHandle : AbstractBEHandle
+    public class IntegerBEventHandle : AbstractBEventHandle
     {
         public int Integer;
 
-        public IntegerBEHandle()
+        public IntegerBEventHandle()
         {
             //BEHandleType = BEHandleType.TEST;
             //DebugMessage = "" + Integer;
         }
 
-        public IntegerBEHandle(int integer)
+        public IntegerBEventHandle(int integer)
         {
             //BEHandleType = BEHandleType.TEST;
             Integer = integer;
             //DebugMessage = "" + Integer;
         }
 
-        public override string GetDebugMessage()
+        public override string GetLog()
         {
             return "Integer : " + Integer;
         }

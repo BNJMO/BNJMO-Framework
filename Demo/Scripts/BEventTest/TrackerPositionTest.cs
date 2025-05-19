@@ -12,7 +12,7 @@ public class TrackerPositionTest : BBehaviour
         BEvents.TEST_TrackerMoved += On_TEST_TrackerMoved;
     }
 
-    private void On_TEST_TrackerMoved(BEHandle<Vector3> handle)
+    private void On_TEST_TrackerMoved(BEventHandle<Vector3> handle)
     {
         transform.position = handle.Arg1;
     }

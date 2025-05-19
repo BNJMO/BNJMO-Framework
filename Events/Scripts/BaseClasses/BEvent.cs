@@ -4,15 +4,91 @@ using Newtonsoft.Json;
 
 namespace BNJMO
 {
-    public class BEvent<H> : AbstractBEvent where H : AbstractBEHandle
+    public class BEvent<H> : AbstractBEvent where H : AbstractBEventHandle
     {
+        
+        #region Public Events
+
         public event Action<H> Event;
 
+        #endregion
+
+        #region Public Methods
+
+        /* Constructor */
         public BEvent(string bEventName)
         {
             BEventName = bEventName;
+            BEvents.AllReplicatedBEvents.Add(BEventName, this);
+        }
+        
+        /* Invocation */
+        public void Invoke(H eventHandle)
+        {
+            Invoke(eventHandle, BEventBroadcastType.LOCAL, true);
         }
 
+        public void Invoke(H eventHandle, bool logEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
+        {
+            eventHandle.InvokingBEventName = BEventName;
+            eventHandle.logEvent = logEvent;
+            BEventManager.Inst.OnBEventInvoked(this, eventHandle, BEventBroadcastType.LOCAL, targetNetworkID);
+        }
+
+        public void Invoke(H eventHandle, BEventBroadcastType eventInvocationType = BEventBroadcastType.LOCAL, 
+            bool logEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
+        {
+            eventHandle.InvokingBEventName = BEventName;
+            eventHandle.logEvent = logEvent;
+            BEventManager.Inst.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
+        }
+                
+        public void OnProceedInvocation(H eventHandle)
+        {
+            // Log event
+            string logMessage = eventHandle.GetLog();
+            if (BManager.Inst.Config.IsLogEvents
+                && logMessage != ""
+                && eventHandle.logEvent)
+            {
+                string networkID = "";
+                if (BManager.Inst.Config.IsLogEventsNetworkID)
+                {
+                    networkID = " - Sent by : " + eventHandle.InvokingNetworkID;
+                }
+                Debug.Log("<color=green>[EVENT]</color> "
+                    //+ "<color=red>[" + BUtils.GetTimeAsString() + "] </color>"
+                    + BEventName + " : " + logMessage + networkID);
+            }
+
+            // Invoke event to all local listeners
+            if (Event != null)
+            {
+                Event.Invoke(eventHandle);
+            }
+        }
+
+        public override void OnReplicatedEvent(string serializedBEHandle)
+        {
+            //H deserializedBEHandle = JsonConvert.DeserializeObject<H>(serializedBEHandle);
+            H deserializedBEHandle = BUtils.DeserializeObject<H>(serializedBEHandle);
+
+            OnProceedInvocation(deserializedBEHandle);
+        }
+
+        /* Subscription */
+        public static BEvent<H> operator +(BEvent<H> a, Action<H> b)
+        {
+            a.Event += b;
+            return a;
+        }
+
+        public static BEvent<H> operator -(BEvent<H> a, Action<H> b)
+        {
+            a.Event -= b;
+            return a;
+        }
+        
         public void AddListener(Action<H> callbackAction)
         {
             Event += callbackAction;
@@ -32,68 +108,27 @@ namespace BNJMO
             }
         }
 
-        public void Invoke(H eventHandle)
-        {
-            Invoke(eventHandle, BEventReplicationType.LOCAL, true);
-        }
+        #endregion
 
-        public void Invoke(H eventHandle, bool debugEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
-        {
-            eventHandle.InvokingBEventName = BEventName;
-            eventHandle.DebugEvent = debugEvent;
-            BEventManager.Inst.OnBEventInvoked(this, eventHandle, BEventReplicationType.LOCAL, targetNetworkID);
-        }
+        #region Inspector Variables
 
-        public void Invoke(H eventHandle, BEventReplicationType eventInvocationType = BEventReplicationType.LOCAL, bool debugEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
-        {
-            eventHandle.InvokingBEventName = BEventName;
-            eventHandle.DebugEvent = debugEvent;
-            BEventManager.Inst.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
-        }
-                
-        public void OnProceedInvokation(H eventHandle)
-        {
-            // Debug event
-            string debugMessage = eventHandle.GetDebugMessage();
-            if ((BManager.Inst.Config.IsDebugLogEvents == true)
-                && (debugMessage != "")
-                && (eventHandle.DebugEvent == true))
-            {
-                string networkID = "";
-                if (BManager.Inst.Config.IsDebugEventsNetworkID == true)
-                {
-                    networkID = " - Sent by : " + eventHandle.InvokingNetworkID;
-                }
-                Debug.Log("<color=green>[EVENT]</color> "
-                    //+ "<color=red>[" + BUtils.GetTimeAsString() + "] </color>"
-                    + BEventName + " : " + debugMessage + networkID);
-            }
+        #endregion
 
-            // Invoke event to all local listeners
-            if (Event != null)
-            {
-                Event.Invoke(eventHandle);
-            }
-        }
+        #region Variables
 
-        public override void OnReplicatedEvent(string serializedBEHandle)
-        {
-            //H deserializedBEHandle = JsonConvert.DeserializeObject<H>(serializedBEHandle);
-            H deserializedBEHandle = BUtils.DeserializeObject<H>(serializedBEHandle);
+        #endregion
 
-            OnProceedInvokation(deserializedBEHandle);
-        }
+        #region Life Cycle
 
-        public static BEvent<H> operator +(BEvent<H> a, Action<H> b)
-        {
-            a.Event += b;
-            return a;
-        }
+        #endregion
 
-        public static BEvent<H> operator -(BEvent<H> a, Action<H> b)
-        {
-            a.Event -= b;
-            return a;
-        }
+        #region Events Callbacks
+
+        #endregion
+
+        #region Others
+
+        #endregion
+
     }
 }

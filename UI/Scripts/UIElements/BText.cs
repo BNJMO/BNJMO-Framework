@@ -289,7 +289,7 @@ public class BText : BUIElement
     #endregion
 
     #region Event Callbacks
-    private void On_UI_NewLanguageSet(BEHandle<ELanguage> handle)
+    private void On_UI_NewLanguageSet(BEventHandle<ELanguage> handle)
     {
         SetLanguage(handle.Arg1);
     }

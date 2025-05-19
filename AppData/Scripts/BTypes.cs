@@ -73,6 +73,37 @@ namespace BNJMO
         HostLeft,
     }
     
+    public enum ENetworkID
+    {
+        NONE = 0,
+        LOCAL = 1001,
+        HOST_1 = 1,
+        CLIENT_2 = 2,
+        CLIENT_3 = 3,
+        CLIENT_4 = 4,
+        CLIENT_5 = 5,
+        CLIENT_6 = 6,
+        CLIENT_7 = 7,
+        CLIENT_8 = 8,
+        CLIENT_9 = 9,
+        CLIENT_10 = 10,
+        CLIENT_11 = 11,
+        CLIENT_12 = 12,
+        CLIENT_13 = 13,
+        CLIENT_14 = 14,
+        CLIENT_15 = 15,
+        CLIENT_16 = 16,
+    }
+
+    public enum EAuthority
+    {
+        NONE = 0,
+        LOCAL = 1,
+        HOST = 2,
+        CLIENT = 3,
+    }
+
+    
     #endregion
 
     #region States
@@ -363,7 +394,7 @@ namespace BNJMO
         JSON_UNITY = 1,
     }
 
-    public enum BEventReplicationType
+    public enum BEventBroadcastType
     {
         LOCAL,          // The event invocation is not replicated and is only invoked on the same instance where it got called.
         TO_ALL,         // The event invocation is replicated to every instance on the network including the one where it got initially called.
@@ -371,34 +402,5 @@ namespace BNJMO
         TO_TARGET       // The event invocation is only replicated on a specific targeted client (the designated client is specified as a parameter in the event invocation method).
     }
 
-    public enum ENetworkID
-    {
-        NONE = 0,
-        LOCAL = 1001,
-        HOST_1 = 1,
-        CLIENT_2 = 2,
-        CLIENT_3 = 3,
-        CLIENT_4 = 4,
-        CLIENT_5 = 5,
-        CLIENT_6 = 6,
-        CLIENT_7 = 7,
-        CLIENT_8 = 8,
-        CLIENT_9 = 9,
-        CLIENT_10 = 10,
-        CLIENT_11 = 11,
-        CLIENT_12 = 12,
-        CLIENT_13 = 13,
-        CLIENT_14 = 14,
-        CLIENT_15 = 15,
-        CLIENT_16 = 16,
-    }
-
-    public enum ENetworkState
-    {
-        NOT_CONNECTED = 1,
-        HOST = 2,
-        CLIENT = 3,
-    }
-    
     #endregion
 }

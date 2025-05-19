@@ -34,7 +34,7 @@ namespace BNJMO
             BEvents.APP_SceneUpdated += BEvents_SceneUpdated;
         }
 
-        private void BEvents_SceneUpdated(BEHandle<SScene> beHandle)
+        private void BEvents_SceneUpdated(BEventHandle<SScene> bEventHandle)
         {
             ReinitializeDebugTexts();
 
