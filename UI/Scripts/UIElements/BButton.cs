@@ -186,7 +186,7 @@ namespace BNJMO
                 ButtonHighlightedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
+            BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnReleased(bool cursorInside)
@@ -230,7 +230,7 @@ namespace BNJMO
                 ButtonReleasedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), BEventBroadcastType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
+            BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnPressed()
@@ -277,7 +277,7 @@ namespace BNJMO
                 ButtonPressedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
+            BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnUnhighlighted()
@@ -312,7 +312,7 @@ namespace BNJMO
                 ButtonUnhighlightedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
+            BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnHoveredEnter()

@@ -137,6 +137,25 @@ namespace BNJMO
         public ETeamID TeamID;
         public string PlayerName;
     }
+
+    [Serializable]
+    public struct SPlayerReplicationArg
+    {
+        public ENetworkID NetworkID;
+        public EControllerID LocalControllerID;
+        public EPlayerID PlayerID;
+        public ESpectatorID SpectatorID;
+        public ETeamID TeamID;
+        public string PlayerName;
+    }
+
+    [Serializable]
+    public struct SPlayerIDMigration
+    {
+        public EControllerID LocalControllerID;
+        public EPlayerID ToPlayerID;
+        public ESpectatorID ToSpectatorID;
+    }
     
     public struct SPawnInit
     {

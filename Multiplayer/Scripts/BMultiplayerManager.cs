@@ -62,7 +62,8 @@ namespace BNJMO
         {
             if (IS_NULL(MultiplayerHandler, true))
                 return;
-            
+
+            eventHandle.InvokingNetworkID = LocalNetworkID;
             MultiplayerHandler.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
         }
         
@@ -121,7 +122,7 @@ namespace BNJMO
             }
         }
 
-        public ENetworkID[] ConnectedPlayers
+        public ENetworkID[] ConnectedClients
         {
             get
             {
@@ -129,7 +130,7 @@ namespace BNJMO
                     || ARE_NOT_EQUAL(MultiplayerHandler.StateMachine.CurrentState, EMultiplayerState.InParty, true))
                     return Array.Empty<ENetworkID>();
 
-                return MultiplayerHandler.ConnectedPlayerListeners.Keys.ToArray();
+                return MultiplayerHandler.ConnectedClientListeners.Keys.ToArray();
             }
         }
         

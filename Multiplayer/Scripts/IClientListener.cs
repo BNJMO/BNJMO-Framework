@@ -1,6 +1,6 @@
 ﻿namespace BNJMO
 {
-    public interface IMultiplayerPlayerListener
+    public interface IClientListener
     {
         public void RequestBroadcastAndSetNetworkID(ENetworkID newNetworkID);
         
@@ -11,7 +11,7 @@
         
         public bool IsHost { get; set; } 
         
-        public bool IsLocalPlayer { get; set; }
+        public bool IsLocalClient { get; set; }
         
     }
 }

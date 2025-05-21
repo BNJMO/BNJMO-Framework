@@ -143,6 +143,7 @@ namespace BNJMO
         
         public override async void ShutdownLobbyAndMultiplayer(ELeaveMultiplayerReason leaveReason)
         {
+            ENetworkID oldLocalNetworkID = LocalNetworkID;
             if (joinedLobby != null)
             {
                 try
@@ -191,10 +192,10 @@ namespace BNJMO
             DisconnectFromRelay();
             joinedLobby = null;
             isStartingParty = false;
-            ConnectedPlayerListeners.Clear();
+            ConnectedClientListeners.Clear();
             StopCoroutineIfRunning(ref joiningMultiplayerTimeoutEnumerator);
             StateMachine.UpdateState(EMultiplayerState.NotConnected);
-            BEvents.MULTIPLAYER_ShutdownMultiplayer.Invoke(new(leaveReason));
+            BEvents.MULTIPLAYER_ShutdownMultiplayer.Invoke(new(leaveReason, oldLocalNetworkID));
         }
      
         #endregion
@@ -250,7 +251,7 @@ namespace BNJMO
             protected set { }
         }
 
-        public override IMultiplayerPlayerListener LocalPlayerListener { get; protected set; }
+        public override IClientListener LocalClientListener { get; protected set; }
 
         public int RemainingAvailableSpotsInLobby { get; set; }
         
@@ -278,6 +279,7 @@ namespace BNJMO
         {
             base.Start();
             
+            StateMachine.DebugStateChange = true;
             StateMachine.UpdateState(EMultiplayerState.NotConnected);
             RemainingAvailableSpotsInLobby = BManager.Inst.Config.MaxNumberOfPlayersInParty;
             
@@ -482,7 +484,6 @@ namespace BNJMO
                 joinedLobby = lobby;
                 StateMachine.UpdateState(EMultiplayerState.InParty);
                 isStartingParty = false;
-                BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
             }
             catch (LobbyServiceException e)
             {
@@ -554,9 +555,7 @@ namespace BNJMO
                 }
                 
                 NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnected;
-                
                 StateMachine.UpdateState(EMultiplayerState.InParty);
-                BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
             }
             catch (RelayServiceException e)
             {

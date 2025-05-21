@@ -49,7 +49,7 @@ namespace BNJMO
             RegisterControllerType(controllerID, controllerType);
 
             // Invoke event
-            BEvents.INPUT_ControllerConnected.Invoke(new BEventHandle<EControllerID>(controllerID));
+            BEvents.INPUT_ControllerConnected.Invoke(new (controllerID, controllerType));
             return true;
         }
 
@@ -87,10 +87,12 @@ namespace BNJMO
                 return false;
             }
 
+            EControllerType controllerType = GetControllerType(controllerID);
+
             connectedControllers.Remove(controllerID);
             connectedControllerTypes.Remove(controllerID);
 
-            BEvents.INPUT_ControllerDisconnected.Invoke(new BEventHandle<EControllerID>(controllerID));
+            BEvents.INPUT_ControllerDisconnected.Invoke(new (controllerID, controllerType));
             return true;
         }
 
@@ -186,10 +188,11 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
+                EControllerType controllerType = GetControllerType(controllerID);
                 BEvents.INPUT_ButtonPressed.Invoke(
-                    new BEventHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    new (controllerID, controllerType,inputButton),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.DebugButtonEvents
+                    BManager.Inst.Config.LogInputButtonEvents
                 );
             }
         }
@@ -198,10 +201,11 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputButton != EInputButton.NONE)
             {
+                EControllerType controllerType = GetControllerType(controllerID);
                 BEvents.INPUT_ButtonReleased.Invoke(
-                    new BEventHandle<EControllerID, EInputButton>(controllerID, inputButton),
+                    new (controllerID, controllerType, inputButton),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.DebugButtonEvents
+                    BManager.Inst.Config.LogInputButtonEvents
                 );
             }
         }
@@ -210,10 +214,12 @@ namespace BNJMO
         {
             if (IS_VALUE_CONTAINED(connectedControllers, controllerID) && inputAxis != EInputAxis.NONE)
             {
+                EControllerType controllerType = GetControllerType(controllerID);
+
                 BEvents.INPUT_AxisUpdated.Invoke(
-                    new BEventHandle<EControllerID, EInputAxis, float, float>(controllerID, inputAxis, x, y),
+                    new (controllerID, controllerType, inputAxis, x, y),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.DebugJoystickEvents
+                    BManager.Inst.Config.LogInputJoystickEvents
                 );
             }
         }

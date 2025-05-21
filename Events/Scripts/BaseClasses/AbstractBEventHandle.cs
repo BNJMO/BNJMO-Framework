@@ -8,7 +8,7 @@ namespace BNJMO
     {
         public string InvokingBEventName = "";
 
-        public ENetworkID InvokingNetworkID = ENetworkID.NONE;
+        public ENetworkID InvokingNetworkID = ENetworkID.LOCAL;
 
         public int InvocationTime = BUtils.GetTimeAsInt();
 

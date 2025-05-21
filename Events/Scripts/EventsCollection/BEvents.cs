@@ -41,19 +41,19 @@ namespace BNJMO
         #endregion
 
         #region Input
-        public static BEvent<BEventHandle<EControllerID>> INPUT_ControllerConnected
+        public static BEvent<BEventHandle<EControllerID, EControllerType>> INPUT_ControllerConnected
             = new ("INPUT_ControllerConnected");
 
-        public static BEvent<BEventHandle<EControllerID>> INPUT_ControllerDisconnected
+        public static BEvent<BEventHandle<EControllerID, EControllerType>> INPUT_ControllerDisconnected
             = new ("INPUT_ControllerDisconnected");
 
-        public static BEvent<BEventHandle<EControllerID, EInputButton>> INPUT_ButtonPressed
+        public static BEvent<BEventHandle<EControllerID, EControllerType, EInputButton>> INPUT_ButtonPressed
             = new ("INPUT_ButtonPressed");
 
-        public static BEvent<BEventHandle<EControllerID, EInputButton>> INPUT_ButtonReleased
+        public static BEvent<BEventHandle<EControllerID, EControllerType, EInputButton>> INPUT_ButtonReleased
             = new ("INPUT_ButtonReleased");
 
-        public static BEvent<BEventHandle<EControllerID, EInputAxis, float, float>> INPUT_AxisUpdated
+        public static BEvent<BEventHandle<EControllerID, EControllerType, EInputAxis, float, float>> INPUT_AxisUpdated
             = new ("INPUT_AxisUpdated");
 
 
@@ -107,14 +107,31 @@ namespace BNJMO
         public static BEvent<BEventHandle<EJoinMultiplayerFailureType>> MULTIPLAYER_LaunchMultiplayerFailed
             = new ("MULTIPLAYER_LaunchMultiplayerFailed");
   
-        public static BEvent<BEventHandle<ELeaveMultiplayerReason>> MULTIPLAYER_ShutdownMultiplayer
+        /// <summary>
+        /// When the online session is shut down (both lobby and relay closed)
+        /// <param name="Arg1">Reason of shutdown</param>
+        /// <param name="Arg2">OldLocalNetworkID (local NetworkID from previous online session)</param>
+        /// </summary>
+        public static BEvent<BEventHandle<ELeaveMultiplayerReason, ENetworkID>> MULTIPLAYER_ShutdownMultiplayer
             = new ("MULTIPLAYER_ShutdownMultiplayer");
   
-        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_RemotePlayerJoined
-            = new ("MULTIPLAYER_RemotePlayerJoined");
+        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_ClientJoined
+            = new ("MULTIPLAYER_ClientJoined");
 
-        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_RemotePlayerLeft
-            = new ("MULTIPLAYER_RemotePlayerLeft");
+        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_ClientLeft
+            = new ("MULTIPLAYER_ClientLeft");
+        
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> MULTIPLAYER_RequestReplicatePlayer
+            = new ("MULTIPLAYER_RequestReplicatePlayer");
+         
+        public static BEvent<BEventHandle<SPlayerIDMigration>> MULTIPLAYER_MigratePlayerIDs
+            = new ("MULTIPLAYER_MigratePlayerIDs");
+        
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> MULTIPLAYER_ReplicatePlayer
+            = new ("MULTIPLAYER_ReplicatePlayer");
+            
+        public static BEvent<BEventHandle<SPlayerReplicationArg[]>> MULTIPLAYER_ReplicateAllPlayers
+            = new ("MULTIPLAYER_ReplicateAllPlayers");
         
         #endregion
 

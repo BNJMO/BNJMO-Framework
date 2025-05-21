@@ -24,21 +24,30 @@ namespace BNJMO
             playerName = playerInit.PlayerName;
             UpdateObjectNameOnPartyStateChange(false);
         }
-        
-        public void SetPlayerName(string newPlayerName, bool invokeBEvent = true)
-        {
-            playerName = newPlayerName;
-            name = playerName;
 
-            if (invokeBEvent)
-            {
-                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
-            }
+        public bool SetPlayerID(EPlayerID newPlayerID)
+        {
+            if (PlayerID == newPlayerID)
+                return false;
+
+            playerID = newPlayerID;
+
+            return true;
         }
         
+        public bool SetSpectatorID(ESpectatorID newSpectatorID)
+        {
+            if (SpectatorID == newSpectatorID)
+                return false;
+
+            spectatorID = newSpectatorID;
+
+            return true;
+        }
+
         public bool SetControllerID(EControllerID newControllerID)
         {
-            if (ARE_ENUMS_EQUAL(ControllerID, newControllerID, true)
+            if (ControllerID == newControllerID
                 || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
                 return false;
             
@@ -51,7 +60,7 @@ namespace BNJMO
 
         public bool SetTeamID(ETeamID newTeamID)
         {
-            if (ARE_ENUMS_EQUAL(newTeamID, teamID, true)
+            if (newTeamID == teamID
                 || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                 || BPlayerManager.Inst.CanJoinTeam(newTeamID) == false)
                 return false;
@@ -62,7 +71,28 @@ namespace BNJMO
 
             return true;
         }
-        
+
+        public bool SetNetworkID(ENetworkID newNetworkID)
+        {
+            if (NetworkID == newNetworkID)
+                return false;
+            
+            networkID = newNetworkID;
+
+            return true;
+        }
+               
+        public void SetPlayerName(string newPlayerName, bool invokeBEvent = true)
+        {
+            playerName = newPlayerName;
+            name = playerName;
+
+            if (invokeBEvent)
+            {
+                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
+            }
+        }
+
         public bool JoinParty()
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
@@ -132,13 +162,14 @@ namespace BNJMO
             return BPlayerManager.Inst.SpawnPawn(PlayerID);
         }
         
-        public bool DestroyPawn()
+        public bool DestroyPawn(bool logWarnings = false)
         {
-            return BPlayerManager.Inst.DestroyPawn(PlayerID);
+            return BPlayerManager.Inst.DestroyPawn(PlayerID, logWarnings);
         }
 
         public void DestroyPlayer()
         {
+            DestroyPawn(false);
             Destroy(gameObject);
         }
 

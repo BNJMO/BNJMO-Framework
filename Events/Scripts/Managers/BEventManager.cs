@@ -26,7 +26,7 @@ namespace BNJMO
             {
                 if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
                 {
-                    LogConsoleWarning("Trying to broadcast event but Multiplayer Manager is not In Party");
+                    LogConsoleWarning($"Trying to broadcast event '{eventHandle.InvokingBEventName}' but Multiplayer Manager is not In Party");
                     bEvent.OnProceedInvocation(eventHandle);
                     return;
                 }
@@ -41,6 +41,7 @@ namespace BNJMO
                         bEvent.OnProceedInvocation(eventHandle);
                         break;
                     case BEventBroadcastType.TO_TARGET:
+                    case BEventBroadcastType.TO_ALL_OTHERS:
                         BMultiplayerManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
                         break;
                 }

@@ -23,16 +23,16 @@ namespace BNJMO
         public abstract void ShutdownLobbyAndMultiplayer(ELeaveMultiplayerReason leaveReason);
         
         /* Player Listener */
-        public ENetworkID OnNewPlayerListenerJoined(IMultiplayerPlayerListener newPlayerListener)
+        public ENetworkID OnNewClientListenerJoined(IClientListener newClientListener)
         {
             if (Authority != EAuthority.HOST
-                || newPlayerListener == null)
+                || newClientListener == null)
                 return ENetworkID.NONE;
 
             ENetworkID networkID;
-            if (newPlayerListener.IsHost)
+            if (newClientListener.IsHost)
             {
-                if (IS_KEY_CONTAINED(ConnectedPlayerListeners, ENetworkID.HOST_1, true))
+                if (IS_KEY_CONTAINED(ConnectedClientListeners, ENetworkID.HOST_1, true))
                     return ENetworkID.NONE;
                 
                 networkID = ENetworkID.HOST_1;
@@ -44,42 +44,41 @@ namespace BNJMO
                 if (IS_NONE(networkID, true))
                     return ENetworkID.NONE;
             }
-            
-            ConnectedPlayerListeners.Add(networkID, newPlayerListener);
-            if (newPlayerListener.IsLocalPlayer)
+
+            newClientListener.NetworkID = networkID;
+            ConnectedClientListeners.Add(networkID, newClientListener);
+            if (newClientListener.IsLocalClient)
             {
-                LocalPlayerListener = newPlayerListener;
+                OnLocalPlayerControllerIDAssigned(newClientListener);
             }
 
             // Let all connected player listeners communicate their ENetworkIDs to everyone else in the party
-            foreach (var playerListenerPairItr in ConnectedPlayerListeners)
+            foreach (var clientListenerPairItr in ConnectedClientListeners)
             {
-                ENetworkID networkIDItr = playerListenerPairItr.Key;
-                IMultiplayerPlayerListener playerListenerItr = playerListenerPairItr.Value;
-                playerListenerItr.RequestBroadcastAndSetNetworkID(networkIDItr);
+                ENetworkID networkIDItr = clientListenerPairItr.Key;
+                IClientListener clientListenerItr = clientListenerPairItr.Value;
+                clientListenerItr.RequestBroadcastAndSetNetworkID(networkIDItr);
             }
             return networkID;
         }
 
-        public void OnPlayerListenerLeft(IMultiplayerPlayerListener playerListener)
+        public void OnClientListenerLeft(IClientListener clientListener)
         {
             if (Authority != EAuthority.HOST
-                || playerListener == null)
+                || clientListener == null)
                 return;
 
-            ENetworkID networkID = playerListener.NetworkID;
-            if (ConnectedPlayerListeners.ContainsKey(networkID) == false)
+            ENetworkID networkID = clientListener.NetworkID;
+            if (ConnectedClientListeners.ContainsKey(networkID) == false)
                 return;
 
-            ConnectedPlayerListeners.Remove(networkID);
+            ConnectedClientListeners.Remove(networkID);
         }
 
-        public void OnLocalPlayerControllerIDAssigned(IMultiplayerPlayerListener playerListener)
+        public void OnLocalPlayerControllerIDAssigned(IClientListener playerListener)
         {
-            if (playerListener == null)
-                return;
-
-            LocalPlayerListener = playerListener;
+            LocalClientListener = playerListener;
+            BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
         }
         
         /* Event Replication */
@@ -92,13 +91,13 @@ namespace BNJMO
                 return;
             }
             
-            if (LocalPlayerListener == null)
+            if (LocalClientListener == null)
             {
                 LogConsoleWarning("Trying to broadcast event but the local player listener is null!");
                 return;
             }
             
-            LocalPlayerListener.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
+            LocalClientListener.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
         }
         
         #endregion
@@ -116,25 +115,25 @@ namespace BNJMO
         
         public abstract ELobbyType LobbyType { get; protected set; }
 
-        public abstract IMultiplayerPlayerListener LocalPlayerListener { get; protected set; }
+        public abstract IClientListener LocalClientListener { get; protected set; }
         
         public ENetworkID LocalNetworkID
         {
             get
             {
-                return LocalPlayerListener?.NetworkID ?? ENetworkID.NONE;
+                return LocalClientListener?.NetworkID ?? ENetworkID.LOCAL;
             }
         }
 
         public StateMachine<EMultiplayerState> StateMachine { get; } = new ();
         
-        public Dictionary<ENetworkID, IMultiplayerPlayerListener> ConnectedPlayerListeners { get; } = new();
+        public Dictionary<ENetworkID, IClientListener> ConnectedClientListeners { get; } = new(); // TODO: Replicate to other clients. Currently only on host.
         
         #endregion
 
         #region Life Cycle
         
-        
+
         #endregion
 
         #region Events Callbacks
@@ -149,7 +148,7 @@ namespace BNJMO
             ENetworkID networkID = ENetworkID.NONE;
             foreach (ENetworkID networkIDitr in BConsts.NETWORK_CLIENTS)
             {
-                if (ConnectedPlayerListeners.ContainsKey(networkIDitr) == false)
+                if (ConnectedClientListeners.ContainsKey(networkIDitr) == false)
                 {
                     networkID = networkIDitr;
                     break;

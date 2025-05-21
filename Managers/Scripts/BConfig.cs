@@ -181,33 +181,27 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Multiplayer")] 
         public NetworkManager NetcodeNetworkManagerPrefab;
         
-        /* Debug */
-        [FormerlySerializedAs("IsDebugLogEvents")] [FoldoutGroup("BConfig/Debug")]
-        public bool IsLogEvents = true;
+        /* Log */
+        [FormerlySerializedAs("IsLogEvents")]
+        [Header("Events")]
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogEvents = true;
 
-        [FormerlySerializedAs("IsDebugEventsNetworkID")] [FoldoutGroup("BConfig/Debug")]
-        public bool IsLogEventsNetworkID = false;
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogEventsNetworkID;
+        
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogEventsTimestamp; 
+        
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogEventsPing;
 
-        [FoldoutGroup("BConfig/Debug")]
-        public bool LogMissingDebugTexts = true;
+        [Header("Input")]
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogInputButtonEvents;
 
-        [FoldoutGroup("BConfig/Debug")]
-        public bool DebugButtonEvents = false;
-
-        [FoldoutGroup("BConfig/Debug")]
-        public bool DebugJoystickEvents = false;
-
-        [FoldoutGroup("BConfig/Debug")]
-        public bool DebugUIButtonsEvents = false;
-
-        [FoldoutGroup("BConfig/Debug")]
-        [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
-        public bool DebugUbiiTopicPublish = false;
-
-        [FoldoutGroup("BConfig/Debug")]
-        [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
-        public bool DebugUbiiTopicRecieve = false;
-
+        [FoldoutGroup("BConfig/Log")]
+        public bool LogInputJoystickEvents;
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace BNJMO
 
         public override string GetLog()
         {
-            return Arg1 + " | " + Arg2;
+            return Arg1 + ", " + Arg2;
         }
     }
 
@@ -85,7 +85,7 @@ namespace BNJMO
 
         public override string GetLog()
         {
-            return Arg1 + " | " + Arg2 + " | " + Arg3;
+            return Arg1 + ", " + Arg2 + ", " + Arg3;
         }
     }
 
@@ -114,7 +114,7 @@ namespace BNJMO
 
         public override string GetLog()
         {
-            return Arg1 + " | " + Arg2 + " | " + Arg3 + " | " + Arg4;
+            return Arg1 + ", " + Arg2 + ", " + Arg3 + ", " + Arg4;
         }
     }
 
@@ -145,7 +145,7 @@ namespace BNJMO
 
         public override string GetLog()
         {
-            return Arg1 + " | " + Arg2 + " | " + Arg3 + " | " + Arg4 + " | " + Arg5;
+            return Arg1 + ", " + Arg2 + ", " + Arg3 + ", " + Arg4 + ", " + Arg5;
         }
     }
 }

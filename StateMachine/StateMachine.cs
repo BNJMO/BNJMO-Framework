@@ -26,7 +26,7 @@ namespace BNJMO
 
             if (DebugStateChange)
             {
-                Debug.Log($"State updated from {PreviousState} to {CurrentState}");
+                Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
             }
         }
     
@@ -37,7 +37,7 @@ namespace BNJMO
             
             if (DebugStateChange)
             {
-                Debug.Log($"State updated from {PreviousState} to {CurrentState}");
+                Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
             }
         }
         

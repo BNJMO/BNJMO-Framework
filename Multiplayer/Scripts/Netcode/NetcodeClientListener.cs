@@ -8,7 +8,7 @@ using Unity.Netcode;
 
 namespace BNJMO
 {
-    public class NetcodePlayerListener : NetcodeBBehaviour, IMultiplayerPlayerListener
+    public class NetcodeClientListener : NetcodeBBehaviour, IClientListener
     {
         #region Public Events
 
@@ -34,12 +34,10 @@ namespace BNJMO
 
             if (IsHost)
             {
-                LogConsoleRed("Broadcasting event from HOST");
                 BroadcastEvent_ClientRpc(serializedHandle, broadcastType, targetNetworkID, NetworkID);
             }
             else
             {
-                LogConsoleRed("Broadcasting event to server");
                 BroadcastEvent_ServerRpc(serializedHandle, broadcastType, targetNetworkID, NetworkID);
             }
         }
@@ -66,7 +64,7 @@ namespace BNJMO
             set { }
         }
 
-        bool IMultiplayerPlayerListener.IsLocalPlayer
+        bool IClientListener.IsLocalClient
         {
             get => IsLocalPlayer;
             set { }
@@ -83,7 +81,7 @@ namespace BNJMO
             AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
             if (multiplayerHandler)
             {
-                multiplayerHandler.OnNewPlayerListenerJoined(this);
+                multiplayerHandler.OnNewClientListenerJoined(this);
             }
         }
 
@@ -94,12 +92,12 @@ namespace BNJMO
             AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
             if (multiplayerHandler)
             {
-                multiplayerHandler.OnPlayerListenerLeft(this);
+                multiplayerHandler.OnClientListenerLeft(this);
             }
 
             if (networkID != ENetworkID.NONE)
             {
-                BEvents.MULTIPLAYER_RemotePlayerLeft.Invoke(new(networkID));
+                BEvents.MULTIPLAYER_ClientLeft.Invoke(new(networkID));
             }
         }
 
@@ -116,7 +114,8 @@ namespace BNJMO
         [ClientRpc]
         private void BroadcastNetworkID_ClientRpc(ENetworkID newNetworkID)
         {
-            if (newNetworkID == networkID)
+            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty
+                || newNetworkID == networkID)
                 return;
 
             // The NetworkID should be only changed from NONE to the new one. If the value here is not NONE, it means 
@@ -125,7 +124,8 @@ namespace BNJMO
 
             networkID = newNetworkID;
 
-            if (IsLocalPlayer)
+            if (IsLocalPlayer
+                && IsHost == false)
             {
                 AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
                 if (multiplayerHandler)
@@ -134,14 +134,16 @@ namespace BNJMO
                 }
             }
 
-            BEvents.MULTIPLAYER_RemotePlayerJoined.Invoke(new(networkID));
+            BEvents.MULTIPLAYER_ClientJoined.Invoke(new(networkID));
         }
 
         [ServerRpc]
         private void BroadcastEvent_ServerRpc(string serializedHandle, BEventBroadcastType broadcastType,
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            LogConsoleRed($"On Broadcast server | from {fromNetworkID}");
+            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
+                return;
+            
             BroadcastEvent_ClientRpc(serializedHandle, broadcastType, targetNetworkID, NetworkID);
         }
         
@@ -149,7 +151,8 @@ namespace BNJMO
         private void BroadcastEvent_ClientRpc(string serializedHandle, BEventBroadcastType broadcastType, 
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            LogConsoleRed($"On Broadcast client | from {fromNetworkID}");
+            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
+                return;
 
             switch (broadcastType)
             {

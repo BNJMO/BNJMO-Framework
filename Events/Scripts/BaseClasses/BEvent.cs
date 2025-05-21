@@ -19,6 +19,12 @@ namespace BNJMO
         public BEvent(string bEventName)
         {
             BEventName = bEventName;
+
+            if (BEvents.AllReplicatedBEvents.ContainsKey(BEventName))
+            {
+                Debug.LogError($"The BEvent '{BEventName}' already exists in the list of events!");
+                return;
+            }
             BEvents.AllReplicatedBEvents.Add(BEventName, this);
         }
         
@@ -46,19 +52,34 @@ namespace BNJMO
         public void OnProceedInvocation(H eventHandle)
         {
             // Log event
-            string logMessage = eventHandle.GetLog();
-            if (BManager.Inst.Config.IsLogEvents
-                && logMessage != ""
+            BConfig config = BManager.Inst.Config;
+            if (config.LogEvents
                 && eventHandle.logEvent)
             {
-                string networkID = "";
-                if (BManager.Inst.Config.IsLogEventsNetworkID)
+                string logText = "<color=green>[EVENT]</color> <color=white>" + BEventName + "</color>";
+                
+                string logMessage = eventHandle.GetLog();
+                if (logMessage != "")
                 {
-                    networkID = " - Sent by : " + eventHandle.InvokingNetworkID;
+                    logText += " : " + logMessage;
                 }
-                Debug.Log("<color=green>[EVENT]</color> "
-                    //+ "<color=red>[" + BUtils.GetTimeAsString() + "] </color>"
-                    + BEventName + " : " + logMessage + networkID);
+                
+                if (config.LogEventsNetworkID)
+                {
+                    logText += " | NetworkID : " + eventHandle.InvokingNetworkID;
+                }
+
+                if (config.LogEventsTimestamp)
+                {
+                    logText += " | Timestamp : " + eventHandle.InvocationTime;
+                }
+
+                if (config.LogEventsPing)
+                {
+                    float ping = BUtils.GetTimeAsInt() - eventHandle.InvocationTime;
+                    logText += " | Ping : " + ping;
+                }
+                Debug.Log(logText);
             }
 
             // Invoke event to all local listeners
@@ -70,7 +91,6 @@ namespace BNJMO
 
         public override void OnReplicatedEvent(string serializedBEHandle)
         {
-            //H deserializedBEHandle = JsonConvert.DeserializeObject<H>(serializedBEHandle);
             H deserializedBEHandle = BUtils.DeserializeObject<H>(serializedBEHandle);
 
             OnProceedInvocation(deserializedBEHandle);

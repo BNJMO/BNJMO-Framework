@@ -41,9 +41,9 @@ namespace BNJMO
             CurrentBButtonHighlighted = bEHandle.Arg1;
         }
 
-        private void On_INPUT_ButtonPressed(BEventHandle<EControllerID, EInputButton> eventHandle)
+        private void On_INPUT_ButtonPressed(BEventHandle<EControllerID, EControllerType, EInputButton> eventHandle)
         {
-            EInputButton inputButton = eventHandle.Arg2;
+            EInputButton inputButton = eventHandle.Arg3;
 
             if (CurrentBButtonHighlighted)
             {
@@ -83,9 +83,9 @@ namespace BNJMO
             }
         }
 
-        private void On_INPUT_ButtonReleased(BEventHandle<EControllerID, EInputButton> eventHandle)
+        private void On_INPUT_ButtonReleased(BEventHandle<EControllerID, EControllerType, EInputButton> eventHandle)
         {
-            EInputButton inputButton = eventHandle.Arg2;
+            EInputButton inputButton = eventHandle.Arg3;
 
             if (CurrentBButtonHighlighted)
             {
