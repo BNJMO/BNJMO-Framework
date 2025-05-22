@@ -42,7 +42,7 @@ namespace BNJMO
         }
 
         public void Invoke(H eventHandle, BEventBroadcastType eventInvocationType = BEventBroadcastType.LOCAL, 
-            bool logEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)
+            bool logEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)                                             // TODO: Add another overload to remove bool
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.logEvent = logEvent;
@@ -66,7 +66,7 @@ namespace BNJMO
                 
                 if (config.LogEventsNetworkID)
                 {
-                    logText += " | NetworkID : " + eventHandle.InvokingNetworkID;
+                    logText += " | From : " + eventHandle.InvokingNetworkID;
                 }
 
                 if (config.LogEventsTimestamp)

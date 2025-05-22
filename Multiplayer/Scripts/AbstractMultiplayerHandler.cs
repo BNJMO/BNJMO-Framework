@@ -29,28 +29,23 @@ namespace BNJMO
                 || newClientListener == null)
                 return ENetworkID.NONE;
 
-            ENetworkID networkID;
+            ENetworkID newNetworkID;
             if (newClientListener.IsHost)
             {
                 if (IS_KEY_CONTAINED(ConnectedClientListeners, ENetworkID.HOST_1, true))
                     return ENetworkID.NONE;
                 
-                networkID = ENetworkID.HOST_1;
+                newNetworkID = ENetworkID.HOST_1;
 
             }
             else
             {
-                networkID = GetNextFreeClientNetworkID();
-                if (IS_NONE(networkID, true))
+                newNetworkID = GetNextFreeClientNetworkID();
+                if (IS_NONE(newNetworkID, true))
                     return ENetworkID.NONE;
             }
 
-            newClientListener.NetworkID = networkID;
-            ConnectedClientListeners.Add(networkID, newClientListener);
-            if (newClientListener.IsLocalClient)
-            {
-                OnLocalPlayerControllerIDAssigned(newClientListener);
-            }
+            ConnectedClientListeners.Add(newNetworkID, newClientListener);
 
             // Let all connected player listeners communicate their ENetworkIDs to everyone else in the party
             foreach (var clientListenerPairItr in ConnectedClientListeners)
@@ -59,7 +54,7 @@ namespace BNJMO
                 IClientListener clientListenerItr = clientListenerPairItr.Value;
                 clientListenerItr.RequestBroadcastAndSetNetworkID(networkIDItr);
             }
-            return networkID;
+            return newNetworkID;
         }
 
         public void OnClientListenerLeft(IClientListener clientListener)
@@ -77,6 +72,7 @@ namespace BNJMO
 
         public void OnLocalPlayerControllerIDAssigned(IClientListener playerListener)
         {
+            StateMachine.UpdateState(EMultiplayerState.InParty);
             LocalClientListener = playerListener;
             BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded.Invoke(new());
         }

@@ -127,11 +127,11 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerIDMigration>> MULTIPLAYER_MigratePlayerIDs
             = new ("MULTIPLAYER_MigratePlayerIDs");
         
+        public static BEvent<BEventHandle> MULTIPLAYER_ConfirmPlayerIDsMigration
+            = new ("MULTIPLAYER_ConfirmPlayerIDsMigration");
+        
         public static BEvent<BEventHandle<SPlayerReplicationArg>> MULTIPLAYER_ReplicatePlayer
             = new ("MULTIPLAYER_ReplicatePlayer");
-            
-        public static BEvent<BEventHandle<SPlayerReplicationArg[]>> MULTIPLAYER_ReplicateAllPlayers
-            = new ("MULTIPLAYER_ReplicateAllPlayers");
         
         #endregion
 

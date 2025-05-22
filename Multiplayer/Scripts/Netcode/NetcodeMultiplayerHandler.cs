@@ -192,10 +192,14 @@ namespace BNJMO
             DisconnectFromRelay();
             joinedLobby = null;
             isStartingParty = false;
+            LocalClientListener = null;
             ConnectedClientListeners.Clear();
             StopCoroutineIfRunning(ref joiningMultiplayerTimeoutEnumerator);
-            StateMachine.UpdateState(EMultiplayerState.NotConnected);
-            BEvents.MULTIPLAYER_ShutdownMultiplayer.Invoke(new(leaveReason, oldLocalNetworkID));
+            if (StateMachine.CurrentState != EMultiplayerState.NotConnected)
+            {
+                StateMachine.UpdateState(EMultiplayerState.NotConnected);
+                BEvents.MULTIPLAYER_ShutdownMultiplayer.Invoke(new(leaveReason, oldLocalNetworkID));
+            }
         }
      
         #endregion
@@ -409,8 +413,6 @@ namespace BNJMO
             }
         }
 
-
-        
         /* Lobby */
         private async void CreateLobby(bool isPrivate = false)
         {

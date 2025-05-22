@@ -95,9 +95,9 @@ namespace BNJMO
                 multiplayerHandler.OnClientListenerLeft(this);
             }
 
-            if (networkID != ENetworkID.NONE)
+            if (NetworkID != ENetworkID.NONE)
             {
-                BEvents.MULTIPLAYER_ClientLeft.Invoke(new(networkID));
+                BEvents.MULTIPLAYER_ClientLeft.Invoke(new(NetworkID));
             }
         }
 
@@ -110,38 +110,54 @@ namespace BNJMO
 
         #region Others
 
-        /* RPCs */
+        /* Network ID RPCs */
         [ClientRpc]
         private void BroadcastNetworkID_ClientRpc(ENetworkID newNetworkID)
         {
-            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty
-                || newNetworkID == networkID)
+            if (newNetworkID == NetworkID
+                || newNetworkID == BMultiplayerManager.Inst.LocalNetworkID)
                 return;
+            
 
             // The NetworkID should be only changed from NONE to the new one. If the value here is not NONE, it means 
             // the NetworkID of this player listener changed during runtime which is not a normal behaviour.
-            IS_NONE(networkID);
+            IS_NONE(NetworkID);
 
-            networkID = newNetworkID;
+            NetworkID = newNetworkID;
 
-            if (IsLocalPlayer
-                && IsHost == false)
+            if (IsLocalPlayer)
+            {
+                ResponseNetworkID_ServerRpc(newNetworkID);
+            }
+        }
+
+        [ServerRpc]
+        private void ResponseNetworkID_ServerRpc(ENetworkID newNetworkID)
+        {
+            ConfirmNetworkID_ClientRpc(newNetworkID);
+        }
+
+        [ClientRpc]
+        private void ConfirmNetworkID_ClientRpc(ENetworkID newNetworkID)
+        {
+            BEvents.MULTIPLAYER_ClientJoined.Invoke(new(NetworkID));
+
+            if (IsLocalPlayer)
             {
                 AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
-                if (multiplayerHandler)
+                if (IS_NOT_NULL(multiplayerHandler))
                 {
                     multiplayerHandler.OnLocalPlayerControllerIDAssigned(this);
                 }
             }
-
-            BEvents.MULTIPLAYER_ClientJoined.Invoke(new(networkID));
         }
 
+        /* BEvents RPCs */
         [ServerRpc]
         private void BroadcastEvent_ServerRpc(string serializedHandle, BEventBroadcastType broadcastType,
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
+            if (ARE_ENUMS_NOT_EQUAL(BMultiplayerManager.Inst.HandlerStateMachine.CurrentState, EMultiplayerState.InParty, true))
                 return;
             
             BroadcastEvent_ClientRpc(serializedHandle, broadcastType, targetNetworkID, NetworkID);
@@ -151,7 +167,9 @@ namespace BNJMO
         private void BroadcastEvent_ClientRpc(string serializedHandle, BEventBroadcastType broadcastType, 
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
+            // LogConsoleRed($"BroadcastEvent_ClientRpc. broadcastType : {broadcastType} | targetNetworkID : {targetNetworkID} | fromNetworkID : {fromNetworkID} | Local NetID : {BMultiplayerManager.Inst.LocalNetworkID} \nContent : {serializedHandle}");
+            
+            if (ARE_ENUMS_NOT_EQUAL(BMultiplayerManager.Inst.HandlerStateMachine.CurrentState, EMultiplayerState.InParty, true))
                 return;
 
             switch (broadcastType)

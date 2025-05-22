@@ -22,7 +22,7 @@ namespace BNJMO
             networkID = playerInit.NetworkID;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
-            UpdateObjectNameOnPartyStateChange(false);
+            UpdateObjectNameToPartyState(false);
         }
 
         public bool SetPlayerID(EPlayerID newPlayerID)
@@ -31,6 +31,7 @@ namespace BNJMO
                 return false;
 
             playerID = newPlayerID;
+            UpdateObjectNameToPartyState();
 
             return true;
         }
@@ -41,6 +42,7 @@ namespace BNJMO
                 return false;
 
             spectatorID = newSpectatorID;
+            UpdateObjectNameToPartyState();
 
             return true;
         }
@@ -107,7 +109,7 @@ namespace BNJMO
             
             BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this));
 
-            UpdateObjectNameOnPartyStateChange();
+            UpdateObjectNameToPartyState();
             
             return true;
         }
@@ -126,7 +128,7 @@ namespace BNJMO
             
             BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this));
 
-            UpdateObjectNameOnPartyStateChange();
+            UpdateObjectNameToPartyState();
             
             return true;
         }
@@ -260,7 +262,7 @@ namespace BNJMO
 
         #region Others
 
-        protected virtual void UpdateObjectNameOnPartyStateChange(bool invokeBEvent = true)
+        protected virtual void UpdateObjectNameToPartyState(bool invokeBEvent = true)
         {
             if (BManager.Inst.Config.MatchPlayerNameToPartyState == false)
                 return;
