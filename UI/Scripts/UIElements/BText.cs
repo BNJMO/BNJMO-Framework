@@ -6,7 +6,6 @@ using System;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine.Localization;
-using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Settings;
 
 public class BText : BUIElement
