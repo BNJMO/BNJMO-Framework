@@ -40,19 +40,17 @@ MonoBehaviour:
     type: 3}
   PawnPrefabs: []
   PawnSpawnParent: {fileID: 0}
-  MultiplayerBackend: 1
-  AutomaticallyLaunchMultiplayerSession: 0
-  NumberOfPlayersInLobbyToStartMultiplayerSession: 2
+  onlineBackend: 1
+  AutomaticallyLaunchOnlineSession: 1
+  NumberOfPlayersInLobbyToStartOnlineSession: 1
   LobbyUpdateTimeSeconds: 2
-  JoinMultiplayerTimeout: 30
+  JoinOnlineSessionTimeout: 30
   HandoffLobbyWhenHostDisconnects: 1
   NetcodeNetworkManagerPrefab: {fileID: 6411009001391034450, guid: 0a61f59bae342824ab167bd9f2fdc22a,
     type: 3}
-  IsLogEvents: 1
-  IsLogEventsNetworkID: 1
-  LogMissingDebugTexts: 1
-  DebugButtonEvents: 0
-  DebugJoystickEvents: 0
-  DebugUIButtonsEvents: 0
-  DebugUbiiTopicPublish: 0
-  DebugUbiiTopicRecieve: 0
+  LogEvents: 1
+  LogEventsNetworkID: 0
+  LogEventsTimestamp: 0
+  LogEventsPing: 0
+  LogInputButtonEvents: 0
+  LogInputJoystickEvents: 0

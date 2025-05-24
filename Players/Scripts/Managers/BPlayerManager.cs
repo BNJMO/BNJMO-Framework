@@ -305,13 +305,13 @@ namespace BNJMO
             BEvents.APP_SceneUpdated += BEvents_APP_OnSceneUpdated;
             BEvents.INPUT_ControllerConnected += BEvents_INPUT_OnControllerConnected;
             BEvents.INPUT_ControllerDisconnected += BEvents_INPUT_OnControllerDisconnected;
-            BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded += BEvents_MULTIPLAYER_OnLaunchMultiplayerSucceeded;
-            BEvents.MULTIPLAYER_ShutdownMultiplayer += BEvents_MULTIPLAYER_OnShutdownMultiplayer;
-            BEvents.MULTIPLAYER_ClientLeft += BEvents_MULTIPLAYER_OnClientLeft;
-            BEvents.MULTIPLAYER_RequestReplicatePlayer += BEvents_MULTIPLAYER_OnRequestReplicatePlayer;
-            BEvents.MULTIPLAYER_MigratePlayerIDs += BEvents_MULTIPLAYER_OnMigratePlayerIDs;
-            BEvents.MULTIPLAYER_ConfirmPlayerIDsMigration += BEvents_MULTIPLAYER_OnConfirmPlayerIDsMigration;
-            BEvents.MULTIPLAYER_ReplicatePlayer += BEvents_MULTIPLAYER_OnReplicatePlayer;
+            BEvents.ONLINE_LaunchSessionSucceeded += BEvents_ONLINE_OnLaunchSessionSucceeded;
+            BEvents.ONLINE_ShutdownSession += BEvents_ONLINE_OnShutdownSession;
+            BEvents.ONLINE_ClientLeft += BEvents_ONLINE_OnClientLeft;
+            BEvents.ONLINE_RequestReplicatePlayer += BEvents_ONLINE_OnRequestReplicatePlayer;
+            BEvents.ONLINE_MigratePlayerIDs += BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDsMigration += BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_ReplicatePlayer += BEvents_ONLINE_OnReplicatePlayer;
         }
 
         protected override void OnDisable()
@@ -321,13 +321,13 @@ namespace BNJMO
             BEvents.APP_SceneUpdated -= BEvents_APP_OnSceneUpdated;
             BEvents.INPUT_ControllerConnected -= BEvents_INPUT_OnControllerConnected;
             BEvents.INPUT_ControllerDisconnected -= BEvents_INPUT_OnControllerDisconnected;
-            BEvents.MULTIPLAYER_LaunchMultiplayerSucceeded -= BEvents_MULTIPLAYER_OnLaunchMultiplayerSucceeded;
-            BEvents.MULTIPLAYER_ShutdownMultiplayer -= BEvents_MULTIPLAYER_OnShutdownMultiplayer;
-            BEvents.MULTIPLAYER_ClientLeft -= BEvents_MULTIPLAYER_OnClientLeft;
-            BEvents.MULTIPLAYER_RequestReplicatePlayer -= BEvents_MULTIPLAYER_OnRequestReplicatePlayer;
-            BEvents.MULTIPLAYER_MigratePlayerIDs -= BEvents_MULTIPLAYER_OnMigratePlayerIDs;
-            BEvents.MULTIPLAYER_ConfirmPlayerIDsMigration -= BEvents_MULTIPLAYER_OnConfirmPlayerIDsMigration;
-            BEvents.MULTIPLAYER_ReplicatePlayer -= BEvents_MULTIPLAYER_OnReplicatePlayer;
+            BEvents.ONLINE_LaunchSessionSucceeded -= BEvents_ONLINE_OnLaunchSessionSucceeded;
+            BEvents.ONLINE_ShutdownSession -= BEvents_ONLINE_OnShutdownSession;
+            BEvents.ONLINE_ClientLeft -= BEvents_ONLINE_OnClientLeft;
+            BEvents.ONLINE_RequestReplicatePlayer -= BEvents_ONLINE_OnRequestReplicatePlayer;
+            BEvents.ONLINE_MigratePlayerIDs -= BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDsMigration -= BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_ReplicatePlayer -= BEvents_ONLINE_OnReplicatePlayer;
         }
 
         #endregion
@@ -361,38 +361,35 @@ namespace BNJMO
         }
 
         /* Multiplayer */
-        private void BEvents_MULTIPLAYER_OnLaunchMultiplayerSucceeded(BEventHandle handle)
+        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle handle)
         {
             foreach (var playerItr in ConnectedPlayers)
             {
                 if (playerItr.NetworkID != ENetworkID.LOCAL)
                     continue;
 
-                ENetworkID localNetworkID = BMultiplayerManager.Inst.LocalNetworkID;
+                ENetworkID localNetworkID = BOnlineManager.Inst.LocalNetworkID;
                 playerItr.SetNetworkID(localNetworkID);
 
                 SPlayerReplicationArg playerReplicationArg = CreatePlayerReplicationArg(playerItr);
 
-                switch (BMultiplayerManager.Inst.Authority)
+                switch (BOnlineManager.Inst.Authority)
                 {
                     case EAuthority.CLIENT:
-                        BEvents.MULTIPLAYER_RequestReplicatePlayer.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+                        BEvents.ONLINE_RequestReplicatePlayer.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
                         break;
                 }
             }
         }
 
-        private void BEvents_MULTIPLAYER_OnShutdownMultiplayer(BEventHandle<ELeaveMultiplayerReason, ENetworkID> handle)
+        private void BEvents_ONLINE_OnShutdownSession(BEventHandle<ELeaveOnlineSessionReason, ENetworkID> handle)
         {
             ENetworkID oldLocalNetworkID = handle.Arg2;
             for (int i = ConnectedPlayers.Count - 1; i >= 0; i--)
             {
                 var playerItr = ConnectedPlayers[i];
-                if (ARE_ENUMS_EQUAL(oldLocalNetworkID, ENetworkID.LOCAL, true))
-                {
-                    playerItr.SetNetworkID(ENetworkID.LOCAL);
+                if (oldLocalNetworkID == ENetworkID.LOCAL)
                     continue;
-                }
                 
                 if (playerItr.NetworkID == oldLocalNetworkID)
                 {
@@ -405,10 +402,10 @@ namespace BNJMO
             }
         }
 
-        private void BEvents_MULTIPLAYER_OnClientLeft(BEventHandle<ENetworkID> handle)
+        private void BEvents_ONLINE_OnClientLeft(BEventHandle<ENetworkID> handle)
         {
             ENetworkID leftNetworkID = handle.Arg1;
-            if (leftNetworkID == BMultiplayerManager.Inst.LocalNetworkID)
+            if (leftNetworkID == BOnlineManager.Inst.LocalNetworkID)
                 return;
             
             for (int i = ConnectedPlayers.Count - 1; i >= 0; i--)
@@ -421,7 +418,7 @@ namespace BNJMO
             }
         }
 
-        private void BEvents_MULTIPLAYER_OnRequestReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
+        private void BEvents_ONLINE_OnRequestReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
         {
             if (ARE_EQUAL(handle.InvokingNetworkID, ENetworkID.HOST_1, true))
                 return;
@@ -453,10 +450,10 @@ namespace BNJMO
                 ToPlayerID = newPlayerID,
                 ToSpectatorID = newSpectatorID,
             };
-            BEvents.MULTIPLAYER_MigratePlayerIDs.Invoke(new (playerIDMigration), BEventBroadcastType.TO_TARGET, true, networkID);
+            BEvents.ONLINE_MigratePlayerIDs.Invoke(new (playerIDMigration), BEventBroadcastType.TO_TARGET, true, networkID);
         }
 
-        private void BEvents_MULTIPLAYER_OnMigratePlayerIDs(BEventHandle<SPlayerIDMigration> handle)
+        private void BEvents_ONLINE_OnMigratePlayerIDs(BEventHandle<SPlayerIDMigration> handle)
         {
             if (handle.InvokingNetworkID != ENetworkID.HOST_1)
                 return;
@@ -493,14 +490,14 @@ namespace BNJMO
                 PlayersInParty.Add(newPlayerID, player);
             }
             
-            BEvents.MULTIPLAYER_ConfirmPlayerIDsMigration.Invoke(new(), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+            BEvents.ONLINE_ConfirmPlayerIDsMigration.Invoke(new(), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
         }
         
-        private void BEvents_MULTIPLAYER_OnConfirmPlayerIDsMigration(BEventHandle handle)
+        private void BEvents_ONLINE_OnConfirmPlayerIDsMigration(BEventHandle handle)
         {
             ENetworkID newNetworkID = handle.InvokingNetworkID;
             
-            if (ARE_NOT_EQUAL(BMultiplayerManager.Inst.Authority, EAuthority.HOST, true)
+            if (ARE_NOT_EQUAL(BOnlineManager.Inst.Authority, EAuthority.HOST, true)
                 || ARE_EQUAL(newNetworkID, ENetworkID.HOST_1, true))
                 return;
 
@@ -512,17 +509,17 @@ namespace BNJMO
 
                 LogConsoleYellow($"Replicating : {playerItr.PlayerName} to {newNetworkID}");
                 SPlayerReplicationArg playerReplicationArgItr = CreatePlayerReplicationArg(playerItr);
-                BEvents.MULTIPLAYER_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
+                BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
             }
         }
 
-        private void BEvents_MULTIPLAYER_OnReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
+        private void BEvents_ONLINE_OnReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
         {
             SPlayerReplicationArg playerReplicationArg = handle.Arg1;
             
             ENetworkID networkID = playerReplicationArg.NetworkID;
             if (IS_NONE(networkID, true)
-                || networkID == BMultiplayerManager.Inst.LocalNetworkID)
+                || networkID == BOnlineManager.Inst.LocalNetworkID)
                 return;
             
             EPlayerID playerID = playerReplicationArg.PlayerID;
@@ -579,7 +576,7 @@ namespace BNJMO
 
             if (networkID == ENetworkID.LOCAL)
             {
-                networkID = BMultiplayerManager.Inst.LocalNetworkID;
+                networkID = BOnlineManager.Inst.LocalNetworkID;
             }
 
             // Fetch player prefab
@@ -628,14 +625,14 @@ namespace BNJMO
 
             // Replicate spawned player
             var replicationArg = CreatePlayerReplicationArg(spawnedPlayer);
-            switch (BMultiplayerManager.Inst.Authority)
+            switch (BOnlineManager.Inst.Authority)
             {
-                case EAuthority.HOST when networkID == BMultiplayerManager.Inst.LocalNetworkID:
-                    BEvents.MULTIPLAYER_ReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_ALL_OTHERS);
+                case EAuthority.HOST when networkID == BOnlineManager.Inst.LocalNetworkID:
+                    BEvents.ONLINE_ReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_ALL_OTHERS);
                     break;
                 
-                case EAuthority.CLIENT when networkID == BMultiplayerManager.Inst.LocalNetworkID:
-                    BEvents.MULTIPLAYER_RequestReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+                case EAuthority.CLIENT when networkID == BOnlineManager.Inst.LocalNetworkID:
+                    BEvents.ONLINE_RequestReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
                     break;
             }
             

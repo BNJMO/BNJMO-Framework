@@ -157,28 +157,28 @@ namespace BNJMO
         public Transform PawnSpawnParent;
         
         
-        /* Multiplayer */
-        [FoldoutGroup("BConfig/Multiplayer")] 
-        public EMultiplayerBackend MultiplayerBackend = EMultiplayerBackend.Netcode;
+        /* Online */
+        [FoldoutGroup("BConfig/Online")] 
+        public EOnlineBackend onlineBackend = EOnlineBackend.Netcode;
         
-        [FoldoutGroup("BConfig/Multiplayer")] 
-        public bool AutomaticallyLaunchMultiplayerSession = false;
+        [FoldoutGroup("BConfig/Online")] 
+        public bool AutomaticallyLaunchOnlineSession = true;
         
-        [FoldoutGroup("BConfig/Multiplayer")] 
-        public int NumberOfPlayersInLobbyToStartMultiplayerSession = 2;     
+        [FoldoutGroup("BConfig/Online")] 
+        public int NumberOfPlayersInLobbyToStartOnlineSession = 1;     
         
-        [FoldoutGroup("BConfig/Multiplayer")] 
+        [FoldoutGroup("BConfig/Online")] 
         public float LobbyUpdateTimeSeconds = 2.0f;    
         
-        [FoldoutGroup("BConfig/Multiplayer")] 
-        public float JoinMultiplayerTimeout = 30.0f;
+        [FoldoutGroup("BConfig/Online")] 
+        public float JoinOnlineSessionTimeout = 30.0f;
   
-        [FoldoutGroup("BConfig/Multiplayer")] 
+        [FoldoutGroup("BConfig/Online")] 
         [InfoBox("Only possible when still in Lobby state and Party not started yet (i.e. the relay hasn't been created yet")]
         public bool HandoffLobbyWhenHostDisconnects = true;
         
         [Header("Netcode")]
-        [FoldoutGroup("BConfig/Multiplayer")] 
+        [FoldoutGroup("BConfig/Online")] 
         public NetworkManager NetcodeNetworkManagerPrefab;
         
         /* Log */

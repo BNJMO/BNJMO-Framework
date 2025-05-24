@@ -78,10 +78,10 @@ namespace BNJMO
         {
             base.OnNetworkPostSpawn();
 
-            AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
-            if (multiplayerHandler)
+            AbstractOnlineHandler onlineHandler = BOnlineManager.Inst.OnlineHandler;
+            if (onlineHandler)
             {
-                multiplayerHandler.OnNewClientListenerJoined(this);
+                onlineHandler.OnNewClientListenerJoined(this);
             }
         }
 
@@ -89,15 +89,15 @@ namespace BNJMO
         {
             base.OnNetworkDespawn();
 
-            AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
-            if (multiplayerHandler)
+            AbstractOnlineHandler onlineHandler = BOnlineManager.Inst.OnlineHandler;
+            if (onlineHandler)
             {
-                multiplayerHandler.OnClientListenerLeft(this);
+                onlineHandler.OnClientListenerLeft(this);
             }
 
             if (NetworkID != ENetworkID.NONE)
             {
-                BEvents.MULTIPLAYER_ClientLeft.Invoke(new(NetworkID));
+                BEvents.ONLINE_ClientLeft.Invoke(new(NetworkID));
             }
         }
 
@@ -115,7 +115,7 @@ namespace BNJMO
         private void BroadcastNetworkID_ClientRpc(ENetworkID newNetworkID)
         {
             if (newNetworkID == NetworkID
-                || newNetworkID == BMultiplayerManager.Inst.LocalNetworkID)
+                || newNetworkID == BOnlineManager.Inst.LocalNetworkID)
                 return;
             
 
@@ -140,14 +140,14 @@ namespace BNJMO
         [ClientRpc]
         private void ConfirmNetworkID_ClientRpc(ENetworkID newNetworkID)
         {
-            BEvents.MULTIPLAYER_ClientJoined.Invoke(new(NetworkID));
+            BEvents.ONLINE_ClientJoined.Invoke(new(NetworkID));
 
             if (IsLocalPlayer)
             {
-                AbstractMultiplayerHandler multiplayerHandler = BMultiplayerManager.Inst.MultiplayerHandler;
-                if (IS_NOT_NULL(multiplayerHandler))
+                AbstractOnlineHandler onlineHandler = BOnlineManager.Inst.OnlineHandler;
+                if (IS_NOT_NULL(onlineHandler))
                 {
-                    multiplayerHandler.OnLocalPlayerControllerIDAssigned(this);
+                    onlineHandler.OnLocalPlayerControllerIDAssigned(this);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace BNJMO
         private void BroadcastEvent_ServerRpc(string serializedHandle, BEventBroadcastType broadcastType,
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            if (ARE_ENUMS_NOT_EQUAL(BMultiplayerManager.Inst.HandlerStateMachine.CurrentState, EMultiplayerState.InParty, true))
+            if (ARE_ENUMS_NOT_EQUAL(BOnlineManager.Inst.HandlerStateMachine.CurrentState, EOnlineState.InOnlineSession, true))
                 return;
             
             BroadcastEvent_ClientRpc(serializedHandle, broadcastType, targetNetworkID, NetworkID);
@@ -167,16 +167,14 @@ namespace BNJMO
         private void BroadcastEvent_ClientRpc(string serializedHandle, BEventBroadcastType broadcastType, 
             ENetworkID targetNetworkID, ENetworkID fromNetworkID)
         {
-            // LogConsoleRed($"BroadcastEvent_ClientRpc. broadcastType : {broadcastType} | targetNetworkID : {targetNetworkID} | fromNetworkID : {fromNetworkID} | Local NetID : {BMultiplayerManager.Inst.LocalNetworkID} \nContent : {serializedHandle}");
-            
-            if (ARE_ENUMS_NOT_EQUAL(BMultiplayerManager.Inst.HandlerStateMachine.CurrentState, EMultiplayerState.InParty, true))
+            if (ARE_ENUMS_NOT_EQUAL(BOnlineManager.Inst.HandlerStateMachine.CurrentState, EOnlineState.InOnlineSession, true))
                 return;
 
             switch (broadcastType)
             {
                 case BEventBroadcastType.TO_ALL:
                 case BEventBroadcastType.TO_ALL_OTHERS:
-                    if (fromNetworkID != BMultiplayerManager.Inst.LocalNetworkID)
+                    if (fromNetworkID != BOnlineManager.Inst.LocalNetworkID)
                     {
                         BEventManager.Inst.OnBEventBroadcast(serializedHandle);
                     }
@@ -184,7 +182,7 @@ namespace BNJMO
                 
                 case BEventBroadcastType.TO_TARGET:
                     if (fromNetworkID != targetNetworkID
-                        && targetNetworkID == BMultiplayerManager.Inst.LocalNetworkID)
+                        && targetNetworkID == BOnlineManager.Inst.LocalNetworkID)
                     {
                         BEventManager.Inst.OnBEventBroadcast(serializedHandle);
                     }

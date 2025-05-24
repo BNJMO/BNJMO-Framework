@@ -29,20 +29,20 @@ namespace BNJMO
     }
     #endregion
     
-    #region Multiplayer
+    #region Online
 
-    public enum EMultiplayerBackend
+    public enum EOnlineBackend
     {
         None = 0,
         Netcode,
     }
     
-    public enum EMultiplayerState
+    public enum EOnlineState
     {
         None,
         NotConnected,
         InLobby,
-        InParty,
+        InOnlineSession,
     }
 
     public enum ELobbyType
@@ -52,7 +52,7 @@ namespace BNJMO
         Private,
     }
     
-    public enum EJoinMultiplayerFailureType
+    public enum EJoinOnlineSessionFailureType
     {
         None = 0,
         CreateLobby,
@@ -60,16 +60,16 @@ namespace BNJMO
         JoinLobbyByCode,
         CreateRelay,
         JoinRelay,
-        StartMultiplayer,
+        StartOnlineSession,
         JoinLobbyTimeout,
-        JoinMultiplayerTimeout,
+        JoinOnlineSessionTimeout,
     }
 
-    public enum ELeaveMultiplayerReason
+    public enum ELeaveOnlineSessionReason
     {
         None = 0,
         LeaveFromUI,
-        JoinMultiplayerFailure,
+        JoinOnlineSessionFailure,
         HostLeft,
     }
     

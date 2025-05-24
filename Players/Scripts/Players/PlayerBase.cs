@@ -208,10 +208,10 @@ namespace BNJMO
                 if (networkID == ENetworkID.LOCAL)
                     return true;
 
-                if (BMultiplayerManager.Inst
-                    && BMultiplayerManager.Inst.MultiplayerHandler)
+                if (BOnlineManager.Inst
+                    && BOnlineManager.Inst.OnlineHandler)
                 {
-                    return BMultiplayerManager.Inst.MultiplayerHandler.LocalNetworkID == networkID;
+                    return BOnlineManager.Inst.OnlineHandler.LocalNetworkID == networkID;
                 }
 
                 return true;

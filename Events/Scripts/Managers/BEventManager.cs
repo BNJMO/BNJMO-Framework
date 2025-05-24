@@ -24,7 +24,7 @@ namespace BNJMO
             }
             else
             {
-                if (BMultiplayerManager.Inst.HandlerStateMachine.CurrentState != EMultiplayerState.InParty)
+                if (BOnlineManager.Inst.HandlerStateMachine.CurrentState != EOnlineState.InOnlineSession)
                 {
                     LogConsoleWarning($"Trying to broadcast event '{eventHandle.InvokingBEventName}' but Multiplayer Manager is not In Party");
                     bEvent.OnProceedInvocation(eventHandle);
@@ -35,14 +35,14 @@ namespace BNJMO
                 {
                     case BEventBroadcastType.TO_ALL:
                         bEvent.OnProceedInvocation(eventHandle);
-                        BMultiplayerManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
+                        BOnlineManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
                         break;
-                    case BEventBroadcastType.TO_TARGET when BMultiplayerManager.Inst.LocalNetworkID == targetNetworkID:
+                    case BEventBroadcastType.TO_TARGET when BOnlineManager.Inst.LocalNetworkID == targetNetworkID:
                         bEvent.OnProceedInvocation(eventHandle);
                         break;
                     case BEventBroadcastType.TO_TARGET:
                     case BEventBroadcastType.TO_ALL_OTHERS:
-                        BMultiplayerManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
+                        BOnlineManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
                         break;
                 }
             }

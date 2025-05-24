@@ -97,59 +97,47 @@ namespace BNJMO
         
         #endregion
 
-        #region Multiplayer
-        public static BEvent<BEventHandle<ELobbyType>> MULTIPLAYER_StartedLaunchingMultiplayer
-            = new ("MULTIPLAYER_StartedLaunchingMultiplayer");
+        #region Online
+        public static BEvent<BEventHandle<ELobbyType>> ONLINE_StartedLaunchingSession
+            = new ("ONLINE_StartedLaunchingSession");
         
-        public static BEvent<BEventHandle> MULTIPLAYER_LaunchMultiplayerSucceeded
-            = new ("MULTIPLAYER_LaunchMultiplayerSucceeded");
+        public static BEvent<BEventHandle> ONLINE_LaunchSessionSucceeded
+            = new ("ONLINE_LaunchSessionSucceeded");
   
-        public static BEvent<BEventHandle<EJoinMultiplayerFailureType>> MULTIPLAYER_LaunchMultiplayerFailed
-            = new ("MULTIPLAYER_LaunchMultiplayerFailed");
+        public static BEvent<BEventHandle<EJoinOnlineSessionFailureType>> ONLINE_LaunchSessionFailed
+            = new ("ONLINE_LaunchSessionFailed");
   
         /// <summary>
         /// When the online session is shut down (both lobby and relay closed)
         /// <param name="Arg1">Reason of shutdown</param>
         /// <param name="Arg2">OldLocalNetworkID (local NetworkID from previous online session)</param>
         /// </summary>
-        public static BEvent<BEventHandle<ELeaveMultiplayerReason, ENetworkID>> MULTIPLAYER_ShutdownMultiplayer
-            = new ("MULTIPLAYER_ShutdownMultiplayer");
+        public static BEvent<BEventHandle<ELeaveOnlineSessionReason, ENetworkID>> ONLINE_ShutdownSession
+            = new ("ONLINE_ShutdownSession");
   
-        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_ClientJoined
-            = new ("MULTIPLAYER_ClientJoined");
+        public static BEvent<BEventHandle<ENetworkID>> ONLINE_ClientJoined
+            = new ("ONLINE_ClientJoined");
 
-        public static BEvent<BEventHandle<ENetworkID>> MULTIPLAYER_ClientLeft
-            = new ("MULTIPLAYER_ClientLeft");
+        public static BEvent<BEventHandle<ENetworkID>> ONLINE_ClientLeft
+            = new ("ONLINE_ClientLeft");
         
-        public static BEvent<BEventHandle<SPlayerReplicationArg>> MULTIPLAYER_RequestReplicatePlayer
-            = new ("MULTIPLAYER_RequestReplicatePlayer");
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> ONLINE_RequestReplicatePlayer
+            = new ("ONLINE_RequestReplicatePlayer");
          
-        public static BEvent<BEventHandle<SPlayerIDMigration>> MULTIPLAYER_MigratePlayerIDs
-            = new ("MULTIPLAYER_MigratePlayerIDs");
+        public static BEvent<BEventHandle<SPlayerIDMigration>> ONLINE_MigratePlayerIDs
+            = new ("ONLINE_MigratePlayerIDs");
         
-        public static BEvent<BEventHandle> MULTIPLAYER_ConfirmPlayerIDsMigration
-            = new ("MULTIPLAYER_ConfirmPlayerIDsMigration");
+        public static BEvent<BEventHandle> ONLINE_ConfirmPlayerIDsMigration
+            = new ("ONLINE_ConfirmPlayerIDsMigration");
         
-        public static BEvent<BEventHandle<SPlayerReplicationArg>> MULTIPLAYER_ReplicatePlayer
-            = new ("MULTIPLAYER_ReplicatePlayer");
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> ONLINE_ReplicatePlayer
+            = new ("ONLINE_ReplicatePlayer");
         
         #endregion
 
-        #region Test
-        public static BEvent<BEventHandle<int>> TEST_CounterIncrement
-            = new BEvent<BEventHandle<int>>("TEST_CounterIncrement");
-
-        public static BEvent<BEventHandle<float>> TEST_FloatTest
-            = new BEvent<BEventHandle<float>>("TEST_FloatTest");
-
-        public static BEvent<BEventHandle<Vector3>> TEST_Vector3Test
-            = new BEvent<BEventHandle<Vector3>>("TEST_Vector3Test");
-
-        public static BEvent<BEventHandle<Vector3>> TEST_ImagePosition
-            = new BEvent<BEventHandle<Vector3>>("TEST_ImagePosition");
-
-        public static BEvent<BEventHandle<Vector3>> TEST_TrackerMoved
-            = new BEvent<BEventHandle<Vector3>>("TEST_TrackerMoved");
+        #region Example
+        public static BEvent<BEventHandle<int>> EXAMPLE_NumberIncremented 
+            = new ("EXAMPLE_NumberIncremented");
 
         #endregion
         
