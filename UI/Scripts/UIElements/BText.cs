@@ -152,6 +152,8 @@ public class BText : BUIElement
     [HideInInspector]
     private TextMeshProUGUI tmpTextComponent;
 
+    private (string text, bool isRTL)? pendingTextData = null;
+
     #endregion
 
     #region LifeCycle
@@ -233,12 +235,25 @@ public class BText : BUIElement
     public void OnLocalizedStringChanged(string value)
     {
         bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+
+        if (IsTextComponentInactive())
+        {
+            pendingTextData = (value, isRTL);
+            return;
+        }
+
         SetText(value, isRTL);
     }
 
     #endregion
 
     #region Private Methods
+
+    private void ApplyLocalizedText(string value)
+    {
+        bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+        SetText(value, isRTL);
+    }
 
     protected override void OnUIShown()
     {
@@ -255,6 +270,13 @@ public class BText : BUIElement
         if (textMeshPro)
         {
             textMeshPro.enabled = true;
+        }
+
+        if (pendingTextData.HasValue)
+        {
+            var (text, isRTL) = pendingTextData.Value;
+            SetText(text, isRTL);
+            pendingTextData = null;
         }
     }
 
@@ -372,6 +394,13 @@ public class BText : BUIElement
         }
 
         return tmpTextComponent.alignment;
+    }
+
+    private bool IsTextComponentInactive()
+    {   
+        return (textUI != null && !textUI.enabled) || 
+            (textMesh != null && !textMesh.gameObject.activeInHierarchy) || 
+            (textMeshPro != null && !textMeshPro.enabled);
     }
 
     #endregion
