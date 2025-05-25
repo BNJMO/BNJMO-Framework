@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 public class BText : BUIElement
 {
@@ -72,6 +73,13 @@ public class BText : BUIElement
     {
         SetText(GetRTLFormatedText(text));
     }
+
+    public void UpdateLocalizedVariables(params object[] values)
+    {
+        localizedString.Arguments = values;
+        localizedString.RefreshString();
+    }
+
     #endregion
 
     #region Inspector Values
@@ -115,6 +123,9 @@ public class BText : BUIElement
     #endregion
 
     #region Variables
+
+    public LocalizedString LocalizedString => localizedString;
+
     public bool WriteTextUppercase { get { return writeTextUppercase; } set { writeTextUppercase = value; } }
 
     public string Text { get { return text; } }
@@ -219,7 +230,7 @@ public class BText : BUIElement
 
     #region Event Callbacks
 
-    private void OnLocalizedStringChanged(string value)
+    public void OnLocalizedStringChanged(string value)
     {
         bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
         SetText(value, isRTL);
@@ -288,7 +299,10 @@ public class BText : BUIElement
                     int startIndex = tmpTextComponent.textInfo.lineInfo[i].firstCharacterIndex;
                     int endIndex = (i == tmpTextComponent.textInfo.lineCount - 1) ? tmpTextComponent.text.Length
                         : tmpTextComponent.textInfo.lineInfo[i + 1].firstCharacterIndex;
-                    int length = endIndex - startIndex;
+                    endIndex = Mathf.Clamp(endIndex, 0, tmpTextComponent.text.Length);
+                    int length = Mathf.Clamp(endIndex - startIndex, 0, tmpTextComponent.text.Length - startIndex);
+                    if (startIndex < 0 || startIndex >= tmpTextComponent.text.Length || length <= 0)
+                        continue;
                     string[] lineWords = tmpTextComponent.text.Substring(startIndex, length).Split(' ');
                     Array.Reverse(lineWords);
                     finalText = finalText + string.Join(" ", lineWords).Trim() + "\n";
