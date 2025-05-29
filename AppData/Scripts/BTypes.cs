@@ -289,6 +289,7 @@ namespace BNJMO
         XboxSeries = 7,
         MiscController = 8,
         NetworkController = 9,
+        Switch = 10,
     }
 
     public enum EInputButton

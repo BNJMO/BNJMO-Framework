@@ -158,6 +158,10 @@ namespace BNJMO
             {
                 return EControllerType.Dualsense;
             }
+            if (name.Contains("switch") || name.Contains("pro controller"))
+            {
+                return EControllerType.Switch;
+            }
             if (name.Contains("keyboard") || name.Contains("mouse"))
             {
                 return EControllerType.MouseKeyboard;
