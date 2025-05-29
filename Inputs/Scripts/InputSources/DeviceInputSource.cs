@@ -6,78 +6,51 @@ namespace BNJMO
 {
     public class DeviceInputSource : AbstractInputSource
     {
-        private Dictionary<EControllerID, PlayerInputListener> connectedDeviceControllers = new Dictionary<EControllerID, PlayerInputListener>();
+        #region Public Events
 
-        protected override void Start()
-        {
-            base.Start();
-            
-            BEvents.INPUT_ControllerDisconnected += INPUT_OnControllerDisconnected;
-        }
 
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
+        #endregion
 
-            foreach (EControllerID controllerID in connectedDeviceControllers.Keys)
-            {
-                PlayerInputListener playerInputListener = connectedDeviceControllers[controllerID];
-                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.MOVEMENT, playerInputListener.MoveAxis);
-                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.ROTATION, playerInputListener.RotateAxis);
-                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.TRIGGER_AXIS_L, playerInputListener.RotateAxis);
-                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.TRIGGER_AXIS_R, playerInputListener.RotateAxis);
-            }
-        }
+        #region Public Methods
 
         /// <summary>
         /// Called from a PlayerInputListener when spawned to connect to the next available ControllerID
         /// </summary>
         /// <param name="playerInput"> New player input listener </param>
         /// <returns> Assigned ControllerID </returns>
-        public EControllerID OnNewDeviceJoined(PlayerInputListener playerInputListener)
+        public EControllerID OnNewDeviceJoined(DeviceInputPlayerListener deviceInputPlayerListener)
         {
-            IS_NOT_NULL(playerInputListener);
+            IS_NOT_NULL(deviceInputPlayerListener);
             // Assign a ControllerID
-            EControllerID controllerID = GetNextFreeDeviceControllerID();
 
+            EControllerType controllerType = GetControllerTypeFromName(deviceInputPlayerListener.DeviceName);
+            
+            // Connect controller on Input Manager
+            EControllerID controllerID = BInputManager.Inst.ConnectNextDeviceController(controllerType);
             if (controllerID != EControllerID.NONE)
             {
-                EControllerType controllerType = GetControllerTypeFromName(playerInputListener.DeviceName);
+                connectedDeviceControllers.Add(controllerID, deviceInputPlayerListener);
+
+                // Bind Input events
+                deviceInputPlayerListener.ButtonPressed += On_PlayerInputListener_ButtonPressed;
+                deviceInputPlayerListener.ButtonReleased += On_PlayerInputListener_ButtonReleased;
                 
-                // Connect controller on Input Manager
-                if (BInputManager.Inst.ConnectController(controllerID, controllerType) == true)
-                {
-                    connectedDeviceControllers.Add(controllerID, playerInputListener);
-
-                    // Bind Input events
-                    playerInputListener.ButtonPressed += On_PlayerInputListener_ButtonPressed;
-                    playerInputListener.ButtonReleased += On_PlayerInputListener_ButtonReleased;
-                    
-                    LogConsole($"New device '{playerInputListener.DeviceName}' joined as : {controllerID}");
-                }
-                else
-                {
-                    return EControllerID.NONE;
-                }
+                LogConsole($"New device '{deviceInputPlayerListener.DeviceName}' joined as : {controllerID}");
             }
-            else
-            {
-                LogConsoleWarning("No free Controller ID found for new connected device : " + playerInputListener.DeviceName);
-            }
-
+            
             return controllerID;
         }
         
-        public void OnDeviceHasLeft(EControllerID controllerID, PlayerInputListener playerInputListener)
+        public void OnDeviceHasLeft(EControllerID controllerID, DeviceInputPlayerListener deviceInputPlayerListener)
         {
-            IS_VALID(playerInputListener);
+            IS_VALID(deviceInputPlayerListener);
 
             if (connectedDeviceControllers.ContainsKey(controllerID) &&
-                connectedDeviceControllers[controllerID] == playerInputListener)
+                connectedDeviceControllers[controllerID] == deviceInputPlayerListener)
             {
                 // Unsubscribe input events
-                playerInputListener.ButtonPressed -= On_PlayerInputListener_ButtonPressed;
-                playerInputListener.ButtonReleased -= On_PlayerInputListener_ButtonReleased;
+                deviceInputPlayerListener.ButtonPressed -= On_PlayerInputListener_ButtonPressed;
+                deviceInputPlayerListener.ButtonReleased -= On_PlayerInputListener_ButtonReleased;
 
                 // Remove from dictionary
                 connectedDeviceControllers.Remove(controllerID);
@@ -85,59 +58,14 @@ namespace BNJMO
                 // Disconnect from InputManager
                 BInputManager.Inst.DisconnectController(controllerID);
 
-                LogConsole($"Device '{playerInputListener.DeviceName}' has disconnected from: {controllerID}");
+                LogConsole($"Device '{deviceInputPlayerListener.DeviceName}' has disconnected from: {controllerID}");
             }
             else
             {
-                LogConsoleWarning("Attempted to remove untracked or mismatched device: " + playerInputListener.DeviceName);
+                LogConsoleWarning("Attempted to remove untracked or mismatched device: " + deviceInputPlayerListener.DeviceName);
             }
         }
         
-        private void On_PlayerInputListener_ButtonPressed(EControllerID controllerID, EInputButton inputButton)
-        {
-            InvokeButtonPressed(controllerID, inputButton);
-        }
-
-        private void On_PlayerInputListener_ButtonReleased(EControllerID controllerID, EInputButton inputButton)
-        {
-            InvokeButtonReleased(controllerID, inputButton);
-        }
-
-        private void On_PlayerInputListener_AxisUpdated(EControllerID controllerID, EInputAxis inputAxis, Vector2 axisValues)
-        {
-            InvokeAxisUpdated(controllerID, inputAxis, axisValues.x, axisValues.y);
-        }
-        
-        private void INPUT_OnControllerDisconnected(BEHandle<EControllerID> handle)
-        {
-            EControllerID disconnectedID = handle.Arg1;
-
-            if (connectedDeviceControllers.TryGetValue(disconnectedID, out var playerInputListener))
-            {
-                LogConsole($"Handling controller disconnection: {disconnectedID}");
-                OnDeviceHasLeft(disconnectedID, playerInputListener);
-            }
-            else
-            {
-                // Already removed, likely from PlayerInputListener.onDeviceLost
-                LogConsole($"Disconnected controller ID {disconnectedID} was already cleaned up.");
-            }
-        }
-
-        private EControllerID GetNextFreeDeviceControllerID()
-        {
-            EControllerID controllerID = EControllerID.NONE;
-            foreach (EControllerID controllerIDitr in BConsts.DEVICE_CONTROLLERS)
-            {
-                if (connectedDeviceControllers.ContainsKey(controllerIDitr) == false)
-                {
-                    controllerID = controllerIDitr;
-                    break;
-                }
-            }
-            return controllerID;
-        }
-
         public EControllerType GetControllerTypeFromName(string name)
         {
             name = name.ToLower();
@@ -169,5 +97,83 @@ namespace BNJMO
 
             return EControllerType.MiscController;
         }
+        
+        #endregion
+
+        #region Inspector Variables
+
+
+        #endregion
+
+        #region Variables
+
+        private Dictionary<EControllerID, DeviceInputPlayerListener> connectedDeviceControllers = new();
+        
+        #endregion
+
+        #region Life Cycle
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            BEvents.INPUT_ControllerDisconnected += INPUT_OnControllerDisconnected;
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            foreach (EControllerID controllerID in connectedDeviceControllers.Keys)
+            {
+                DeviceInputPlayerListener deviceInputPlayerListener = connectedDeviceControllers[controllerID];
+                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.MOVEMENT, deviceInputPlayerListener.MoveAxis);
+                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.ROTATION, deviceInputPlayerListener.RotateAxis);
+                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.TRIGGER_AXIS_L, deviceInputPlayerListener.RotateAxis);
+                On_PlayerInputListener_AxisUpdated(controllerID, EInputAxis.TRIGGER_AXIS_R, deviceInputPlayerListener.RotateAxis);
+            }
+        }
+        
+        #endregion
+
+        #region Events Callbacks
+
+
+        #endregion
+
+        #region Others
+
+        private void On_PlayerInputListener_ButtonPressed(EControllerID controllerID, EInputButton inputButton)
+        {
+            InvokeButtonPressed(controllerID, inputButton);
+        }
+
+        private void On_PlayerInputListener_ButtonReleased(EControllerID controllerID, EInputButton inputButton)
+        {
+            InvokeButtonReleased(controllerID, inputButton);
+        }
+
+        private void On_PlayerInputListener_AxisUpdated(EControllerID controllerID, EInputAxis inputAxis, Vector2 axisValues)
+        {
+            InvokeAxisUpdated(controllerID, inputAxis, axisValues.x, axisValues.y);
+        }
+        
+        private void INPUT_OnControllerDisconnected(BEventHandle<EControllerID, EControllerType> handle)
+        {
+            EControllerID disconnectedID = handle.Arg1;
+
+            if (connectedDeviceControllers.TryGetValue(disconnectedID, out var playerInputListener))
+            {
+                LogConsole($"Handling controller disconnection: {disconnectedID}");
+                OnDeviceHasLeft(disconnectedID, playerInputListener);
+            }
+            else
+            {
+                // Already removed, likely from PlayerInputListener.onDeviceLost
+                LogConsole($"Disconnected controller ID {disconnectedID} was already cleaned up.");
+            }
+        }
+
+        #endregion
     }
 }

@@ -28,63 +28,85 @@ namespace BNJMO
         OTHER_STAGE, // (like in a Preview Scene)
     }
     #endregion
+    
+    #region Online
 
-    #region AR
-    public enum ARTrackingMode
+    public enum EOnlineBackend
+    {
+        None = 0,
+        Netcode,
+    }
+    
+    public enum EOnlineState
+    {
+        None,
+        NotConnected,
+        InLobby,
+        InOnlineSession,
+    }
+
+    public enum ELobbyType
+    {
+        None,
+        QuickMatch,
+        Private,
+    }
+    
+    public enum EJoinOnlineSessionFailureType
+    {
+        None = 0,
+        CreateLobby,
+        JoinLobbyByQuickMatch,
+        JoinLobbyByCode,
+        CreateRelay,
+        JoinRelay,
+        StartOnlineSession,
+        JoinLobbyTimeout,
+        JoinOnlineSessionTimeout,
+    }
+
+    public enum ELeaveOnlineSessionReason
+    {
+        None = 0,
+        LeaveFromUI,
+        JoinOnlineSessionFailure,
+        HostLeft,
+    }
+    
+    public enum ENetworkID
     {
         NONE = 0,
-        AR_FOUNDATION = 4,
+        LOCAL = 1001,
+        HOST_1 = 1,
+        CLIENT_2 = 2,
+        CLIENT_3 = 3,
+        CLIENT_4 = 4,
+        CLIENT_5 = 5,
+        CLIENT_6 = 6,
+        CLIENT_7 = 7,
+        CLIENT_8 = 8,
+        CLIENT_9 = 9,
+        CLIENT_10 = 10,
+        CLIENT_11 = 11,
+        CLIENT_12 = 12,
+        CLIENT_13 = 13,
+        CLIENT_14 = 14,
+        CLIENT_15 = 15,
+        CLIENT_16 = 16,
     }
 
-    public enum BTrackerType
+    public enum EAuthority
     {
         NONE = 0,
-        IMAGE = 1,
-        OBJECT = 2,
+        LOCAL = 1,
+        HOST = 2,
+        CLIENT = 3,
     }
 
-    public enum EPlayAreaType
-    {
-        NONE = 0,
-        RECTANGLE = 1,
-
-    }
-
-    public enum EPlayAreaState
-    {
-        NOT_INITIALIZED = 0,
-        SETTING_ANCHORS = 1,
-        READY = 2,
-    }
-
+    
     #endregion
 
     #region States
-    /// <summary>
-    /// State of the whole application. 
-    /// "IN" is used a hierarchy separator. A state can either be in MENU or in GAME.
-    /// Note: Update the states classifications lists inside the class when more states are added to AppState!
-    /// </summary>
-    public enum EAppState
-    {
-        NONE = 0,
-
-        /* Entry */
-        IN_ENTRY = 100,
-
-        /* Menu */
-        IN_MENU_IN_MAIN = 200,
-
-        /* Game */
-        IN_GAME_IN_NOT_STARTED = 300,
-        IN_GAME_IN_COUNTDOWN = 301,
-        IN_GAME_IN_RUNNING = 302,
-        IN_GAME_IN_PAUSED = 303,
-        IN_GAME_IN_OVER = 304,
-    }
-
-
-    
     [Serializable]
     public struct SScene
     {
@@ -92,29 +114,6 @@ namespace BNJMO
         public int SceneBuildID;
     }
 
-
-    /// <summary>
-    /// State of the UI menu.
-    /// "IN" is used here as a hierarchy separator. Generally second IN refers to a pop-up context on top of the original menu state.
-    /// </summary>
-    public enum EUIState
-    {
-        NONE = 0,
-
-        /* Entry */
-        IN_ENTRY = 100,
-
-        /* Menu */
-        IN_MENU_MAIN = 200,
-        IN_MENU_EXAMPLE_TEXTS = 250,
-
-        /* Game */
-        IN_GAME_IN_NOT_STARTED = 300,
-        IN_GAME_IN_COUNTDOWN = 301,
-        IN_GAME_IN_RUNNING = 302,
-        IN_GAME_IN_PAUSED = 303,
-        IN_GAME_OVER = 304
-    }
     #endregion
 
     #region Game
@@ -134,10 +133,28 @@ namespace BNJMO
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
         public EControllerID ControllerID;
-        public bool IsLocalPlayer;
         public ENetworkID NetworkID;
         public ETeamID TeamID;
         public string PlayerName;
+    }
+
+    [Serializable]
+    public struct SPlayerReplicationArg
+    {
+        public ENetworkID NetworkID;
+        public EControllerID LocalControllerID;
+        public EPlayerID PlayerID;
+        public ESpectatorID SpectatorID;
+        public ETeamID TeamID;
+        public string PlayerName;
+    }
+
+    [Serializable]
+    public struct SPlayerIDMigration
+    {
+        public EControllerID LocalControllerID;
+        public EPlayerID ToPlayerID;
+        public ESpectatorID ToSpectatorID;
     }
     
     public struct SPawnInit
@@ -238,43 +255,61 @@ namespace BNJMO
     {
         NONE = 0,
         /* Touch */
-        TOUCH_1 = 80,
-        TOUCH_2 = 81,
-        TOUCH_3 = 82,
-        TOUCH_4 = 83,
+        TOUCH_1 = 201,
+        TOUCH_2 = 202,
+        TOUCH_3 = 203,
+        TOUCH_4 = 204,
         /* AI */
-        AI_1 = 2,
-        AI_2 = 3,
-        AI_3 = 4,
-        AI_4 = 5,
+        AI_1 = 1,
+        AI_2 = 2,
+        AI_3 = 3,
+        AI_4 = 4,
+        AI_5 = 5,
+        AI_6 = 6,
+        AI_7 = 7,
+        AI_8 = 8,
+        AI_9 = 9,
+        AI_10 = 10,
+        AI_11 = 11,
+        AI_12 = 12,
+        AI_13 = 13,
+        AI_14 = 14,
+        AI_15 = 15,
+        AI_16 = 16,
         /* Devices */
-        DEVICE_1 = 6,
-        DEVICE_2 = 7,
-        DEVICE_3 = 8,
-        DEVICE_4 = 9,
-        DEVICE_5 = 14,
-        DEVICE_6 = 15,
-        DEVICE_7 = 16,
-        DEVICE_8 = 17,
-        DEVICE_9 = 18,
-        DEVICE_10 = 19,
-        DEVICE_11 = 20,
-        DEVICE_12 = 21,
+        DEVICE_1 = 101,
+        DEVICE_2 = 102,
+        DEVICE_3 = 103,
+        DEVICE_4 = 104,
+        DEVICE_5 = 105,
+        DEVICE_6 = 106,
+        DEVICE_7 = 107,
+        DEVICE_8 = 108,
+        DEVICE_9 = 109,
+        DEVICE_10 = 110,
+        DEVICE_11 = 111,
+        DEVICE_12 = 112,
+        DEVICE_13 = 113,
+        DEVICE_14 = 114,
+        DEVICE_15 = 115,
+        DEVICE_16 = 116,
         /* Network */
-        NET_HOST = 50,
-        NET_CLIENT_1 = 52,
-        NET_CLIENT_2 = 53,
-        NET_CLIENT_3 = 54,
-        NET_CLIENT_4 = 55,
-        NET_CLIENT_5 = 56,
-        NET_CLIENT_6 = 57,
-        NET_CLIENT_7 = 58,
-        NET_CLIENT_8 = 59,
-        NET_CLIENT_9 = 60,
-        NET_CLIENT_10 = 61,
-        NET_CLIENT_11 = 64,
-        NET_CLIENT_12 = 62,
-        NET_CLIENT_13 = 63,
+        REMOTE_1 = 1001,
+        REMOTE_2 = 1002,
+        REMOTE_3 = 1003,
+        REMOTE_4 = 1004,
+        REMOTE_5 = 1005,
+        REMOTE_6 = 1006,
+        REMOTE_7 = 1007,
+        REMOTE_8 = 1008,
+        REMOTE_9 = 1009,
+        REMOTE_10 = 1010,
+        REMOTE_11 = 1011,
+        REMOTE_12 = 1012,
+        REMOTE_13 = 1013,
+        REMOTE_14 = 1014,
+        REMOTE_15 = 1015,
+        REMOTE_16 = 1016,
     }
 
     public enum EControllerType
@@ -379,7 +414,7 @@ namespace BNJMO
         JSON_UNITY = 1,
     }
 
-    public enum BEventReplicationType
+    public enum BEventBroadcastType
     {
         LOCAL,          // The event invocation is not replicated and is only invoked on the same instance where it got called.
         TO_ALL,         // The event invocation is replicated to every instance on the network including the one where it got initially called.
@@ -387,45 +422,5 @@ namespace BNJMO
         TO_TARGET       // The event invocation is only replicated on a specific targeted client (the designated client is specified as a parameter in the event invocation method).
     }
 
-    public enum BEHandleType
-    {
-        NONE,
-        GENERIC_0,
-        GENERIC_1,
-        GENERIC_2,
-        GENERIC_3,
-        GENERIC_4,
-        GENERIC_5,
-        STATE_UPDATE,
-        TEST
-    }
-
-    public enum ENetworkID
-    {
-        NONE,
-        LOCAL = 51,
-        HOST = 50,
-        CLIENT_1 = 22,
-        CLIENT_2 = 23,
-        CLIENT_3 = 24,
-        CLIENT_4 = 25,
-        CLIENT_5 = 26,
-        CLIENT_6 = 27,
-        CLIENT_7 = 28,
-        CLIENT_8 = 29,
-        CLIENT_9 = 30,
-        CLIENT_10 = 31,
-        CLIENT_11 = 34,
-        CLIENT_12 = 32,
-        CLIENT_13 = 33,
-    }
-
-    public enum ENetworkState
-    {
-        NOT_CONNECTED = 1,
-        HOST = 2,
-        CLIENT = 3,
-    }
-    
     #endregion
 }

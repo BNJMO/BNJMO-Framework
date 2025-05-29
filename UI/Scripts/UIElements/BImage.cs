@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -10,6 +11,7 @@ namespace BNJMO
     {
         #region Public Methods
 
+        [Obsolete("Use ImageColor attribute instead.")]
         public Color GetColor()
         {
             if (UnityImage)
@@ -28,6 +30,7 @@ namespace BNJMO
             return color;
         }
         
+        [Obsolete("Use ImageOpacity attribute instead.")]
         public float GetOpacity()
         {
             if (UnityImage)
@@ -86,22 +89,10 @@ namespace BNJMO
             }
         }
 
-        public void SetOpacity(float opacity)
+        public void SetOpacity(float alpha)
         {
-            color = new Color(color.r, color.g, color.b, opacity);
-
-            if (UnityImage)
-            {
-                UnityImage.color = color;
-            }
-            if (UnityRawImage)
-            {
-                UnityRawImage.color = color;
-            }
-            if (UnitySpriteRenderer)
-            {
-                UnitySpriteRenderer.color = color;
-            }
+            Color newColor = new Color(color.r, color.g, color.b, alpha);
+            SetColor(newColor);
         }
 
         public bool GetRaycast()
@@ -172,6 +163,13 @@ namespace BNJMO
         #endregion
 
         #region Variables
+
+        public Sprite Sprite => sprite;
+
+        public Color ImageColor => color;
+    
+        public float ImageOpacity => color.a;
+
         public Image UnityImage { get; private set; }
 
         public RawImage UnityRawImage { get; private set; }

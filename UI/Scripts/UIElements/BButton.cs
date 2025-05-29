@@ -29,8 +29,8 @@ namespace BNJMO
         /* Button Enability */
         public void EnableButton(bool forceEnable = false)
         {
-            if (IsButtonDisabled == true
-                || forceEnable == true)
+            if (IsButtonDisabled
+                || forceEnable)
             {
                 IsButtonDisabled = false;
 
@@ -53,7 +53,7 @@ namespace BNJMO
         public void DisableButton(bool forceDisable = false)
         {
             if (IsButtonDisabled == false
-                || forceDisable == true)
+                || forceDisable)
             {
                 IsButtonDisabled = true;
 
@@ -148,7 +148,7 @@ namespace BNJMO
         /* Button Pointer Interface */ 
         public void OnHighlighted()
         {
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 //LogConsoleWarning("Trying to highlight a disabled button!");
                 return;
@@ -157,19 +157,19 @@ namespace BNJMO
             IsHighlighted = true;
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonImage);
             }
 
             if (bImageReference
-                && useImageSpecialColors == true)
+                && useImageSpecialColors)
             {
                 bImageReference.SetColor(imageHighlightedColor);
             }
 
             if (bTextReference
-                && useTextSpecialColors == true)
+                && useTextSpecialColors)
             {
                 bTextReference.SetColor(textHighlightedColor);
             }
@@ -186,15 +186,12 @@ namespace BNJMO
                 ButtonHighlightedUEvent.Invoke();
             }
 
-            if (BEvents.IsInstanceSet)
-            {
-                BEvents.UI_ButtonHighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-            }
+            BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnReleased(bool cursorInside)
         {
-            if (IsButtonDisabled == true
+            if (IsButtonDisabled
                 || isBeingPressed == false)
             {
                 return;
@@ -203,25 +200,25 @@ namespace BNJMO
             isBeingPressed = false;
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonImage);
             }
 
             if (bImageReference
-                && useImageSpecialColors == true)
+                && useImageSpecialColors)
             {
                 bImageReference.SetColor(imageHighlightedColor);
             }
 
             if (bTextReference
-                && useTextSpecialColors == true)
+                && useTextSpecialColors)
             {
                 bTextReference.SetColor(textHighlightedColor);
             }
 
             if ((onPressedSound)
-                && (cursorInside == true))
+                && (cursorInside))
             {
                 BAudioManager.SpawnSoundObject(onSuccessfullyReleasedSound);
             }
@@ -233,15 +230,12 @@ namespace BNJMO
                 ButtonReleasedUEvent.Invoke();
             }
 
-            if (BEvents.IsInstanceSet)
-            {
-                BEvents.UI_ButtonReleased.Invoke(new BEHandle<BButton, bool>(this, cursorInside), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-            }
+            BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnPressed()
         {
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 return;
             }
@@ -249,19 +243,19 @@ namespace BNJMO
             isBeingPressed = true;
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonPressedImage);
             }
 
             if (bImageReference
-                && useImageSpecialColors == true)
+                && useImageSpecialColors)
             {
                 bImageReference.SetColor(ImagePressedColor);
             }
 
             if (bTextReference
-                && useTextSpecialColors == true)
+                && useTextSpecialColors)
             {
                 bTextReference.SetColor(textPressedColor);
             }
@@ -283,15 +277,12 @@ namespace BNJMO
                 ButtonPressedUEvent.Invoke();
             }
 
-            if (BEvents.IsInstanceSet)
-            {
-                BEvents.UI_ButtonPressed.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-            }
+            BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnUnhighlighted()
         {
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 return;
             }
@@ -299,7 +290,7 @@ namespace BNJMO
             IsHighlighted = false;
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonImage);
             }
@@ -321,15 +312,12 @@ namespace BNJMO
                 ButtonUnhighlightedUEvent.Invoke();
             }
 
-            if (BEvents.IsInstanceSet)
-            {
-                BEvents.UI_ButtonUnhighlighted.Invoke(new BEHandle<BButton>(this), BEventReplicationType.LOCAL, BManager.Inst.Config.DebugButtonEvents);
-            }
+            BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
         }
 
         public void OnHoveredEnter()
         {
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 return;
             }
@@ -337,19 +325,19 @@ namespace BNJMO
             OnHighlighted();
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonImage);
             }
 
             if (bImageReference
-                && useImageSpecialColors == true)
+                && useImageSpecialColors)
             {
                 bImageReference.SetColor(imageHoveredColor);
             }
 
             if (bTextReference
-                && useTextSpecialColors == true)
+                && useTextSpecialColors)
             {
                 bTextReference.SetColor(textHoveredColor);
             }
@@ -364,7 +352,7 @@ namespace BNJMO
 
         public void OnHoveredExit()
         {
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 return;
             }
@@ -372,19 +360,19 @@ namespace BNJMO
             isBeingPressed = false;
 
             if (bImageReference
-                && useImagePressedSprite == true)
+                && useImagePressedSprite)
             {
                 bImageReference.SetSprite(buttonImage);
             }
 
             if (bImageReference
-                && useImageSpecialColors == true)
+                && useImageSpecialColors)
             {
                 bImageReference.SetColor(imageHighlightedColor);
             }
 
             if (bTextReference
-                && useTextSpecialColors == true)
+                && useTextSpecialColors)
             {
                 bTextReference.SetColor(textHighlightedColor);
             }
@@ -500,13 +488,22 @@ namespace BNJMO
         #region Variables
 
         public bool IsHighlighted { get; private set; }
+        
+        
         public bool IsButtonDisabled { get { return isButtonDisabled; } private set { isButtonDisabled = value; } }
+        
         public bool UseImageSpecialColors { get { return useImageSpecialColors; } set { useImageSpecialColors = value; } }
+        
         public BImage BImage { get { return bImageReference; } }
+        
         public BText BText { get { return bTextReference; } }
+        
         public BButton LeftButton { get { return leftButton; } set { leftButton = value; } }
+        
         public BButton RightButton { get { return rightButton; } set { rightButton = value; } }
+        
         public BButton UpperButton { get { return upperButton; } set { upperButton = value; } }
+        
         public BButton BottomButton { get { return bottomButton; } set { bottomButton = value; } }
         
         #endregion
@@ -532,7 +529,7 @@ namespace BNJMO
             
             objectNamePrefix = "B_";
 
-            if (overrideUINameFromText == true)
+            if (overrideUINameFromText)
             {
                 UIElementName = buttonText;
             }
@@ -540,7 +537,7 @@ namespace BNJMO
             base.OnValidate();
 
             // Update Children BUIElements references
-            if (automaticallyFindChildBUIElements == true)
+            if (automaticallyFindChildBUIElements)
             {
                 SetComponentIfNull(ref bTextReference);
                 SetComponentIfNull(ref bImageReference); 
@@ -563,7 +560,7 @@ namespace BNJMO
                 bImageReference.UIElementName = UIElementName;
             }
 
-            if (isButtonDisabled == true)
+            if (isButtonDisabled)
             {
                 DisableButton(true);
             }
@@ -594,7 +591,7 @@ namespace BNJMO
 
             IsHighlighted = false;
 
-            if (IsButtonDisabled == true)
+            if (IsButtonDisabled)
             {
                 return;
             }

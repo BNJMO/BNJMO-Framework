@@ -20,26 +20,36 @@ namespace BNJMO
             spectatorID = playerInit.SpectatorID;
             controllerID = playerInit.ControllerID;
             networkID = playerInit.NetworkID;
-            isLocalPlayer = playerInit.IsLocalPlayer;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
-            UpdateObjectNameOnPartyStateChange(false);
+            UpdateObjectNameToPartyState(false);
         }
-        
-        public void SetPlayerName(string newPlayerName, bool invokeBEvent = true)
-        {
-            playerName = newPlayerName;
-            name = playerName;
 
-            if (invokeBEvent)
-            {
-                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
-            }
+        public bool SetPlayerID(EPlayerID newPlayerID)
+        {
+            if (PlayerID == newPlayerID)
+                return false;
+
+            playerID = newPlayerID;
+            UpdateObjectNameToPartyState();
+
+            return true;
         }
         
+        public bool SetSpectatorID(ESpectatorID newSpectatorID)
+        {
+            if (SpectatorID == newSpectatorID)
+                return false;
+
+            spectatorID = newSpectatorID;
+            UpdateObjectNameToPartyState();
+
+            return true;
+        }
+
         public bool SetControllerID(EControllerID newControllerID)
         {
-            if (ARE_ENUMS_EQUAL(ControllerID, newControllerID, true)
+            if (ControllerID == newControllerID
                 || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
                 return false;
             
@@ -52,7 +62,7 @@ namespace BNJMO
 
         public bool SetTeamID(ETeamID newTeamID)
         {
-            if (ARE_ENUMS_EQUAL(newTeamID, teamID, true)
+            if (newTeamID == teamID
                 || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                 || BPlayerManager.Inst.CanJoinTeam(newTeamID) == false)
                 return false;
@@ -63,7 +73,28 @@ namespace BNJMO
 
             return true;
         }
-        
+
+        public bool SetNetworkID(ENetworkID newNetworkID)
+        {
+            if (NetworkID == newNetworkID)
+                return false;
+            
+            networkID = newNetworkID;
+
+            return true;
+        }
+               
+        public void SetPlayerName(string newPlayerName, bool invokeBEvent = true)
+        {
+            playerName = newPlayerName;
+            name = playerName;
+
+            if (invokeBEvent)
+            {
+                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
+            }
+        }
+
         public bool JoinParty()
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
@@ -78,7 +109,7 @@ namespace BNJMO
             
             BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this));
 
-            UpdateObjectNameOnPartyStateChange();
+            UpdateObjectNameToPartyState();
             
             return true;
         }
@@ -97,7 +128,7 @@ namespace BNJMO
             
             BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this));
 
-            UpdateObjectNameOnPartyStateChange();
+            UpdateObjectNameToPartyState();
             
             return true;
         }
@@ -133,13 +164,14 @@ namespace BNJMO
             return BPlayerManager.Inst.SpawnPawn(PlayerID);
         }
         
-        public bool DestroyPawn()
+        public bool DestroyPawn(bool logWarnings = false)
         {
-            return BPlayerManager.Inst.DestroyPawn(PlayerID);
+            return BPlayerManager.Inst.DestroyPawn(PlayerID, logWarnings);
         }
 
         public void DestroyPlayer()
         {
+            DestroyPawn(false);
             Destroy(gameObject);
         }
 
@@ -169,7 +201,26 @@ namespace BNJMO
         
         public ENetworkID NetworkID => networkID;
 
-        public bool IsLocalPlayer => isLocalPlayer;
+        public bool IsLocalPlayer
+        {
+            get
+            {
+                if (networkID == ENetworkID.LOCAL)
+                    return true;
+
+                if (BOnlineManager.Inst
+                    && BOnlineManager.Inst.OnlineHandler)
+                {
+                    return BOnlineManager.Inst.OnlineHandler.LocalNetworkID == networkID;
+                }
+
+                return true;
+            }
+        }
+        
+        public bool IsAI => BUtils.IsControllerIDAI(ControllerID);
+
+        public bool IsRemote => BUtils.IsControllerIDRemote(ControllerID); 
 
         public ETeamID TeamID => teamID;
         
@@ -211,7 +262,7 @@ namespace BNJMO
 
         #region Others
 
-        protected virtual void UpdateObjectNameOnPartyStateChange(bool invokeBEvent = true)
+        protected virtual void UpdateObjectNameToPartyState(bool invokeBEvent = true)
         {
             if (BManager.Inst.Config.MatchPlayerNameToPartyState == false)
                 return;

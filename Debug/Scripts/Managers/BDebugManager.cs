@@ -34,7 +34,7 @@ namespace BNJMO
             BEvents.APP_SceneUpdated += BEvents_SceneUpdated;
         }
 
-        private void BEvents_SceneUpdated(BEHandle<SScene> beHandle)
+        private void BEvents_SceneUpdated(BEventHandle<SScene> bEventHandle)
         {
             ReinitializeDebugTexts();
 
@@ -79,7 +79,7 @@ namespace BNJMO
                     if (reportedDebugTexts.ContainsKey(debugID) == false)
                     {
                         reportedDebugTexts.Add(debugID, true);
-                        if (BManager.Inst.Config.DebugButtonEvents)
+                        if (BManager.Inst.Config.LogInputButtonEvents)
                         {
                             LogConsoleWarning("Debug text with ID <color=gray>" + debugID + "</color> not found in this scene!");
                         }

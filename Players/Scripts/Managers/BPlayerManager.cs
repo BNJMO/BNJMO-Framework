@@ -16,10 +16,10 @@ namespace BNJMO
 
         #region Public Methods
 
-        /* Controller */
-        public PlayerBase GetPlayer(EControllerID controllerID)
+        /* ControllerID */
+        public PlayerBase GetPlayer(EControllerID controllerID, bool logWarnings = true)
         {
-            if (controllerID == EControllerID.NONE)
+            if (IS_NONE(controllerID, logWarnings))
                 return null;
             
             PlayerBase player = null;
@@ -47,6 +47,24 @@ namespace BNJMO
             return true;
         }
 
+        /* NetworkID */
+        public PlayerBase[] GetAllPlayersFromNetworkID(ENetworkID networkID, bool logWarnings = true)
+        {
+            if (IS_NONE(networkID, logWarnings))
+                return null;
+            
+            List<PlayerBase> players =new();
+            foreach (PlayerBase playerItr in ConnectedPlayers)
+            {
+                if (playerItr.NetworkID == networkID)
+                {
+                    players.Add(playerItr);
+                    break;
+                }
+            }
+            return players.ToArray();
+        }
+        
         /* Team */
         public bool CanJoinTeam(ETeamID teamID, bool logWarnings = true)
         {
@@ -255,13 +273,13 @@ namespace BNJMO
         public List<PlayerBase> ConnectedPlayers { get; } = new();
         
         /// <summary> Map with all the players in the lobby. </summary>
-        public Dictionary<ESpectatorID, PlayerBase> PlayersInLobby { get; } = new();
+        public Dictionary<ESpectatorID, PlayerBase> PlayersInLobby { get; } = new();        // TODO: Remove?
 
         /// <summary> Map with all the players in the party. </summary>
-        public Dictionary<EPlayerID, PlayerBase> PlayersInParty { get; } = new();
+        public Dictionary<EPlayerID, PlayerBase> PlayersInParty { get; } = new();        // TODO: Remove?
 
         /// <summary> Added whenever a pawn has spawned. Removed when he gets destroyed. </summary>
-        public Dictionary<EPlayerID, PawnBase> ActivePawns { get; } = new();
+        public Dictionary<EPlayerID, PawnBase> ActivePawns { get; } = new();        // TODO: Remove?
 
         private PlayerBase playerPrefab;
         private Dictionary<EPlayerID, PlayerBase> playerPrefabsMap { get; } = new();
@@ -284,43 +302,242 @@ namespace BNJMO
         {
             base.OnEnable();
 
-            BEvents.INPUT_ControllerConnected += BEvents_OnControllerConnected;
-            BEvents.INPUT_ControllerDisconnected += BEvents_OnControllerDisconnected;
-            BEvents.APP_SceneUpdated += BEvents_OnSceneUpdated;
+            BEvents.APP_SceneUpdated += BEvents_APP_OnSceneUpdated;
+            BEvents.INPUT_ControllerConnected += BEvents_INPUT_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected += BEvents_INPUT_OnControllerDisconnected;
+            BEvents.ONLINE_LaunchSessionSucceeded += BEvents_ONLINE_OnLaunchSessionSucceeded;
+            BEvents.ONLINE_ShutdownSession += BEvents_ONLINE_OnShutdownSession;
+            BEvents.ONLINE_ClientLeft += BEvents_ONLINE_OnClientLeft;
+            BEvents.ONLINE_RequestReplicatePlayer += BEvents_ONLINE_OnRequestReplicatePlayer;
+            BEvents.ONLINE_MigratePlayerIDs += BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDsMigration += BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_ReplicatePlayer += BEvents_ONLINE_OnReplicatePlayer;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
-            BEvents.INPUT_ControllerConnected.Event -= BEvents_OnControllerConnected;
-            BEvents.INPUT_ControllerDisconnected.Event -= BEvents_OnControllerDisconnected;
-            BEvents.APP_SceneUpdated -= BEvents_OnSceneUpdated;
+            BEvents.APP_SceneUpdated -= BEvents_APP_OnSceneUpdated;
+            BEvents.INPUT_ControllerConnected -= BEvents_INPUT_OnControllerConnected;
+            BEvents.INPUT_ControllerDisconnected -= BEvents_INPUT_OnControllerDisconnected;
+            BEvents.ONLINE_LaunchSessionSucceeded -= BEvents_ONLINE_OnLaunchSessionSucceeded;
+            BEvents.ONLINE_ShutdownSession -= BEvents_ONLINE_OnShutdownSession;
+            BEvents.ONLINE_ClientLeft -= BEvents_ONLINE_OnClientLeft;
+            BEvents.ONLINE_RequestReplicatePlayer -= BEvents_ONLINE_OnRequestReplicatePlayer;
+            BEvents.ONLINE_MigratePlayerIDs -= BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDsMigration -= BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_ReplicatePlayer -= BEvents_ONLINE_OnReplicatePlayer;
         }
 
         #endregion
 
         #region Events Callbacks
-        
-        private void BEvents_OnControllerConnected(BEHandle<EControllerID> eventHandle)
+                
+        /* Scene */
+        private void BEvents_APP_OnSceneUpdated(BEventHandle<SScene> bEventHandle)
+        {
+            FindPlayerSpawnPositionsInScene();
+        }
+
+        /* Input */
+        private void BEvents_INPUT_OnControllerConnected(BEventHandle<EControllerID, EControllerType> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             if (IS_NOT_NULL(GetPlayer(controllerID), true))
+                return;
+
+            if (BUtils.IsControllerIDRemote(controllerID))
                 return;
 
             ESpectatorID spectatorID = GetNextFreeSpectatorID();
             SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID);
         }
 
-        private void BEvents_OnControllerDisconnected(BEHandle<EControllerID> eventHandle)
+        private void BEvents_INPUT_OnControllerDisconnected(BEventHandle<EControllerID, EControllerType> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
             DestroyPlayer(controllerID);
         }
-        
-        private void BEvents_OnSceneUpdated(BEHandle<SScene> beHandle)
+
+        /* Multiplayer */
+        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle handle)
         {
-            FindPlayerSpawnPositionsInScene();
+            foreach (var playerItr in ConnectedPlayers)
+            {
+                if (playerItr.NetworkID != ENetworkID.LOCAL)
+                    continue;
+
+                ENetworkID localNetworkID = BOnlineManager.Inst.LocalNetworkID;
+                playerItr.SetNetworkID(localNetworkID);
+
+                SPlayerReplicationArg playerReplicationArg = CreatePlayerReplicationArg(playerItr);
+
+                switch (BOnlineManager.Inst.Authority)
+                {
+                    case EAuthority.CLIENT:
+                        BEvents.ONLINE_RequestReplicatePlayer.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+                        break;
+                }
+            }
+        }
+
+        private void BEvents_ONLINE_OnShutdownSession(BEventHandle<ELeaveOnlineSessionReason, ENetworkID> handle)
+        {
+            ENetworkID oldLocalNetworkID = handle.Arg2;
+            for (int i = ConnectedPlayers.Count - 1; i >= 0; i--)
+            {
+                var playerItr = ConnectedPlayers[i];
+                if (oldLocalNetworkID == ENetworkID.LOCAL)
+                    continue;
+                
+                if (playerItr.NetworkID == oldLocalNetworkID)
+                {
+                    playerItr.SetNetworkID(ENetworkID.LOCAL);
+                }
+                else
+                {
+                    BInputManager.Inst.DisconnectController(playerItr.ControllerID);
+                }
+            }
+        }
+
+        private void BEvents_ONLINE_OnClientLeft(BEventHandle<ENetworkID> handle)
+        {
+            ENetworkID leftNetworkID = handle.Arg1;
+            if (leftNetworkID == BOnlineManager.Inst.LocalNetworkID)
+                return;
+            
+            for (int i = ConnectedPlayers.Count - 1; i >= 0; i--)
+            {
+                var playerItr = ConnectedPlayers[i];
+                if (playerItr.NetworkID != leftNetworkID)
+                    continue;
+
+                DestroyPlayer(playerItr.ControllerID);
+            }
+        }
+
+        private void BEvents_ONLINE_OnRequestReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
+        {
+            if (ARE_EQUAL(handle.InvokingNetworkID, ENetworkID.HOST_1, true))
+                return;
+            
+            SPlayerReplicationArg playerReplicationArg = handle.Arg1;
+
+            EPlayerID newPlayerID = EPlayerID.NONE;
+            if (playerReplicationArg.PlayerID != EPlayerID.NONE)
+            {
+                newPlayerID = GetNextFreePlayerID();
+            }
+            
+            ESpectatorID newSpectatorID = ESpectatorID.NONE;
+            if (playerReplicationArg.SpectatorID != ESpectatorID.NONE)
+            {
+                newSpectatorID = GetNextFreeSpectatorID();
+            }
+            
+            ETeamID teamID = playerReplicationArg.TeamID;
+            string playerName = playerReplicationArg.PlayerName;
+            ENetworkID networkID = handle.InvokingNetworkID;
+            EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
+            SpawnPlayer(newPlayerID, newSpectatorID, controllerID, networkID, teamID, playerName);
+
+            // Response to Host
+            SPlayerIDMigration playerIDMigration = new()
+            {
+                LocalControllerID = playerReplicationArg.LocalControllerID,
+                ToPlayerID = newPlayerID,
+                ToSpectatorID = newSpectatorID,
+            };
+            BEvents.ONLINE_MigratePlayerIDs.Invoke(new (playerIDMigration), BEventBroadcastType.TO_TARGET, true, networkID);
+        }
+
+        private void BEvents_ONLINE_OnMigratePlayerIDs(BEventHandle<SPlayerIDMigration> handle)
+        {
+            if (handle.InvokingNetworkID != ENetworkID.HOST_1)
+                return;
+
+            SPlayerIDMigration playerIDMigration = handle.Arg1;
+            EControllerID controllerID = playerIDMigration.LocalControllerID;
+
+            
+            PlayerBase player = GetPlayer(controllerID);
+            if (IS_NULL(player, true))
+                return;
+
+            ESpectatorID oldSpectatorID = player.SpectatorID;
+            if (PlayersInLobby.ContainsKey(oldSpectatorID))
+            {
+                PlayersInLobby.Remove(oldSpectatorID);
+            }
+            ESpectatorID newSpectatorID = playerIDMigration.ToSpectatorID;
+            player.SetSpectatorID(newSpectatorID);
+            if (IS_KEY_NOT_CONTAINED(PlayersInLobby, newSpectatorID))
+            {
+                PlayersInLobby.Add(newSpectatorID, player);
+            }
+            
+            EPlayerID oldPlayerID = player.PlayerID;
+            if (PlayersInParty.ContainsKey(oldPlayerID))
+            {
+                PlayersInParty.Remove(oldPlayerID);
+            }
+            EPlayerID newPlayerID = playerIDMigration.ToPlayerID;
+            player.SetPlayerID(newPlayerID);
+            if (IS_KEY_NOT_CONTAINED(PlayersInParty, newPlayerID))
+            {
+                PlayersInParty.Add(newPlayerID, player);
+            }
+            
+            BEvents.ONLINE_ConfirmPlayerIDsMigration.Invoke(new(), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+        }
+        
+        private void BEvents_ONLINE_OnConfirmPlayerIDsMigration(BEventHandle handle)
+        {
+            ENetworkID newNetworkID = handle.InvokingNetworkID;
+            
+            if (ARE_NOT_EQUAL(BOnlineManager.Inst.Authority, EAuthority.HOST, true)
+                || ARE_EQUAL(newNetworkID, ENetworkID.HOST_1, true))
+                return;
+
+            foreach (var playerItr in ConnectedPlayers)
+            {
+                if (playerItr == null
+                    || playerItr.NetworkID == newNetworkID)
+                    continue;
+
+                LogConsoleYellow($"Replicating : {playerItr.PlayerName} to {newNetworkID}");
+                SPlayerReplicationArg playerReplicationArgItr = CreatePlayerReplicationArg(playerItr);
+                BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
+            }
+        }
+
+        private void BEvents_ONLINE_OnReplicatePlayer(BEventHandle<SPlayerReplicationArg> handle)
+        {
+            SPlayerReplicationArg playerReplicationArg = handle.Arg1;
+            
+            ENetworkID networkID = playerReplicationArg.NetworkID;
+            if (IS_NONE(networkID, true)
+                || networkID == BOnlineManager.Inst.LocalNetworkID)
+                return;
+            
+            EPlayerID playerID = playerReplicationArg.PlayerID;
+            ESpectatorID spectatorID = playerReplicationArg.SpectatorID;
+            if (playerID == EPlayerID.NONE
+                && spectatorID == ESpectatorID.NONE)
+            {
+                LogConsoleWarning("Both PlayerID and SpectatorID of replicated player are NONE!");
+            }
+
+            ETeamID teamID = playerReplicationArg.TeamID;
+            string playerName = playerReplicationArg.PlayerName;
+            
+            EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
+            if (IS_NONE(controllerID, true))
+                return;
+            
+            SpawnPlayer(playerID, spectatorID, controllerID, networkID, teamID, playerName);
         }
 
         #endregion
@@ -329,7 +546,8 @@ namespace BNJMO
 
         /* Spawn */
         protected virtual PlayerBase SpawnPlayer(EPlayerID playerID, ESpectatorID spectatorID,  
-            EControllerID controllerID, ENetworkID networkID = ENetworkID.LOCAL)
+            EControllerID controllerID, ENetworkID networkID = ENetworkID.LOCAL, ETeamID teamID = ETeamID.NONE, 
+            string playerName = "Player")
         {
             if (playerID == EPlayerID.NONE
                 && spectatorID == ESpectatorID.NONE)
@@ -340,7 +558,7 @@ namespace BNJMO
             
             if (spectatorID != ESpectatorID.NONE)
             {
-                PlayerBase playerWithSameSpectatorID = GetPlayerInParty(playerID, false);
+                PlayerBase playerWithSameSpectatorID = GetPlayerInLobby(spectatorID, false);
                 if (IS_NOT_NULL(playerWithSameSpectatorID, true))
                     return null;
             }
@@ -351,11 +569,17 @@ namespace BNJMO
                 if (IS_NOT_NULL(playerWithSamePlayerID, true))
                     return null;
             }
-
+            
             PlayerBase playerWithSameControllerID = GetPlayer(controllerID);
             if (IS_NOT_NULL(playerWithSameControllerID, true))
                 return null;
 
+            if (networkID == ENetworkID.LOCAL)
+            {
+                networkID = BOnlineManager.Inst.LocalNetworkID;
+            }
+
+            // Fetch player prefab
             PlayerBase selectedPlayerPrefab;
             if (BManager.Inst.Config.UseSamePrefabForAllPlayers)
             {
@@ -371,20 +595,21 @@ namespace BNJMO
             if (IS_NULL(selectedPlayerPrefab, true))
                 return null;
             
+            // Instantiate player prefab
             PlayerBase spawnedPlayer = Instantiate(selectedPlayerPrefab, transform, true);
             spawnedPlayer.Init(new SPlayerInit
             {
                 PlayerID = playerID,
                 SpectatorID = spectatorID,
                 ControllerID = controllerID,
-                IsLocalPlayer = true,
                 NetworkID = networkID,
-                TeamID = ETeamID.NONE,
-                PlayerName = "Player",
+                TeamID = teamID,
+                PlayerName = playerName,
             });
             
             ConnectedPlayers.Add(spawnedPlayer);
 
+            // Update party state
             switch (spawnedPlayer.PartyState)
             {
                 case EPlayerPartyState.IN_LOBBY:
@@ -396,11 +621,24 @@ namespace BNJMO
                     break;
             }
             
-            BEvents.PLAYERS_PlayerConnected.Invoke(new BEHandle<PlayerBase>(spawnedPlayer));
+            BEvents.PLAYERS_PlayerConnected.Invoke(new BEventHandle<PlayerBase>(spawnedPlayer));
 
+            // Replicate spawned player
+            var replicationArg = CreatePlayerReplicationArg(spawnedPlayer);
+            switch (BOnlineManager.Inst.Authority)
+            {
+                case EAuthority.HOST when networkID == BOnlineManager.Inst.LocalNetworkID:
+                    BEvents.ONLINE_ReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_ALL_OTHERS);
+                    break;
+                
+                case EAuthority.CLIENT when networkID == BOnlineManager.Inst.LocalNetworkID:
+                    BEvents.ONLINE_RequestReplicatePlayer.Invoke(new (replicationArg), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+                    break;
+            }
+            
             return spawnedPlayer;
         }
-        
+
         protected virtual bool DestroyPlayer(EControllerID controllerID)
         {
             PlayerBase player = GetPlayer(controllerID);
@@ -424,12 +662,13 @@ namespace BNJMO
             
             ConnectedPlayers.Remove(player);
             
-            BEvents.PLAYERS_PlayerDisconnected.Invoke(new BEHandle<PlayerBase>(player));
+            BEvents.PLAYERS_PlayerDisconnected.Invoke(new BEventHandle<PlayerBase>(player));
 
             player.DestroyPlayer();
             return true;
         }
 
+        /* IDs */
         private ESpectatorID GetNextFreeSpectatorID()
         {
             ESpectatorID spectatorID = ESpectatorID.NONE;
@@ -493,6 +732,22 @@ namespace BNJMO
                 }
             }
         }
+
+        /* Replication */
+        private static SPlayerReplicationArg CreatePlayerReplicationArg(PlayerBase fromPlayer)
+        {
+            SPlayerReplicationArg replicationArg = new()
+            {
+                NetworkID = fromPlayer.NetworkID,
+                LocalControllerID = fromPlayer.ControllerID,
+                PlayerID = fromPlayer.PlayerID,
+                SpectatorID = fromPlayer.SpectatorID,
+                TeamID = fromPlayer.TeamID,
+                PlayerName = fromPlayer.PlayerName,
+            };
+            return replicationArg;
+        }
+
 
         #endregion
     }

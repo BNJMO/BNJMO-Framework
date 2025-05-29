@@ -161,6 +161,26 @@ namespace BNJMO
         protected void LogConsoleRed(string logText)
         {
             Debug.Log("<color=white>[" + name + "]</color> <color=red>" + logText + "</color>");
+        }     
+        
+        /// <summary>
+        /// Prints a log text into the console if logging is enabled and the category of the text to log is not already added into the ignore list.
+        /// </summary>
+        /// <param name="logText"> Log text to print </param>
+        /// <param name="category"> Category of the log text </param>
+        protected void LogConsoleYellow(string logText)
+        {
+            Debug.Log("<color=white>[" + name + "]</color> <color=yellow>" + logText + "</color>");
+        }
+   
+        /// <summary>
+        /// Prints a log text into the console if logging is enabled and the category of the text to log is not already added into the ignore list.
+        /// </summary>
+        /// <param name="logText"> Log text to print </param>
+        /// <param name="category"> Category of the log text </param>
+        protected void LogConsoleBlue(string logText)
+        {
+            Debug.Log("<color=white>[" + name + "]</color> <color=Blue>" + logText + "</color>");
         }
 
         /// <summary>

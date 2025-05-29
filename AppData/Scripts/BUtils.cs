@@ -772,102 +772,58 @@ namespace BNJMO
             }
         }
 
-        public static EControllerID GetControllerIDFrom(ENetworkID networkID)
-        {
-            switch (networkID)
-            {
-                case ENetworkID.HOST:
-                    return EControllerID.NET_HOST;
-
-                case ENetworkID.CLIENT_1:
-                    return EControllerID.NET_CLIENT_1;
-
-                case ENetworkID.CLIENT_2:
-                    return EControllerID.NET_CLIENT_2;
-
-                case ENetworkID.CLIENT_3:
-                    return EControllerID.NET_CLIENT_3;
-
-                case ENetworkID.CLIENT_4:
-                    return EControllerID.NET_CLIENT_4;
-
-                case ENetworkID.CLIENT_5:
-                    return EControllerID.NET_CLIENT_5;
-
-                case ENetworkID.CLIENT_6:
-                    return EControllerID.NET_CLIENT_6;
-
-                case ENetworkID.CLIENT_7:
-                    return EControllerID.NET_CLIENT_7;
-
-                case ENetworkID.CLIENT_8:
-                    return EControllerID.NET_CLIENT_8;
-
-                case ENetworkID.CLIENT_9:
-                    return EControllerID.NET_CLIENT_9;
-
-                case ENetworkID.CLIENT_10:
-                    return EControllerID.NET_CLIENT_10;
-
-                case ENetworkID.CLIENT_11:
-                    return EControllerID.NET_CLIENT_11;
-
-                case ENetworkID.CLIENT_12:
-                    return EControllerID.NET_CLIENT_12;
-
-                case ENetworkID.CLIENT_13:
-                    return EControllerID.NET_CLIENT_13;
-
-                default:
-                    return EControllerID.NONE;
-            }
-        }
 
         public static ENetworkID GetNetworkIDFrom(EControllerID controllerID)
         {
             switch (controllerID)
             {
-                case EControllerID.NET_HOST:
-                    return ENetworkID.HOST;
+                case EControllerID.REMOTE_1:
+                    return ENetworkID.HOST_1;
 
-                case EControllerID.NET_CLIENT_1:
-                    return ENetworkID.CLIENT_1;
-
-                case EControllerID.NET_CLIENT_2:
+                case EControllerID.REMOTE_2:
                     return ENetworkID.CLIENT_2;
 
-                case EControllerID.NET_CLIENT_3:
+                case EControllerID.REMOTE_3:
                     return ENetworkID.CLIENT_3;
 
-                case EControllerID.NET_CLIENT_4:
+                case EControllerID.REMOTE_4:
                     return ENetworkID.CLIENT_4;
 
-                case EControllerID.NET_CLIENT_5:
+                case EControllerID.REMOTE_5:
                     return ENetworkID.CLIENT_5;
 
-                case EControllerID.NET_CLIENT_6:
+                case EControllerID.REMOTE_6:
                     return ENetworkID.CLIENT_6;
 
-                case EControllerID.NET_CLIENT_7:
+                case EControllerID.REMOTE_7:
                     return ENetworkID.CLIENT_7;
 
-                case EControllerID.NET_CLIENT_8:
+                case EControllerID.REMOTE_8:
                     return ENetworkID.CLIENT_8;
 
-                case EControllerID.NET_CLIENT_9:
+                case EControllerID.REMOTE_9:
                     return ENetworkID.CLIENT_9;
 
-                case EControllerID.NET_CLIENT_10:
+                case EControllerID.REMOTE_10:
                     return ENetworkID.CLIENT_10;
 
-                case EControllerID.NET_CLIENT_11:
+                case EControllerID.REMOTE_11:
                     return ENetworkID.CLIENT_11;
 
-                case EControllerID.NET_CLIENT_12:
+                case EControllerID.REMOTE_12:
                     return ENetworkID.CLIENT_12;
 
-                case EControllerID.NET_CLIENT_13:
+                case EControllerID.REMOTE_13:
                     return ENetworkID.CLIENT_13;
+                
+                case EControllerID.REMOTE_14:
+                    return ENetworkID.CLIENT_14;
+                
+                case EControllerID.REMOTE_15:
+                    return ENetworkID.CLIENT_15;
+                
+                case EControllerID.REMOTE_16:
+                    return ENetworkID.CLIENT_16;
 
                 default:
                     return ENetworkID.NONE;
@@ -939,6 +895,30 @@ namespace BNJMO
         }
 
 
+        #endregion
+        
+        #region Input
+        
+        public static bool IsControllerIDTouch(EControllerID controllerID)
+        {
+            return controllerID.ContainedIn(BConsts.TOUCH_CONTROLLERS);
+        }     
+        
+        public static bool IsControllerIDAI(EControllerID controllerID)
+        {
+            return controllerID.ContainedIn(BConsts.AI_CONTROLLERS);
+        } 
+        
+        public static bool IsControllerIDDevice(EControllerID controllerID)
+        {
+            return controllerID.ContainedIn(BConsts.DEVICE_CONTROLLERS);
+        }   
+        
+        public static bool IsControllerIDRemote(EControllerID controllerID)
+        {
+            return controllerID.ContainedIn(BConsts.REMOTE_CONTROLLERS);
+        }
+        
         #endregion
     }
 }

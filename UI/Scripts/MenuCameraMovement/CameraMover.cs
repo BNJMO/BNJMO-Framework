@@ -81,10 +81,7 @@ namespace BNJMO
         {
             base.OnDestroy();
 
-            if (BEvents.IsInstanceSet)
-            {
-                BEvents.UI_HighlightedBMenuUpdated.Event -= On_UI_HighlightedBMenuUpdated;
-            }
+            BEvents.UI_HighlightedBMenuUpdated.Event -= On_UI_HighlightedBMenuUpdated;
 
             if (cameraTransformLerp)
             {
@@ -96,7 +93,7 @@ namespace BNJMO
 
         #region Callbacks
 
-        private void On_UI_HighlightedBMenuUpdated(BEHandle<BMenu, BMenu> handle)
+        private void On_UI_HighlightedBMenuUpdated(BEventHandle<BMenu, BMenu> handle)
         {
             SwitchCameraToMenu(handle.Arg1);
         }

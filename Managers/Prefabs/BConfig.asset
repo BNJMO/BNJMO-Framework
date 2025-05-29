@@ -12,34 +12,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264afe197b257bd4dba994352f8583ef, type: 3}
   m_Name: BConfig
   m_EditorClassIdentifier: 
-  StartScene: 200
+  StartSceneBuildID: 0
+  Scenes: []
   TargetFramRate: 30
+  SleepTimeout: -1
+  VSyncCount: 0
   EventDispatcherType: 1
   bEHandleSerializationMethod: 0
   UbiiBackendServerIP: localhost
   UbiiBackendServerPort: 8101
-  ARTrackingMode: 0
-  PlayAreaType: 0
+  IsUseDebugGameMode: 0
+  DebugGameMode: 0
   ConnectTouchController: 0
   ConnectAIControllers: 0
   TransformInpuAxisToCameraDirection: 0
-  IsUseDebugGameMode: 0
-  DebugGameMode: 0
-  MaxPlayersInTeam: 4
-  MaxPlayersInParty: 4
-  PawnSpawnParent: {fileID: 0}
+  MaxNumberOfSpectators: 16
+  MaxNumberOfPlayersInParty: 4
+  MaxNumberOfTeams: 4
+  MaxNumberOfPlayersInTeam: 4
+  MatchPlayerNameToPartyState: 1
   UseSamePrefabForAllPlayers: 1
-  PlayerPrefab: {fileID: -2459690542888083050, guid: 48337d2093f81fa498ff30b5aaf1e90a, type: 3}
+  PlayerPrefab: {fileID: -2459690542888083050, guid: 48337d2093f81fa498ff30b5aaf1e90a,
+    type: 3}
   PlayerPrefabs: []
   UseSamePrefabForAllPawns: 1
-  PawnPrefab: {fileID: 4584618283913816630, guid: 7cf988a7d156f5e41948243cdf00b579, type: 3}
+  PawnPrefab: {fileID: 4584618283913816630, guid: 7cf988a7d156f5e41948243cdf00b579,
+    type: 3}
   PawnPrefabs: []
-  MaximumNumberOfAIToSpawn: 0
-  IsDebugLogEvents: 1
-  IsDebugEventsNetworkID: 1
-  LogMissingDebugTexts: 1
-  DebugButtonEvents: 0
-  DebugJoystickEvents: 0
-  DebugUIButtonsEvents: 0
-  DebugUbiiTopicPublish: 0
-  DebugUbiiTopicRecieve: 0
+  PawnSpawnParent: {fileID: 0}
+  onlineBackend: 1
+  AutomaticallyLaunchOnlineSession: 1
+  NumberOfPlayersInLobbyToStartOnlineSession: 1
+  LobbyUpdateTimeSeconds: 2
+  JoinOnlineSessionTimeout: 30
+  HandoffLobbyWhenHostDisconnects: 1
+  NetcodeNetworkManagerPrefab: {fileID: 6411009001391034450, guid: 0a61f59bae342824ab167bd9f2fdc22a,
+    type: 3}
+  LogEvents: 1
+  LogEventsNetworkID: 0
+  LogEventsTimestamp: 0
+  LogEventsPing: 0
+  LogInputButtonEvents: 0
+  LogInputJoystickEvents: 0

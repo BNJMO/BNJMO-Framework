@@ -26,24 +26,24 @@ namespace BNJMO
 
         #region Events Callbacks
 
-        private void On_UI_FocusedFrameUpdated(BEHandle<BFrame> bEHandle)
+        private void On_UI_FocusedFrameUpdated(BEventHandle<BFrame> bEHandle)
         {
             CurrentBFrameFocused = bEHandle.Arg1;
         }
 
-        private void On_UI_HighlightedBMenuUpdated(BEHandle<BMenu, BMenu> bEHandle)
+        private void On_UI_HighlightedBMenuUpdated(BEventHandle<BMenu, BMenu> bEHandle)
         {
             CurrentBMenuHighlighted = bEHandle.Arg1;
         }
 
-        private void On_UI_ButtonHighlighted(BEHandle<BButton> bEHandle)
+        private void On_UI_ButtonHighlighted(BEventHandle<BButton> bEHandle)
         {
             CurrentBButtonHighlighted = bEHandle.Arg1;
         }
 
-        private void On_INPUT_ButtonPressed(BEHandle<EControllerID, EInputButton> eventHandle)
+        private void On_INPUT_ButtonPressed(BEventHandle<EControllerID, EControllerType, EInputButton> eventHandle)
         {
-            EInputButton inputButton = eventHandle.Arg2;
+            EInputButton inputButton = eventHandle.Arg3;
 
             if (CurrentBButtonHighlighted)
             {
@@ -83,9 +83,9 @@ namespace BNJMO
             }
         }
 
-        private void On_INPUT_ButtonReleased(BEHandle<EControllerID, EInputButton> eventHandle)
+        private void On_INPUT_ButtonReleased(BEventHandle<EControllerID, EControllerType, EInputButton> eventHandle)
         {
-            EInputButton inputButton = eventHandle.Arg2;
+            EInputButton inputButton = eventHandle.Arg3;
 
             if (CurrentBButtonHighlighted)
             {
