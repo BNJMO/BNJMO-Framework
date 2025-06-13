@@ -14,91 +14,61 @@ namespace BNJMO
         [MenuItem("GameObject/UI/BNJMO/BFrame", false, 0)]
         public static void CreateBFrame()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BFrame);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BFrame);
         }        
         
         [MenuItem("GameObject/UI/BNJMO/BMenu", false, 0)]
         public static void CreateBMenu()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BMenu);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BMenu);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BButton", false, 0)]
         public static void CreateBButton()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BButton);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BButton);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BContainer", false, 0)]
         public static void CreateBContainer()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BContainer);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BContainer);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BImage", false, 0)]
         public static void CreateBImage()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BImage);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BImage);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BRawImage", false, 0)]
         public static void CreateBRawImage()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BRawImage);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BRawImage);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BSpriteRenderer", false, 0)]
         public static void CreateBSpriteRenderer()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BSpriteRenderer);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BSpriteRenderer);
         }
 
         [MenuItem("GameObject/UI/BNJMO/B3DText", false, 0)]
         public static void CreateB3DText()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_B3DText);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_B3DText);
         }
 
         [MenuItem("GameObject/UI/BNJMO/BText", false, 0)]
         public static void CreateBText()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BText);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BText);
+        }
+        
+        [MenuItem("GameObject/UI/BNJMO/BInputField", false, 0)]
+        public static void CreateBInputField()
+        {
+            SpawnObject(BConsts.PATH_InputField);
         }
 
         private static GameObject SpawnObject(string resourcePath)
@@ -120,6 +90,9 @@ namespace BNJMO
                     {
                         spawnedObject.transform.parent = selectedObject.transform;
                     }
+                    spawnedObject.transform.localPosition = Vector3.one;
+                    spawnedObject.transform.localRotation = Quaternion.identity;
+                    spawnedObject.transform.localScale = Vector3.one;
 
                     // Set spawned object as selected
                     Selection.SetActiveObjectWithContext(spawnedObject, Selection.activeContext);

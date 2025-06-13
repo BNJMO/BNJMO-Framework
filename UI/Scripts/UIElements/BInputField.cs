@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BNJMO
 {
     public class BInputField : BUIElement
     {
         #region Public Events
+        
         public event Action<BInputField, string> TextUpdated;
 
         #endregion
@@ -33,27 +36,35 @@ namespace BNJMO
             return "";
         }
 
-        //public void SetPlaceholderText(string newText)
-        //{
-        //    if (inputFieldTMP)
-        //    {
-        //        inputFieldTMP.text = newText;
-        //    }
-        //}
+        public void SetPlaceholderText(string newText)
+        {
+            if (placeholderBTextReference)
+            {
+                placeholderBTextReference.SetText(newText);
+            }
+        }
 
         #endregion
 
         #region Inspector Variables
-        [SerializeField]
+        
+        [BoxGroup("BInputField", centerLabel: true)] [SerializeField] 
+        private string placeHolderText = "Placeholder...";
+        
+        [Header("References")]
+        [BoxGroup("BInputField")] [SerializeField] 
         private TMP_InputField inputFieldTMPReference;
-                
-        //[SerializeField]
-        //[HideInInspector]
-        //private TMP_InputField inputFieldTMP;
+
+        [FormerlySerializedAs("placeholderBText")] [BoxGroup("BInputField")] [SerializeField]
+        private BText placeholderBTextReference;
+
+        [FormerlySerializedAs("inputBText")] [BoxGroup("BInputField")] [SerializeField]
+        private BText inputBTextReference;
 
         #endregion
 
         #region Private Variables
+        
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
@@ -64,6 +75,8 @@ namespace BNJMO
             base.OnValidate();
 
             SetComponentIfNull(ref inputFieldTMPReference);
+            
+            SetPlaceholderText(placeHolderText);
         }
 
         protected override void OnEnable()
@@ -102,26 +115,6 @@ namespace BNJMO
         #endregion
 
         #region Private Methods
-        protected override void OnUIShown()
-        {
-            base.OnUIShown();
-
-            // TODO: Disable components instead
-            if (inputFieldTMPReference)
-            {
-                inputFieldTMPReference.gameObject.SetActive(true);
-            }
-        }
-
-        protected override void OnUIHidden()
-        {
-            base.OnUIHidden();
-
-            if (inputFieldTMPReference)
-            {
-                inputFieldTMPReference.gameObject.SetActive(false);
-            }
-        }
 
 
         #endregion
