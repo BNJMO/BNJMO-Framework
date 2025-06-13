@@ -185,7 +185,8 @@ namespace BNJMO
                 ButtonHighlightedUEvent.Invoke();
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying
+                && BManager.Inst)
             {
                 BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, 
                     BManager.Inst.Config.LogInputButtonEvents);
@@ -233,7 +234,8 @@ namespace BNJMO
                 ButtonReleasedUEvent.Invoke();
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying
+                && BManager.Inst)
             {
                 BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), 
                     BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
@@ -284,7 +286,8 @@ namespace BNJMO
                 ButtonPressedUEvent.Invoke();
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying
+                && BManager.Inst)
             {
                 BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
                     BManager.Inst.Config.LogInputButtonEvents);
@@ -323,7 +326,8 @@ namespace BNJMO
                 ButtonUnhighlightedUEvent.Invoke();
             }
 
-            if (Application.isPlaying)
+            if (Application.isPlaying
+                && BManager.Inst)
             {
                 BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
                     BManager.Inst.Config.LogInputButtonEvents);
