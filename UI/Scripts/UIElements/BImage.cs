@@ -172,11 +172,13 @@ namespace BNJMO
         [SerializeField] 
         private Color color = Color.white;
 
+        [BoxGroup("BImage")]
+        [Button("Refresh Localized Sprite")]
+        private void RefreshLocalizedSprite_Button() => RefreshLocalizedSprite();
+
         #endregion
 
         #region Variables
-
-        private Sprite localizedSpriteValue = null;
 
         public Sprite Sprite => UseLocalization ? localizedSpriteValue : sprite;
 
@@ -189,6 +191,8 @@ namespace BNJMO
         public RawImage UnityRawImage { get; private set; }
 
         public SpriteRenderer UnitySpriteRenderer { get; private set; }
+        
+        private Sprite localizedSpriteValue = null;
 
         #endregion
 
@@ -210,10 +214,15 @@ namespace BNJMO
             // Only assign sprite if not using localization
             if (!UseLocalization)
             {
-                if (UnityImage && sprite == null)
+                if (UnityImage 
+                    && sprite == null)
+                {
                     sprite = UnityImage.sprite;
+                }
 
-                if (UnityRawImage && sprite == null && UnityRawImage.texture != null)
+                if (UnityRawImage 
+                    && sprite == null 
+                    && UnityRawImage.texture != null)
                 {
                     Texture2D texture = UnityRawImage.texture as Texture2D;
                     if (texture != null)
@@ -222,8 +231,11 @@ namespace BNJMO
                     }
                 }
 
-                if (UnitySpriteRenderer && sprite == null)
+                if (UnitySpriteRenderer 
+                    && sprite == null)
+                {
                     sprite = UnitySpriteRenderer.sprite;
+                }
 
                 SetSprite(sprite);
             }
@@ -285,6 +297,7 @@ namespace BNJMO
         #endregion
 
         #region Private Methods
+        
         protected override void OnUIShown()
         {
             base.OnUIShown();
@@ -321,10 +334,8 @@ namespace BNJMO
             }
         }
 
-        #endregion
 
 #if UNITY_EDITOR
-        [Button("Refresh Localized Sprite")]
         private void RefreshLocalizedSprite()
         {
             if (UseLocalization && localizedSprite != null)
@@ -342,6 +353,8 @@ namespace BNJMO
             }
         }
 #endif
+        
+        #endregion
 
     }
 }

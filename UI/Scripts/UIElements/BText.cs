@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using BNJMO;
-using TMPro;
-using System;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using UnityEngine.UI;
 
 public class BText : BUIElement
 {
@@ -206,11 +204,11 @@ public class BText : BUIElement
             LogConsoleError("No Text, TextMesh or TextMeshPro component found on this gameobject!");
         }
 
-        if (useLocalization && localizedString != null)
+        if (useLocalization 
+            && localizedString != null)
         {
             localizedString.StringChanged += OnLocalizedStringChanged;
         }
-
     }
 
     protected override void Start()
@@ -222,7 +220,8 @@ public class BText : BUIElement
     {
         base.OnDestroy();
 
-        if (useLocalization && localizedString != null)
+        if (useLocalization 
+            && localizedString != null)
         {
             localizedString.StringChanged -= OnLocalizedStringChanged;
         }
@@ -323,8 +322,12 @@ public class BText : BUIElement
                         : tmpTextComponent.textInfo.lineInfo[i + 1].firstCharacterIndex;
                     endIndex = Mathf.Clamp(endIndex, 0, tmpTextComponent.text.Length);
                     int length = Mathf.Clamp(endIndex - startIndex, 0, tmpTextComponent.text.Length - startIndex);
-                    if (startIndex < 0 || startIndex >= tmpTextComponent.text.Length || length <= 0)
+                    
+                    if (startIndex < 0 
+                        || startIndex >= tmpTextComponent.text.Length 
+                        || length <= 0)
                         continue;
+                    
                     string[] lineWords = tmpTextComponent.text.Substring(startIndex, length).Split(' ');
                     Array.Reverse(lineWords);
                     finalText = finalText + string.Join(" ", lineWords).Trim() + "\n";
@@ -398,9 +401,9 @@ public class BText : BUIElement
 
     private bool IsTextComponentInactive()
     {   
-        return (textUI != null && !textUI.enabled) || 
-            (textMesh != null && !textMesh.gameObject.activeInHierarchy) || 
-            (textMeshPro != null && !textMeshPro.enabled);
+        return (textUI && !textUI.enabled) 
+               || (textMesh && !textMesh.gameObject.activeInHierarchy) 
+               || (textMeshPro && !textMeshPro.enabled);
     }
 
     #endregion
