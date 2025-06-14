@@ -104,11 +104,7 @@ namespace BNJMO
         [MenuItem("GameObject/UI/BNJMO/BScrollView", false, 0)]
         public static void CreateBScrollView()
         {
-            GameObject spawnedObject = SpawnObject(BConsts.PATH_BScrollView);
-            if (spawnedObject)
-            {
-                spawnedObject.transform.localPosition = Vector3.one;
-            }
+            SpawnObject(BConsts.PATH_BScrollView);
         }
 
         private static GameObject SpawnObject(string resourcePath)
