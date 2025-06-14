@@ -189,22 +189,28 @@ namespace BNJMO
 
             // Revalidate Image
             UnityImage = GetComponent<Image>();
-            if (UnityImage && sprite == null)
+            if (UnityImage 
+                && sprite == null)
             {
                 sprite = UnityImage.sprite;
+                color = UnityImage.color;
             }
             UnityRawImage = GetComponent<RawImage>();
-            if (UnityRawImage && sprite == null)
+            if (UnityRawImage 
+                && sprite == null)
             {
                 Texture2D texture = (Texture2D)UnityRawImage.texture;
                 sprite = Sprite.Create(texture, 
                     new Rect(0, 0, texture.width, texture.height), 
                     new Vector2(0.5f, 0.5f));
+                color = UnityRawImage.color;
             }
             UnitySpriteRenderer = GetComponent<SpriteRenderer>();
-            if (UnitySpriteRenderer && sprite == null)
+            if (UnitySpriteRenderer 
+                && sprite == null)
             {
                 sprite = UnitySpriteRenderer.sprite;
+                color = UnitySpriteRenderer.color;
             }
             SetSprite(sprite);
             SetColor(color);
