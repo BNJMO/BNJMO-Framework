@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
@@ -83,15 +84,6 @@ namespace BNJMO
             }
         }
 
-        public void SetButtonText(string newText)
-        {
-            if (bTextReference)
-            {
-                buttonText = newText;
-                bTextReference.SetText(buttonText);
-            }
-        }
-
         public void SetButtonImageColor(Color newColor)
         {
             if (bImageReference)
@@ -110,6 +102,24 @@ namespace BNJMO
             }
         }
 
+        public void SetButtonText(string newText)
+        {
+            if (bTextReference)
+            {
+                buttonText = newText;
+                bTextReference.SetText(buttonText);
+            }
+        }
+
+        public void SetButtonTextFont(TMP_FontAsset newFontAsset)
+        {
+            defaultFontAsset = newFontAsset;
+            if (bTextReference)
+            {
+                bTextReference.SetFontAsset(newFontAsset);
+            }
+        }
+        
         public void SetButtonTextColor(Color newColor)
         {
             if (bTextReference)
@@ -442,6 +452,7 @@ namespace BNJMO
         [FoldoutGroup("BButton/Text")] 
         [SerializeField] private Color textDisabledColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] private bool useTextSpecialColors = true;
+        [FoldoutGroup("BButton/Text")] [SerializeField] private TMP_FontAsset defaultFontAsset;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textHoveredColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textHighlightedColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textPressedColor = Color.black;
@@ -568,6 +579,11 @@ namespace BNJMO
             {
                 bTextReference.WriteTextUppercase = writeButtonTextUppercase;
                 bTextReference.SetText(buttonText);
+                if (defaultFontAsset == null)
+                {
+                    defaultFontAsset = bTextReference.TextFont;
+                }
+                bTextReference.SetFontAsset(defaultFontAsset);
                 bTextReference.SetColor(textNormalColor);
                 bTextReference.UIElementName = UIElementName;
             }

@@ -186,6 +186,7 @@ MonoBehaviour:
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
   textDisabledColor: {r: 0, g: 0, b: 0, a: 1}
   useTextSpecialColors: 1
+  defaultFontAsset: {fileID: 11400000, guid: d2eece1edb1c2b54889b65a6575659e1, type: 2}
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -200,9 +201,8 @@ MonoBehaviour:
   imageHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
   ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
   bImageReference: {fileID: 3090237574691846624}
-  onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
-  onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905,
-    type: 3}
+  onPressedSound: {fileID: 0}
+  onSuccessfullyReleasedSound: {fileID: 0}
   upperButton: {fileID: 0}
   leftButton: {fileID: 0}
   rightButton: {fileID: 0}
@@ -371,7 +371,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

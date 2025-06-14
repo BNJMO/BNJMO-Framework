@@ -17,30 +17,32 @@ public class BText : BUIElement
 
     public void SetText(string newText, bool isArabicRTL = false)
     {
+        text = newText;
+        
         if (writeTextUppercase)
         {
-            newText = newText.ToUpper();
+            text = text.ToUpper();
         }
 
         if (isArabicRTL)
         {
-            newText = GetRTLFormatedText(newText);
+            text = GetRTLFormatedText(text);
         }
 
         if (textUI)
         {
-            textUI.text = newText;
+            textUI.text = text;
         }
         if (textMesh)
         {
-            textMesh.text = newText;
+            textMesh.text = text;
         }
         if (textMeshPro)
         {
-            textMeshPro.text = newText;
+            textMeshPro.text = text;
         }
 
-        InvokeEventIfBound(BTextUpdated, newText);
+        InvokeEventIfBound(BTextUpdated, text);
     }
 
     public void SetColor(Color newColor)
@@ -67,6 +69,17 @@ public class BText : BUIElement
         SetColor(newColor);
     }
 
+    public void SetFontAsset(TMP_FontAsset newFontAsset)
+    {
+        defaultFontAsset = newFontAsset;
+        
+        if (defaultFontAsset
+            && tmpTextComponent)
+        {
+            tmpTextComponent.font = defaultFontAsset;
+        }
+    }
+    
     public void FormatTextRTL()
     {
         SetText(GetRTLFormatedText(text));
@@ -124,30 +137,28 @@ public class BText : BUIElement
 
     public LocalizedString LocalizedString => localizedString;
 
-    public bool WriteTextUppercase { get { return writeTextUppercase; } set { writeTextUppercase = value; } }
+    public bool WriteTextUppercase { get => writeTextUppercase; set { writeTextUppercase = value; } }
 
-    public string Text { get { return text; } }
+    public string Text => text;
     
-    public Color TextColor { get { return color; } }
+    public Color TextColor => color;
     
-    public float TextOpacity { get { return color.a; } }
+    public float TextOpacity => color.a;
 
-    public TMP_Text TextMeshPro { get { return textMeshPro; } }
+    public TMP_Text TextMeshPro => textMeshPro;
+    
+    public TMP_FontAsset TextFont => defaultFontAsset;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private Text textUI;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TextMesh textMesh;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TMP_Text textMeshPro;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TextMeshProUGUI tmpTextComponent;
 
     private (string text, bool isRTL)? pendingTextData = null;
@@ -175,16 +186,12 @@ public class BText : BUIElement
         SetComponentIfNull(ref tmpTextComponent);
 
         if (defaultFontAsset == null
-            && tmpTextComponent != null)
+            && tmpTextComponent)
         {
             defaultFontAsset = tmpTextComponent.font;
         }
 
-        if (defaultFontAsset != null
-            && tmpTextComponent != null)
-        {
-            tmpTextComponent.font = defaultFontAsset;
-        }
+        SetFontAsset(defaultFontAsset);
 
         if (!useLocalization)
         {
@@ -209,11 +216,6 @@ public class BText : BUIElement
         {
             localizedString.StringChanged += OnLocalizedStringChanged;
         }
-    }
-
-    protected override void Start()
-    {
-        base.Start();
     }
 
     protected override void OnDestroy()
