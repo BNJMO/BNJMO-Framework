@@ -151,29 +151,27 @@ namespace BNJMO
         #endregion
 
         #region Inspector Values
+        
         [BoxGroup("BImage", centerLabel: true)]
-
-        [SerializeField]
-        [BoxGroup("BImage")]
-        [ShowIf("@UseLocalization == false")]
+        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == false")]
         private Sprite sprite;
 
-        [SerializeField]
-        [BoxGroup("BImage")]
-        [ShowIf("@UseLocalization == true")]
+        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == true")]
         private LocalizedSprite localizedSprite;
 
-        [SerializeField]
-        [BoxGroup("BImage")]
-        [LabelText("Use Localization")]
+        [SerializeField] [BoxGroup("BImage")] [LabelText("Use Localization")]
         private bool UseLocalization;
 
-        [BoxGroup("BImage")] 
-        [SerializeField] 
+        [BoxGroup("BImage")] [SerializeField] 
         private Color color = Color.white;
 
-        [BoxGroup("BImage")]
-        [Button("Refresh Localized Sprite")]
+        [BoxGroup("BImage")] [SerializeField] 
+        private bool matchParentSize = false;
+
+        [BoxGroup("BImage")] [Button("Match Parent Size")]
+        private void MatchParentSize_Button() => MatchParentSize();
+
+        [BoxGroup("BImage")] [Button("Refresh Localized Sprite")]
         private void RefreshLocalizedSprite_Button() => RefreshLocalizedSprite();
 
         #endregion
@@ -218,6 +216,7 @@ namespace BNJMO
                     && sprite == null)
                 {
                     sprite = UnityImage.sprite;
+                    color = UnityImage.color;
                 }
 
                 if (UnityRawImage 
@@ -227,7 +226,10 @@ namespace BNJMO
                     Texture2D texture = UnityRawImage.texture as Texture2D;
                     if (texture != null)
                     {
-                        sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                        sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                        color = UnityRawImage.color;
                     }
                 }
 
@@ -235,12 +237,18 @@ namespace BNJMO
                     && sprite == null)
                 {
                     sprite = UnitySpriteRenderer.sprite;
+                    color = UnitySpriteRenderer.color;
                 }
 
                 SetSprite(sprite);
             }
 
             SetColor(color);
+
+            if (matchParentSize)
+            {
+                MatchParentSize();
+            }
         }
 
         protected override void Awake()
@@ -354,7 +362,17 @@ namespace BNJMO
         }
 #endif
         
+        private void MatchParentSize()
+        {
+            RectTransform rectTransform = transform as RectTransform;
+            RectTransform parentRectTransform = transform.parent as RectTransform;
+            if (parentRectTransform)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
+            }
+        }
+        
         #endregion
-
     }
 }

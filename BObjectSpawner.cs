@@ -71,6 +71,12 @@ namespace BNJMO
             SpawnObject(BConsts.PATH_InputField);
         }
 
+        [MenuItem("GameObject/UI/BNJMO/BScrollView", false, 0)]
+        public static void CreateBScrollView()
+        {
+            SpawnObject(BConsts.PATH_BScrollView);
+        }
+
         private static GameObject SpawnObject(string resourcePath)
         {
             GameObject objectPrefab = Resources.Load<GameObject>(resourcePath);
