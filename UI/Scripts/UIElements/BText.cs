@@ -1,17 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using BNJMO;
-using TMPro;
-using System;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
-
-public enum ELanguage
-{
-    ENGLISH = 0,
-    FRENCH,
-    TOUNSI,
-}
+using TMPro;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 public class BText : BUIElement
 {
@@ -20,35 +14,35 @@ public class BText : BUIElement
     #endregion
 
     #region Public Methods
-    
+
     public void SetText(string newText, bool isArabicRTL = false)
     {
-        if (writeTextUppercase == true)
-        {
-            newText = newText.ToUpper();
-        }
-
-        if (isArabicRTL == true)
-        {
-            newText = GetRTLFormatedText(newText);
-        }
-
         text = newText;
+        
+        if (writeTextUppercase)
+        {
+            text = text.ToUpper();
+        }
+
+        if (isArabicRTL)
+        {
+            text = GetRTLFormatedText(text);
+        }
 
         if (textUI)
         {
-            textUI.text = newText;
+            textUI.text = text;
         }
         if (textMesh)
         {
-            textMesh.text = newText;
+            textMesh.text = text;
         }
         if (textMeshPro)
         {
-            textMeshPro.text = newText;
+            textMeshPro.text = text;
         }
 
-        InvokeEventIfBound(BTextUpdated, newText);
+        InvokeEventIfBound(BTextUpdated, text);
     }
 
     public void SetColor(Color newColor)
@@ -74,44 +68,29 @@ public class BText : BUIElement
         Color newColor = new Color(color.r, color.g, color.b, alpha);
         SetColor(newColor);
     }
-    
-    public void SetLanguage(ELanguage language)
+
+    public void SetFontAsset(TMP_FontAsset newFontAsset)
     {
-        if (useLanguages == true)
+        defaultFontAsset = newFontAsset;
+        
+        if (defaultFontAsset
+            && tmpTextComponent)
         {
-            // Check if language is contained
-            if (languageTextMap.ContainsKey(language))
-            {
-                UpdateTextLanguage(languageTextMap[language]);
-            }
-            else if (languageTextMap.ContainsKey(ELanguage.ENGLISH))
-            {
-                UpdateTextLanguage(languageTextMap[ELanguage.ENGLISH]);
-            }
-            else
-            {
-                LogConsoleWarning("No appropriate language found for the text");
-            }
+            tmpTextComponent.font = defaultFontAsset;
         }
     }
-
+    
     public void FormatTextRTL()
     {
-        if (useLanguages == false)
-        {
-            SetText(GetRTLFormatedText(text));
-        } 
-        else
-        {
-            foreach (LanguageTupple languageTupple in languageTexts)
-            {
-                if (languageTupple.Language == ELanguage.TOUNSI)
-                {
-                    languageTupple.Text = GetRTLFormatedText(languageTupple.Text);
-                }
-            }
-        }
+        SetText(GetRTLFormatedText(text));
     }
+
+    public void UpdateLocalizedVariables(params object[] values)
+    {
+        localizedString.Arguments = values;
+        localizedString.RefreshString();
+    }
+
     #endregion
 
     #region Inspector Values
@@ -119,29 +98,21 @@ public class BText : BUIElement
 
     [SerializeField]
     [BoxGroup("BText")] 
-    private bool useLanguages = false;
-
-    [SerializeField]
-    [BoxGroup("BText")] 
-    [HideIf("@this.useLanguages == true")]
+    [HideIf("@this.useLocalization == true")]
     [TextArea(4, 8)]
     private string text = "BText";
+
+    [BoxGroup("BText")]
+    [SerializeField]
+    private bool useLocalization = false;
+
+    [ShowIf("useLocalization")]
+    [SerializeField]
+    private LocalizedString localizedString;
 
     [SerializeField]
     [BoxGroup("BText")] 
     private TMP_FontAsset defaultFontAsset;
-    
-    [SerializeField]
-    [BoxGroup("BText")] 
-    [HideIf("@this.useLanguages == false")]
-    private LanguageTupple[] languageTexts = new LanguageTupple[1]
-    {
-         new LanguageTupple()
-         {
-             Language = ELanguage.ENGLISH,
-             Text = "",
-         }
-    };
 
     [BoxGroup("BText")] 
     [SerializeField] 
@@ -163,33 +134,34 @@ public class BText : BUIElement
     #endregion
 
     #region Variables
-    public bool WriteTextUppercase { get { return writeTextUppercase; } set { writeTextUppercase = value; } }
 
-    public string Text { get { return text; } }
+    public LocalizedString LocalizedString => localizedString;
+
+    public bool WriteTextUppercase { get => writeTextUppercase; set { writeTextUppercase = value; } }
+
+    public string Text => text;
     
-    public Color TextColor { get { return color; } }
+    public Color TextColor => color;
     
-    public float TextOpacity { get { return color.a; } }
+    public float TextOpacity => color.a;
 
-    public TMP_Text TextMeshPro { get { return textMeshPro; } }
+    public TMP_Text TextMeshPro => textMeshPro;
+    
+    public TMP_FontAsset TextFont => defaultFontAsset;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private Text textUI;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TextMesh textMesh;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TMP_Text textMeshPro;
 
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField] [HideInInspector]
     private TextMeshProUGUI tmpTextComponent;
 
-    private Dictionary<ELanguage, LanguageTupple> languageTextMap = new Dictionary<ELanguage, LanguageTupple>();
+    private (string text, bool isRTL)? pendingTextData = null;
 
     #endregion
 
@@ -214,40 +186,20 @@ public class BText : BUIElement
         SetComponentIfNull(ref tmpTextComponent);
 
         if (defaultFontAsset == null
-            && tmpTextComponent != null)
+            && tmpTextComponent)
         {
             defaultFontAsset = tmpTextComponent.font;
         }
 
-        if (defaultFontAsset != null
-            && tmpTextComponent != null)
+        SetFontAsset(defaultFontAsset);
+
+        if (!useLocalization)
         {
-            tmpTextComponent.font = defaultFontAsset;
+            SetText(text);
         }
 
-        if (useLanguages == true
-            && languageTexts.Length > 0)
-        {
-            UpdateTextLanguage(languageTexts[0]);
-        }
-      
-        SetText(text);
         SetColor(color);
     }
-
-    //protected override void OnEnable()
-    //{
-    //    base.OnEnable();
-
-    //    BEventsCollection.UI_NewLanguageSet += On_UI_NewLanguageSet;
-    //}
-
-    //protected override void OnDisable()
-    //{
-    //    base.OnDisable();
-
-    //    BEventsCollection.UI_NewLanguageSet -= On_UI_NewLanguageSet;
-    //}
 
     protected override void Awake()
     {
@@ -259,45 +211,51 @@ public class BText : BUIElement
             LogConsoleError("No Text, TextMesh or TextMeshPro component found on this gameobject!");
         }
 
-        // Check languages
-        if (useLanguages == true)
+        if (useLocalization 
+            && localizedString != null)
         {
-            if (languageTexts.Length == 0)
-            {
-                LogConsoleError("BText is using languages but no language is provided. Fallback to normal mode.");
-                useLanguages = false;
-            }
-        
-            // Initiliaze language textx map
-            foreach (LanguageTupple languageTupple in languageTexts)
-            {
-                if (IS_KEY_NOT_CONTAINED(languageTextMap, languageTupple.Language))
-                {
-                    languageTextMap.Add(languageTupple.Language, languageTupple);
-                }
-            }
+            localizedString.StringChanged += OnLocalizedStringChanged;
         }
     }
 
-    protected override void Start()
+    protected override void OnDestroy()
     {
-        base.Start();
+        base.OnDestroy();
 
-        //SetLanguage(MotherOfManagers.Instance.Language);
+        if (useLocalization 
+            && localizedString != null)
+        {
+            localizedString.StringChanged -= OnLocalizedStringChanged;
+        }
     }
 
     #endregion
 
     #region Event Callbacks
-    private void On_UI_NewLanguageSet(BEventHandle<ELanguage> handle)
+
+    public void OnLocalizedStringChanged(string value)
     {
-        SetLanguage(handle.Arg1);
+        bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+
+        if (IsTextComponentInactive())
+        {
+            pendingTextData = (value, isRTL);
+            return;
+        }
+
+        SetText(value, isRTL);
     }
 
     #endregion
 
     #region Private Methods
-    
+
+    private void ApplyLocalizedText(string value)
+    {
+        bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+        SetText(value, isRTL);
+    }
+
     protected override void OnUIShown()
     {
         base.OnUIShown();
@@ -313,6 +271,13 @@ public class BText : BUIElement
         if (textMeshPro)
         {
             textMeshPro.enabled = true;
+        }
+
+        if (pendingTextData.HasValue)
+        {
+            var (text, isRTL) = pendingTextData.Value;
+            SetText(text, isRTL);
+            pendingTextData = null;
         }
     }
 
@@ -334,37 +299,6 @@ public class BText : BUIElement
         }
     }
 
-    private void UpdateTextLanguage(LanguageTupple languageTupple)
-    {
-        if (IS_NOT_NULL(languageTupple)
-            && tmpTextComponent != null)
-        {
-            // Use RTL for arabic languages
-            if (languageTupple.Language == ELanguage.TOUNSI)
-            {
-                tmpTextComponent.alignment = GetTextAlignment(true);
-            }
-            else
-            {
-                tmpTextComponent.alignment = GetTextAlignment(false);
-            }
-
-            // Update text
-            SetText(languageTupple.Text);
-
-            // Has custom Font Asset?
-            if (languageTupple.CustomFontAsset != null)
-            {
-                tmpTextComponent.font = languageTupple.CustomFontAsset;
-                tmpTextComponent.UpdateFontAsset();
-            }
-            else if (defaultFontAsset != null)
-            {
-                tmpTextComponent.font = defaultFontAsset;
-            }
-        }
-    }
-    
     private string GetRTLFormatedText(string newText)
     {
         if (IS_NOT_NULL(tmpTextComponent)
@@ -388,7 +322,14 @@ public class BText : BUIElement
                     int startIndex = tmpTextComponent.textInfo.lineInfo[i].firstCharacterIndex;
                     int endIndex = (i == tmpTextComponent.textInfo.lineCount - 1) ? tmpTextComponent.text.Length
                         : tmpTextComponent.textInfo.lineInfo[i + 1].firstCharacterIndex;
-                    int length = endIndex - startIndex;
+                    endIndex = Mathf.Clamp(endIndex, 0, tmpTextComponent.text.Length);
+                    int length = Mathf.Clamp(endIndex - startIndex, 0, tmpTextComponent.text.Length - startIndex);
+                    
+                    if (startIndex < 0 
+                        || startIndex >= tmpTextComponent.text.Length 
+                        || length <= 0)
+                        continue;
+                    
                     string[] lineWords = tmpTextComponent.text.Substring(startIndex, length).Split(' ');
                     Array.Reverse(lineWords);
                     finalText = finalText + string.Join(" ", lineWords).Trim() + "\n";
@@ -460,19 +401,12 @@ public class BText : BUIElement
         return tmpTextComponent.alignment;
     }
 
+    private bool IsTextComponentInactive()
+    {   
+        return (textUI && !textUI.enabled) 
+               || (textMesh && !textMesh.gameObject.activeInHierarchy) 
+               || (textMeshPro && !textMeshPro.enabled);
+    }
+
     #endregion
 }
-
-
-[Serializable]
-public class LanguageTupple
-{
-    public ELanguage Language = ELanguage.ENGLISH;
-
-    [TextArea]
-    [HideLabel]
-    public string Text = "";
-
-    public TMP_FontAsset CustomFontAsset;
-}
-

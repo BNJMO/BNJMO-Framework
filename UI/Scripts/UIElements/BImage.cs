@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 namespace BNJMO
 {
@@ -150,21 +151,34 @@ namespace BNJMO
         #endregion
 
         #region Inspector Values
+        
         [BoxGroup("BImage", centerLabel: true)]
+        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == false")]
+        private Sprite sprite;
 
-        [BoxGroup("BImage")] 
-        [SerializeField] 
-        private Sprite sprite = null;
+        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == true")]
+        private LocalizedSprite localizedSprite;
 
-        [BoxGroup("BImage")] 
-        [SerializeField] 
+        [SerializeField] [BoxGroup("BImage")] [LabelText("Use Localization")]
+        private bool UseLocalization;
+
+        [BoxGroup("BImage")] [SerializeField] 
         private Color color = Color.white;
+
+        [BoxGroup("BImage")] [SerializeField] 
+        private bool matchParentSize = false;
+
+        [BoxGroup("BImage")] [Button("Match Parent Size")]
+        private void MatchParentSize_Button() => MatchParentSize();
+
+        [BoxGroup("BImage")] [Button("Refresh Localized Sprite")]
+        private void RefreshLocalizedSprite_Button() => RefreshLocalizedSprite();
 
         #endregion
 
         #region Variables
 
-        public Sprite Sprite => sprite;
+        public Sprite Sprite => UseLocalization ? localizedSpriteValue : sprite;
 
         public Color ImageColor => color;
     
@@ -175,64 +189,123 @@ namespace BNJMO
         public RawImage UnityRawImage { get; private set; }
 
         public SpriteRenderer UnitySpriteRenderer { get; private set; }
+        
+        private Sprite localizedSpriteValue = null;
 
         #endregion
 
         #region LifeCycle
+
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
-            
+
             objectNamePrefix = "I_";
 
             base.OnValidate();
 
-            // Revalidate Image
+            // Get or refresh components
             UnityImage = GetComponent<Image>();
-            if (UnityImage 
-                && sprite == null)
-            {
-                sprite = UnityImage.sprite;
-                color = UnityImage.color;
-            }
             UnityRawImage = GetComponent<RawImage>();
-            if (UnityRawImage 
-                && sprite == null)
-            {
-                Texture2D texture = (Texture2D)UnityRawImage.texture;
-                sprite = Sprite.Create(texture, 
-                    new Rect(0, 0, texture.width, texture.height), 
-                    new Vector2(0.5f, 0.5f));
-                color = UnityRawImage.color;
-            }
             UnitySpriteRenderer = GetComponent<SpriteRenderer>();
-            if (UnitySpriteRenderer 
-                && sprite == null)
+
+            // Only assign sprite if not using localization
+            if (!UseLocalization)
             {
-                sprite = UnitySpriteRenderer.sprite;
-                color = UnitySpriteRenderer.color;
+                if (UnityImage 
+                    && sprite == null)
+                {
+                    sprite = UnityImage.sprite;
+                    color = UnityImage.color;
+                }
+
+                if (UnityRawImage 
+                    && sprite == null 
+                    && UnityRawImage.texture != null)
+                {
+                    Texture2D texture = UnityRawImage.texture as Texture2D;
+                    if (texture != null)
+                    {
+                        sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                        color = UnityRawImage.color;
+                    }
+                }
+
+                if (UnitySpriteRenderer 
+                    && sprite == null)
+                {
+                    sprite = UnitySpriteRenderer.sprite;
+                    color = UnitySpriteRenderer.color;
+                }
+
+                SetSprite(sprite);
             }
-            SetSprite(sprite);
+
             SetColor(color);
+
+            if (matchParentSize)
+            {
+                MatchParentSize();
+            }
         }
 
         protected override void Awake()
         {
             base.Awake();
 
-            // Check Image is note null
             UnityImage = GetComponent<Image>();
             UnityRawImage = GetComponent<RawImage>();
             UnitySpriteRenderer = GetComponent<SpriteRenderer>();
+
             if ((UnityImage == null) && (UnityRawImage == null) && (UnitySpriteRenderer == null))
             {
-                LogConsoleError("No Image, RawImage or SpriteRenderer component found on this gameobject!");
+                LogConsoleError("No Image, RawImage, or SpriteRenderer component found on this GameObject!");
+            }
+
+            if (UseLocalization && localizedSprite != null)
+            {
+                // Subscribe to AssetChanged event to update sprite immediately on localization change
+                localizedSprite.AssetChanged += sprite =>
+                {
+                    localizedSpriteValue = sprite;
+                    SetSprite(sprite);
+                };
+
+                // Trigger async load and cache result
+                localizedSprite.LoadAssetAsync().Completed += handle =>
+                {
+                    if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+                    {
+                        localizedSpriteValue = handle.Result;
+                        SetSprite(handle.Result);
+                    }
+                };
+            }
+            else
+            {
+                // Use regular sprite if not localized
+                SetSprite(sprite);
+            }
+
+            SetColor(color);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (localizedSprite != null)
+            {
+                localizedSprite.AssetChanged -= SetSprite;
             }
         }
 
         #endregion
 
         #region Private Methods
+        
         protected override void OnUIShown()
         {
             base.OnUIShown();
@@ -269,6 +342,37 @@ namespace BNJMO
             }
         }
 
+
+#if UNITY_EDITOR
+        private void RefreshLocalizedSprite()
+        {
+            if (UseLocalization && localizedSprite != null)
+            {
+                // Force reload the localized sprite asynchronously
+                localizedSprite.LoadAssetAsync().Completed += handle =>
+                {
+                    if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+                    {
+                        // Update the sprite manually here (cache field + SetSprite)
+                        localizedSpriteValue = handle.Result;
+                        SetSprite(handle.Result);
+                    }
+                };
+            }
+        }
+#endif
+        
+        private void MatchParentSize()
+        {
+            RectTransform rectTransform = transform as RectTransform;
+            RectTransform parentRectTransform = transform.parent as RectTransform;
+            if (parentRectTransform)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
+            }
+        }
+        
         #endregion
     }
 }

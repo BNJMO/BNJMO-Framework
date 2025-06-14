@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
@@ -83,15 +84,6 @@ namespace BNJMO
             }
         }
 
-        public void SetButtonText(string newText)
-        {
-            if (bTextReference)
-            {
-                buttonText = newText;
-                bTextReference.SetText(buttonText);
-            }
-        }
-
         public void SetButtonImageColor(Color newColor)
         {
             if (bImageReference)
@@ -110,6 +102,24 @@ namespace BNJMO
             }
         }
 
+        public void SetButtonText(string newText)
+        {
+            if (bTextReference)
+            {
+                buttonText = newText;
+                bTextReference.SetText(buttonText);
+            }
+        }
+
+        public void SetButtonTextFont(TMP_FontAsset newFontAsset)
+        {
+            defaultFontAsset = newFontAsset;
+            if (bTextReference)
+            {
+                bTextReference.SetFontAsset(newFontAsset);
+            }
+        }
+        
         public void SetButtonTextColor(Color newColor)
         {
             if (bTextReference)
@@ -150,7 +160,6 @@ namespace BNJMO
         {
             if (IsButtonDisabled)
             {
-                //LogConsoleWarning("Trying to highlight a disabled button!");
                 return;
             }
 
@@ -186,7 +195,12 @@ namespace BNJMO
                 ButtonHighlightedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+            if (Application.isPlaying
+                && BManager.Inst)
+            {
+                BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, 
+                    BManager.Inst.Config.LogInputButtonEvents);
+            }
         }
 
         public void OnReleased(bool cursorInside)
@@ -230,7 +244,12 @@ namespace BNJMO
                 ButtonReleasedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+            if (Application.isPlaying
+                && BManager.Inst)
+            {
+                BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), 
+                    BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+            }
         }
 
         public void OnPressed()
@@ -277,7 +296,12 @@ namespace BNJMO
                 ButtonPressedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+            if (Application.isPlaying
+                && BManager.Inst)
+            {
+                BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
+                    BManager.Inst.Config.LogInputButtonEvents);
+            }
         }
 
         public void OnUnhighlighted()
@@ -312,7 +336,12 @@ namespace BNJMO
                 ButtonUnhighlightedUEvent.Invoke();
             }
 
-            BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+            if (Application.isPlaying
+                && BManager.Inst)
+            {
+                BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
+                    BManager.Inst.Config.LogInputButtonEvents);
+            }
         }
 
         public void OnHoveredEnter()
@@ -392,7 +421,8 @@ namespace BNJMO
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            bool cursorInside = ((eventData.pointerCurrentRaycast.gameObject) && (eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<BButton>() == this));
+            bool cursorInside = eventData.pointerCurrentRaycast.gameObject
+                                 && eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<BButton>() == this;
             OnReleased(cursorInside);
         }
 
@@ -422,6 +452,7 @@ namespace BNJMO
         [FoldoutGroup("BButton/Text")] 
         [SerializeField] private Color textDisabledColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] private bool useTextSpecialColors = true;
+        [FoldoutGroup("BButton/Text")] [SerializeField] private TMP_FontAsset defaultFontAsset;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textHoveredColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textHighlightedColor = Color.black;
         [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] private Color textPressedColor = Color.black;
@@ -548,6 +579,11 @@ namespace BNJMO
             {
                 bTextReference.WriteTextUppercase = writeButtonTextUppercase;
                 bTextReference.SetText(buttonText);
+                if (defaultFontAsset == null)
+                {
+                    defaultFontAsset = bTextReference.TextFont;
+                }
+                bTextReference.SetFontAsset(defaultFontAsset);
                 bTextReference.SetColor(textNormalColor);
                 bTextReference.UIElementName = UIElementName;
             }
@@ -568,21 +604,6 @@ namespace BNJMO
             {
                 EnableButton(true);
             }
-        }
-
-        protected override void InitializeComponents()
-        {
-            base.InitializeComponents();
-
-            //if (bTextReference == null)
-            //{
-            //    LogConsoleWarning("No BText found attached to this BButton!");
-            //}
-
-            //if (bImageReference == null)
-            //{
-            //    LogConsoleWarning("No BImage found attached to this BButton!");
-            //}
         }
 
         protected override void OnUIHidden()

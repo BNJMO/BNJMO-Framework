@@ -48,7 +48,11 @@ namespace BNJMO
                 BMenu oldHighlightedBMenu = highlightedBMenuReference;
                 highlightedBMenuReference = newBBMenu;
 
-                BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu));
+                if (Application.isPlaying
+                && BManager.Inst)
+                {
+                    BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu));
+                }
 
                 highlightedBMenuReference.OnBecameActive();
 
