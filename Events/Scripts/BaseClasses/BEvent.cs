@@ -38,7 +38,7 @@ namespace BNJMO
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.logEvent = logEvent;
-            BEventManager.Inst.OnBEventInvoked(this, eventHandle, BEventBroadcastType.LOCAL, targetNetworkID);
+            BEventManager.Inst?.OnBEventInvoked(this, eventHandle, BEventBroadcastType.LOCAL, targetNetworkID);
         }
 
         public void Invoke(H eventHandle, BEventBroadcastType eventInvocationType = BEventBroadcastType.LOCAL, 
@@ -46,7 +46,7 @@ namespace BNJMO
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.logEvent = logEvent;
-            BEventManager.Inst.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
+            BEventManager.Inst?.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
         }
                 
         public void OnProceedInvocation(H eventHandle)

@@ -130,7 +130,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchParentSize: 0
 --- !u!114 &323079534935605665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +340,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 0.3882353}
+  matchParentSize: 1
 --- !u!222 &4737480521023239304
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -440,7 +460,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchParentSize: 0
 --- !u!114 &6623046694953897252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +683,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchParentSize: 0
 --- !u!114 &4496728089115392394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,7 +795,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchParentSize: 0
 --- !u!114 &8227765285773333936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +879,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3947553998122257573}
   m_HandleRect: {fileID: 5433440633371027291}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -904,7 +954,17 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchParentSize: 0
 --- !u!114 &3947553998122257573
 MonoBehaviour:
   m_ObjectHideFlags: 0

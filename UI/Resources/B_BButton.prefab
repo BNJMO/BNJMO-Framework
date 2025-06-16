@@ -69,6 +69,15 @@ MonoBehaviour:
   isUIDisabled: 0
   isShown: 1
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &990849338091350293
 MonoBehaviour:
@@ -127,7 +136,7 @@ RectTransform:
   m_GameObject: {fileID: 7155037359287823006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7928989, y: 1.7928989, z: 1.7928989}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6861397163457999772}
@@ -177,6 +186,7 @@ MonoBehaviour:
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
   textDisabledColor: {r: 0, g: 0, b: 0, a: 1}
   useTextSpecialColors: 1
+  defaultFontAsset: {fileID: 11400000, guid: d2eece1edb1c2b54889b65a6575659e1, type: 2}
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
@@ -191,8 +201,8 @@ MonoBehaviour:
   imageHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
   ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
   bImageReference: {fileID: 3090237574691846624}
-  onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
-  onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onPressedSound: {fileID: 0}
+  onSuccessfullyReleasedSound: {fileID: 0}
   upperButton: {fileID: 0}
   leftButton: {fileID: 0}
   rightButton: {fileID: 0}
@@ -286,13 +296,18 @@ MonoBehaviour:
   objectNamePrefix: T_
   isUIDisabled: 0
   isShown: 1
-  useLanguages: 0
   text: Button
+  useLocalization: 0
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
@@ -300,6 +315,9 @@ MonoBehaviour:
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 7155037360065364738}
   tmpTextComponent: {fileID: 7155037360065364738}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &7155037360065364738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,7 +371,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
