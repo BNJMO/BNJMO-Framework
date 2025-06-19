@@ -14,6 +14,15 @@ namespace BNJMO
         #endregion
 
         #region Public Methods
+
+        public StateMachine()
+        {
+        }
+
+        public StateMachine(bool debugStateChange)
+        {
+            DebugStateChange = debugStateChange;
+        }
         
         public void UpdateState(T newState)
         {
@@ -22,23 +31,25 @@ namespace BNJMO
         
             PreviousState = CurrentState;
             CurrentState = newState;
-            Handler.Update(CurrentState, PreviousState);
-
-            if (DebugStateChange)
-            {
-                Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
-            }
-        }
-    
-        public void RevertState()
-        {
-            (CurrentState, PreviousState) = (PreviousState, CurrentState);
-            Handler.Update(CurrentState, PreviousState);
             
             if (DebugStateChange)
             {
                 Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
             }
+            
+            Handler.Update(CurrentState, PreviousState);
+        }
+    
+        public void RevertState()
+        {
+            (CurrentState, PreviousState) = (PreviousState, CurrentState);
+            
+            if (DebugStateChange)
+            {
+                Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
+            }
+            
+            Handler.Update(CurrentState, PreviousState);
         }
         
         #endregion
