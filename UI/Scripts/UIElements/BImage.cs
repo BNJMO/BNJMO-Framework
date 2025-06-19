@@ -148,6 +148,23 @@ namespace BNJMO
                 UnitySpriteRenderer.enabled = isEnabled;
             }
         }
+
+        public void SetMatchParentSize(bool value)
+        {
+            matchParentSize = value;
+        }
+        
+        public void MatchParentSize()
+        {
+            RectTransform rectTransform = transform as RectTransform;
+            RectTransform parentRectTransform = transform.parent as RectTransform;
+            if (parentRectTransform)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
+            }
+        }
+        
         #endregion
 
         #region Inspector Values
@@ -361,17 +378,6 @@ namespace BNJMO
             }
         }
 #endif
-        
-        private void MatchParentSize()
-        {
-            RectTransform rectTransform = transform as RectTransform;
-            RectTransform parentRectTransform = transform.parent as RectTransform;
-            if (parentRectTransform)
-            {
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
-            }
-        }
         
         #endregion
     }
