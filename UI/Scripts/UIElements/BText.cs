@@ -16,6 +16,13 @@ public class BText : BUIElement
 
     #region Public Methods
 
+    public void SetRTLText(string newText)
+    {
+        isRTL = true;
+        string formatted = GetRTLFormatedText(newText);
+        SetText(formatted, true);
+    }
+
     public void SetText(string newText, bool isArabicRTL = false)
     {
         text = newText;
