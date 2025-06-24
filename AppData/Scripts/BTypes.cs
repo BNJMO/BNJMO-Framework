@@ -24,7 +24,7 @@ namespace BNJMO
     {
         MAIN_STAGE,
         PREFAB_STAGE,
-        PRESISTENCE_STAGE,
+        PERSISTENCE_STAGE,
         OTHER_STAGE, // (like in a Preview Scene)
     }
     #endregion

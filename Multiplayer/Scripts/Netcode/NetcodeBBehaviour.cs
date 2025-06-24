@@ -907,7 +907,7 @@ namespace BNJMO
 #if UNITY_EDITOR
             if (EditorUtility.IsPersistent(gameObject))
             {
-                return EObjectStage.PRESISTENCE_STAGE;
+                return EObjectStage.PERSISTENCE_STAGE;
             }
 
             // If the GameObject is not persistent let's determine which stage we are in first because getting Prefab info depends on it
