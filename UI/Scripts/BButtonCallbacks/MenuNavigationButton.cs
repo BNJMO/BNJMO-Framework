@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 namespace BNJMO
 {
     [RequireComponent(typeof(BButton))]
-    public class MenuNavigationButton : BBehaviour
+    public class BMenuNavigationButton : BBehaviour
     { 
         #region Public Events
 
@@ -29,9 +29,17 @@ namespace BNJMO
 
         [BoxGroup("MenuNavigationButton", centerLabel: true)] 
         [InfoBox("$infoToMenuReferenceNotSet", InfoMessageType.Error, "showToMenuReferenceNotSet")] 
-        [BoxGroup("MenuNavigationButton")] [SerializeField] [SceneObjectsOnly]  private BMenu toBMenu;
-        [BoxGroup("MenuNavigationButton")] [SerializeField] private bool overrideBButtonUIName;
-        [BoxGroup("MenuNavigationButton")] [ShowInInspector] [ReadOnly] private BButton bButtonReference;
+        [SerializeField] [BoxGroup("MenuNavigationButton")]  [SceneObjectsOnly]  
+        private BMenu toBMenu;
+        
+        [SerializeField] [BoxGroup("MenuNavigationButton")]  
+        private bool navigateOnButtonPress = true;
+        
+        [SerializeField] [BoxGroup("MenuNavigationButton")]  
+        private bool overrideBButtonUIName;
+        
+        [ShowInInspector] [BoxGroup("MenuNavigationButton")] [ReadOnly] 
+        private BButton bButtonReference;
 
         #endregion
 
@@ -99,7 +107,8 @@ namespace BNJMO
         
         private void Button_OnReleased(BButton bButton, bool cursorInside)
         {
-            if (!cursorInside)
+            if (cursorInside == false
+                || navigateOnButtonPress == false)
                 return;
             
             NavigateToMenu();
