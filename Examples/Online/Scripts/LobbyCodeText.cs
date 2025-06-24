@@ -13,7 +13,17 @@ namespace BNJMO
 
         #region Public Methods
 
+        public static string FormatMiddleSpaceIntoCode(string text)
+        {
+            
+            Debug.Log(text);
 
+            if (text.Length < 6)
+                return text;
+
+            return text.Substring(0, 3) + " " + text.Substring(3, 3);
+        }
+        
         #endregion
 
         #region Inspector Variables
@@ -60,7 +70,7 @@ namespace BNJMO
             var stateMachine = multiplayerManager.HandlerStateMachine;
             stateMachine.Handler[EOnlineState.NotConnected].Exit += old =>
             {
-                lobbyCodeText.SetText(multiplayerManager.LobbyCode);
+                lobbyCodeText.SetText(FormatMiddleSpaceIntoCode(multiplayerManager.LobbyCode));
             };
             stateMachine.Handler[EOnlineState.NotConnected].Enter += old =>
             {
