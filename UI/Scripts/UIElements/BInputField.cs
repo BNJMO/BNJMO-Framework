@@ -12,7 +12,9 @@ namespace BNJMO
     {
         #region Public Events
         
+        public event Action<BInputField, string> TextSelected;
         public event Action<BInputField, string> TextUpdated;
+        public event Action<BInputField, string> TextEditEnded;
         public event Action<BInputField, string> TextSubmitted;
 
         #endregion
@@ -161,7 +163,10 @@ namespace BNJMO
 
             if (inputFieldTMP)
             {
+                inputFieldTMP.onSelect.AddListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.AddListener(InputField_OnTextSelection);
                 inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.AddListener(InputField_OnEndEdit);
                 inputFieldTMP.onSubmit.AddListener(InputField_OnSubmit);
             }
         }
@@ -172,7 +177,10 @@ namespace BNJMO
 
             if (inputFieldTMP)
             {
+                inputFieldTMP.onSelect.RemoveListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.RemoveListener(InputField_OnTextSelection);
                 inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.RemoveListener(InputField_OnEndEdit);
                 inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
             }
         }
@@ -198,6 +206,16 @@ namespace BNJMO
         #endregion
 
         #region Events Callbacks
+
+        private void InputField_OnSelect(string newString)
+        {
+            InvokeEventIfBound(TextSelected, this, newString);
+        }
+
+        private void InputField_OnTextSelection(string newString, int int1, int int2)
+        {
+            InvokeEventIfBound(TextSelected, this, newString);
+        }
         
         private void InputField_OnValueChanged(string newString)
         {
@@ -207,8 +225,14 @@ namespace BNJMO
         private void InputField_OnSubmit(string newString)
         {
             InvokeEventIfBound(TextSubmitted, this, newString);
+            inputFieldTMP.OnDeselect(null);
         }
-
+        
+        private void InputField_OnEndEdit(string newString)
+        {
+            InvokeEventIfBound(TextEditEnded, this, newString);
+        }
+  
         #endregion
 
         #region Private Methods

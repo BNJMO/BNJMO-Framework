@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace BNJMO
@@ -13,15 +14,21 @@ namespace BNJMO
 
         #region Public Methods
 
-        public static string FormatMiddleSpaceIntoCode(string text)
+        public static string FormatLobbyCode(string text)
         {
-            
-            Debug.Log(text);
-
             if (text.Length < 6)
                 return text;
 
-            return text.Substring(0, 3) + " " + text.Substring(3, 3);
+            string formattedString = text.Substring(0, 3) + " " + text.Substring(3, 3);
+            formattedString = formattedString.ToUpper();
+            return formattedString;
+        }
+
+        public static bool IsValidLobbyCode(string text)
+        {
+            bool isCorrectLength = text.Length == 6;
+            bool isCorrectInput = Regex.IsMatch(text, @"^[A-Za-z0-9]+$");
+            return isCorrectLength && isCorrectInput;
         }
         
         #endregion
@@ -70,7 +77,7 @@ namespace BNJMO
             var stateMachine = multiplayerManager.HandlerStateMachine;
             stateMachine.Handler[EOnlineState.NotConnected].Exit += old =>
             {
-                lobbyCodeText.SetText(FormatMiddleSpaceIntoCode(multiplayerManager.LobbyCode));
+                lobbyCodeText.SetText(FormatLobbyCode(multiplayerManager.LobbyCode));
             };
             stateMachine.Handler[EOnlineState.NotConnected].Enter += old =>
             {
