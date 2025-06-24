@@ -13,6 +13,7 @@ namespace BNJMO
         #region Public Events
         
         public event Action<BInputField, string> TextUpdated;
+        public event Action<BInputField, string> TextSubmitted;
 
         #endregion
 
@@ -20,27 +21,59 @@ namespace BNJMO
 
         public void SetInputText(string newText)
         {
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.text = newText;
+                inputFieldTMP.text = newText;
+            }
+            if (inputBText)
+            {
+                inputBText.SetText(newText);
             }
         }
 
         public string GetInputText()
         {
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                return inputFieldTMPReference.text;
+                return inputFieldTMP.text;
             }
 
             return "";
         }
 
+        public void SetInputTextColor(Color newColor)
+        {
+            defaultInputTextColor = newColor;
+            
+            if (inputBText)
+            {
+                inputBText.SetColor(newColor);
+            }
+        }
+
+        public void SetInputTextValid(bool isValid)
+        {
+            IsInputTextValid = isValid;
+            if (inputBText)
+            {
+                Color color = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
+                inputBText.SetColor(color);
+            }
+        }
+
+        public void ResetInputTextColor()
+        {
+            if (inputBText)
+            {
+                inputBText.SetColor(defaultInputTextColor);
+            }
+        }
+
         public void SetPlaceholderText(string newText)
         {
-            if (placeholderBTextReference)
+            if (placeholderBText)
             {
-                placeholderBTextReference.SetText(newText);
+                placeholderBText.SetText(newText);
             }
         }
 
@@ -48,23 +81,56 @@ namespace BNJMO
 
         #region Inspector Variables
         
-        [BoxGroup("BInputField", centerLabel: true)] [SerializeField] 
+        [BoxGroup("BInputField", centerLabel: true)] 
+        
+        [SerializeField] [BoxGroup("BInputField")] [TextArea] 
         private string placeHolderText = "Placeholder...";
+
+
+        [FoldoutGroup("BInputField/Colors")]
+        [Header("Placeholder")]
+        [SerializeField]
+        [FoldoutGroup("BInputField/Colors")]
+        private Color defaultPlaceHolderTextColor = new (0.0f, 0.0f, 0.0f, 0.75f);
+
+        [SerializeField] [FoldoutGroup("BInputField/Colors")] 
+        private Color defaultInputTextColor = new (0.0f, 0.0f, 0.0f, 1.0f);
+        
+        [SerializeField] [FoldoutGroup("BInputField/Colors")] 
+        private Color validInputTextColor = new (0.0f, 0.85f, 0.0f, 1.0f);
+        
+        [SerializeField] [FoldoutGroup("BInputField/Colors")] 
+        private Color invalidInputTextColor = new (0.85f, 0.0f, 0.0f, 1.0f);
         
         [Header("References")]
-        [BoxGroup("BInputField")] [SerializeField] 
-        private TMP_InputField inputFieldTMPReference;
+        [SerializeField] [BoxGroup("BInputField")] 
+        private BImage backgroundImage;
+        
+        [SerializeField] [BoxGroup("BInputField")] 
+        private TMP_InputField inputFieldTMP;
 
-        [FormerlySerializedAs("placeholderBText")] [BoxGroup("BInputField")] [SerializeField]
-        private BText placeholderBTextReference;
+        [SerializeField] [FormerlySerializedAs("placeholderBTextReference")] [BoxGroup("BInputField")] 
+        private BText placeholderBText;
 
-        [FormerlySerializedAs("inputBText")] [BoxGroup("BInputField")] [SerializeField]
-        private BText inputBTextReference;
+        [SerializeField] [FormerlySerializedAs("inputBTextReference")]  [BoxGroup("BInputField")] 
+        private BText inputBText;
+
+        [SerializeField] [BoxGroup("BInputField")]
+        private bool enableSelectionCaret = true;
+        
+        [SerializeField] [BoxGroup("BInputField")] [InfoBox("Added in play mode")]
+        private BSelectionCaret selectionCaret;
 
         #endregion
 
-        #region Private Variables
+        #region Variables
         
+        public bool IsInputTextValid { get; private set; }
+        
+        #endregion
+
+        #region Life Cycle
+
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
@@ -74,18 +140,29 @@ namespace BNJMO
 
             base.OnValidate();
 
-            SetComponentIfNull(ref inputFieldTMPReference);
+            SetComponentIfNull(ref inputFieldTMP);
+            SetComponentInChildrenIfNull(ref backgroundImage);
             
             SetPlaceholderText(placeHolderText);
+
+            if (placeholderBText)
+            {
+                placeholderBText.SetColor(defaultPlaceHolderTextColor);
+            }
+            if (inputBText)
+            {
+                inputBText.SetColor(defaultInputTextColor);
+            }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.onValueChanged.AddListener(OnInputFieldTMPChanged);
+                inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+                inputFieldTMP.onSubmit.AddListener(InputField_OnSubmit);
             }
         }
 
@@ -93,29 +170,50 @@ namespace BNJMO
         {
             base.OnDisable();
 
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.onValueChanged.RemoveListener(OnInputFieldTMPChanged);
+                inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+                inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
             }
         }
 
-        #endregion
+        protected override void Start()
+        {
+            base.Start();
 
-        #region Life Cycle
-
+            // Add BSelectionCaraet to automatically instantiated TMP_SelectionCaret
+            var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
+            if (tmpSelectionCaret
+                && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
+            {
+                selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
+                if (enableSelectionCaret == false)
+                {
+                    selectionCaret.DisableUI();
+                }
+            }
+        }
+        
 
         #endregion
 
         #region Events Callbacks
-        private void OnInputFieldTMPChanged(string newString)
+        
+        private void InputField_OnValueChanged(string newString)
         {
             InvokeEventIfBound(TextUpdated, this, newString);
+        }     
+        
+        private void InputField_OnSubmit(string newString)
+        {
+            InvokeEventIfBound(TextSubmitted, this, newString);
         }
 
         #endregion
 
         #region Private Methods
 
+  
 
         #endregion
     }

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BText : BUIElement
@@ -45,6 +46,35 @@ public class BText : BUIElement
         InvokeEventIfBound(BTextUpdated, text);
     }
 
+    public void SetFontsize(float newFontSize)
+    {
+        fontSize = newFontSize;
+
+        if (textUI)
+        {
+            textUI.fontSize = (int) fontSize;
+        }
+        if (textMesh)
+        {
+            textMesh.fontSize = (int) fontSize;
+        }
+        if (textMeshPro)
+        {
+            textMeshPro.fontSize = fontSize;
+        }
+
+        InvokeEventIfBound(BTextUpdated, text);
+    }
+
+    public void SetLocalizedText(LocalizedString newLocalizedString)
+    {
+        if (newLocalizedString == null)
+            return;
+        
+        localizedString = newLocalizedString;
+        localizedString.RefreshString();
+    }
+    
     public void SetColor(Color newColor)
     {
         color = newColor;
@@ -69,15 +99,53 @@ public class BText : BUIElement
         SetColor(newColor);
     }
 
-    public void SetFontAsset(TMP_FontAsset newFontAsset)
+    public void SetTMPFontAsset(TMP_FontAsset newFontAsset)
     {
-        defaultFontAsset = newFontAsset;
+        defaultTMPFontAsset = newFontAsset;
         
-        if (defaultFontAsset
+        if (defaultTMPFontAsset
             && tmpTextComponent)
         {
-            tmpTextComponent.font = defaultFontAsset;
+            tmpTextComponent.font = defaultTMPFontAsset;
         }
+    }
+
+    public void SetTextUppercase(bool isUpperCase)
+    {
+        writeTextUppercase = isUpperCase;
+        SetText(text);
+    }
+    
+    public TextAlignmentOptions GetTextAlignment()
+    {
+        if (tmpTextComponent)
+        {
+            return isRTL switch
+            {
+                true => tmpTextComponent.alignment switch
+                {
+                    TextAlignmentOptions.Left => TextAlignmentOptions.Right,
+                    TextAlignmentOptions.BaselineLeft => TextAlignmentOptions.BaselineRight,
+                    TextAlignmentOptions.BottomLeft => TextAlignmentOptions.BaselineRight,
+                    TextAlignmentOptions.CaplineLeft => TextAlignmentOptions.CaplineRight,
+                    TextAlignmentOptions.MidlineLeft => TextAlignmentOptions.MidlineRight,
+                    TextAlignmentOptions.TopLeft => TextAlignmentOptions.TopRight,
+                    _ => tmpTextComponent.alignment
+                },
+                false => tmpTextComponent.alignment switch
+                {
+                    TextAlignmentOptions.Right => TextAlignmentOptions.Left,
+                    TextAlignmentOptions.BaselineRight => TextAlignmentOptions.BaselineLeft,
+                    TextAlignmentOptions.BottomRight => TextAlignmentOptions.BottomLeft,
+                    TextAlignmentOptions.CaplineRight => TextAlignmentOptions.CaplineLeft,
+                    TextAlignmentOptions.MidlineRight => TextAlignmentOptions.MidlineLeft,
+                    TextAlignmentOptions.TopRight => TextAlignmentOptions.TopLeft,
+                    _ => tmpTextComponent.alignment
+                }
+            };
+        }
+
+        return TextAlignmentOptions.Left;
     }
     
     public void FormatTextRTL()
@@ -88,58 +156,82 @@ public class BText : BUIElement
     public void UpdateLocalizedVariables(params object[] values)
     {
         localizedString.Arguments = values;
-        localizedString.RefreshString();
+        OnLocalizedStringChanged(localizedString.GetLocalizedString());
     }
 
     #endregion
 
     #region Inspector Values
     [BoxGroup("BText", centerLabel: true)]
-
-    [SerializeField]
-    [BoxGroup("BText")] 
-    [HideIf("@this.useLocalization == true")]
-    [TextArea(4, 8)]
-    private string text = "BText";
-
-    [BoxGroup("BText")]
-    [SerializeField]
+    
+    [SerializeField] [BoxGroup("BText")]
     private bool useLocalization = false;
 
-    [ShowIf("useLocalization")]
-    [SerializeField]
+    [SerializeField] [BoxGroup("BText")] [HideIf("@this.useLocalization == true")] [TextArea(4, 8)]
+    private string text = "BText";
+
+    [SerializeField] [BoxGroup("BText")] [ShowIf("useLocalization")]
     private LocalizedString localizedString;
 
-    [SerializeField]
-    [BoxGroup("BText")] 
-    private TMP_FontAsset defaultFontAsset;
+    [SerializeField] [FormerlySerializedAs("defaultFontAsset")] [BoxGroup("BText")]
+    private TMP_FontAsset defaultTMPFontAsset;
+    
+    [SerializeField] [BoxGroup("BText")]
+    private float fontSize = 0.0f;
+    
+    [SerializeField] [BoxGroup("BText")]
+    private bool isRTL = false;
 
-    [BoxGroup("BText")] 
-    [SerializeField] 
+    [SerializeField] [BoxGroup("BText")]
     private bool writeTextUppercase = false;
 
-    [BoxGroup("BText")] 
-    [SerializeField] 
+    [SerializeField] [BoxGroup("BText")]
     private bool overrideUINameFromText = false;
 
-    [BoxGroup("BText")] 
-    [SerializeField] 
+    [SerializeField] [BoxGroup("BText")]
     private Color color = Color.white;
+    
+    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    private Text textUI;
 
-    [Button("Format Text To RTL")]
+    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    private TextMesh textMesh;
+
+    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    private TMP_Text textMeshPro;
+
+    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    private TextMeshProUGUI tmpTextComponent;
+    
+    [BoxGroup("BText")] [Button("Match Parent Size")]
+    private void MatchParentSize_Button() => MatchParentSize();
+
+    [BoxGroup("BText")] [Button("Format Text To RTL")]
     private void Button_FormatTextToRTL()
     {
         FormatTextRTL();
     }
+
+    
     #endregion
 
     #region Variables
 
+    public bool UseLocalization
+    {
+        get => useLocalization;
+        set => useLocalization = value;
+    }
+
     public LocalizedString LocalizedString => localizedString;
 
-    public bool WriteTextUppercase { get => writeTextUppercase; set { writeTextUppercase = value; } }
+    public bool WriteTextUppercase => writeTextUppercase; 
 
     public string Text => text;
+
+    public float FontSize => fontSize;
+
+    public bool IsRTL => isRTL;
     
     public Color TextColor => color;
     
@@ -147,25 +239,15 @@ public class BText : BUIElement
 
     public TMP_Text TextMeshPro => textMeshPro;
     
-    public TMP_FontAsset TextFont => defaultFontAsset;
-
-    [SerializeField] [HideInInspector]
-    private Text textUI;
-
-    [SerializeField] [HideInInspector]
-    private TextMesh textMesh;
-
-    [SerializeField] [HideInInspector]
-    private TMP_Text textMeshPro;
-
-    [SerializeField] [HideInInspector]
-    private TextMeshProUGUI tmpTextComponent;
+    public TMP_FontAsset TextTMPFont => defaultTMPFontAsset;
+    
 
     private (string text, bool isRTL)? pendingTextData = null;
 
     #endregion
 
     #region LifeCycle
+    
     protected override void OnValidate()
     {
         if (!CanValidate()) return;
@@ -184,20 +266,53 @@ public class BText : BUIElement
         SetComponentIfNull(ref textMesh);
         SetComponentIfNull(ref textMeshPro);
         SetComponentIfNull(ref tmpTextComponent);
-
-        if (defaultFontAsset == null
-            && tmpTextComponent)
+        
+        if (textUI)
         {
-            defaultFontAsset = tmpTextComponent.font;
+            if (fontSize <= 0.0f)
+            {
+                fontSize = textUI.fontSize;
+            }
+        }
+        
+        if (textMesh)
+        {
+            if (fontSize <= 0.0f)
+            {
+                fontSize = textMesh.fontSize;
+            }
         }
 
-        SetFontAsset(defaultFontAsset);
-
-        if (!useLocalization)
+        if (textMeshPro)
         {
-            SetText(text);
+            if (fontSize <= 0.0f)
+            {
+                fontSize = textMeshPro.fontSize;
+            }
+        }
+        
+        if (tmpTextComponent)
+        {
+            if (defaultTMPFontAsset == null)
+            {
+                defaultTMPFontAsset = tmpTextComponent.font;
+            }
+            SetTMPFontAsset(defaultTMPFontAsset);
+
+            if (fontSize <= 0.0f)
+            {
+                fontSize = tmpTextComponent.fontSize;
+            }
         }
 
+        if (useLocalization
+            && localizedString is { IsEmpty: false })
+        {
+            text = localizedString.GetLocalizedString();
+        }
+
+        SetText(text);
+        SetFontsize(fontSize);
         SetColor(color);
     }
 
@@ -235,7 +350,11 @@ public class BText : BUIElement
 
     public void OnLocalizedStringChanged(string value)
     {
-        bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+        if (useLocalization
+            && localizedString is { IsEmpty: false })
+            return;
+        
+        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
 
         if (IsTextComponentInactive())
         {
@@ -252,7 +371,7 @@ public class BText : BUIElement
 
     private void ApplyLocalizedText(string value)
     {
-        bool isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
         SetText(value, isRTL);
     }
 
@@ -275,8 +394,8 @@ public class BText : BUIElement
 
         if (pendingTextData.HasValue)
         {
-            var (text, isRTL) = pendingTextData.Value;
-            SetText(text, isRTL);
+            var (pendingDataText, pendingDataIsRTL) = pendingTextData.Value;
+            SetText(pendingDataText, pendingDataIsRTL);
             pendingTextData = null;
         }
     }
@@ -338,67 +457,6 @@ public class BText : BUIElement
             return finalText.TrimEnd('\n');
         }        
         return newText;
-    }
-    
-    private TextAlignmentOptions GetTextAlignment(bool isRTL)
-    {
-        if (IS_NOT_NULL(tmpTextComponent))
-        {
-            if (isRTL == true)
-            {
-                switch (tmpTextComponent.alignment)
-                {
-                    case TextAlignmentOptions.Left:
-                        return TextAlignmentOptions.Right;
-
-                    case TextAlignmentOptions.BaselineLeft:
-                        return TextAlignmentOptions.BaselineRight;
-
-                    case TextAlignmentOptions.BottomLeft:
-                        return TextAlignmentOptions.BaselineRight;
-
-                    case TextAlignmentOptions.CaplineLeft:
-                        return TextAlignmentOptions.CaplineRight;
-
-                    case TextAlignmentOptions.MidlineLeft:
-                        return TextAlignmentOptions.MidlineRight;
-
-                    case TextAlignmentOptions.TopLeft:
-                        return TextAlignmentOptions.TopRight;
-
-                    default:
-                        return tmpTextComponent.alignment;
-                }
-            }
-            else if (isRTL == false)
-            {
-                switch (tmpTextComponent.alignment)
-                {
-                    case TextAlignmentOptions.Right:
-                        return TextAlignmentOptions.Left;
-
-                    case TextAlignmentOptions.BaselineRight:
-                        return TextAlignmentOptions.BaselineLeft;
-
-                    case TextAlignmentOptions.BottomRight:
-                        return TextAlignmentOptions.BottomLeft;
-
-                    case TextAlignmentOptions.CaplineRight:
-                        return TextAlignmentOptions.CaplineLeft;
-
-                    case TextAlignmentOptions.MidlineRight:
-                        return TextAlignmentOptions.MidlineLeft;
-
-                    case TextAlignmentOptions.TopRight:
-                        return TextAlignmentOptions.TopLeft;
-
-                    default:
-                        return tmpTextComponent.alignment;
-                }
-            }
-        }
-
-        return tmpTextComponent.alignment;
     }
 
     private bool IsTextComponentInactive()

@@ -9,6 +9,7 @@ namespace BNJMO
     public abstract class BUIElement : BBehaviour
     {
         #region Public Events
+        
         public event Action<BUIElement> BUIElementShown;
         public event Action<BUIElement> BUIElementHidden;
 
@@ -88,6 +89,56 @@ namespace BNJMO
             return isUIDisabledFromHierarchy;
         }
         
+        public void SetMatchParentSize(bool value)
+        {
+            matchParentSize = value;
+            if (matchParentSize)
+            {
+                MatchParentSize();
+            }
+        }
+        
+        public void MatchParentSize()
+        {
+            RectTransform rectTransform = transform as RectTransform;
+            RectTransform parentRectTransform = transform.parent as RectTransform;
+            if (parentRectTransform)
+            {
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
+            }
+        }
+
+        public void MatchAllChildrenSizes()
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform
+                    && transform.GetChild(i)
+                    && transform.GetChild(i).GetComponent<BUIElement>())
+                {
+                    transform.GetChild(i).GetComponent<BUIElement>().MatchParentSize();
+                    transform.GetChild(i).GetComponent<BUIElement>().MatchAllChildrenSizes();
+                }
+            }
+        }
+        
+        public void RevalidateWithChildren()
+        {
+            Revalidate();
+            
+            // Propagate hierarchically
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if ((transform)
+                    && (transform.GetChild(i))
+                    && (transform.GetChild(i).GetComponent<BUIElement>()))
+                {
+                    transform.GetChild(i).GetComponent<BUIElement>().Revalidate();
+                }
+            }
+        }
+        
         #endregion
 
         #region Inspector Variables
@@ -96,23 +147,54 @@ namespace BNJMO
         [SerializeField] protected string uIElementName = "";
 
         [Title("Parent BIUElements (Automatically populated)")]
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected BFrame parentBFrame;
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected BMenu parentBMenu;
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected BUIElement parentBUIElement;
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected BFrame parentBFrame;
+        
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected BMenu parentBMenu;
+        
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected BUIElement parentBUIElement;
 
         [Title("Configuration")]
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected bool overrideGameOjbectName = true;
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected bool propagateUINameToChildren = false;
-        [FoldoutGroup("BUIElement/More")] [SerializeField] protected bool revalidateAllDirectChildren = true;
-        [FoldoutGroup("BUIElement/More")] [SerializeField] [ReadOnly] protected string objectNamePrefix = "C_";
+        [FoldoutGroup("BUIElement/More")] [FormerlySerializedAs("overrideGameOjbectName")] [SerializeField] 
+        protected bool overrideGameObjectName = true;
+        
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected bool propagateUINameToChildren = false;
+        
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected bool revalidateAllDirectChildren = true;
+        
+        [FoldoutGroup("BUIElement/More")] [ReadOnly] [SerializeField]
+        protected string objectNamePrefix = "C_";
         
         [Title("Visibility")]
-        [FoldoutGroup("BUIElement/More")] [FormerlySerializedAs("isDisabled")] [SerializeField] private bool isUIDisabled = false;
-        [FoldoutGroup("BUIElement/More")] [Button("Show UI")] [HideIf("isUIDisabled")] private void Button_EnableUIElement() { ShowUI(); }
-        [FoldoutGroup("BUIElement/More")] [Button("Hide UI")] private void Button_DisableUIElement() { HideUI(); }
+        [FoldoutGroup("BUIElement/More")] [FormerlySerializedAs("isDisabled")] [SerializeField] 
+        private bool isUIDisabled = false;
+                
+        [FoldoutGroup("BUIElement/More")] [SerializeField] 
+        protected bool matchParentSize = false;
+        
+        [FoldoutGroup("BUIElement/More")] [Button("Show UI")] [HideIf("isUIDisabled")] 
+        private void EnableUIElement_Button() => ShowUI();
+        
+        [FoldoutGroup("BUIElement/More")] [Button("Hide UI")] 
+        private void DisableUIElement_Button() => HideUI();
+               
+        [FoldoutGroup("BUIElement/More")]  [Button("Match Parent Size")]
+        private void MatchParentSize_Button() => MatchParentSize();
+                      
+        [FoldoutGroup("BUIElement/More")]  [Button("Match All Childreen Sizes")]
+        private void MatchAllChildrenSizes_Button() => MatchAllChildrenSizes();
         
         [Title("Refresh")]
-        [FoldoutGroup("BUIElement/More")] [Button("Revalidate")] private void Button_Revalidate() { Revalidate(); }
+        [FoldoutGroup("BUIElement/More")] [Button("Revalidate")] 
+        private void Revalidate_Button() => Revalidate(); 
+        
+        [FoldoutGroup("BUIElement/More")] [Button("Revalidate With Children")] 
+        private void RevalidateWithChildren_Button() => RevalidateWithChildren(); 
+ 
 
         #endregion
 
@@ -164,7 +246,7 @@ namespace BNJMO
             }
 
             // Update GameObject name
-            if (overrideGameOjbectName)
+            if (overrideGameObjectName)
             {
                 // Prevent renaming object if is the parent of a prefab
                 if (IsGameObjectInMainStage() == false
@@ -177,6 +259,12 @@ namespace BNJMO
                     uIElementName = gameObject.name;
                 }
                 gameObject.name = objectNamePrefix + uIElementName + UINameExtension;
+            }
+            
+            // Match parent size
+            if (matchParentSize)
+            {
+                MatchParentSize();
             }
         }
 

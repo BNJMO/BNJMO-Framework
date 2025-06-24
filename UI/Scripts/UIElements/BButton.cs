@@ -5,6 +5,7 @@ using System;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using UnityEngine.Serialization;
 
 namespace BNJMO
@@ -79,9 +80,15 @@ namespace BNJMO
         {
             if (bImageReference)
             {
-                buttonImage = newSprite;
-                bImageReference.SetSprite(buttonImage);
+                buttonSprite = newSprite;
+                bImageReference.SetSprite(buttonSprite);
             }
+        }
+
+        public void SetButtonLocalizedSprite(LocalizedSprite newLocalizedSprite)
+        {
+            imageLocalizedSprite = newLocalizedSprite;
+            bImageReference.SetLocalizedSprite(newLocalizedSprite);
         }
 
         public void SetButtonImageColor(Color newColor)
@@ -104,19 +111,33 @@ namespace BNJMO
 
         public void SetButtonText(string newText)
         {
-            if (bTextReference)
-            {
-                buttonText = newText;
-                bTextReference.SetText(buttonText);
-            }
+            if (!bTextReference) 
+                return;
+            
+            buttonText = newText;
+            bTextReference.SetText(buttonText);
         }
 
+        public void SetButtonTextFontSize(float newFontSize)
+        {
+            if (!bTextReference)
+                return;
+            
+            bTextReference.SetFontsize(textFontSize);
+        }
+        
+        public void SetButtonLocalizedString(LocalizedString newLocalizedString)
+        {
+            textLocalizedString = newLocalizedString;
+            bTextReference.SetLocalizedText(textLocalizedString);
+        }
+        
         public void SetButtonTextFont(TMP_FontAsset newFontAsset)
         {
             defaultFontAsset = newFontAsset;
             if (bTextReference)
             {
-                bTextReference.SetFontAsset(newFontAsset);
+                bTextReference.SetTMPFontAsset(newFontAsset);
             }
         }
         
@@ -168,7 +189,7 @@ namespace BNJMO
             if (bImageReference
                 && useImagePressedSprite)
             {
-                bImageReference.SetSprite(buttonImage);
+                bImageReference.SetSprite(buttonSprite);
             }
 
             if (bImageReference
@@ -216,7 +237,7 @@ namespace BNJMO
             if (bImageReference
                 && useImagePressedSprite)
             {
-                bImageReference.SetSprite(buttonImage);
+                bImageReference.SetSprite(buttonSprite);
             }
 
             if (bImageReference
@@ -316,7 +337,7 @@ namespace BNJMO
             if (bImageReference
                 && useImagePressedSprite)
             {
-                bImageReference.SetSprite(buttonImage);
+                bImageReference.SetSprite(buttonSprite);
             }
 
             if (bImageReference)
@@ -356,7 +377,7 @@ namespace BNJMO
             if (bImageReference
                 && useImagePressedSprite)
             {
-                bImageReference.SetSprite(buttonImage);
+                bImageReference.SetSprite(buttonSprite);
             }
 
             if (bImageReference
@@ -391,7 +412,7 @@ namespace BNJMO
             if (bImageReference
                 && useImagePressedSprite)
             {
-                bImageReference.SetSprite(buttonImage);
+                bImageReference.SetSprite(buttonSprite);
             }
 
             if (bImageReference
@@ -439,131 +460,161 @@ namespace BNJMO
         #endregion
 
         #region Inspector Variables
-
-        [BoxGroup("BButton", centerLabel: true)] [SerializeField] 
+        [BoxGroup("BButton", centerLabel: true)]
+        
+        [SerializeField] 
         private bool automaticallyFindChildBUIElements = true;
         
-        [FormerlySerializedAs("isDisabled")] [BoxGroup("BButton")] [SerializeField] 
+        [SerializeField] [FormerlySerializedAs("isDisabled")] [BoxGroup("BButton")]
         private bool isButtonDisabled = false;
         
-        /* Text */
-        [FoldoutGroup("BButton/Text")] [SerializeField] [Space(15)]  [TextArea] 
-        private string buttonText = "Button";
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private bool writeButtonTextUppercase = false;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private bool overrideUINameFromText = false;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private Color textNormalColor = Color.black;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private Color textDisabledColor = Color.black;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private bool useTextSpecialColors = true;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private TMP_FontAsset defaultFontAsset;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] 
-        private Color textHoveredColor = Color.black;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] 
-        private Color textHighlightedColor = Color.black;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] [HideIf("@this.useTextSpecialColors == false")] 
-        private Color textPressedColor = Color.black;
-        
-        [FoldoutGroup("BButton/Text")] [SerializeField] 
-        private BText bTextReference;
-
-        [FoldoutGroup("BButton/Text")] [Button("Derive Button Name From UIElement Name")]
-        private void DeriveName_Button() => DeriveName();
-
+        [FoldoutGroup("BButton/Settings")]
         /* Image */
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private Sprite buttonImage;
         
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private bool matchImageParentSize = true;
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private bool useImagePressedSprite = false;
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] [HideIf("@this.useImagePressedSprite == false")]  
-        private Sprite buttonPressedImage;
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private Color imageNormalColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private Color imageDisabledColor = new Color(1.0f, 1.0f, 1.0f, 0.125f);
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
-        private bool useImageSpecialColors = false;
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] [HideIf("@this.useImageSpecialColors == false")] 
-        private Color imageHoveredColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] [HideIf("@this.useImageSpecialColors == false")] 
-        private Color imageHighlightedColor = new Color(0.61f, 0.96f, 1.0f, 1.0f);
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] [HideIf("@this.useImageSpecialColors == false")] 
-        private Color ImagePressedColor = new Color(0.46f, 0.67f, 0.69f, 1.0f);
-        
-        [FoldoutGroup("BButton/Image")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
         private BImage bImageReference;
         
-        [FoldoutGroup("BButton/Image")] [Button("Match Image Parent Size")]
+        [Header("Sprite")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        private bool useImageLocalization = false;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [FormerlySerializedAs("buttonImage")] [ShowIf("@useImageLocalization == false")]
+        private Sprite buttonSprite;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [FormerlySerializedAs("localizedSprite")] [ShowIf("@useImageLocalization == true")]
+        private LocalizedSprite imageLocalizedSprite;
+
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]        // TODO: Add localization for pressed Sprite
+        private bool useImagePressedSprite = false;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [HideIf("@this.useImagePressedSprite == false")]
+        private Sprite buttonPressedImage;
+        
+        [Header("Colors")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        private Color imageNormalColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")]
+        private Color imageDisabledColor = new Color(1.0f, 1.0f, 1.0f, 0.125f);
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")]
+        private bool useImageSpecialColors = false;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        private Color imageHoveredColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        private Color imageHighlightedColor = new Color(0.61f, 0.96f, 1.0f, 1.0f);
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        private Color ImagePressedColor = new Color(0.46f, 0.67f, 0.69f, 1.0f);
+        
+        [Header("Match Parent Size")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        private bool imageMatchesParentSize = false;
+        
+        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/Settings/Image")] 
         private void MatchImageParentSize_Button() => MatchImageParentSize();
 
+        /* Text */
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private BText bTextReference;
+        
+        [Header("Text")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private bool useTextLocalization = false;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")] [HideIf("@this.useTextLocalization == true")] [TextArea]
+        private string buttonText = "Button";
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")] [ShowIf("useTextLocalization")]
+        private LocalizedString textLocalizedString;
+                             
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private TMP_FontAsset defaultFontAsset;
+
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private float textFontSize = 0;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private bool writeButtonTextUppercase = false;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private bool overrideUINameFromText = false;
+
+        [Header("Colors")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private Color textNormalColor = Color.black;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")]
+        private Color textDisabledColor = Color.black;
+
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")]
+        private bool useTextSpecialColors = true;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        private Color textHoveredColor = Color.black;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        private Color textHighlightedColor = Color.black;
+        
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        private Color textPressedColor = Color.black;
+        
+        [Header("Match Parent Size")]
+        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        private bool textMatchesParentSize = false;
+        
+        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/Settings/Text")] 
+        private void MatchTextParentSize_Button() => MatchTextParentSize();
+        
+        [Button("Derive Button Name From UIElement Name")] [FoldoutGroup("BButton/Settings/Text")] 
+        private void DeriveName_Button() => DeriveName();
+
         /* Sounds */
-        [FoldoutGroup("BButton/Sounds")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Sounds")]
         private AudioClip onPressedSound;
         
-        [FoldoutGroup("BButton/Sounds")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Sounds")]
         private AudioClip onSuccessfullyReleasedSound;
 
         /* Navigations */
-        [FoldoutGroup("BButton/Navigation")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Navigation")]
         private BButton upperButton;
         
-        [HorizontalGroup("BButton/Navigation/LeftRightRow")] [SerializeField] 
+        [SerializeField] [HorizontalGroup("BButton/Settings/Navigation/LeftRightRow")]
         private BButton leftButton;
         
-        [HorizontalGroup("BButton/Navigation/LeftRightRow")] [SerializeField] 
+        [SerializeField] [HorizontalGroup("BButton/Settings/Navigation/LeftRightRow")]
         private BButton rightButton;
         
-        [FormerlySerializedAs("buttomButton")] [FoldoutGroup("BButton/Navigation")] 
-        [SerializeField] private BButton bottomButton;
+        [SerializeField] [FormerlySerializedAs("buttomButton")] [FoldoutGroup("BButton/Settings/Navigation")]
+        private BButton bottomButton;
 
-        [FoldoutGroup("BButton/Navigation")]
+        [FoldoutGroup("BButton/Settings/Navigation")]
         [Button("Set Self On Reciprocal Buttons")]
         private void SetSelfOnReciprocalButtons_Button() => SetSelfOnReciprocalButtons();
         
         /* Events */
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonHighlightedUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonPressedUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonUnhighlightedUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonReleasedUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonCancelReleasedUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonHoveredEnterUEvent;
         
-        [FoldoutGroup("BButton/Events")] [SerializeField] 
+        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
         public UnityEvent ButtonHoveredExitUEvent;
 
         #endregion
@@ -594,17 +645,6 @@ namespace BNJMO
 
         #region Life Cycle
 
-
-        #endregion
-
-        #region Events Callbacks
-    
-      
-        #endregion
-
-        #region Others
-        
-
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
@@ -628,23 +668,61 @@ namespace BNJMO
             // Update BText
             if (bTextReference)
             {
-                bTextReference.WriteTextUppercase = writeButtonTextUppercase;
-                bTextReference.SetText(buttonText);
+                if (buttonText == "")
+                {
+                    buttonText = bTextReference.Text;
+                }
+                if (useTextLocalization == false)
+                {
+                    bTextReference.SetText(buttonText);
+                }
+                
                 if (defaultFontAsset == null)
                 {
-                    defaultFontAsset = bTextReference.TextFont;
+                    defaultFontAsset = bTextReference.TextTMPFont;
                 }
-                bTextReference.SetFontAsset(defaultFontAsset);
+                bTextReference.SetTMPFontAsset(defaultFontAsset);
+
+                bTextReference.UseLocalization = useTextLocalization;
+                if (textLocalizedString == null)
+                {
+                    textLocalizedString = bTextReference.LocalizedString;
+                }
+                bTextReference.SetLocalizedText(textLocalizedString);
+
+                if (textFontSize <= 0.0f)
+                {
+                    textFontSize = bTextReference.FontSize;
+                }
+                if (textFontSize >= 0.0f)
+                {
+                    SetButtonTextFontSize(textFontSize);
+                }
+                
                 bTextReference.SetColor(textNormalColor);
+                bTextReference.SetTextUppercase(writeButtonTextUppercase);
+                bTextReference.SetMatchParentSize(textMatchesParentSize);
                 bTextReference.UIElementName = UIElementName;
             }
 
             // Update BImage
             if (bImageReference)
             {
-                bImageReference.SetSprite(buttonImage);
+                if (buttonSprite == null)
+                {
+                    buttonSprite = bImageReference.Sprite;
+                }
+                bImageReference.SetSprite(buttonSprite);
+
+                bImageReference.UseLocalization = useImageLocalization;
+                if (imageLocalizedSprite == null)
+                {
+                    imageLocalizedSprite = bImageReference.LocalizedSprite;
+                }
+                bImageReference.SetLocalizedSprite(imageLocalizedSprite);
+                
                 bImageReference.SetColor(imageNormalColor);
-                bImageReference.SetMatchParentSize(matchImageParentSize);
+                bImageReference.SetMatchParentSize(imageMatchesParentSize);
                 bImageReference.UIElementName = UIElementName;
             }
 
@@ -658,6 +736,15 @@ namespace BNJMO
             }
         }
 
+        #endregion
+
+        #region Events Callbacks
+    
+      
+        #endregion
+
+        #region Others
+    
         protected override void OnUIHidden()
         {
             base.OnUIHidden();
@@ -704,6 +791,11 @@ namespace BNJMO
         private void MatchImageParentSize()
         {
             bImageReference?.MatchParentSize();
+        }
+
+        private void MatchTextParentSize()
+        {
+            bTextReference?.MatchParentSize();
         }
 
         #endregion

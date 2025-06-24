@@ -7,84 +7,15 @@ namespace BNJMO
 {
     public class BMenu : BUIElement
     {
-        public bool IsActive { get { return isActive; } private set { isActive = value; } }
+        #region Public Events
 
-        private string infoNoStartBButtonHighlight = "You might need to select one of the children BButton as Start Hihghlight.";
-        private bool showNoStartButtonHighlight = false;
-        [BoxGroup("BMenu", centerLabel: true)]
-        [BoxGroup("BMenu")] [Button("Highlight this BMenu")] private void Button_HighlightThis()
-        {
-            if (parentBFrame)
-            {
-                parentBFrame.UpdateHighlightedBMenu(this);
-            }
-        }
-        [BoxGroup("BMenu")] [InfoBox("$infoNoStartBButtonHighlight", InfoMessageType.Info, "showNoStartButtonHighlight")]
-        [BoxGroup("BMenu")] [SerializeField] [ChildGameObjectsOnly] private BButton startHighlightedBButton;
-        [Title("Debugging")]
-        [BoxGroup("BMenu")] [SerializeField] [ReadOnly] private BButton highlightedBButtonReference;
-        [BoxGroup("BMenu")] [SerializeField] [ReadOnly] private bool isActive;
-        [BoxGroup("BMenu")] [TableList(DrawScrollView = true)] public List<BBMenuChildBButton> childrenBButtonsList = new List<BBMenuChildBButton>();
+        public event Action<BMenu> HighlightEnter;
+        public event Action<BMenu> HighlightExit;
 
-        private BButton[] childrenBButtons = new BButton[0];
+        #endregion
 
-        protected override void OnValidate()
-        {
-            if (!CanValidate()) return;
-            
-            objectNamePrefix = "M_";
+        #region Public Methods
 
-            base.OnValidate();
-
-            // Get all children BMenu
-            childrenBButtons = GetComponentsInChildren<BButton>();
-            childrenBButtonsList = new List<BBMenuChildBButton>();
-            foreach (BButton bButton in childrenBButtons)
-            {
-                childrenBButtonsList.Add(new BBMenuChildBButton(bButton, this));
-            }
-
-
-            // Check Start Highlight BMenu
-            highlightedBButtonReference = null;
-            if (startHighlightedBButton)
-            {
-                showNoStartButtonHighlight = false;
-                highlightedBButtonReference = startHighlightedBButton;
-            }
-            else
-            {
-                if ((childrenBButtons.Length > 0)
-                    && (childrenBButtons[0]))
-                {
-                    startHighlightedBButton = childrenBButtons[0];
-                    showNoStartButtonHighlight = false;
-                    highlightedBButtonReference = startHighlightedBButton;
-                }
-                else
-                {
-                    //LogConsole(infoNoStartBButtonHighlight);
-                    showNoStartButtonHighlight = true;
-                }
-            }
-        }
-
-        protected override void InitializeComponents()
-        {
-            base.InitializeComponents();
-
-            // Check Start Highlight BButton
-            highlightedBButtonReference = startHighlightedBButton;
-            //if (highlightedBButtonReference == null)
-            //{
-            //    LogConsoleError("No BButton selected as highlight!");
-            //}
-        }
-
-        protected override void OnUIHidden()
-        {
-            IsActive = false;
-        }
 
         public void HighlightBMenu()
         {
@@ -94,7 +25,7 @@ namespace BNJMO
             }
         }
 
-        public void OnBecameActive()
+        public void OnHighlighted()
         {
             IsActive = true;
 
@@ -106,13 +37,17 @@ namespace BNJMO
                 startHighlightedBButton.OnHighlighted();
                 highlightedBButtonReference = startHighlightedBButton;
             }
+            
+            HighlightEnter?.Invoke(this);
         }
                 
-        public void OnBecameInactive()
+        public void OnHighlightExit()
         {
             IsActive = false;
 
             HideUI();
+            
+            HighlightExit?.Invoke(this);
         }
 
         public void OnBButtonPressed(BButton bButton)
@@ -160,6 +95,116 @@ namespace BNJMO
                 highlightedBButtonReference.OnHighlighted();
             }
         }
+
+        #endregion
+
+        #region Inspector Variables
+        
+        [BoxGroup("BMenu", centerLabel: true)]
+        [BoxGroup("BMenu")] 
+        [Button("Highlight this BMenu")] private void Button_HighlightThis()
+        {
+            if (parentBFrame)
+            {
+                parentBFrame.UpdateHighlightedBMenu(this);
+            }
+        }
+        
+        [SerializeField] [ChildGameObjectsOnly] 
+        [InfoBox("$infoNoStartBButtonHighlight", InfoMessageType.Info, "showNoStartButtonHighlight")]
+        private BButton startHighlightedBButton;
+        
+        [Title("Debugging")]
+        [SerializeField] [BoxGroup("BMenu")] [ReadOnly] 
+        private BButton highlightedBButtonReference;
+        
+        [SerializeField] [BoxGroup("BMenu")]  [ReadOnly] 
+        private bool isActive;
+        
+        [BoxGroup("BMenu")] [TableList(DrawScrollView = true)] 
+        public List<BBMenuChildBButton> childrenBButtonsList = new ();
+
+        #endregion
+
+        #region Variables
+
+        public bool IsActive 
+        { 
+            get => isActive;
+            private set => isActive = value;
+        }
+
+        private string infoNoStartBButtonHighlight = "You might need to select one of the children BButton as Start Hihghlight.";
+        private bool showNoStartButtonHighlight = false;
+        private BButton[] childrenBButtons = new BButton[0];
+        
+        #endregion
+
+        #region Life Cycle
+
+        protected override void OnValidate()
+        {
+            if (!CanValidate()) return;
+            
+            objectNamePrefix = "M_";
+
+            base.OnValidate();
+
+            // Get all children BMenu
+            childrenBButtons = GetComponentsInChildren<BButton>();
+            childrenBButtonsList = new List<BBMenuChildBButton>();
+            foreach (BButton bButton in childrenBButtons)
+            {
+                childrenBButtonsList.Add(new BBMenuChildBButton(bButton, this));
+            }
+
+
+            // Check Start Highlight BMenu
+            highlightedBButtonReference = null;
+            if (startHighlightedBButton)
+            {
+                showNoStartButtonHighlight = false;
+                highlightedBButtonReference = startHighlightedBButton;
+            }
+            else
+            {
+                if ((childrenBButtons.Length > 0)
+                    && (childrenBButtons[0]))
+                {
+                    startHighlightedBButton = childrenBButtons[0];
+                    showNoStartButtonHighlight = false;
+                    highlightedBButtonReference = startHighlightedBButton;
+                }
+                else
+                {
+                    showNoStartButtonHighlight = true;
+                }
+            }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            highlightedBButtonReference = startHighlightedBButton;
+        }
+
+
+        #endregion
+
+        #region Events Callbacks
+
+        protected override void OnUIHidden()
+        {
+            IsActive = false;
+        }
+
+        #endregion
+
+        #region Others
+
+
+        #endregion
     }
 
     [Serializable]

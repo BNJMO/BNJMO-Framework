@@ -34,12 +34,12 @@ namespace BNJMO
 
         }
 
-        public void UpdateHighlightedBMenu(BMenu newBBMenu)
+        public bool UpdateHighlightedBMenu(BMenu newBBMenu)
         {
             if (parentBMenu
                 && parentBMenu.IsActive == false)
             {
-                return;
+                return false;
             }
 
             if (IS_NOT_NULL(newBBMenu)
@@ -54,7 +54,7 @@ namespace BNJMO
                     BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu));
                 }
 
-                highlightedBMenuReference.OnBecameActive();
+                highlightedBMenuReference.OnHighlighted();
 
 
                 // Deactivate all other BMenu
@@ -63,19 +63,19 @@ namespace BNJMO
                     // Prevent deactivating BMenus from nested BFrames
                     if (bMenu.ParentBFrame == this)
                     {
-                        if (bMenu == highlightedBMenuReference)
+                        if (bMenu != highlightedBMenuReference)
                         {
-                            //bMenu.OnBecameActive();
-                        }
-                        else
-                        {
-                            bMenu.OnBecameInactive();
+                            bMenu.OnHighlightExit();
                         }
                     }
                 }
                 
                 HighlightedMenuChanged?.Invoke(this, highlightedBMenuReference);
+                
+                return true;
             }
+
+            return false;
         }
 
         public void SetStartHighlightedBMenu(BMenu bMenu)
