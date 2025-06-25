@@ -63,6 +63,7 @@ namespace BNJMO
         StartOnlineSession,
         JoinLobbyTimeout,
         JoinOnlineSessionTimeout,
+        NoConnection,
     }
 
     public enum ELeaveOnlineSessionReason
@@ -71,6 +72,7 @@ namespace BNJMO
         LeaveFromUI,
         JoinOnlineSessionFailure,
         HostLeft,
+        OtherClientLeft,
     }
     
     public enum ENetworkID

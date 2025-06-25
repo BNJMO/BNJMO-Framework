@@ -300,7 +300,16 @@ namespace BNJMO
             
             if (!AuthenticationService.Instance.IsSignedIn)
             {
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                try
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+                catch (Exception e)
+                {
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
+                    Debug.LogError($"Failed to sign in to Unity Services: {e.Message}");
+                }
+                
             }
         }
         
