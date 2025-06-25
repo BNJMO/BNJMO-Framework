@@ -53,7 +53,7 @@ namespace BNJMO
         {
             // Log event
             BConfig config = BManager.Inst.Config;
-            if (config.LogEvents
+            if (config.LogBEvents
                 && eventHandle.logEvent)
             {
                 string logText = "<color=green>[EVENT]</color> <color=white>" + BEventName + "</color>";
@@ -64,17 +64,17 @@ namespace BNJMO
                     logText += " : " + logMessage;
                 }
                 
-                if (config.LogEventsNetworkID)
+                if (config.LogBEventsNetworkID)
                 {
                     logText += " | From : " + eventHandle.InvokingNetworkID;
                 }
 
-                if (config.LogEventsTimestamp)
+                if (config.LogBEventsTimestamp)
                 {
                     logText += " | Timestamp : " + eventHandle.InvocationTime;
                 }
 
-                if (config.LogEventsPing)
+                if (config.LogBEventsPing)
                 {
                     float ping = BUtils.GetTimeAsInt() - eventHandle.InvocationTime;
                     logText += " | Ping : " + ping;
