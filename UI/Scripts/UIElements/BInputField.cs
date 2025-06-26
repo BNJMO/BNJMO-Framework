@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -27,75 +29,39 @@ namespace BNJMO
                 inputFieldTMP.text = newText;
             }
 
-            if (inputBText)
-            {
-                if (IsCurrentLanguageArabic && IsOnlyArabic(newText))
-                {
-                    inputBText.SetRTLText(newText);
-                }
-                else
-                {
-                    inputBText.SetText(newText);
-                }
-            }
+            ApplyTextToBText(newText);
         }
 
-        public string GetInputText()
-        {
-            return inputFieldTMP ? inputFieldTMP.text : "";
-        }
+        public string GetInputText() => inputFieldTMP ? inputFieldTMP.text : "";
 
         public void SetInputTextColor(Color newColor)
         {
             defaultInputTextColor = newColor;
-
-            if (inputBText)
-            {
-                inputBText.SetColor(newColor);
-            }
+            if (inputBText) inputBText.SetColor(newColor);
         }
 
         public void SetInputTextValid(bool isValid)
         {
             IsInputTextValid = isValid;
-
             if (inputBText)
             {
-                Color color = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
-                inputBText.SetColor(color);
+                Color c = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
+                inputBText.SetColor(c);
             }
         }
 
         public void ResetInputTextColor()
         {
-            if (inputBText)
-            {
-                inputBText.SetColor(defaultInputTextColor);
-            }
+            if (inputBText) inputBText.SetColor(defaultInputTextColor);
         }
 
-        public void SetPlaceholderText(string newText)
-        {
-            if (placeholderBText)
-            {
-                if (IsCurrentLanguageArabic && IsOnlyArabic(newText))
-                {
-                    placeholderBText.SetRTLText(newText);
-                }
-                else
-                {
-                    placeholderBText.SetText(newText);
-                }
-            }
-        }
+        public void SetPlaceholderText(string newText) => ApplyPlaceholderText(newText);
 
         public void UpdateLocalizedPlaceholder(params object[] values)
         {
-            if (localizedPlaceholder != null)
-            {
-                localizedPlaceholder.Arguments = values;
-                localizedPlaceholder.RefreshString();
-            }
+            if (localizedPlaceholder == null) return;
+            localizedPlaceholder.Arguments = values;
+            localizedPlaceholder.RefreshString();
         }
 
         #endregion
@@ -103,46 +69,30 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BInputField", centerLabel: true)]
-        [SerializeField, TextArea]
+        [SerializeField, TextArea, HideIf("@useLocalizationForPlaceholder")]
         private string placeHolderText = "Placeholder...";
 
-        [SerializeField]
-        private bool useLocalizationForPlaceholder = false;
+        [SerializeField] private bool useLocalizationForPlaceholder = false;
 
         [SerializeField, ShowIf("useLocalizationForPlaceholder")]
         private LocalizedString localizedPlaceholder;
 
         [FoldoutGroup("BInputField/Colors"), Header("Placeholder")]
-        [SerializeField]
-        private Color defaultPlaceHolderTextColor = new(0f, 0f, 0f, 0.75f);
-
-        [SerializeField]
-        private Color defaultInputTextColor = new(0f, 0f, 0f, 1f);
-
-        [SerializeField]
-        private Color validInputTextColor = new(0f, 0.85f, 0f, 1f);
-
-        [SerializeField]
-        private Color invalidInputTextColor = new(0.85f, 0f, 0f, 1f);
+        [SerializeField] private Color defaultPlaceHolderTextColor = new(0f, 0f, 0f, .75f);
+        [SerializeField] private Color defaultInputTextColor = new(0f, 0f, 0f, 1f);
+        [SerializeField] private Color validInputTextColor = new(0f, .85f, 0f, 1f);
+        [SerializeField] private Color invalidInputTextColor = new(.85f, 0f, 0f, 1f);
 
         [Header("References")]
-        [SerializeField]
-        private BImage backgroundImage;
-
-        [SerializeField]
-        private TMP_InputField inputFieldTMP;
-
+        [SerializeField] private BImage backgroundImage;
+        [SerializeField] private TMP_InputField inputFieldTMP;
         [SerializeField, FormerlySerializedAs("placeholderBTextReference")]
         private BText placeholderBText;
-
         [SerializeField, FormerlySerializedAs("inputBTextReference")]
         private BText inputBText;
 
-        [SerializeField]
-        private bool enableSelectionCaret = true;
-
-        [SerializeField, InfoBox("Added in play mode")]
-        private BSelectionCaret selectionCaret;
+        [SerializeField] private bool enableSelectionCaret = true;
+        [SerializeField, InfoBox("Added in play mode")] private BSelectionCaret selectionCaret;
 
         #endregion
 
@@ -164,26 +114,17 @@ namespace BNJMO
             base.OnValidate();
 
             objectNamePrefix = "IF_";
-
             SetComponentIfNull(ref inputFieldTMP);
             SetComponentInChildrenIfNull(ref backgroundImage);
 
+            // Initial placeholder text
             if (useLocalizationForPlaceholder && localizedPlaceholder != null && !localizedPlaceholder.IsEmpty)
-            {
                 placeHolderText = localizedPlaceholder.GetLocalizedString();
-            }
 
-            SetPlaceholderText(placeHolderText);
+            ApplyPlaceholderText(placeHolderText);
 
-            if (placeholderBText)
-            {
-                placeholderBText.SetColor(defaultPlaceHolderTextColor);
-            }
-
-            if (inputBText)
-            {
-                inputBText.SetColor(defaultInputTextColor);
-            }
+            if (placeholderBText) placeholderBText.SetColor(defaultPlaceHolderTextColor);
+            if (inputBText) inputBText.SetColor(defaultInputTextColor);
         }
 
         protected override void OnEnable()
@@ -214,9 +155,7 @@ namespace BNJMO
             }
 
             if (useLocalizationForPlaceholder && localizedPlaceholder != null)
-            {
                 localizedPlaceholder.StringChanged -= OnLocalizedPlaceholderChanged;
-            }
         }
 
         protected override void Start()
@@ -227,10 +166,7 @@ namespace BNJMO
             if (tmpSelectionCaret && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
             {
                 selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
-                if (!enableSelectionCaret)
-                {
-                    selectionCaret.DisableUI();
-                }
+                if (!enableSelectionCaret) selectionCaret.DisableUI();
             }
         }
 
@@ -238,50 +174,74 @@ namespace BNJMO
 
         #region Events Callbacks
 
-        private void InputField_OnValueChanged(string newString)
+        private void InputField_OnValueChanged(string rawInput)
         {
-            if (inputBText)
-            {
-                if (IsCurrentLanguageArabic && IsOnlyArabic(newString))
-                {
-                    inputBText.SetRTLText(newString);
-                }
-                else
-                {
-                    inputBText.SetText(newString);
-                }
-            }
-
-            InvokeEventIfBound(TextUpdated, this, newString);
+            ApplyTextToBText(rawInput);
+            InvokeEventIfBound(TextUpdated, this, rawInput);
         }
 
-        private void InputField_OnSubmit(string newString)
-        {
-            InvokeEventIfBound(TextSubmitted, this, newString);
-        }
+        private void InputField_OnSubmit(string submitted) =>
+            InvokeEventIfBound(TextSubmitted, this, submitted);
 
-        private void OnLocalizedPlaceholderChanged(string value)
-        {
-            if (placeholderBText)
-            {
-                if (IsCurrentLanguageArabic && IsOnlyArabic(value))
-                {
-                    placeholderBText.SetRTLText(value);
-                }
-                else
-                {
-                    placeholderBText.SetText(value);
-                }
-            }
-        }
+        private void OnLocalizedPlaceholderChanged(string value) =>
+            ApplyPlaceholderText(value);
 
         #endregion
 
         #region Private Methods
 
-        private bool IsOnlyArabic(string s)
+        private void ApplyTextToBText(string value)
         {
-            return !string.IsNullOrEmpty(s) && Regex.IsMatch(s, @"^[\p{IsArabic}]+$");
+            if (!inputBText || inputFieldTMP == null)
+                return;
+
+            if (IsCurrentLanguageArabic && IsOnlyArabic(value))
+            {
+                StartCoroutine(UpdateInputFieldNextFrame(inputBText.FormatRTL(value)));
+            }
+            else
+            {
+                inputBText.SetText(value);
+            }
+        }
+
+        private IEnumerator UpdateInputFieldNextFrame(string formatted)
+        {
+            yield return new WaitForEndOfFrame();
+
+            inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+
+            inputFieldTMP.text = formatted;
+            inputBText.SetText(formatted);
+
+            inputFieldTMP.caretPosition = formatted.Length;
+            inputFieldTMP.selectionAnchorPosition = formatted.Length;
+            inputFieldTMP.selectionFocusPosition = formatted.Length;
+
+            inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+        }
+
+        private void ApplyPlaceholderText(string value)
+        {
+            if (!placeholderBText) return;
+
+            if (IsCurrentLanguageArabic)
+            {
+                placeholderBText.SetText(placeholderBText.FormatRTL(value));
+            }
+            else
+            {
+                placeholderBText.SetText(value);
+            }
+        }
+
+
+        /// <summary>True if the string contains ONLY Arabic letters or whitespace.</summary>
+        private static bool IsOnlyArabic(string s)
+        {
+            bool result = !string.IsNullOrEmpty(s) &&
+                          Regex.IsMatch(s, @"^[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$");
+            return result;
         }
 
         #endregion
