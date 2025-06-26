@@ -45,8 +45,8 @@ namespace BNJMO
             IsInputTextValid = isValid;
             if (inputBText)
             {
-                Color c = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
-                inputBText.SetColor(c);
+                Color color = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
+                inputBText.SetColor(color);
             }
         }
 
@@ -110,21 +110,32 @@ namespace BNJMO
 
         protected override void OnValidate()
         {
-            if (!CanValidate()) return;
+            if (!CanValidate())
+                return;
+
             base.OnValidate();
 
             objectNamePrefix = "IF_";
             SetComponentIfNull(ref inputFieldTMP);
             SetComponentInChildrenIfNull(ref backgroundImage);
 
-            // Initial placeholder text
-            if (useLocalizationForPlaceholder && localizedPlaceholder != null && !localizedPlaceholder.IsEmpty)
+            if (useLocalizationForPlaceholder
+                && localizedPlaceholder != null
+                && !localizedPlaceholder.IsEmpty)
+            {
                 placeHolderText = localizedPlaceholder.GetLocalizedString();
+            }
 
             ApplyPlaceholderText(placeHolderText);
 
-            if (placeholderBText) placeholderBText.SetColor(defaultPlaceHolderTextColor);
-            if (inputBText) inputBText.SetColor(defaultInputTextColor);
+            if (placeholderBText)
+            {
+                placeholderBText.SetColor(defaultPlaceHolderTextColor);
+            }
+            if (inputBText)
+            {
+                inputBText.SetColor(defaultInputTextColor);
+            }
         }
 
         protected override void OnEnable()
@@ -155,7 +166,9 @@ namespace BNJMO
             }
 
             if (useLocalizationForPlaceholder && localizedPlaceholder != null)
+            {
                 localizedPlaceholder.StringChanged -= OnLocalizedPlaceholderChanged;
+            }
         }
 
         protected override void Start()
@@ -166,7 +179,10 @@ namespace BNJMO
             if (tmpSelectionCaret && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
             {
                 selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
-                if (!enableSelectionCaret) selectionCaret.DisableUI();
+                if (!enableSelectionCaret)
+                {
+                    selectionCaret.DisableUI();
+                }
             }
         }
 
