@@ -507,7 +507,6 @@ namespace BNJMO
                     || playerItr.NetworkID == newNetworkID)
                     continue;
 
-                LogConsoleYellow($"Replicating : {playerItr.PlayerName} to {newNetworkID}");
                 SPlayerReplicationArg playerReplicationArgItr = CreatePlayerReplicationArg(playerItr);
                 BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
             }
