@@ -32,12 +32,18 @@ namespace BNJMO
             ApplyTextToBText(newText);
         }
 
-        public string GetInputText() => inputFieldTMP ? inputFieldTMP.text : "";
+        public string GetInputText() 
+        {
+            return inputFieldTMP ? inputFieldTMP.text : "";
+        }
 
         public void SetInputTextColor(Color newColor)
         {
             defaultInputTextColor = newColor;
-            if (inputBText) inputBText.SetColor(newColor);
+            if (inputBText)
+            {
+                inputBText.SetColor(newColor);
+            }
         }
 
         public void SetInputTextValid(bool isValid)
@@ -52,14 +58,22 @@ namespace BNJMO
 
         public void ResetInputTextColor()
         {
-            if (inputBText) inputBText.SetColor(defaultInputTextColor);
+            if (inputBText)
+            {
+                inputBText.SetColor(defaultInputTextColor);
+            }
         }
 
-        public void SetPlaceholderText(string newText) => ApplyPlaceholderText(newText);
+        public void SetPlaceholderText(string newText) 
+        {
+            ApplyPlaceholderText(newText);
+        }
 
         public void UpdateLocalizedPlaceholder(params object[] values)
         {
-            if (localizedPlaceholder == null) return;
+            if (localizedPlaceholder == null)
+                return;
+
             localizedPlaceholder.Arguments = values;
             localizedPlaceholder.RefreshString();
         }

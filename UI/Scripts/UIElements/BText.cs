@@ -250,12 +250,15 @@ public class BText : BUIElement
     {
         base.Awake();
 
-        if ((textUI == null) && (textMesh == null) && (textMeshPro == null))
+        if ((textUI == null) 
+            && (textMesh == null) 
+            && (textMeshPro == null))
         {
             LogConsoleError("No Text, TextMesh or TextMeshPro component found on this gameobject!");
         }
 
-        if (useLocalization && localizedString != null)
+        if (useLocalization 
+            && localizedString != null)
         {
             localizedString.StringChanged += OnLocalizedStringChanged;
         }
@@ -279,7 +282,8 @@ public class BText : BUIElement
     {
         base.OnDestroy();
 
-        if (useLocalization && localizedString != null)
+        if (useLocalization 
+            && localizedString != null)
         {
             localizedString.StringChanged -= OnLocalizedStringChanged;
         }
@@ -406,7 +410,8 @@ public class BText : BUIElement
 
     public string FormatRTL(string newText)
     {
-        if (tmpTextComponent == null || string.IsNullOrEmpty(newText))
+        if (tmpTextComponent == null 
+            || string.IsNullOrEmpty(newText))
             return newText;
 
         string rtlText = ArabicSupport.Fix(newText, true, false).Replace("\r", "");
