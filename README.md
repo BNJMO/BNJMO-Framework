@@ -12,3 +12,11 @@ git submodule update --init --recursive --force
 ### How to update the submodule from a Unity repository?
 cd Assets/Plugins/BNJMO-Framework
 git add/commit/push/checkout...
+
+
+### How to configure project's namespace for BBehaviour creation context?
+Under a **Resources** folder, create a .txt file called **ProjectConfig**:
+
+[App]
+
+NameSpace = ProjectName
