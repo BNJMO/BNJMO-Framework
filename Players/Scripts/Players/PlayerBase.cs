@@ -19,6 +19,7 @@ namespace BNJMO
             playerID = playerInit.PlayerID;
             spectatorID = playerInit.SpectatorID;
             controllerID = playerInit.ControllerID;
+            controllerType = playerInit.ControllerType;
             networkID = playerInit.NetworkID;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
@@ -47,13 +48,14 @@ namespace BNJMO
             return true;
         }
 
-        public bool SetControllerID(EControllerID newControllerID)
+        public bool SetControllerID(EControllerID newControllerID, EControllerType newControllerType)
         {
             if (ControllerID == newControllerID
                 || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
                 return false;
             
             controllerID = newControllerID;
+            controllerType = newControllerType;
             
             BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(this));
             
@@ -182,6 +184,7 @@ namespace BNJMO
         [SerializeField] [ReadOnly] private EPlayerID playerID;
         [SerializeField] [ReadOnly] private ESpectatorID spectatorID;
         [SerializeField] [ReadOnly] private EControllerID controllerID;
+        [SerializeField] [ReadOnly] private EControllerType controllerType;
         [SerializeField] [ReadOnly] private ENetworkID networkID;
         [SerializeField] [ReadOnly] private bool isLocalPlayer;
         [SerializeField] [ReadOnly] private ETeamID teamID;
@@ -198,6 +201,8 @@ namespace BNJMO
         public ESpectatorID SpectatorID => spectatorID;
 
         public EControllerID ControllerID => controllerID;
+        
+        public EControllerType ControllerType => controllerType;
         
         public ENetworkID NetworkID => networkID;
 

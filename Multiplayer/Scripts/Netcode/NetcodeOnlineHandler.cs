@@ -464,6 +464,11 @@ namespace BNJMO
 
             try
             {
+                if (joinedLobby == null)
+                {
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
+                }
+                
                 isStartingParty = true;
                 
                 string relayCode = await CreateRelay();
