@@ -73,7 +73,11 @@ public class BText : BUIElement
         
         localizedString = newLocalizedString;
         localizedString.RefreshString();
-        SetText(localizedString.GetLocalizedString());
+
+        if (Application.isPlaying)
+        {
+            SetText(localizedString.GetLocalizedString());
+        }
     }
     
     public void SetColor(Color newColor)

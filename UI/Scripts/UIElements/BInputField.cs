@@ -184,25 +184,7 @@ namespace BNJMO
                 inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
             }
         }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            // Add BSelectionCaraet to automatically instantiated TMP_SelectionCaret
-            var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
-            if (tmpSelectionCaret
-                && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
-            {
-                selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
-                if (enableSelectionCaret == false)
-                {
-                    selectionCaret.DisableUI();
-                }
-            }
-        }
         
-
         #endregion
 
         #region Events Callbacks
@@ -235,9 +217,46 @@ namespace BNJMO
   
         #endregion
 
-        #region Private Methods
+        #region Others
 
-  
+        protected override void OnUIShown()
+        {
+            base.OnUIShown();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = true;
+            }
+            
+            FetchSelectionCaret();
+            if (enableSelectionCaret == false)
+            {
+                selectionCaret.DisableUI();
+            }
+        }
+
+        protected override void OnUIHidden()
+        {
+            base.OnUIHidden();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = false;
+            }
+        }
+        
+        private void FetchSelectionCaret()
+        {
+            if (selectionCaret)
+                return;
+            
+            var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
+            if (tmpSelectionCaret
+                && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
+            {
+                selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
+            }
+        }
 
         #endregion
     }
