@@ -477,6 +477,9 @@ namespace BNJMO
                     OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
                     return;
                 }
+
+                if (joinedLobby == null) // In case the connection shut down when this method was waiting
+                    return;
                 
                 Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
                 {
