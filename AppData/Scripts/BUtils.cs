@@ -148,6 +148,15 @@ namespace BNJMO
             int rndmInt = UnityEngine.Random.Range(0, 2);
             return rndmInt == 0 ? -1 : 1;
         }
+
+        /// <summary> Returns True if the string contains ONLY Arabic letters or whitespace.</summary>
+        public static bool StringIsOnlyArabic(string str)
+        {
+            bool result = !string.IsNullOrEmpty(str)
+                && Regex.IsMatch(str, @"^[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$");
+            return result;
+        }
+
         #endregion
 
         #region Get Component

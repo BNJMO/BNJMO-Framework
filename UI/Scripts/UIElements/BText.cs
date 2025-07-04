@@ -37,7 +37,10 @@ public class BText : BUIElement
         }
         else
         {
-            if (tmpTextComponent) tmpTextComponent.alignment = GetTextAlignment(false);
+            if (tmpTextComponent)
+            {
+                tmpTextComponent.alignment = GetTextAlignment(false);
+            }
         }
 
         if (textUI)
@@ -90,7 +93,8 @@ public class BText : BUIElement
     {
         defaultTMPFontAsset = newFontAsset;
 
-        if (defaultTMPFontAsset && tmpTextComponent)
+        if (defaultTMPFontAsset 
+            && tmpTextComponent)
         {
             tmpTextComponent.font = defaultTMPFontAsset;
         }
@@ -231,13 +235,21 @@ public class BText : BUIElement
     }
 
     public LocalizedString LocalizedString => localizedString;
+
     public bool WriteTextUppercase => writeTextUppercase;
+
     public string Text => text;
+
     public float FontSize => fontSize;
+
     public bool IsRTL => isRTL;
+
     public Color TextColor => color;
+
     public float TextOpacity => color.a;
+
     public TMP_Text TextMeshPro => textMeshPro;
+
     public TMP_FontAsset TextTMPFont => defaultTMPFontAsset;
 
     private (string text, bool isRTL)? pendingTextData = null;
@@ -245,6 +257,50 @@ public class BText : BUIElement
     #endregion
 
     #region LifeCycle
+
+    protected override void OnValidate()
+    {
+        if (!CanValidate())
+            return;
+
+        objectNamePrefix = "T_";
+
+        if (overrideUINameFromText)
+        {
+            UIElementName = text;
+        }
+
+        base.OnValidate();
+
+        SetComponentIfNull(ref textUI);
+        SetComponentIfNull(ref textMesh);
+        SetComponentIfNull(ref textMeshPro);
+        SetComponentIfNull(ref tmpTextComponent);
+
+        if (tmpTextComponent 
+            && defaultTMPFontAsset == null)
+        {
+            defaultTMPFontAsset = tmpTextComponent.font;
+        }
+
+        SetTMPFontAsset(defaultTMPFontAsset);
+
+        if (fontSize <= 0.0f)
+        {
+            fontSize = tmpTextComponent ? tmpTextComponent.fontSize :
+                       textMeshPro ? textMeshPro.fontSize :
+                       textMesh ? textMesh.fontSize :
+                       textUI ? textUI.fontSize : 14f;
+        }
+
+        if (!Application.isPlaying)
+        {
+            SetText(text, isRTL);
+        }
+
+        SetFontsize(fontSize);
+        SetColor(color);
+    }
 
     protected override void Awake()
     {
@@ -268,7 +324,9 @@ public class BText : BUIElement
     {
         base.Start();
 
-        if (useLocalization && localizedString != null && !localizedString.IsEmpty)
+        if (useLocalization 
+            && localizedString != null 
+            && localizedString.IsEmpty == false)
         {
             ApplyLocalizedText(localizedString.GetLocalizedString());
         }
@@ -287,48 +345,6 @@ public class BText : BUIElement
         {
             localizedString.StringChanged -= OnLocalizedStringChanged;
         }
-    }
-
-    protected override void OnValidate()
-    {
-        if (!CanValidate()) return;
-
-        objectNamePrefix = "T_";
-
-        if (overrideUINameFromText)
-        {
-            UIElementName = text;
-        }
-
-        base.OnValidate();
-
-        SetComponentIfNull(ref textUI);
-        SetComponentIfNull(ref textMesh);
-        SetComponentIfNull(ref textMeshPro);
-        SetComponentIfNull(ref tmpTextComponent);
-
-        if (tmpTextComponent && defaultTMPFontAsset == null)
-        {
-            defaultTMPFontAsset = tmpTextComponent.font;
-        }
-
-        SetTMPFontAsset(defaultTMPFontAsset);
-
-        if (fontSize <= 0.0f)
-        {
-            fontSize = tmpTextComponent ? tmpTextComponent.fontSize :
-                       textMeshPro ? textMeshPro.fontSize :
-                       textMesh ? textMesh.fontSize :
-                       textUI ? textUI.fontSize : 14f;
-        }
-
-        if (!Application.isPlaying)
-        {
-            SetText(text, isRTL);
-        }
-
-        SetFontsize(fontSize);
-        SetColor(color);
     }
 
     protected override void OnUIShown()

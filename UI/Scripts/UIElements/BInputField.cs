@@ -105,8 +105,11 @@ namespace BNJMO
         [SerializeField, FormerlySerializedAs("inputBTextReference")]
         private BText inputBText;
 
-        [SerializeField] private bool enableSelectionCaret = true;
-        [SerializeField, InfoBox("Added in play mode")] private BSelectionCaret selectionCaret;
+        [SerializeField, BoxGroup("BInputField")]
+        private bool enableSelectionCaret = true;
+
+        [SerializeField, BoxGroup("BInputField"), InfoBox("Added in play mode")]
+        private BSelectionCaret selectionCaret;
 
         #endregion
 
@@ -135,7 +138,7 @@ namespace BNJMO
 
             if (useLocalizationForPlaceholder
                 && localizedPlaceholder != null
-                && !localizedPlaceholder.IsEmpty)
+                && localizedPlaceholder.IsEmpty == false)
             {
                 placeHolderText = localizedPlaceholder.GetLocalizedString();
             }
@@ -162,7 +165,8 @@ namespace BNJMO
                 inputFieldTMP.onSubmit.AddListener(InputField_OnSubmit);
             }
 
-            if (useLocalizationForPlaceholder && localizedPlaceholder != null)
+            if (useLocalizationForPlaceholder 
+                && localizedPlaceholder != null)
             {
                 localizedPlaceholder.StringChanged += OnLocalizedPlaceholderChanged;
                 localizedPlaceholder.RefreshString();
@@ -179,7 +183,8 @@ namespace BNJMO
                 inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
             }
 
-            if (useLocalizationForPlaceholder && localizedPlaceholder != null)
+            if (useLocalizationForPlaceholder 
+                && localizedPlaceholder != null)
             {
                 localizedPlaceholder.StringChanged -= OnLocalizedPlaceholderChanged;
             }
@@ -190,10 +195,11 @@ namespace BNJMO
             base.Start();
 
             var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
-            if (tmpSelectionCaret && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
+            if (tmpSelectionCaret 
+                && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
             {
                 selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
-                if (!enableSelectionCaret)
+                if (enableSelectionCaret == false)
                 {
                     selectionCaret.DisableUI();
                 }
@@ -210,11 +216,15 @@ namespace BNJMO
             InvokeEventIfBound(TextUpdated, this, rawInput);
         }
 
-        private void InputField_OnSubmit(string submitted) =>
+        private void InputField_OnSubmit(string submitted)
+        {
             InvokeEventIfBound(TextSubmitted, this, submitted);
+        }
 
-        private void OnLocalizedPlaceholderChanged(string value) =>
+        private void OnLocalizedPlaceholderChanged(string value)
+        {
             ApplyPlaceholderText(value);
+        }
 
         #endregion
 
@@ -222,12 +232,17 @@ namespace BNJMO
 
         private void ApplyTextToBText(string value)
         {
-            if (!inputBText || inputFieldTMP == null)
+            if (!inputBText 
+                || inputFieldTMP == null)
                 return;
 
-            if (IsCurrentLanguageArabic && IsOnlyArabic(value))
+            if (IsCurrentLanguageArabic 
+                && BUtils.StringIsOnlyArabic(value))
             {
-                StartCoroutine(UpdateInputFieldNextFrame(inputBText.FormatRTL(value)));
+                Wait(0.01f, () =>
+                {
+                    UpdateInputField(inputBText.FormatRTL(value));
+                });
             }
             else
             {
@@ -235,10 +250,8 @@ namespace BNJMO
             }
         }
 
-        private IEnumerator UpdateInputFieldNextFrame(string formatted)
+        private void UpdateInputField(string formatted)
         {
-            yield return new WaitForEndOfFrame();
-
             inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
 
             inputFieldTMP.text = formatted;
@@ -253,7 +266,8 @@ namespace BNJMO
 
         private void ApplyPlaceholderText(string value)
         {
-            if (!placeholderBText) return;
+            if (!placeholderBText) 
+                return;
 
             if (IsCurrentLanguageArabic)
             {
@@ -263,15 +277,6 @@ namespace BNJMO
             {
                 placeholderBText.SetText(value);
             }
-        }
-
-
-        /// <summary>True if the string contains ONLY Arabic letters or whitespace.</summary>
-        private static bool IsOnlyArabic(string s)
-        {
-            bool result = !string.IsNullOrEmpty(s) &&
-                          Regex.IsMatch(s, @"^[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s]+$");
-            return result;
         }
 
         #endregion
