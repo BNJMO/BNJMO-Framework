@@ -29,16 +29,16 @@ namespace BNJMO
 
         [BoxGroup("MenuNavigationButton", centerLabel: true)] 
         [InfoBox("$infoToMenuReferenceNotSet", InfoMessageType.Error, "showToMenuReferenceNotSet")] 
-        [SerializeField] [BoxGroup("MenuNavigationButton")]  [SceneObjectsOnly]  
+        [SerializeField, BoxGroup("MenuNavigationButton"), SceneObjectsOnly]  
         private BMenu toBMenu;
         
-        [SerializeField] [BoxGroup("MenuNavigationButton")]  
+        [SerializeField, BoxGroup("MenuNavigationButton")]  
         private bool navigateOnButtonPress = true;
         
-        [SerializeField] [BoxGroup("MenuNavigationButton")]  
+        [SerializeField, BoxGroup("MenuNavigationButton")]  
         private bool overrideBButtonUIName;
         
-        [ShowInInspector] [BoxGroup("MenuNavigationButton")] [ReadOnly] 
+        [SerializeField, BoxGroup("MenuNavigationButton"), ReadOnly] 
         private BButton bButtonReference;
 
         #endregion

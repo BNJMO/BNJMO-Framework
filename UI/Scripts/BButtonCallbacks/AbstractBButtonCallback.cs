@@ -44,6 +44,9 @@ namespace BNJMO
         protected override void OnValidate()
         {
             base.OnValidate();
+            
+            if (!CanValidate()) 
+                return;
 
             SetComponentIfNull(ref button);
         }
