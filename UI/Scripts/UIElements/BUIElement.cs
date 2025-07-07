@@ -27,6 +27,9 @@ namespace BNJMO
             if (IsUIDisabledFromHierarchy())
                 return false;
 
+            if (parentBMenu?.IsHighlighted == false)
+                return false;
+
             OnUIShown();
             
             InvokeEventIfBound(BUIElementShown, this);

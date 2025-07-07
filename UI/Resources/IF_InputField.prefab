@@ -72,10 +72,15 @@ MonoBehaviour:
   matchParentSize: 0
   isShown: 1
   placeHolderText: Placeholder...
+  defaultPlaceHolderTextColor: {r: 0, g: 0, b: 0, a: 0.75}
+  defaultInputTextColor: {r: 0, g: 0, b: 0, a: 1}
+  validInputTextColor: {r: 0, g: 0.85, b: 0, a: 1}
+  invalidInputTextColor: {r: 0.85, g: 0, b: 0, a: 1}
   backgroundImage: {fileID: 0}
-  inputFieldTMPReference: {fileID: 4908411137213112497}
-  placeholderBTextReference: {fileID: 5514745469976928121}
-  inputBTextReference: {fileID: 6187027199838789744}
+  inputFieldTMP: {fileID: 0}
+  placeholderBText: {fileID: 5514745469976928121}
+  inputBText: {fileID: 6187027199838789744}
+  enableSelectionCaret: 1
   selectionCaret: {fileID: 0}
 --- !u!114 &4908411137213112497
 MonoBehaviour:
@@ -443,6 +448,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
 --- !u!114 &5513816654972349059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

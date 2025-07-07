@@ -94,7 +94,8 @@ namespace BNJMO
         /* Party */
         public EPlayerID JoinParty(PlayerBase player, bool logWarnings = true)
         {
-            if (IS_KEY_CONTAINED(PlayersInParty, player.PlayerID, true))
+            if (player.PlayerID != EPlayerID.NONE
+                && IS_KEY_CONTAINED(PlayersInParty, player.PlayerID, true))
                 return EPlayerID.NONE;
             
             EPlayerID playerID = GetNextFreePlayerID();
@@ -351,7 +352,8 @@ namespace BNJMO
                 return;
 
             ESpectatorID spectatorID = GetNextFreeSpectatorID();
-            SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID);
+            EControllerType controllerType = eventHandle.Arg2;
+            SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID, controllerType);
         }
 
         private void BEvents_INPUT_OnControllerDisconnected(BEventHandle<EControllerID, EControllerType> eventHandle)
@@ -441,12 +443,14 @@ namespace BNJMO
             string playerName = playerReplicationArg.PlayerName;
             ENetworkID networkID = handle.InvokingNetworkID;
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
-            SpawnPlayer(newPlayerID, newSpectatorID, controllerID, networkID, teamID, playerName);
+            EControllerType controllerType = playerReplicationArg.OwnerControllerType;
+            SpawnPlayer(newPlayerID, newSpectatorID, controllerID, controllerType, networkID, teamID, playerName);
 
             // Response to Host
             SPlayerIDMigration playerIDMigration = new()
             {
-                LocalControllerID = playerReplicationArg.LocalControllerID,
+                OwnerControllerID = playerReplicationArg.OwnerControllerID,
+                OwnerControllerType = playerReplicationArg.OwnerControllerType,
                 ToPlayerID = newPlayerID,
                 ToSpectatorID = newSpectatorID,
             };
@@ -459,7 +463,7 @@ namespace BNJMO
                 return;
 
             SPlayerIDMigration playerIDMigration = handle.Arg1;
-            EControllerID controllerID = playerIDMigration.LocalControllerID;
+            EControllerID controllerID = playerIDMigration.OwnerControllerID;
 
             
             PlayerBase player = GetPlayer(controllerID);
@@ -507,7 +511,6 @@ namespace BNJMO
                     || playerItr.NetworkID == newNetworkID)
                     continue;
 
-                LogConsoleYellow($"Replicating : {playerItr.PlayerName} to {newNetworkID}");
                 SPlayerReplicationArg playerReplicationArgItr = CreatePlayerReplicationArg(playerItr);
                 BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
             }
@@ -536,8 +539,9 @@ namespace BNJMO
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
             if (IS_NONE(controllerID, true))
                 return;
-            
-            SpawnPlayer(playerID, spectatorID, controllerID, networkID, teamID, playerName);
+
+            EControllerType controllerType = playerReplicationArg.OwnerControllerType;
+            SpawnPlayer(playerID, spectatorID, controllerID, controllerType, networkID, teamID, playerName);
         }
 
         #endregion
@@ -546,7 +550,7 @@ namespace BNJMO
 
         /* Spawn */
         protected virtual PlayerBase SpawnPlayer(EPlayerID playerID, ESpectatorID spectatorID,  
-            EControllerID controllerID, ENetworkID networkID = ENetworkID.LOCAL, ETeamID teamID = ETeamID.NONE, 
+            EControllerID controllerID, EControllerType controllerType, ENetworkID networkID = ENetworkID.LOCAL, ETeamID teamID = ETeamID.NONE, 
             string playerName = "Player")
         {
             if (playerID == EPlayerID.NONE
@@ -602,6 +606,7 @@ namespace BNJMO
                 PlayerID = playerID,
                 SpectatorID = spectatorID,
                 ControllerID = controllerID,
+                ControllerType = controllerType,
                 NetworkID = networkID,
                 TeamID = teamID,
                 PlayerName = playerName,
@@ -739,7 +744,8 @@ namespace BNJMO
             SPlayerReplicationArg replicationArg = new()
             {
                 NetworkID = fromPlayer.NetworkID,
-                LocalControllerID = fromPlayer.ControllerID,
+                OwnerControllerID = fromPlayer.ControllerID,
+                OwnerControllerType = fromPlayer.ControllerType,
                 PlayerID = fromPlayer.PlayerID,
                 SpectatorID = fromPlayer.SpectatorID,
                 TeamID = fromPlayer.TeamID,

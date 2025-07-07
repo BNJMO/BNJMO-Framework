@@ -220,7 +220,7 @@ namespace BNJMO
                 && BManager.Inst)
             {
                 BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, 
-                    BManager.Inst.Config.LogInputButtonEvents);
+                    BManager.Inst.Config.LogInputButtonBEvents);
             }
         }
 
@@ -269,7 +269,7 @@ namespace BNJMO
                 && BManager.Inst)
             {
                 BEvents.UI_ButtonReleased.Invoke(new BEventHandle<BButton, bool>(this, cursorInside), 
-                    BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonEvents);
+                    BEventBroadcastType.LOCAL, BManager.Inst.Config.LogInputButtonBEvents);
             }
         }
 
@@ -321,7 +321,7 @@ namespace BNJMO
                 && BManager.Inst)
             {
                 BEvents.UI_ButtonPressed.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.LogInputButtonEvents);
+                    BManager.Inst.Config.LogInputButtonBEvents);
             }
         }
 
@@ -361,7 +361,7 @@ namespace BNJMO
                 && BManager.Inst)
             {
                 BEvents.UI_ButtonUnhighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.LogInputButtonEvents);
+                    BManager.Inst.Config.LogInputButtonBEvents);
             }
         }
 

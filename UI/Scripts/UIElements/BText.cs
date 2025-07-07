@@ -93,7 +93,7 @@ public class BText : BUIElement
     {
         defaultTMPFontAsset = newFontAsset;
 
-        if (defaultTMPFontAsset 
+        if (defaultTMPFontAsset
             && tmpTextComponent)
         {
             tmpTextComponent.font = defaultTMPFontAsset;

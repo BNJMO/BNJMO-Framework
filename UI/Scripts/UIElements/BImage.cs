@@ -366,13 +366,13 @@ namespace BNJMO
         }
 
 
-#if UNITY_EDITOR
         private void RefreshLocalizedSprite()
         {
             if (!useLocalization
                 || localizedSprite == null)
                 return;
             
+#if UNITY_EDITOR
             // Force reload the localized sprite asynchronously
             localizedSprite.LoadAssetAsync().Completed += handle =>
             {
@@ -383,8 +383,9 @@ namespace BNJMO
                     SetSprite(handle.Result);
                 }
             };
-        }
 #endif
+        }
+        
         private void MatchSpriteResolutionSize()
         {
             if (sprite == null)

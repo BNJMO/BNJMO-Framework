@@ -182,26 +182,28 @@ namespace BNJMO
         public NetworkManager NetcodeNetworkManagerPrefab;
         
         /* Log */
+        [FormerlySerializedAs("LogEvents")]
         [FormerlySerializedAs("IsLogEvents")]
-        [Header("Events")]
+        [Header("BEvents")]
         [FoldoutGroup("BConfig/Log")]
-        public bool LogEvents = true;
+        public bool LogBEvents = true;
 
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogEventsNetworkID;
+        [FormerlySerializedAs("LogEventsNetworkID")] [FoldoutGroup("BConfig/Log")]
+        public bool LogBEventsNetworkID;
         
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogEventsTimestamp; 
+        [FormerlySerializedAs("LogEventsTimestamp")] [FoldoutGroup("BConfig/Log")]
+        public bool LogBEventsTimestamp; 
         
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogEventsPing;
+        [FormerlySerializedAs("LogEventsPing")] [FoldoutGroup("BConfig/Log")]
+        public bool LogBEventsPing;
 
+        [FormerlySerializedAs("LogInputButBtonEvents")]
         [Header("Input")]
         [FoldoutGroup("BConfig/Log")]
-        public bool LogInputButtonEvents;
+        public bool LogInputButtonBEvents;
 
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogInputJoystickEvents;
+        [FormerlySerializedAs("LogInputJoystickEvents")] [FoldoutGroup("BConfig/Log")]
+        public bool LogInputJoystickBEvents;
 
         #endregion
 

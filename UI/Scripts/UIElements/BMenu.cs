@@ -2,6 +2,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using UnityEngine.Serialization;
 
 namespace BNJMO
 {
@@ -27,7 +28,7 @@ namespace BNJMO
 
         public void OnHighlighted()
         {
-            IsActive = true;
+            IsHighlighted = true;
 
             ShowUI();
 
@@ -43,7 +44,7 @@ namespace BNJMO
                 
         public void OnHighlightExit()
         {
-            IsActive = false;
+            IsHighlighted = false;
 
             HideUI();
             
@@ -119,7 +120,7 @@ namespace BNJMO
         private BButton highlightedBButtonReference;
         
         [SerializeField] [BoxGroup("BMenu")]  [ReadOnly] 
-        private bool isActive;
+        private bool isHighlighted;
         
         [BoxGroup("BMenu")] [TableList(DrawScrollView = true)] 
         public List<BBMenuChildBButton> childrenBButtonsList = new ();
@@ -128,10 +129,10 @@ namespace BNJMO
 
         #region Variables
 
-        public bool IsActive 
+        public bool IsHighlighted 
         { 
-            get => isActive;
-            private set => isActive = value;
+            get => isHighlighted;
+            private set => isHighlighted = value;
         }
 
         private string infoNoStartBButtonHighlight = "You might need to select one of the children BButton as Start Hihghlight.";
@@ -196,7 +197,7 @@ namespace BNJMO
 
         protected override void OnUIHidden()
         {
-            IsActive = false;
+            IsHighlighted = false;
         }
 
         #endregion

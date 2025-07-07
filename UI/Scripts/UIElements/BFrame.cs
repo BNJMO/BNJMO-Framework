@@ -37,7 +37,7 @@ namespace BNJMO
         public bool UpdateHighlightedBMenu(BMenu newBBMenu)
         {
             if (parentBMenu
-                && parentBMenu.IsActive == false)
+                && parentBMenu.IsHighlighted == false)
             {
                 return false;
             }

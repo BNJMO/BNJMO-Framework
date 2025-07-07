@@ -15,7 +15,9 @@ namespace BNJMO
     {
         #region Public Events
 
+        public event Action<BInputField, string> TextSelected;
         public event Action<BInputField, string> TextUpdated;
+        public event Action<BInputField, string> TextEditEnded;
         public event Action<BInputField, string> TextSubmitted;
 
         #endregion
@@ -161,7 +163,10 @@ namespace BNJMO
 
             if (inputFieldTMP)
             {
+                inputFieldTMP.onSelect.AddListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.AddListener(InputField_OnTextSelection);
                 inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.AddListener(InputField_OnEndEdit);
                 inputFieldTMP.onSubmit.AddListener(InputField_OnSubmit);
             }
 
@@ -179,7 +184,10 @@ namespace BNJMO
 
             if (inputFieldTMP)
             {
+                inputFieldTMP.onSelect.RemoveListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.RemoveListener(InputField_OnTextSelection);
                 inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.RemoveListener(InputField_OnEndEdit);
                 inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
             }
 
@@ -193,6 +201,39 @@ namespace BNJMO
         protected override void Start()
         {
             base.Start();
+            FetchSelectionCaret();
+        }
+
+        protected override void OnUIShown()
+        {
+            base.OnUIShown();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = true;
+            }
+
+            if (enableSelectionCaret == false
+                && selectionCaret != null)
+            {
+                selectionCaret.DisableUI();
+            }
+        }
+
+        protected override void OnUIHidden()
+        {
+            base.OnUIHidden();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = false;
+            }
+        }
+
+        private void FetchSelectionCaret()
+        {
+            if (selectionCaret != null)
+                return;
 
             var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
             if (tmpSelectionCaret 
@@ -210,15 +251,31 @@ namespace BNJMO
 
         #region Events Callbacks
 
-        private void InputField_OnValueChanged(string rawInput)
+        private void InputField_OnSelect(string newString)
         {
-            ApplyTextToBText(rawInput);
-            InvokeEventIfBound(TextUpdated, this, rawInput);
+            InvokeEventIfBound(TextSelected, this, newString);
         }
 
-        private void InputField_OnSubmit(string submitted)
+        private void InputField_OnTextSelection(string newString, int _, int __)
         {
-            InvokeEventIfBound(TextSubmitted, this, submitted);
+            InvokeEventIfBound(TextSelected, this, newString);
+        }
+
+        private void InputField_OnValueChanged(string newString)
+        {
+            ApplyTextToBText(newString);
+            InvokeEventIfBound(TextUpdated, this, newString);
+        }
+
+        private void InputField_OnSubmit(string newString)
+        {
+            InvokeEventIfBound(TextSubmitted, this, newString);
+            inputFieldTMP.OnDeselect(null);
+        }
+
+        private void InputField_OnEndEdit(string newString)
+        {
+            InvokeEventIfBound(TextEditEnded, this, newString);
         }
 
         private void OnLocalizedPlaceholderChanged(string value)
@@ -228,7 +285,7 @@ namespace BNJMO
 
         #endregion
 
-        #region Private Methods
+        #region Others
 
         private void ApplyTextToBText(string value)
         {
