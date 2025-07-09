@@ -30,17 +30,6 @@ public class BText : BUIElement
         if (isArabicRTL)
         {
             text = FormatRTL(text);
-            if (tmpTextComponent)
-            {
-                tmpTextComponent.alignment = GetTextAlignment(true);
-            }
-        }
-        else
-        {
-            if (tmpTextComponent)
-            {
-                tmpTextComponent.alignment = GetTextAlignment(false);
-            }
         }
 
         if (textUI)
@@ -137,36 +126,36 @@ public class BText : BUIElement
         ApplyLocalizedText(localizedString.GetLocalizedString());
     }
 
-    public TextAlignmentOptions GetTextAlignment(bool isRTL)
+    public TextAlignmentOptions GetTextAlignment()
     {
-        if (!tmpTextComponent)
+        if (tmpTextComponent)
         {
-            return TextAlignmentOptions.Left;
+            return isRTL switch
+            {
+                true => tmpTextComponent.alignment switch
+                {
+                    TextAlignmentOptions.Left => TextAlignmentOptions.Right,
+                    TextAlignmentOptions.BaselineLeft => TextAlignmentOptions.BaselineRight,
+                    TextAlignmentOptions.BottomLeft => TextAlignmentOptions.BaselineRight,
+                    TextAlignmentOptions.CaplineLeft => TextAlignmentOptions.CaplineRight,
+                    TextAlignmentOptions.MidlineLeft => TextAlignmentOptions.MidlineRight,
+                    TextAlignmentOptions.TopLeft => TextAlignmentOptions.TopRight,
+                    _ => tmpTextComponent.alignment
+                },
+                false => tmpTextComponent.alignment switch
+                {
+                    TextAlignmentOptions.Right => TextAlignmentOptions.Left,
+                    TextAlignmentOptions.BaselineRight => TextAlignmentOptions.BaselineLeft,
+                    TextAlignmentOptions.BottomRight => TextAlignmentOptions.BottomLeft,
+                    TextAlignmentOptions.CaplineRight => TextAlignmentOptions.CaplineLeft,
+                    TextAlignmentOptions.MidlineRight => TextAlignmentOptions.MidlineLeft,
+                    TextAlignmentOptions.TopRight => TextAlignmentOptions.TopLeft,
+                    _ => tmpTextComponent.alignment
+                }
+            };
         }
 
-        return isRTL switch
-        {
-            true => tmpTextComponent.alignment switch
-            {
-                TextAlignmentOptions.Left => TextAlignmentOptions.Right,
-                TextAlignmentOptions.BaselineLeft => TextAlignmentOptions.BaselineRight,
-                TextAlignmentOptions.BottomLeft => TextAlignmentOptions.BaselineRight,
-                TextAlignmentOptions.CaplineLeft => TextAlignmentOptions.CaplineRight,
-                TextAlignmentOptions.MidlineLeft => TextAlignmentOptions.MidlineRight,
-                TextAlignmentOptions.TopLeft => TextAlignmentOptions.TopRight,
-                _ => tmpTextComponent.alignment
-            },
-            false => tmpTextComponent.alignment switch
-            {
-                TextAlignmentOptions.Right => TextAlignmentOptions.Left,
-                TextAlignmentOptions.BaselineRight => TextAlignmentOptions.BaselineLeft,
-                TextAlignmentOptions.BottomRight => TextAlignmentOptions.BottomLeft,
-                TextAlignmentOptions.CaplineRight => TextAlignmentOptions.CaplineLeft,
-                TextAlignmentOptions.MidlineRight => TextAlignmentOptions.MidlineLeft,
-                TextAlignmentOptions.TopRight => TextAlignmentOptions.TopLeft,
-                _ => tmpTextComponent.alignment
-            }
-        };
+        return TextAlignmentOptions.Left;
     }
 
     public void FormatTextRTL()
