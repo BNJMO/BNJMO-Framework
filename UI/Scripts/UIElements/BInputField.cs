@@ -231,7 +231,7 @@ namespace BNJMO
             FetchSelectionCaret();
             if (enableSelectionCaret == false)
             {
-                selectionCaret.DisableUI();
+                selectionCaret?.DisableUI();
             }
         }
 
