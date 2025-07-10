@@ -201,6 +201,7 @@ namespace BNJMO
         protected override void Start()
         {
             base.Start();
+            
             FetchSelectionCaret();
         }
 
@@ -213,6 +214,7 @@ namespace BNJMO
                 inputFieldTMP.enabled = true;
             }
 
+            FetchSelectionCaret();
             if (enableSelectionCaret == false
                 && selectionCaret != null)
             {
