@@ -16,6 +16,8 @@ namespace BNJMO
 
         public static string FormatLobbyCode(string text)
         {
+            text = text.Replace(" ", "");
+            
             if (text.Length < 6)
                 return text;
 
@@ -26,8 +28,9 @@ namespace BNJMO
 
         public static bool IsValidLobbyCode(string text)
         {
+            text = text.Replace(" ", "");
             bool isCorrectLength = text.Length == 6;
-            bool isCorrectInput = Regex.IsMatch(text, @"^[A-Za-z0-9]+$");
+            bool isCorrectInput = Regex.IsMatch(text, @"^[A-Za-z0-9 ]+$");
             return isCorrectLength && isCorrectInput;
         }
         
