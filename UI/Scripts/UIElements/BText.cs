@@ -55,7 +55,11 @@ public class BText : BUIElement
 
         localizedString = newLocalizedString;
         localizedString.RefreshString();
-        ApplyLocalizedText(localizedString.GetLocalizedString());
+
+        if (Application.isPlaying)
+        {
+            ApplyLocalizedText(localizedString.GetLocalizedString());
+        }
     }
 
     public void SetFontsize(float newFontSize)
