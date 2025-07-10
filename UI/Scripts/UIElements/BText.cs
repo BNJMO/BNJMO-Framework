@@ -11,7 +11,9 @@ using UnityEngine.UI;
 public class BText : BUIElement
 {
     #region Public Events
+
     public event Action<string> BTextUpdated;
+
     #endregion
 
     #region Public Methods
@@ -19,7 +21,7 @@ public class BText : BUIElement
     public void SetText(string newText, bool isArabicRTL = false)
     {
         text = newText;
-        
+
         if (writeTextUppercase)
         {
             text = text.ToUpper();
@@ -27,7 +29,7 @@ public class BText : BUIElement
 
         if (isArabicRTL)
         {
-            text = GetRTLFormatedText(text);
+            text = FormatRTL(text);
         }
 
         if (textUI)
@@ -44,6 +46,16 @@ public class BText : BUIElement
         }
 
         InvokeEventIfBound(BTextUpdated, text);
+    }
+
+    public void SetLocalizedText(LocalizedString newLocalizedString)
+    {
+        if (newLocalizedString == null)
+            return;
+
+        localizedString = newLocalizedString;
+        localizedString.RefreshString();
+        ApplyLocalizedText(localizedString.GetLocalizedString());
     }
 
     public void SetFontsize(float newFontSize)
@@ -66,20 +78,23 @@ public class BText : BUIElement
         InvokeEventIfBound(BTextUpdated, text);
     }
 
-    public void SetLocalizedText(LocalizedString newLocalizedString)
+    public void SetTMPFontAsset(TMP_FontAsset newFontAsset)
     {
-        if (newLocalizedString == null)
-            return;
-        
-        localizedString = newLocalizedString;
-        localizedString.RefreshString();
+        defaultTMPFontAsset = newFontAsset;
 
-        if (Application.isPlaying)
+        if (defaultTMPFontAsset
+            && tmpTextComponent)
         {
-            SetText(localizedString.GetLocalizedString());
+            tmpTextComponent.font = defaultTMPFontAsset;
         }
     }
-    
+
+    public void SetTextUppercase(bool isUpperCase)
+    {
+        writeTextUppercase = isUpperCase;
+        SetText(text, isRTL);
+    }
+
     public void SetColor(Color newColor)
     {
         color = newColor;
@@ -104,23 +119,13 @@ public class BText : BUIElement
         SetColor(newColor);
     }
 
-    public void SetTMPFontAsset(TMP_FontAsset newFontAsset)
+    public void UpdateLocalizedVariables(params object[] values)
     {
-        defaultTMPFontAsset = newFontAsset;
-        
-        if (defaultTMPFontAsset
-            && tmpTextComponent)
-        {
-            tmpTextComponent.font = defaultTMPFontAsset;
-        }
+        localizedString.Arguments = values;
+        localizedString.RefreshString();
+        ApplyLocalizedText(localizedString.GetLocalizedString());
     }
 
-    public void SetTextUppercase(bool isUpperCase)
-    {
-        writeTextUppercase = isUpperCase;
-        SetText(text);
-    }
-    
     public TextAlignmentOptions GetTextAlignment()
     {
         if (tmpTextComponent)
@@ -152,72 +157,62 @@ public class BText : BUIElement
 
         return TextAlignmentOptions.Left;
     }
-    
+
     public void FormatTextRTL()
     {
-        SetText(GetRTLFormatedText(text));
-    }
-
-    public void UpdateLocalizedVariables(params object[] values)
-    {
-        localizedString.Arguments = values;
-        OnLocalizedStringChanged(localizedString.GetLocalizedString());
+        SetText(FormatRTL(text), true);
     }
 
     #endregion
 
     #region Inspector Values
+
     [BoxGroup("BText", centerLabel: true)]
-    
-    [SerializeField] [BoxGroup("BText")]
+    [SerializeField, BoxGroup("BText")]
     private bool useLocalization = false;
 
-    [SerializeField] [BoxGroup("BText")] [HideIf("@this.useLocalization == true")] [TextArea(4, 8)]
+    [SerializeField, BoxGroup("BText"), HideIf("@this.useLocalization == true"), TextArea(4, 8)]
     private string text = "BText";
 
-    [SerializeField] [BoxGroup("BText")] [ShowIf("useLocalization")]
+    [SerializeField, BoxGroup("BText"), ShowIf("useLocalization")]
     private LocalizedString localizedString;
 
-    [SerializeField] [FormerlySerializedAs("defaultFontAsset")] [BoxGroup("BText")]
+    [SerializeField, BoxGroup("BText"), FormerlySerializedAs("defaultFontAsset")]
     private TMP_FontAsset defaultTMPFontAsset;
-    
-    [SerializeField] [BoxGroup("BText")]
+
+    [SerializeField, BoxGroup("BText")]
     private float fontSize = 0.0f;
-    
-    [SerializeField] [BoxGroup("BText")]
+
+    [SerializeField, BoxGroup("BText")]
     private bool isRTL = false;
 
-    [SerializeField] [BoxGroup("BText")]
+    [SerializeField, BoxGroup("BText")]
     private bool writeTextUppercase = false;
 
-    [SerializeField] [BoxGroup("BText")]
+    [SerializeField, BoxGroup("BText")]
     private bool overrideUINameFromText = false;
 
-    [SerializeField] [BoxGroup("BText")]
+    [SerializeField, BoxGroup("BText")]
     private Color color = Color.white;
-    
-    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+
+    [SerializeField, BoxGroup("BText"), ReadOnly]
     private Text textUI;
 
-    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    [SerializeField, BoxGroup("BText"), ReadOnly]
     private TextMesh textMesh;
 
-    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    [SerializeField, BoxGroup("BText"), ReadOnly]
     private TMP_Text textMeshPro;
 
-    [SerializeField] [BoxGroup("BText")] [ReadOnly]
+    [SerializeField, BoxGroup("BText"), ReadOnly]
     private TextMeshProUGUI tmpTextComponent;
-    
-    [BoxGroup("BText")] [Button("Match Parent Size")]
+
+    [BoxGroup("BText"), Button("Match Parent Size")]
     private void MatchParentSize_Button() => MatchParentSize();
 
-    [BoxGroup("BText")] [Button("Format Text To RTL")]
-    private void Button_FormatTextToRTL()
-    {
-        FormatTextRTL();
-    }
+    [BoxGroup("BText"), Button("Format Text To RTL")]
+    private void Button_FormatTextToRTL() => FormatTextRTL();
 
-    
     #endregion
 
     #region Variables
@@ -230,33 +225,33 @@ public class BText : BUIElement
 
     public LocalizedString LocalizedString => localizedString;
 
-    public bool WriteTextUppercase => writeTextUppercase; 
+    public bool WriteTextUppercase => writeTextUppercase;
 
     public string Text => text;
 
     public float FontSize => fontSize;
 
     public bool IsRTL => isRTL;
-    
+
     public Color TextColor => color;
-    
+
     public float TextOpacity => color.a;
 
     public TMP_Text TextMeshPro => textMeshPro;
-    
+
     public TMP_FontAsset TextTMPFont => defaultTMPFontAsset;
-    
 
     private (string text, bool isRTL)? pendingTextData = null;
 
     #endregion
 
     #region LifeCycle
-    
+
     protected override void OnValidate()
     {
-        if (!CanValidate()) return;
-        
+        if (!CanValidate())
+            return;
+
         objectNamePrefix = "T_";
 
         if (overrideUINameFromText)
@@ -266,57 +261,32 @@ public class BText : BUIElement
 
         base.OnValidate();
 
-        // Get references
         SetComponentIfNull(ref textUI);
         SetComponentIfNull(ref textMesh);
         SetComponentIfNull(ref textMeshPro);
         SetComponentIfNull(ref tmpTextComponent);
-        
-        if (textUI)
+
+        if (tmpTextComponent 
+            && defaultTMPFontAsset == null)
         {
-            if (fontSize <= 0.0f)
-            {
-                fontSize = textUI.fontSize;
-            }
-        }
-        
-        if (textMesh)
-        {
-            if (fontSize <= 0.0f)
-            {
-                fontSize = textMesh.fontSize;
-            }
+            defaultTMPFontAsset = tmpTextComponent.font;
         }
 
-        if (textMeshPro)
-        {
-            if (fontSize <= 0.0f)
-            {
-                fontSize = textMeshPro.fontSize;
-            }
-        }
-        
-        if (tmpTextComponent)
-        {
-            if (defaultTMPFontAsset == null)
-            {
-                defaultTMPFontAsset = tmpTextComponent.font;
-            }
-            SetTMPFontAsset(defaultTMPFontAsset);
+        SetTMPFontAsset(defaultTMPFontAsset);
 
-            if (fontSize <= 0.0f)
-            {
-                fontSize = tmpTextComponent.fontSize;
-            }
+        if (fontSize <= 0.0f)
+        {
+            fontSize = tmpTextComponent ? tmpTextComponent.fontSize :
+                       textMeshPro ? textMeshPro.fontSize :
+                       textMesh ? textMesh.fontSize :
+                       textUI ? textUI.fontSize : 14f;
         }
 
-        if (useLocalization
-            && localizedString is { IsEmpty: false })
+        if (!Application.isPlaying)
         {
-            text = localizedString.GetLocalizedString();
+            SetText(text, isRTL);
         }
 
-        SetText(text);
         SetFontsize(fontSize);
         SetColor(color);
     }
@@ -325,8 +295,9 @@ public class BText : BUIElement
     {
         base.Awake();
 
-        // Initialize Components
-        if ((textUI == null) && (textMesh == null) && (textMeshPro == null))
+        if ((textUI == null) 
+            && (textMesh == null) 
+            && (textMeshPro == null))
         {
             LogConsoleError("No Text, TextMesh or TextMeshPro component found on this gameobject!");
         }
@@ -335,6 +306,22 @@ public class BText : BUIElement
             && localizedString != null)
         {
             localizedString.StringChanged += OnLocalizedStringChanged;
+        }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        if (useLocalization 
+            && localizedString != null 
+            && localizedString.IsEmpty == false)
+        {
+            ApplyLocalizedText(localizedString.GetLocalizedString());
+        }
+        else
+        {
+            SetText(text, isRTL);
         }
     }
 
@@ -347,37 +334,6 @@ public class BText : BUIElement
         {
             localizedString.StringChanged -= OnLocalizedStringChanged;
         }
-    }
-
-    #endregion
-
-    #region Event Callbacks
-
-    public void OnLocalizedStringChanged(string value)
-    {
-        if (useLocalization
-            && localizedString is { IsEmpty: false })
-            return;
-        
-        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
-
-        if (IsTextComponentInactive())
-        {
-            pendingTextData = (value, isRTL);
-            return;
-        }
-
-        SetText(value, isRTL);
-    }
-
-    #endregion
-
-    #region Private Methods
-
-    private void ApplyLocalizedText(string value)
-    {
-        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
-        SetText(value, isRTL);
     }
 
     protected override void OnUIShown()
@@ -423,52 +379,77 @@ public class BText : BUIElement
         }
     }
 
-    private string GetRTLFormatedText(string newText)
+    #endregion
+
+    #region Event Callbacks
+
+    public void OnLocalizedStringChanged(string value)
     {
-        if (IS_NOT_NULL(tmpTextComponent)
-            && !string.IsNullOrEmpty(newText))
+        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+
+        if (IsTextComponentInactive())
         {
-            string rtlText = ArabicSupport.Fix(newText, true, false);
-            rtlText = rtlText.Replace("\r", ""); // the Arabix fixer Return \r\n for everyy \n .. need to be removed
+            pendingTextData = (value, isRTL);
+            return;
+        }
 
-            string finalText = "";
-            string[] rtlParagraph = rtlText.Split('\n');
+        SetText(value, isRTL);
+    }
 
-            tmpTextComponent.text = "";
-            for (int lineIndex = 0; lineIndex < rtlParagraph.Length; lineIndex++)
-            {
-                string[] words = rtlParagraph[lineIndex].Split(' ');
-                Array.Reverse(words);
-                tmpTextComponent.text = string.Join(" ", words);
-                Canvas.ForceUpdateCanvases();
-                for (int i = 0; i < tmpTextComponent.textInfo.lineCount; i++)
-                {
-                    int startIndex = tmpTextComponent.textInfo.lineInfo[i].firstCharacterIndex;
-                    int endIndex = (i == tmpTextComponent.textInfo.lineCount - 1) ? tmpTextComponent.text.Length
-                        : tmpTextComponent.textInfo.lineInfo[i + 1].firstCharacterIndex;
-                    endIndex = Mathf.Clamp(endIndex, 0, tmpTextComponent.text.Length);
-                    int length = Mathf.Clamp(endIndex - startIndex, 0, tmpTextComponent.text.Length - startIndex);
-                    
-                    if (startIndex < 0 
-                        || startIndex >= tmpTextComponent.text.Length 
-                        || length <= 0)
-                        continue;
-                    
-                    string[] lineWords = tmpTextComponent.text.Substring(startIndex, length).Split(' ');
-                    Array.Reverse(lineWords);
-                    finalText = finalText + string.Join(" ", lineWords).Trim() + "\n";
-                }
-            }
-            return finalText.TrimEnd('\n');
-        }        
-        return newText;
+    #endregion
+
+    #region Private Methods
+
+    private void ApplyLocalizedText(string value)
+    {
+        isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+        SetText(value, isRTL);
     }
 
     private bool IsTextComponentInactive()
-    {   
-        return (textUI && !textUI.enabled) 
-               || (textMesh && !textMesh.gameObject.activeInHierarchy) 
-               || (textMeshPro && !textMeshPro.enabled);
+    {
+        return (textUI && !textUI.enabled)
+            || (textMesh && !textMesh.gameObject.activeInHierarchy)
+            || (textMeshPro && !textMeshPro.enabled);
+    }
+
+    public string FormatRTL(string newText)
+    {
+        if (tmpTextComponent == null 
+            || string.IsNullOrEmpty(newText))
+            return newText;
+
+        string rtlText = ArabicSupport.Fix(newText, true, false).Replace("\r", "");
+        string finalText = "";
+        string[] rtlParagraph = rtlText.Split('\n');
+
+        tmpTextComponent.text = "";
+
+        foreach (string paragraph in rtlParagraph)
+        {
+            string[] words = paragraph.Split(' ');
+            Array.Reverse(words);
+            tmpTextComponent.text = string.Join(" ", words);
+            Canvas.ForceUpdateCanvases();
+
+            for (int i = 0; i < tmpTextComponent.textInfo.lineCount; i++)
+            {
+                int startIndex = tmpTextComponent.textInfo.lineInfo[i].firstCharacterIndex;
+                int endIndex = (i == tmpTextComponent.textInfo.lineCount - 1)
+                    ? tmpTextComponent.text.Length
+                    : tmpTextComponent.textInfo.lineInfo[i + 1].firstCharacterIndex;
+
+                int length = Mathf.Clamp(endIndex - startIndex, 0, tmpTextComponent.text.Length - startIndex);
+                if (startIndex < 0 || length <= 0)
+                    continue;
+
+                string[] lineWords = tmpTextComponent.text.Substring(startIndex, length).Split(' ');
+                Array.Reverse(lineWords);
+                finalText += string.Join(" ", lineWords).Trim() + "\n";
+            }
+        }
+
+        return finalText.TrimEnd('\n');
     }
 
     #endregion
