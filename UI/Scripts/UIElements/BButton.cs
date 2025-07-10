@@ -565,7 +565,7 @@ namespace BNJMO
         [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
         private bool textMatchesParentSize = false;
         
-        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/Settings/Text")] 
+        [Button("Match Text Parent Size")] [FoldoutGroup("BButton/Settings/Text")] 
         private void MatchTextParentSize_Button() => MatchTextParentSize();
         
         [Button("Derive Button Name From UIElement Name")] [FoldoutGroup("BButton/Settings/Text")] 

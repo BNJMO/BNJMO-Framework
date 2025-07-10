@@ -91,27 +91,37 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BFrame", centerLabel: true)]
-        [BoxGroup("BFrame")] [SerializeField] bool startWithFocus = true;
-        private string infoNoStartBMenuHighlight = "You need to select one of the children BMenu as Start Hihghlight!";
-        private bool showNoStartBMenuHighlight = false;
-        [BoxGroup("BFrame")] [InfoBox("$infoNoStartBMenuHighlight", InfoMessageType.Error, "showNoStartBMenuHighlight")]
-        [BoxGroup("BFrame")] [SerializeField] [ChildGameObjectsOnly] private BMenu startHighlightedBMenu;
-        [HorizontalGroup("BFrame/Group")] [SerializeField] private string newBMenuName = "BMenu";
-        [HorizontalGroup("BFrame/Group")] [Button("Add BMenu")] private void Button_AddBMenu() { AddBMenu(); }
+        [BoxGroup("BFrame"), SerializeField] 
+        bool startWithFocus = true;
+        
+        [BoxGroup("BFrame"), SerializeField, ChildGameObjectsOnly,
+        InfoBox("$infoNoStartBMenuHighlight", InfoMessageType.Error, "showNoStartBMenuHighlight")]
+        private BMenu startHighlightedBMenu;
+        
+        [HorizontalGroup("BFrame/Group"), SerializeField] 
+        private string newBMenuName = "BMenu";
+        
+        [HorizontalGroup("BFrame/Group") ,Button("Add BMenu")] 
+        private void Button_AddBMenu() => AddBMenu();
 
         [Title("References")]
-        [BoxGroup("BFrame")] [SerializeField] [ReadOnly] private BMenu highlightedBMenuReference;
+        [BoxGroup("BFrame"), SerializeField, ReadOnly] 
+        private BMenu highlightedBMenuReference;
+        
         [Space(7)]
-        [BoxGroup("BFrame")] [TableList(DrawScrollView = true)] [SerializeField] private List<BFrameChildBMenu> childrenBMenusList = new List<BFrameChildBMenu>();
-        [BoxGroup("BFrame")] [Button("Revalidate")] private void OnRevalidateButton()
-        {
-            Revalidate();
-        }
+        [BoxGroup("BFrame"), SerializeField, TableList(DrawScrollView = true)] 
+        private List<BFrameChildBMenu> childrenBMenusList = new ();
+
+        [BoxGroup("BFrame"), Button("Revalidate")]
+        private void OnRevalidateButton() => Revalidate();
 
         #endregion
 
         #region Variables
 
+        private BMenu[] childrenBMenus = new BMenu[0];
+        private bool showNoStartBMenuHighlight = false;
+        private const string infoNoStartBMenuHighlight = "You need to select one of the children BMenu as Start Hihghlight!";
 
 
         #endregion
@@ -128,9 +138,7 @@ namespace BNJMO
         #endregion
 
         #region Others
-
-        private BMenu[] childrenBMenus = new BMenu[0];
-
+        
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
