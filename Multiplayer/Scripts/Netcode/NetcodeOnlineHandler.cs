@@ -55,7 +55,7 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByCode);
             }
         }
@@ -118,6 +118,7 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByQuickMatch);
             }
         }
@@ -133,7 +134,8 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                LogConsoleError($"Failed to update lobby lock: {e}");
+                Debug.LogException(e);
+                LogConsoleError($"Failed to update lobby lock");
             }
         }
         
@@ -178,7 +180,8 @@ namespace BNJMO
                 {
                     if (Authority == EAuthority.HOST)
                     {
-                        LogConsoleError($"Failed to leave/cleanup lobby: {e}");
+                        LogConsoleError($"Failed to leave/cleanup lobby");
+                        Debug.LogException(e);
                     }
                 }
             }
@@ -289,7 +292,8 @@ namespace BNJMO
             }
             catch (Exception e)
             {
-                Debug.LogError($"Failed to initialize Unity Services: {e.Message}");
+                LogConsoleError($"Failed to initialize Unity Services");
+                Debug.LogException(e);
             }
             
             if (!AuthenticationService.Instance.IsSignedIn)
@@ -300,8 +304,9 @@ namespace BNJMO
                 }
                 catch (Exception e)
                 {
+                    LogConsoleWarning($"Failed to sign in to Unity Services");
+                    Debug.LogException(e);
                     OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
-                    Debug.LogError($"Failed to sign in to Unity Services: {e.Message}");
                 }
                 
             }
@@ -451,8 +456,8 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.CreateLobby);
-                Debug.LogError(e);
             }
         }
 
@@ -496,7 +501,7 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
             }
         }
@@ -533,7 +538,7 @@ namespace BNJMO
             }
             catch (RelayServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.CreateRelay);
                 return null;
             }
@@ -567,7 +572,7 @@ namespace BNJMO
             }
             catch (RelayServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinRelay);
             }
         }

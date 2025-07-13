@@ -85,33 +85,51 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BInputField", centerLabel: true)]
-        [SerializeField, TextArea, HideIf("@useLocalizationForPlaceholder")]
-        private string placeHolderText = "Placeholder...";
-
-        [SerializeField] private bool useLocalizationForPlaceholder = false;
-
-        [SerializeField, ShowIf("useLocalizationForPlaceholder")]
-        private LocalizedString localizedPlaceholder;
-
-        [FoldoutGroup("BInputField/Colors"), Header("Placeholder")]
-        [SerializeField] private Color defaultPlaceHolderTextColor = new(0f, 0f, 0f, .75f);
-        [SerializeField] private Color defaultInputTextColor = new(0f, 0f, 0f, 1f);
-        [SerializeField] private Color validInputTextColor = new(0f, .85f, 0f, 1f);
-        [SerializeField] private Color invalidInputTextColor = new(.85f, 0f, 0f, 1f);
-
-        [Header("References")]
-        [SerializeField] private BImage backgroundImage;
-        [SerializeField] private TMP_InputField inputFieldTMP;
-        [SerializeField, FormerlySerializedAs("placeholderBTextReference")]
+        
+        /* References */
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private BImage backgroundImage;
+        
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private TMP_InputField inputFieldTMP;
+        
+        [SerializeField, FoldoutGroup("BInputField/References")]
         private BText placeholderBText;
-        [SerializeField, FormerlySerializedAs("inputBTextReference")]
+        
+        [SerializeField, FoldoutGroup("BInputField/References")]
         private BText inputBText;
 
-        [SerializeField, BoxGroup("BInputField")]
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private BContainer textArea;
+
+        [SerializeField, FoldoutGroup("BInputField/References")]
         private bool enableSelectionCaret = true;
 
-        [SerializeField, BoxGroup("BInputField"), InfoBox("Added in play mode")]
+        [SerializeField, FoldoutGroup("BInputField/References"), InfoBox("Caret dynamically added in play mode from Unity")]
         private BSelectionCaret selectionCaret;
+        
+        /* Text */
+        [SerializeField, FoldoutGroup("BInputField/Text"), TextArea, HideIf("@useLocalizationForPlaceholder")]
+        private string placeHolderText = "Placeholder...";
+
+        [SerializeField, FoldoutGroup("BInputField/Text")] 
+        private bool useLocalizationForPlaceholder = false;
+
+        [SerializeField, FoldoutGroup("BInputField/Text"), ShowIf("useLocalizationForPlaceholder")]
+        private LocalizedString localizedPlaceholder;
+
+        /* Colors */
+        [SerializeField, FoldoutGroup("BInputField/Colors")]
+        private Color defaultPlaceHolderTextColor = new(0f, 0f, 0f, .75f);
+        
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color defaultInputTextColor = new(0f, 0f, 0f, 1f);
+        
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color validInputTextColor = new(0f, .85f, 0f, 1f);
+        
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color invalidInputTextColor = new(.85f, 0f, 0f, 1f);
 
         #endregion
 
@@ -213,6 +231,11 @@ namespace BNJMO
             {
                 inputFieldTMP.enabled = true;
             }
+            
+            if (textArea)
+            {
+                textArea.gameObject.SetActive(true);
+            }
 
             FetchSelectionCaret();
             if (enableSelectionCaret == false
@@ -229,6 +252,11 @@ namespace BNJMO
             if (inputFieldTMP)
             {
                 inputFieldTMP.enabled = false;
+            }
+
+            if (textArea)
+            {
+                textArea.gameObject.SetActive(false);
             }
         }
 

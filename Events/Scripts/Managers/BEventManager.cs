@@ -26,7 +26,7 @@ namespace BNJMO
             {
                 if (BOnlineManager.Inst.HandlerStateMachine.CurrentState != EOnlineState.InOnlineSession)
                 {
-                    LogConsoleWarning($"Trying to broadcast event '{eventHandle.InvokingBEventName}' but Multiplayer Manager is not In Party");
+
                     bEvent.OnProceedInvocation(eventHandle);
                     return;
                 }

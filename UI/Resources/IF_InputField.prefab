@@ -72,16 +72,30 @@ MonoBehaviour:
   matchParentSize: 0
   isShown: 1
   placeHolderText: Placeholder...
+  useLocalizationForPlaceholder: 0
+  localizedPlaceholder:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   defaultPlaceHolderTextColor: {r: 0, g: 0, b: 0, a: 0.75}
   defaultInputTextColor: {r: 0, g: 0, b: 0, a: 1}
   validInputTextColor: {r: 0, g: 0.85, b: 0, a: 1}
   invalidInputTextColor: {r: 0.85, g: 0, b: 0, a: 1}
-  backgroundImage: {fileID: 0}
-  inputFieldTMP: {fileID: 0}
+  backgroundImage: {fileID: 4659589272394281282}
+  inputFieldTMP: {fileID: 4908411137213112497}
   placeholderBText: {fileID: 5514745469976928121}
   inputBText: {fileID: 6187027199838789744}
+  textArea: {fileID: 4226950915509951253}
   enableSelectionCaret: 1
   selectionCaret: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4908411137213112497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +279,7 @@ MonoBehaviour:
     m_LocalVariables: []
   defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee,
     type: 2}
-  fontSize: 0
+  fontSize: 14
   isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
@@ -638,7 +652,7 @@ MonoBehaviour:
     m_LocalVariables: []
   defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee,
     type: 2}
-  fontSize: 0
+  fontSize: 14
   isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
