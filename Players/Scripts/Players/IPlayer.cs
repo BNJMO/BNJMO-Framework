@@ -1,4 +1,6 @@
-﻿namespace BNJMO
+﻿using UnityEngine;
+
+namespace BNJMO
 {
     public interface IPlayer
     {
@@ -15,6 +17,8 @@
         ETeamID TeamID { get; }
 
         string PlayerName { get; }
+        
+        Sprite PlayerPicture { get; }
         
         EPlayerPartyState PartyState { get; }
 

@@ -73,6 +73,9 @@ namespace BNJMO
         public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedName
                 = new ("PLAYERS_PlayerChangedName");
 
+        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedPicture
+                = new ("PLAYERS_PlayerChangedPicture");
+
         public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedTeam
                 = new ("PLAYERS_PlayerChangedTeam");
 

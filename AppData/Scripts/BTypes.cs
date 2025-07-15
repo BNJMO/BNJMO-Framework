@@ -140,6 +140,7 @@ namespace BNJMO
         public ENetworkID NetworkID;
         public ETeamID TeamID;
         public string PlayerName;
+        public Sprite PlayerPicture;
     }
 
     [Serializable]
@@ -152,6 +153,7 @@ namespace BNJMO
         public ESpectatorID SpectatorID;
         public ETeamID TeamID;
         public string PlayerName;
+        public Sprite PlayerPicture;
     }
 
     [Serializable]

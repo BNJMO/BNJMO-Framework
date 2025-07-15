@@ -441,10 +441,11 @@ namespace BNJMO
             
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
+            Sprite playerPicture = playerReplicationArg.PlayerPicture;
             ENetworkID networkID = handle.InvokingNetworkID;
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
             EControllerType controllerType = playerReplicationArg.OwnerControllerType;
-            SpawnPlayer(newPlayerID, newSpectatorID, controllerID, controllerType, networkID, teamID, playerName);
+            SpawnPlayer(newPlayerID, newSpectatorID, controllerID, controllerType, networkID, teamID, playerName, playerPicture);
 
             // Response to Host
             SPlayerIDMigration playerIDMigration = new()
@@ -535,13 +536,14 @@ namespace BNJMO
 
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
+            Sprite playerPicture = playerReplicationArg.PlayerPicture;
             
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
             if (IS_NONE(controllerID, true))
                 return;
 
             EControllerType controllerType = playerReplicationArg.OwnerControllerType;
-            SpawnPlayer(playerID, spectatorID, controllerID, controllerType, networkID, teamID, playerName);
+            SpawnPlayer(playerID, spectatorID, controllerID, controllerType, networkID, teamID, playerName, playerPicture);
         }
 
         #endregion
@@ -551,7 +553,7 @@ namespace BNJMO
         /* Spawn */
         protected virtual PlayerBase SpawnPlayer(EPlayerID playerID, ESpectatorID spectatorID,  
             EControllerID controllerID, EControllerType controllerType, ENetworkID networkID = ENetworkID.LOCAL, ETeamID teamID = ETeamID.NONE, 
-            string playerName = "Player")
+            string playerName = "Player", Sprite playerPicture = null)
         {
             if (playerID == EPlayerID.NONE
                 && spectatorID == ESpectatorID.NONE)
@@ -610,6 +612,7 @@ namespace BNJMO
                 NetworkID = networkID,
                 TeamID = teamID,
                 PlayerName = playerName,
+                PlayerPicture = playerPicture,
             });
             
             ConnectedPlayers.Add(spawnedPlayer);
@@ -750,6 +753,7 @@ namespace BNJMO
                 SpectatorID = fromPlayer.SpectatorID,
                 TeamID = fromPlayer.TeamID,
                 PlayerName = fromPlayer.PlayerName,
+                PlayerPicture = fromPlayer.PlayerPicture,
             };
             return replicationArg;
         }

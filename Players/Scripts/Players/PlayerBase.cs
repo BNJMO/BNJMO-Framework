@@ -23,6 +23,7 @@ namespace BNJMO
             networkID = playerInit.NetworkID;
             teamID = playerInit.TeamID;
             playerName = playerInit.PlayerName;
+            PlayerPicture = playerInit.PlayerPicture;
             UpdateObjectNameToPartyState(false);
         }
 
@@ -57,7 +58,7 @@ namespace BNJMO
             controllerID = newControllerID;
             controllerType = newControllerType;
             
-            BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(this));
+            BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(this), BEventBroadcastType.TO_ALL);
             
             return true;
         }
@@ -71,7 +72,7 @@ namespace BNJMO
             
             teamID = newTeamID;
 
-            BEvents.PLAYERS_PlayerChangedTeam.Invoke(new(this));
+            BEvents.PLAYERS_PlayerChangedTeam.Invoke(new(this), BEventBroadcastType.TO_ALL);
 
             return true;
         }
@@ -93,10 +94,17 @@ namespace BNJMO
 
             if (invokeBEvent)
             {
-                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this));
+                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this), BEventBroadcastType.TO_ALL);
             }
         }
 
+        public void SetPlayerPicture(Sprite newPlayerPicture)
+        {
+            PlayerPicture = newPlayerPicture;
+
+            BEvents.PLAYERS_PlayerChangedPicture.Invoke(new(this), BEventBroadcastType.TO_ALL);
+        }
+        
         public bool JoinParty()
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
@@ -109,7 +117,7 @@ namespace BNJMO
             playerID = newPlayerID;
             spectatorID = ESpectatorID.NONE;
             
-            BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this));
+            BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this), BEventBroadcastType.TO_ALL);
 
             UpdateObjectNameToPartyState();
             
@@ -128,7 +136,7 @@ namespace BNJMO
             playerID = EPlayerID.NONE;
             spectatorID = newSpectatorID;
             
-            BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this));
+            BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this), BEventBroadcastType.TO_ALL);
 
             UpdateObjectNameToPartyState();
             
@@ -143,7 +151,7 @@ namespace BNJMO
             
             isReady = true;
             
-            BEvents.PLAYERS_PlayerBecameReady.Invoke(new (this));
+            BEvents.PLAYERS_PlayerBecameReady.Invoke(new (this), BEventBroadcastType.TO_ALL);
             
             return true;
         }
@@ -156,7 +164,7 @@ namespace BNJMO
             
             isReady = false;
             
-            BEvents.PLAYERS_PlayerCanceledReady.Invoke(new (this));
+            BEvents.PLAYERS_PlayerCanceledReady.Invoke(new (this), BEventBroadcastType.TO_ALL);
             
             return true;
         }
@@ -231,6 +239,8 @@ namespace BNJMO
         
         public string PlayerName => playerName;
         
+        public Sprite PlayerPicture { get; protected set; }
+
         public EPlayerPartyState PartyState
         {
             get
