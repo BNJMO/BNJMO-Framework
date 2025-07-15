@@ -53,7 +53,7 @@ namespace BNJMO
 
         #region Variables
 
-
+        public ScrollRect ScrollRect => scrollRect;
 
         #endregion
 
