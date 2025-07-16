@@ -6,25 +6,52 @@ namespace BNJMO
 {
     public class BUIManager : AbstractSingletonManager<BUIManager>
     {
+        #region Inspector Variables
+
+        #endregion
+
+        #region Variables
+
         public BFrame CurrentBFrameFocused          { get; private set; }
         public BMenu CurrentBMenuHighlighted        { get; private set; }
         public BButton CurrentBButtonHighlighted    { get; private set; }
 
         private bool canPressButton;
 
+        // Menu history stack
+        private readonly Stack<BMenu> _menuHistory = new();
+
+        #endregion
+
+        #region Life Cycle
+
         protected override void Start()
         {
             base.Start();
 
-            BEvents.UI_FocusedFrameUpdated += On_UI_FocusedFrameUpdated;
-            BEvents.UI_HighlightedBMenuUpdated += On_UI_HighlightedBMenuUpdated;     
-            BEvents.UI_ButtonHighlighted += On_UI_ButtonHighlighted;
+            BEvents.UI_FocusedFrameUpdated       += On_UI_FocusedFrameUpdated;
+            BEvents.UI_HighlightedBMenuUpdated   += On_UI_HighlightedBMenuUpdated;
+            BEvents.UI_ButtonHighlighted         += On_UI_ButtonHighlighted;
 
-            BEvents.INPUT_ButtonPressed += On_INPUT_ButtonPressed;
-            BEvents.INPUT_ButtonReleased += On_INPUT_ButtonReleased;
+            BEvents.INPUT_ButtonPressed          += On_INPUT_ButtonPressed;
+            BEvents.INPUT_ButtonReleased         += On_INPUT_ButtonReleased;
         }
 
-        #region Events Callbacks
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.UI_FocusedFrameUpdated       -= On_UI_FocusedFrameUpdated;
+            BEvents.UI_HighlightedBMenuUpdated   -= On_UI_HighlightedBMenuUpdated;
+            BEvents.UI_ButtonHighlighted         -= On_UI_ButtonHighlighted;
+
+            BEvents.INPUT_ButtonPressed          -= On_INPUT_ButtonPressed;
+            BEvents.INPUT_ButtonReleased         -= On_INPUT_ButtonReleased;
+        }
+
+        #endregion
+
+        #region Event Callbacks
 
         private void On_UI_FocusedFrameUpdated(BEventHandle<BFrame> bEHandle)
         {
@@ -33,7 +60,15 @@ namespace BNJMO
 
         private void On_UI_HighlightedBMenuUpdated(BEventHandle<BMenu, BMenu> bEHandle)
         {
-            CurrentBMenuHighlighted = bEHandle.Arg1;
+            BMenu newMenu = bEHandle.Arg1;
+            BMenu oldMenu = bEHandle.Arg2;
+
+            CurrentBMenuHighlighted = newMenu;
+
+            if (oldMenu != null && (_menuHistory.Count == 0 || _menuHistory.Peek() != oldMenu))
+            {
+                _menuHistory.Push(oldMenu);
+            }
         }
 
         private void On_UI_ButtonHighlighted(BEventHandle<BButton> bEHandle)
@@ -72,7 +107,6 @@ namespace BNJMO
                         break;
                 }
 
-                // Update highlighted button
                 if (nextButton != null)
                 {
                     CurrentBButtonHighlighted.OnUnhighlighted();
@@ -87,23 +121,45 @@ namespace BNJMO
         {
             EInputButton inputButton = eventHandle.Arg3;
 
-            if (CurrentBButtonHighlighted)
+            if (CurrentBButtonHighlighted && inputButton == EInputButton.CONFIRM && canPressButton)
             {
-                switch (inputButton)
-                {
-                    case EInputButton.CONFIRM:
-                        if (canPressButton == true)
-                        {
-                            CurrentBButtonHighlighted.OnReleased(true);
-                        }
-                        break;
-                }
+                CurrentBButtonHighlighted.OnReleased(true);
             }
         }
 
         #endregion
 
+        #region Public Methods
 
+        public void GoToPreviousMenu()
+        {
+            while (_menuHistory.Count > 0)
+            {
+                BMenu previousMenu = _menuHistory.Pop();
 
+                if (previousMenu != null)
+                {
+                    previousMenu.HighlightBMenu();
+                    return;
+                }
+            }
+
+            Debug.LogWarning("[BUIManager] No previous menu to return to.");
+        }
+
+        public void ClearMenuHistory()
+        {
+            _menuHistory.Clear();
+        }
+
+        #endregion
+
+        #region Public Events
+
+        #endregion
+
+        #region Others
+
+        #endregion
     }
 }
