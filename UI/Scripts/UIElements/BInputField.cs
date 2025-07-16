@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
 
 namespace BNJMO
@@ -11,8 +14,11 @@ namespace BNJMO
     public class BInputField : BUIElement
     {
         #region Public Events
-        
+
+        public event Action<BInputField, string> TextSelected;
         public event Action<BInputField, string> TextUpdated;
+        public event Action<BInputField, string> TextEditEnded;
+        public event Action<BInputField, string> TextSubmitted;
 
         #endregion
 
@@ -20,72 +26,173 @@ namespace BNJMO
 
         public void SetInputText(string newText)
         {
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.text = newText;
+                inputFieldTMP.text = newText;
+            }
+
+            ApplyTextToBText(newText);
+        }
+
+        public string GetInputText() 
+        {
+            return inputFieldTMP ? inputFieldTMP.text : "";
+        }
+
+        public void SetInputTextColor(Color newColor)
+        {
+            defaultInputTextColor = newColor;
+            if (inputBText)
+            {
+                inputBText.SetColor(newColor);
             }
         }
 
-        public string GetInputText()
+        public void SetInputTextValid(bool isValid)
         {
-            if (inputFieldTMPReference)
+            IsInputTextValid = isValid;
+            if (inputBText)
             {
-                return inputFieldTMPReference.text;
+                Color color = IsInputTextValid ? validInputTextColor : invalidInputTextColor;
+                inputBText.SetColor(color);
             }
-
-            return "";
         }
 
-        public void SetPlaceholderText(string newText)
+        public void ResetInputTextColor()
         {
-            if (placeholderBTextReference)
+            if (inputBText)
             {
-                placeholderBTextReference.SetText(newText);
+                inputBText.SetColor(defaultInputTextColor);
             }
+        }
+
+        public void SetPlaceholderText(string newText) 
+        {
+            ApplyPlaceholderText(newText);
+        }
+
+        public void UpdateLocalizedPlaceholder(params object[] values)
+        {
+            if (localizedPlaceholder == null)
+                return;
+
+            localizedPlaceholder.Arguments = values;
+            localizedPlaceholder.RefreshString();
         }
 
         #endregion
 
         #region Inspector Variables
+
+        [BoxGroup("BInputField", centerLabel: true)]
         
-        [BoxGroup("BInputField", centerLabel: true)] [SerializeField] 
+        /* References */
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private BImage backgroundImage;
+        
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private TMP_InputField inputFieldTMP;
+        
+        [SerializeField, FoldoutGroup("BInputField/References")]
+        private BText placeholderBText;
+        
+        [SerializeField, FoldoutGroup("BInputField/References")]
+        private BText inputBText;
+
+        [SerializeField, FoldoutGroup("BInputField/References")] 
+        private BContainer textArea;
+
+        [SerializeField, FoldoutGroup("BInputField/References")]
+        private bool enableSelectionCaret = true;
+
+        [SerializeField, FoldoutGroup("BInputField/References"), InfoBox("Caret dynamically added in play mode from Unity")]
+        private BSelectionCaret selectionCaret;
+        
+        /* Text */
+        [SerializeField, FoldoutGroup("BInputField/Text"), TextArea, HideIf("@useLocalizationForPlaceholder")]
         private string placeHolderText = "Placeholder...";
+
+        [SerializeField, FoldoutGroup("BInputField/Text")] 
+        private bool useLocalizationForPlaceholder = false;
+
+        [SerializeField, FoldoutGroup("BInputField/Text"), ShowIf("useLocalizationForPlaceholder")]
+        private LocalizedString localizedPlaceholder;
+
+        /* Colors */
+        [SerializeField, FoldoutGroup("BInputField/Colors")]
+        private Color defaultPlaceHolderTextColor = new(0f, 0f, 0f, .75f);
         
-        [Header("References")]
-        [BoxGroup("BInputField")] [SerializeField] 
-        private TMP_InputField inputFieldTMPReference;
-
-        [FormerlySerializedAs("placeholderBText")] [BoxGroup("BInputField")] [SerializeField]
-        private BText placeholderBTextReference;
-
-        [FormerlySerializedAs("inputBText")] [BoxGroup("BInputField")] [SerializeField]
-        private BText inputBTextReference;
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color defaultInputTextColor = new(0f, 0f, 0f, 1f);
+        
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color validInputTextColor = new(0f, .85f, 0f, 1f);
+        
+        [SerializeField, FoldoutGroup("BInputField/Colors")] 
+        private Color invalidInputTextColor = new(.85f, 0f, 0f, 1f);
 
         #endregion
 
-        #region Private Variables
-        
+        #region Variables
+
+        public bool IsInputTextValid { get; private set; }
+
+        private bool IsCurrentLanguageArabic =>
+            LocalizationSettings.SelectedLocale != null &&
+            LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
+
+        #endregion
+
+        #region Life Cycle
+
         protected override void OnValidate()
         {
-            if (!CanValidate()) return;
+            if (!CanValidate())
+                return;
+
             base.OnValidate();
 
             objectNamePrefix = "IF_";
+            SetComponentIfNull(ref inputFieldTMP);
+            SetComponentInChildrenIfNull(ref backgroundImage);
 
-            base.OnValidate();
+            if (useLocalizationForPlaceholder
+                && localizedPlaceholder != null
+                && localizedPlaceholder.IsEmpty == false)
+            {
+                placeHolderText = localizedPlaceholder.GetLocalizedString();
+            }
 
-            SetComponentIfNull(ref inputFieldTMPReference);
-            
-            SetPlaceholderText(placeHolderText);
+            ApplyPlaceholderText(placeHolderText);
+
+            if (placeholderBText)
+            {
+                placeholderBText.SetColor(defaultPlaceHolderTextColor);
+            }
+            if (inputBText)
+            {
+                inputBText.SetColor(defaultInputTextColor);
+            }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.onValueChanged.AddListener(OnInputFieldTMPChanged);
+                inputFieldTMP.onSelect.AddListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.AddListener(InputField_OnTextSelection);
+                inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.AddListener(InputField_OnEndEdit);
+                inputFieldTMP.onSubmit.AddListener(InputField_OnSubmit);
+            }
+
+            if (useLocalizationForPlaceholder 
+                && localizedPlaceholder != null)
+            {
+                localizedPlaceholder.StringChanged += OnLocalizedPlaceholderChanged;
+                localizedPlaceholder.RefreshString();
             }
         }
 
@@ -93,29 +200,171 @@ namespace BNJMO
         {
             base.OnDisable();
 
-            if (inputFieldTMPReference)
+            if (inputFieldTMP)
             {
-                inputFieldTMPReference.onValueChanged.RemoveListener(OnInputFieldTMPChanged);
+                inputFieldTMP.onSelect.RemoveListener(InputField_OnSelect);
+                inputFieldTMP.onTextSelection.RemoveListener(InputField_OnTextSelection);
+                inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+                inputFieldTMP.onEndEdit.RemoveListener(InputField_OnEndEdit);
+                inputFieldTMP.onSubmit.RemoveListener(InputField_OnSubmit);
+            }
+
+            if (useLocalizationForPlaceholder 
+                && localizedPlaceholder != null)
+            {
+                localizedPlaceholder.StringChanged -= OnLocalizedPlaceholderChanged;
+            }
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            FetchSelectionCaret();
+        }
+
+        protected override void OnUIShown()
+        {
+            base.OnUIShown();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = true;
+            }
+            
+            if (textArea)
+            {
+                textArea.gameObject.SetActive(true);
+            }
+
+            FetchSelectionCaret();
+            if (enableSelectionCaret == false
+                && selectionCaret != null)
+            {
+                selectionCaret?.DisableUI();
+            }
+        }
+
+        protected override void OnUIHidden()
+        {
+            base.OnUIHidden();
+
+            if (inputFieldTMP)
+            {
+                inputFieldTMP.enabled = false;
+            }
+
+            if (textArea)
+            {
+                textArea.gameObject.SetActive(false);
+            }
+        }
+
+        private void FetchSelectionCaret()
+        {
+            if (selectionCaret != null)
+                return;
+
+            var tmpSelectionCaret = GetComponentInChildren<TMP_SelectionCaret>();
+            if (tmpSelectionCaret 
+                && tmpSelectionCaret.GetComponent<BSelectionCaret>() == null)
+            {
+                selectionCaret = tmpSelectionCaret.gameObject.AddComponent<BSelectionCaret>();
+                if (enableSelectionCaret == false)
+                {
+                    selectionCaret.DisableUI();
+                }
             }
         }
 
         #endregion
 
-        #region Life Cycle
-
-
-        #endregion
-
         #region Events Callbacks
-        private void OnInputFieldTMPChanged(string newString)
+
+        private void InputField_OnSelect(string newString)
         {
+            InvokeEventIfBound(TextSelected, this, newString);
+        }
+
+        private void InputField_OnTextSelection(string newString, int _, int __)
+        {
+            InvokeEventIfBound(TextSelected, this, newString);
+        }
+
+        private void InputField_OnValueChanged(string newString)
+        {
+            ApplyTextToBText(newString);
             InvokeEventIfBound(TextUpdated, this, newString);
+        }
+
+        private void InputField_OnSubmit(string newString)
+        {
+            InvokeEventIfBound(TextSubmitted, this, newString);
+            inputFieldTMP.OnDeselect(null);
+        }
+
+        private void InputField_OnEndEdit(string newString)
+        {
+            InvokeEventIfBound(TextEditEnded, this, newString);
+        }
+
+        private void OnLocalizedPlaceholderChanged(string value)
+        {
+            ApplyPlaceholderText(value);
         }
 
         #endregion
 
-        #region Private Methods
+        #region Others
 
+        private void ApplyTextToBText(string value)
+        {
+            if (!inputBText 
+                || inputFieldTMP == null)
+                return;
+
+            if (IsCurrentLanguageArabic 
+                && BUtils.StringIsOnlyArabic(value))
+            {
+                Wait(0.01f, () =>
+                {
+                    UpdateInputField(inputBText.FormatRTL(value));
+                });
+            }
+            else
+            {
+                inputBText.SetText(value);
+            }
+        }
+
+        private void UpdateInputField(string formatted)
+        {
+            inputFieldTMP.onValueChanged.RemoveListener(InputField_OnValueChanged);
+
+            inputFieldTMP.text = formatted;
+            inputBText.SetText(formatted);
+
+            inputFieldTMP.caretPosition = formatted.Length;
+            inputFieldTMP.selectionAnchorPosition = formatted.Length;
+            inputFieldTMP.selectionFocusPosition = formatted.Length;
+
+            inputFieldTMP.onValueChanged.AddListener(InputField_OnValueChanged);
+        }
+
+        private void ApplyPlaceholderText(string value)
+        {
+            if (!placeholderBText) 
+                return;
+
+            if (IsCurrentLanguageArabic)
+            {
+                placeholderBText.SetText(placeholderBText.FormatRTL(value));
+            }
+            else
+            {
+                placeholderBText.SetText(value);
+            }
+        }
 
         #endregion
     }

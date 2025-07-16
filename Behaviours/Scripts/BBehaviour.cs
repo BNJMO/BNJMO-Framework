@@ -887,60 +887,44 @@ namespace BNJMO
         public EObjectStage GetObjectStage()
         {
 #if UNITY_EDITOR
+            // 1) Asset on disk?
             if (EditorUtility.IsPersistent(gameObject))
-            {
-                return EObjectStage.PRESISTENCE_STAGE;
-            }
+                return EObjectStage.PERSISTENCE_STAGE;
 
-            // If the GameObject is not persistent let's determine which stage we are in first because getting Prefab info depends on it
-            var mainStage = StageUtility.GetMainStageHandle();
-            var currentStage = StageUtility.GetStageHandle(gameObject);
-            if (currentStage == mainStage)
+            // 2) Are we in “prefab isolation”?
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage != null)
             {
-                if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
+                bool isRoot = false;
+                try
                 {
-                    var type = PrefabUtility.GetPrefabAssetType(gameObject);
-                    var path = AssetDatabase.GetAssetPath(PrefabUtility.GetCorrespondingObjectFromSource(gameObject));
-                    //Debug.Log(string.Format("GameObject is part of a Prefab Instance in the MainStage and is of type: {0}. It comes from the prefab asset: {1}", type, path));
-                    return EObjectStage.MAIN_STAGE;
+                    // this is the line that throws if you call it from Awake/OnEnable/OnValidate too early
+                    isRoot = prefabStage.prefabContentsRoot == gameObject;
                 }
-                else
+                catch (InvalidOperationException)
                 {
-                    //Debug.Log("GameObject is a plain GameObject in the MainStage");
-                    return EObjectStage.MAIN_STAGE;
-                }
-            }
-            else
-            {
-                var prefabStage = PrefabStageUtility.GetPrefabStage(gameObject);
-                if (prefabStage != null)
-                {
-                    if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
-                    {
-                        var type = PrefabUtility.GetPrefabAssetType(gameObject);
-                        var nestedPrefabPath = AssetDatabase.GetAssetPath(PrefabUtility.GetCorrespondingObjectFromSource(gameObject));
-                        //Debug.Log(string.Format("GameObject is in a PrefabStage. The GameObject is part of a nested Prefab Instance and is of type: {0}. The opened Prefab asset is: {1} and the nested Prefab asset is: {2}", type, prefabStage.prefabAssetPath, nestedPrefabPath));
-                        return EObjectStage.PREFAB_STAGE;
-                    }
-                    else
-                    {
-                        var prefabAssetRoot = AssetDatabase.LoadAssetAtPath<GameObject>(prefabStage.prefabAssetPath);
-                        var type = PrefabUtility.GetPrefabAssetType(prefabAssetRoot);
-                        //Debug.Log(string.Format("GameObject is in a PrefabStage. The opened Prefab is of type: {0}. The GameObject comes from the prefab asset: {1}", type, prefabStage.prefabAssetPath));
-                        return EObjectStage.PREFAB_STAGE;
-                    }
-                }
-                else if (EditorSceneManager.IsPreviewSceneObject(gameObject))
-                {
-                    //Debug.Log("GameObject is not in the MainStage, nor in a PrefabStage. But it is in a PreviewScene so could be used for Preview rendering or other utilities.");
+                    // Unity isn’t ready to give us prefabContentsRoot yet,
+                    // so treat it as “other” for now
                     return EObjectStage.OTHER_STAGE;
                 }
-                else
-                {
-                    LogConsoleError("Unknown GameObject Info");
-                }
+
+                if (isRoot)
+                    return EObjectStage.PERSISTENCE_STAGE;
+
+                return EObjectStage.PREFAB_STAGE;
             }
+
+            // 3) Regular scene?
+            var main = StageUtility.GetMainStageHandle();
+            var current = StageUtility.GetStageHandle(gameObject);
+            if (current == main)
+                return EObjectStage.MAIN_STAGE;
+
+            // 4) Preview or some other editor-only scene
+            if (EditorSceneManager.IsPreviewSceneObject(gameObject))
+                return EObjectStage.OTHER_STAGE;
 #endif
+            // fallback in players or any other case
             return EObjectStage.OTHER_STAGE;
         }
 
@@ -1091,7 +1075,9 @@ Complete nesting chain from outermost to original:
 
         protected bool CanValidate()
         {
-            return GetObjectStage() == EObjectStage.MAIN_STAGE;
+            return GetObjectStage() == EObjectStage.MAIN_STAGE
+                || GetObjectStage() == EObjectStage.PREFAB_STAGE
+                && transform.parent != null ;
         }
 
         #region Coroutine

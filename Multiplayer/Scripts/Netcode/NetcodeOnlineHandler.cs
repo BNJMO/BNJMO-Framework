@@ -55,7 +55,7 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByCode);
             }
         }
@@ -90,7 +90,6 @@ namespace BNJMO
                     }
                 };
                 QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync(queryOptions);
-                LogConsoleYellow($"Found {response.Results.Count} lobbies");
                 
                 // 2) Keep only the public ones
                 List<Lobby> publicLobbies = response.Results
@@ -110,17 +109,16 @@ namespace BNJMO
                         OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByQuickMatch);
                     }
                     
-                    LogConsole($"QuickMatch: joined lobby {joinedLobby.Id}");
                     StateMachine.UpdateState(EOnlineState.InLobby);
                 }
                 else // no lobby available to join -> Create a new one
                 {
-                    LogConsole("QuickMatch: no suitable public lobby, creating one.");
                     CreateLobby();
                 }
             }
             catch (LobbyServiceException e)
             {
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByQuickMatch);
             }
         }
@@ -129,7 +127,6 @@ namespace BNJMO
         {
             try
             {
-                LogConsole($"Updating lobby lock : {isLocked}" );
                 await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
                 {
                     IsLocked = isLocked
@@ -137,7 +134,8 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                LogConsoleError($"Failed to update lobby lock: {e}");
+                Debug.LogException(e);
+                LogConsoleError($"Failed to update lobby lock");
             }
         }
         
@@ -169,7 +167,6 @@ namespace BNJMO
                     if (Authority == EAuthority.HOST)
                     {
                         await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
-                        LogConsole("Shut down lobby");
                     }
                     else
                     {
@@ -177,14 +174,14 @@ namespace BNJMO
                             joinedLobby.Id,
                             AuthenticationService.Instance.PlayerId
                         );
-                        LogConsole("Left lobby and cleaned up player entry.");
                     }
                 }
                 catch (LobbyServiceException e)
                 {
                     if (Authority == EAuthority.HOST)
                     {
-                        LogConsoleError($"Failed to leave/cleanup lobby: {e}");
+                        LogConsoleError($"Failed to leave/cleanup lobby");
+                        Debug.LogException(e);
                     }
                 }
             }
@@ -295,12 +292,23 @@ namespace BNJMO
             }
             catch (Exception e)
             {
-                Debug.LogError($"Failed to initialize Unity Services: {e.Message}");
+                LogConsoleError($"Failed to initialize Unity Services");
+                Debug.LogException(e);
             }
             
             if (!AuthenticationService.Instance.IsSignedIn)
             {
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                try
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+                catch (Exception e)
+                {
+                    LogConsoleWarning($"Failed to sign in to Unity Services");
+                    Debug.LogException(e);
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
+                }
+                
             }
         }
         
@@ -339,9 +347,7 @@ namespace BNJMO
         
         private void NetworkManager_OnClientDisconnect(ulong clientID)
         {
-            LogConsole($"Client disconnected {clientID}");
-            // TODO: Handle different cases of client disconnect
-            // LeaveLobbyAndCleanup(); 
+            // TODO: Completely remove if not used
         }
 
         #endregion
@@ -446,13 +452,12 @@ namespace BNJMO
                 
                 joinedLobby = lobby;
                 StateMachine.UpdateState(EOnlineState.InLobby);
-                LogConsole($"Created Lobby: {lobby.Name} ({lobby.LobbyCode})");
                 
             }
             catch (LobbyServiceException e)
             {
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.CreateLobby);
-                Debug.LogError(e);
             }
         }
 
@@ -464,7 +469,11 @@ namespace BNJMO
 
             try
             {
-                LogConsole("Start Party");
+                if (joinedLobby == null)
+                {
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
+                }
+                
                 isStartingParty = true;
                 
                 string relayCode = await CreateRelay();
@@ -473,6 +482,9 @@ namespace BNJMO
                     OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
                     return;
                 }
+
+                if (joinedLobby == null) // In case the connection shut down when this method was waiting
+                    return;
                 
                 Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
                 {
@@ -489,7 +501,7 @@ namespace BNJMO
             }
             catch (LobbyServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.StartOnlineSession);
             }
         }
@@ -526,7 +538,7 @@ namespace BNJMO
             }
             catch (RelayServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.CreateRelay);
                 return null;
             }
@@ -536,7 +548,6 @@ namespace BNJMO
         {
             try
             {
-                LogConsole($"Joining Relay with {joinCode}");
                 JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
                 if (joinAllocation == null)
                 {
@@ -561,7 +572,7 @@ namespace BNJMO
             }
             catch (RelayServiceException e)
             {
-                Debug.Log(e);
+                Debug.LogException(e);
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinRelay);
             }
         }
@@ -571,12 +582,10 @@ namespace BNJMO
             if (StateMachine.CurrentState == EOnlineState.InOnlineSession
                 && NetworkManager.Singleton.IsListening == false)
             {
-                LogConsoleWarning("Network Manager not listening");
                 return;
             }
 
             NetworkManager.Singleton.Shutdown();
-            LogConsole("Disconnected from Relay / Transport");
         }
         
         /* Failure */

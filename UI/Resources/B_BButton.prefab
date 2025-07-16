@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 6675226702164027280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7928989, y: 1.7928989, z: 1.7928989}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7155037359287823001}
@@ -61,13 +61,15 @@ MonoBehaviour:
   uIElementName: BButton
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
-  parentBUIElement: {fileID: 0}
-  overrideGameOjbectName: 1
+  parentBUIElement: {fileID: 706293831292864522}
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 1
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   localizedSprite:
     m_TableReference:
@@ -77,7 +79,6 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
-  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &990849338091350293
 MonoBehaviour:
@@ -172,15 +173,48 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 0}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 3090237574691846624}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
+  imageHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
+  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
+  matchImageParentSize: 1
+  bTextReference: {fileID: 7155037360065364739}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  textFontSize: 0
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -190,17 +224,7 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 7155037360065364739}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
-  imageHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 3090237574691846624}
+  matchTextParentSize: 1
   onPressedSound: {fileID: 0}
   onSuccessfullyReleasedSound: {fileID: 0}
   upperButton: {fileID: 0}
@@ -228,6 +252,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7155037360065364737
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,10 +288,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7155037359287823001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7155037360065364749
 CanvasRenderer:
@@ -289,15 +316,16 @@ MonoBehaviour:
   uIElementName: BButton
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
-  parentBUIElement: {fileID: 0}
-  overrideGameOjbectName: 1
+  parentBUIElement: {fileID: 706293831292864522}
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 1
   isShown: 1
-  text: Button
   useLocalization: 0
+  text: Button
   localizedString:
     m_TableReference:
       m_TableCollectionName: 
@@ -307,7 +335,10 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  defaultTMPFontAsset: {fileID: 11400000, guid: d2eece1edb1c2b54889b65a6575659e1,
+    type: 2}
+  fontSize: 0
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
@@ -340,8 +371,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2eece1edb1c2b54889b65a6575659e1, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: d2eece1edb1c2b54889b65a6575659e1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

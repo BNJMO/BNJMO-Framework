@@ -64,16 +64,38 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 0}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: IF_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   placeHolderText: Placeholder...
-  inputFieldTMPReference: {fileID: 4908411137213112497}
-  placeholderBTextReference: {fileID: 5514745469976928121}
-  inputBTextReference: {fileID: 6187027199838789744}
+  useLocalizationForPlaceholder: 0
+  localizedPlaceholder:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultPlaceHolderTextColor: {r: 0, g: 0, b: 0, a: 0.75}
+  defaultInputTextColor: {r: 0, g: 0, b: 0, a: 1}
+  validInputTextColor: {r: 0, g: 0.85, b: 0, a: 1}
+  invalidInputTextColor: {r: 0.85, g: 0, b: 0, a: 1}
+  backgroundImage: {fileID: 4659589272394281282}
+  inputFieldTMP: {fileID: 4908411137213112497}
+  placeholderBText: {fileID: 5514745469976928121}
+  inputBText: {fileID: 6187027199838789744}
+  textArea: {fileID: 4226950915509951253}
+  enableSelectionCaret: 1
+  selectionCaret: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4908411137213112497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,14 +259,15 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 4226950915509951253}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  text: 
   useLocalization: 0
+  text: 
   localizedString:
     m_TableReference:
       m_TableCollectionName: 
@@ -254,7 +277,10 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee,
+    type: 2}
+  fontSize: 14
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 1, g: 1, b: 1, a: 1}
@@ -320,7 +346,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -418,12 +444,14 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1983687657889913869}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   localizedSprite:
     m_TableReference:
@@ -433,8 +461,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
-  UseLocalization: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
 --- !u!114 &5513816654972349059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,7 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -520,11 +548,12 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1983687657889913869}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
 --- !u!114 &1182239103937516723
 MonoBehaviour:
@@ -603,14 +632,15 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 4226950915509951253}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  text: Placeholder...
   useLocalization: 0
+  text: Placeholder...
   localizedString:
     m_TableReference:
       m_TableCollectionName: 
@@ -620,7 +650,10 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee,
+    type: 2}
+  fontSize: 14
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 1, g: 1, b: 1, a: 1}
@@ -686,7 +719,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 2
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

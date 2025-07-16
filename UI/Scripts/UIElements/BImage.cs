@@ -5,6 +5,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using UnityEngine.Localization;
+using UnityEngine.Serialization;
 
 namespace BNJMO
 {
@@ -72,6 +73,15 @@ namespace BNJMO
             }
         }
 
+        public void SetLocalizedSprite(LocalizedSprite newLocalizedSprite)
+        {
+            if (newLocalizedSprite == null)
+                return;
+            
+            localizedSprite = newLocalizedSprite;
+            RefreshLocalizedSprite();
+        }
+        
         public void SetColor(Color newColor)
         {
             color = newColor;
@@ -148,38 +158,51 @@ namespace BNJMO
                 UnitySpriteRenderer.enabled = isEnabled;
             }
         }
+
         #endregion
 
         #region Inspector Values
         
         [BoxGroup("BImage", centerLabel: true)]
+
+        [SerializeField] [BoxGroup("BImage")] [LabelText("Use Localization")] [FormerlySerializedAs("UseLocalization")]
+        private bool useLocalization;
+    
         [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == false")]
         private Sprite sprite;
 
         [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == true")]
         private LocalizedSprite localizedSprite;
 
-        [SerializeField] [BoxGroup("BImage")] [LabelText("Use Localization")]
-        private bool UseLocalization;
-
-        [BoxGroup("BImage")] [SerializeField] 
+        [SerializeField] [BoxGroup("BImage")]
         private Color color = Color.white;
-
-        [BoxGroup("BImage")] [SerializeField] 
-        private bool matchParentSize = false;
+        
+        [SerializeField] [BoxGroup("BImage")]
+        private bool matchSpriteResolutionSize = false;
 
         [BoxGroup("BImage")] [Button("Match Parent Size")]
         private void MatchParentSize_Button() => MatchParentSize();
 
+        [BoxGroup("BImage")] [Button("Match Match Sprite Resolution Size")]
+        private void MatchSpriteResolutionSize_Button() => MatchSpriteResolutionSize();
+
         [BoxGroup("BImage")] [Button("Refresh Localized Sprite")]
         private void RefreshLocalizedSprite_Button() => RefreshLocalizedSprite();
-
+        
         #endregion
-
+        
         #region Variables
+        
+        public bool UseLocalization
+        {
+            get => useLocalization;
+            set => useLocalization = value;
+        }
 
-        public Sprite Sprite => UseLocalization ? localizedSpriteValue : sprite;
+        public Sprite Sprite => useLocalization ? localizedSpriteValue : sprite;
 
+        public LocalizedSprite LocalizedSprite => localizedSprite;
+        
         public Color ImageColor => color;
     
         public float ImageOpacity => color.a;
@@ -210,7 +233,7 @@ namespace BNJMO
             UnitySpriteRenderer = GetComponent<SpriteRenderer>();
 
             // Only assign sprite if not using localization
-            if (!UseLocalization)
+            if (!useLocalization)
             {
                 if (UnityImage 
                     && sprite == null)
@@ -239,16 +262,15 @@ namespace BNJMO
                     sprite = UnitySpriteRenderer.sprite;
                     color = UnitySpriteRenderer.color;
                 }
-
-                SetSprite(sprite);
             }
-
-            SetColor(color);
-
-            if (matchParentSize)
+            
+            if (matchSpriteResolutionSize)
             {
-                MatchParentSize();
+                MatchSpriteResolutionSize();
             }
+
+            SetSprite(sprite);
+            SetColor(color);
         }
 
         protected override void Awake()
@@ -264,7 +286,8 @@ namespace BNJMO
                 LogConsoleError("No Image, RawImage, or SpriteRenderer component found on this GameObject!");
             }
 
-            if (UseLocalization && localizedSprite != null)
+            if (useLocalization 
+                && localizedSprite != null)
             {
                 // Subscribe to AssetChanged event to update sprite immediately on localization change
                 localizedSprite.AssetChanged += sprite =>
@@ -343,33 +366,36 @@ namespace BNJMO
         }
 
 
-#if UNITY_EDITOR
         private void RefreshLocalizedSprite()
         {
-            if (UseLocalization && localizedSprite != null)
+            if (!useLocalization
+                || localizedSprite == null)
+                return;
+            
+#if UNITY_EDITOR
+            // Force reload the localized sprite asynchronously
+            localizedSprite.LoadAssetAsync().Completed += handle =>
             {
-                // Force reload the localized sprite asynchronously
-                localizedSprite.LoadAssetAsync().Completed += handle =>
+                if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
                 {
-                    if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-                    {
-                        // Update the sprite manually here (cache field + SetSprite)
-                        localizedSpriteValue = handle.Result;
-                        SetSprite(handle.Result);
-                    }
-                };
-            }
-        }
+                    // Update the sprite manually here (cache field + SetSprite)
+                    localizedSpriteValue = handle.Result;
+                    SetSprite(handle.Result);
+                }
+            };
 #endif
+        }
         
-        private void MatchParentSize()
+        private void MatchSpriteResolutionSize()
         {
+            if (sprite == null)
+                return;
+            
             RectTransform rectTransform = transform as RectTransform;
-            RectTransform parentRectTransform = transform.parent as RectTransform;
-            if (parentRectTransform)
+            if (rectTransform != null)
             {
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRectTransform.rect.width);
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,   parentRectTransform.rect.height);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, sprite.texture.width);
+                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, sprite.texture.height);
             }
         }
         

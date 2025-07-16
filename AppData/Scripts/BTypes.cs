@@ -24,7 +24,7 @@ namespace BNJMO
     {
         MAIN_STAGE,
         PREFAB_STAGE,
-        PRESISTENCE_STAGE,
+        PERSISTENCE_STAGE,
         OTHER_STAGE, // (like in a Preview Scene)
     }
     #endregion
@@ -63,6 +63,7 @@ namespace BNJMO
         StartOnlineSession,
         JoinLobbyTimeout,
         JoinOnlineSessionTimeout,
+        NoConnection,
     }
 
     public enum ELeaveOnlineSessionReason
@@ -71,6 +72,8 @@ namespace BNJMO
         LeaveFromUI,
         JoinOnlineSessionFailure,
         HostLeft,
+        OtherClientLeft,
+        GameEnded,
     }
     
     public enum ENetworkID
@@ -133,6 +136,7 @@ namespace BNJMO
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
         public EControllerID ControllerID;
+        public EControllerType ControllerType;
         public ENetworkID NetworkID;
         public ETeamID TeamID;
         public string PlayerName;
@@ -142,7 +146,8 @@ namespace BNJMO
     public struct SPlayerReplicationArg
     {
         public ENetworkID NetworkID;
-        public EControllerID LocalControllerID;
+        public EControllerID OwnerControllerID;
+        public EControllerType OwnerControllerType;
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
         public ETeamID TeamID;
@@ -152,7 +157,8 @@ namespace BNJMO
     [Serializable]
     public struct SPlayerIDMigration
     {
-        public EControllerID LocalControllerID;
+        public EControllerID OwnerControllerID;
+        public EControllerType OwnerControllerType;
         public EPlayerID ToPlayerID;
         public ESpectatorID ToSpectatorID;
     }
