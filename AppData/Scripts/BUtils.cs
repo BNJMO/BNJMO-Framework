@@ -529,57 +529,27 @@ namespace BNJMO
             return DateTime.Now.Millisecond + DateTime.Now.Second * 1000 + DateTime.Now.Minute * 100000 + DateTime.Now.Hour * 10000000;
         }
 
-#endregion
+        #endregion
 
         #region Players
-        // public static PawnBase GetClosestPawn(PawnBase toPawn)
-        // {
-        //     PawnBase closestOtherPawn = null;
-        //     float closestDistanceToOtherPlayer = float.MaxValue;
-        //     foreach (PawnBase otherPawn in PlayerManager.Inst.ActivePawns.Values)
-        //     {
-        //         if ((otherPawn.Player.PlayerID == toPawn.Player.PlayerID)
-        //             || (otherPawn.IsDead == true))
-        //         {
-        //             continue;
-        //         }
-        //
-        //         float distanceToOtherPlayer = Vector3.Distance(toPawn.Position, otherPawn.Position);
-        //         if (distanceToOtherPlayer < closestDistanceToOtherPlayer)
-        //         {
-        //             closestOtherPawn = otherPawn;
-        //             closestDistanceToOtherPlayer = distanceToOtherPlayer;
-        //         }
-        //     }
-        //     return closestOtherPawn;
-        // }
-        //
-        // public static AbstractPawn GetAngularClosestPlayer(AbstractPawn toPawn)
-        // {
-        //     AbstractPawn closestOtherPawn = null;
-        //     float closestAngularDistanceToOtherPlayer = float.MinValue;
-        //     foreach (AbstractPawn otherPlayer in PlayerManager.Inst.ActivePlayers.Values)
-        //     {
-        //         if ((otherPlayer.PlayerID == toPawn.PlayerID)
-        //             || (otherPlayer.IsDead == true))
-        //         {
-        //             continue;
-        //         }
-        //
-        //         Vector3 toOtherPlayerDirection = (otherPlayer.Position - toPawn.Position).normalized;
-        //         float angularDistanceToOtherPlayer = Vector3.Dot(toPawn.transform.forward, toOtherPlayerDirection);
-        //
-        //         Debug.Log(otherPlayer.PlayerID + " : " + angularDistanceToOtherPlayer);
-        //
-        //         if (angularDistanceToOtherPlayer > closestAngularDistanceToOtherPlayer)
-        //         {
-        //             closestOtherPawn = otherPlayer;
-        //             closestAngularDistanceToOtherPlayer = angularDistanceToOtherPlayer;
-        //         }
-        //     }
-        //     return closestOtherPawn;
-        // }
-#endregion
+        
+        public static SPlayerReplicationArg CreatePlayerReplicationArgFromPlayer(PlayerBase fromPlayer)
+        {
+            SPlayerReplicationArg replicationArg = new()
+            {
+                NetworkID = fromPlayer.NetworkID,
+                OwnerControllerID = fromPlayer.ControllerID,
+                OwnerControllerType = fromPlayer.ControllerType,
+                PlayerID = fromPlayer.PlayerID,
+                SpectatorID = fromPlayer.SpectatorID,
+                TeamID = fromPlayer.TeamID,
+                PlayerName = fromPlayer.PlayerName,
+                PlayerPictureBase64 = BUtils.EncodeSprite(fromPlayer.PlayerPicture),
+            };
+            return replicationArg;
+        }
+
+        #endregion
 
         #region Types Conversions
         /// <summary> Convert a PlayerID enum to an int </summary>
@@ -686,27 +656,6 @@ namespace BNJMO
             }
             return resut;
         }
-        
-        ///// <summary> Convert an int (index of spell) to an InputButton enum (1 -> CAST_SPELL_1)</summary>
-        //public static EInputButton GetInputButtonFrom(int spellID)
-        //{
-        //    EInputButton result = EInputButton.NONE;
-        //    switch (spellID)
-        //    {
-        //        case 1:
-        //            result = EInputButton.SOUTH;
-        //            break;
-
-        //        case 2:
-        //            result = EInputButton.WEST;
-        //            break;
-
-        //        case 3:
-        //            result = EInputButton.EAST;
-        //            break;
-        //    }
-        //    return result;
-        //}
 
         /// <summary> Returns the same team ID as the player ID (e.g. Player 2 -> Team 2)</summary>
         public static ETeamID GetIdenticPlayerTeam(EPlayerID playerID)
@@ -758,8 +707,7 @@ namespace BNJMO
             }
             return result;
         }
-
-
+        
         public static EControllerID GetAIControllerIDFrom(int index)
         {
             switch(index)
@@ -780,8 +728,7 @@ namespace BNJMO
                     return EControllerID.NONE;
             }
         }
-
-
+        
         public static ENetworkID GetNetworkIDFrom(EControllerID controllerID)
         {
             switch (controllerID)
@@ -839,8 +786,6 @@ namespace BNJMO
             }
         }
 
-
-
         /// <summary> Converts an array with 3 elements to a Vector3 </summary>
         public static Vector3 GetVectorFrom(float[] vector)
         {
@@ -855,6 +800,7 @@ namespace BNJMO
         #endregion
 
         #region Serialization
+        
         public static string SerializeObject(System.Object objectToSerialize)
         {
             //Debug.Log("SerializeObject : <color=red>[" + BUtils.GetTimeAsString() + "] </color>");
@@ -903,6 +849,48 @@ namespace BNJMO
             return deserializedObject;
         }
 
+        public static string EncodeTexture2D(Texture2D texture2D)
+        {
+            if (!texture2D)
+                return "";
+            
+            byte[] pngData = texture2D.EncodeToPNG();
+            return Convert.ToBase64String(pngData);
+        }
+        
+        public static Texture2D DecodeTexture2D(string textureBase64)
+        {
+            if (textureBase64 == "")
+                return null;
+            
+            byte[] imageBytes = Convert.FromBase64String(textureBase64);
+            Texture2D texture = new Texture2D(2, 2);
+            texture.LoadImage(imageBytes);
+            return texture;
+        }
+
+        public static string EncodeSprite(Sprite sprite)
+        {
+            if (!sprite)
+                return "";
+            
+            Texture2D texture2D = sprite.texture;
+            return EncodeTexture2D(texture2D);
+        }
+        
+        public static Sprite DecodeSprite(string textureBase64)
+        {
+            if (textureBase64 == "")
+                return null;
+            
+            Texture2D texture2D = DecodeTexture2D(textureBase64);
+            Sprite mySprite = Sprite.Create(
+                texture2D,
+                new Rect(0, 0, texture2D.width, texture2D.height),
+                new Vector2(0.5f, 0.5f)
+                );
+            return mySprite;
+        }
 
         #endregion
         

@@ -213,7 +213,7 @@ namespace BNJMO
             
             ActivePawns.Add(playerID, spawnedPawn);
             
-            BEvents.PAWNS_PawnSpawned.Invoke(new(spawnedPawn));
+            BEvents.PAWNS_PawnSpawned.Invoke(new(playerID));
             
             return spawnedPawn;
         }
@@ -227,7 +227,7 @@ namespace BNJMO
             pawn.DestroyPawn();
             ActivePawns.Remove(playerID);
             
-            BEvents.PAWNS_PawnDestroyed.Invoke(new(pawn));
+            BEvents.PAWNS_PawnDestroyed.Invoke(new(playerID));
             
             return true;
         }
@@ -251,6 +251,14 @@ namespace BNJMO
                 
                 SpawnPawn(player.PlayerID);
             }
+        }
+
+        public PawnBase GetPawn(EPlayerID playerID)
+        {
+            if (IS_KEY_NOT_CONTAINED(ActivePawns, playerID, true))
+                return null;
+            
+            return ActivePawns[playerID];
         }
 
         /* Others */
@@ -373,7 +381,7 @@ namespace BNJMO
                 ENetworkID localNetworkID = BOnlineManager.Inst.LocalNetworkID;
                 playerItr.SetNetworkID(localNetworkID);
 
-                SPlayerReplicationArg playerReplicationArg = CreatePlayerReplicationArg(playerItr);
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(playerItr);
 
                 switch (BOnlineManager.Inst.Authority)
                 {
@@ -441,7 +449,7 @@ namespace BNJMO
             
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
-            Sprite playerPicture = playerReplicationArg.PlayerPicture;
+            Sprite playerPicture = BUtils.DecodeSprite(playerReplicationArg.PlayerPictureBase64);
             ENetworkID networkID = handle.InvokingNetworkID;
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
             EControllerType controllerType = playerReplicationArg.OwnerControllerType;
@@ -512,7 +520,7 @@ namespace BNJMO
                     || playerItr.NetworkID == newNetworkID)
                     continue;
 
-                SPlayerReplicationArg playerReplicationArgItr = CreatePlayerReplicationArg(playerItr);
+                SPlayerReplicationArg playerReplicationArgItr = BUtils.CreatePlayerReplicationArgFromPlayer(playerItr);
                 BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
             }
         }
@@ -536,7 +544,7 @@ namespace BNJMO
 
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
-            Sprite playerPicture = playerReplicationArg.PlayerPicture;
+            Sprite playerPicture = BUtils.DecodeSprite(playerReplicationArg.PlayerPictureBase64);
             
             EControllerID controllerID = BInputManager.Inst.ConnectNextRemoteController();
             if (IS_NONE(controllerID, true))
@@ -628,11 +636,11 @@ namespace BNJMO
                     PlayersInParty.Add(playerID, spawnedPlayer);
                     break;
             }
-            
-            BEvents.PLAYERS_PlayerConnected.Invoke(new BEventHandle<PlayerBase>(spawnedPlayer));
+
+            BEvents.PLAYERS_PlayerConnected.Invoke(new (spawnedPlayer));
 
             // Replicate spawned player
-            var replicationArg = CreatePlayerReplicationArg(spawnedPlayer);
+            var replicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(spawnedPlayer);
             switch (BOnlineManager.Inst.Authority)
             {
                 case EAuthority.HOST when networkID == BOnlineManager.Inst.LocalNetworkID:
@@ -670,7 +678,7 @@ namespace BNJMO
             
             ConnectedPlayers.Remove(player);
             
-            BEvents.PLAYERS_PlayerDisconnected.Invoke(new BEventHandle<PlayerBase>(player));
+            BEvents.PLAYERS_PlayerDisconnected.Invoke(new (player));
 
             player.DestroyPlayer();
             return true;
@@ -740,24 +748,6 @@ namespace BNJMO
                 }
             }
         }
-
-        /* Replication */
-        private static SPlayerReplicationArg CreatePlayerReplicationArg(PlayerBase fromPlayer)
-        {
-            SPlayerReplicationArg replicationArg = new()
-            {
-                NetworkID = fromPlayer.NetworkID,
-                OwnerControllerID = fromPlayer.ControllerID,
-                OwnerControllerType = fromPlayer.ControllerType,
-                PlayerID = fromPlayer.PlayerID,
-                SpectatorID = fromPlayer.SpectatorID,
-                TeamID = fromPlayer.TeamID,
-                PlayerName = fromPlayer.PlayerName,
-                PlayerPicture = fromPlayer.PlayerPicture,
-            };
-            return replicationArg;
-        }
-
 
         #endregion
     }

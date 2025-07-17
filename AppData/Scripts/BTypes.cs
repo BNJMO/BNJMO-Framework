@@ -153,7 +153,7 @@ namespace BNJMO
         public ESpectatorID SpectatorID;
         public ETeamID TeamID;
         public string PlayerName;
-        public Sprite PlayerPicture;
+        public string PlayerPictureBase64;
     }
 
     [Serializable]

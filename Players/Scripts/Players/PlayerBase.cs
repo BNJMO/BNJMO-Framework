@@ -57,8 +57,9 @@ namespace BNJMO
             
             controllerID = newControllerID;
             controllerType = newControllerType;
-            
-            BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(this), BEventBroadcastType.TO_ALL);
+
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
             
             return true;
         }
@@ -72,7 +73,8 @@ namespace BNJMO
             
             teamID = newTeamID;
 
-            BEvents.PLAYERS_PlayerChangedTeam.Invoke(new(this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerChangedTeam.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
 
             return true;
         }
@@ -94,7 +96,8 @@ namespace BNJMO
 
             if (invokeBEvent)
             {
-                BEvents.PLAYERS_PlayerChangedName.Invoke(new(this), BEventBroadcastType.TO_ALL);
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_PlayerChangedName.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
             }
         }
 
@@ -102,7 +105,8 @@ namespace BNJMO
         {
             PlayerPicture = newPlayerPicture;
 
-            BEvents.PLAYERS_PlayerChangedPicture.Invoke(new(this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerChangedPicture.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
         }
         
         public bool JoinParty()
@@ -117,7 +121,8 @@ namespace BNJMO
             playerID = newPlayerID;
             spectatorID = ESpectatorID.NONE;
             
-            BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
 
             UpdateObjectNameToPartyState();
             
@@ -136,7 +141,8 @@ namespace BNJMO
             playerID = EPlayerID.NONE;
             spectatorID = newSpectatorID;
             
-            BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
 
             UpdateObjectNameToPartyState();
             
@@ -151,7 +157,8 @@ namespace BNJMO
             
             isReady = true;
             
-            BEvents.PLAYERS_PlayerBecameReady.Invoke(new (this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerBecameReady.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
             
             return true;
         }
@@ -164,7 +171,8 @@ namespace BNJMO
             
             isReady = false;
             
-            BEvents.PLAYERS_PlayerCanceledReady.Invoke(new (this), BEventBroadcastType.TO_ALL);
+            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+            BEvents.PLAYERS_PlayerCanceledReady.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
             
             return true;
         }

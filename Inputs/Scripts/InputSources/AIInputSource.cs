@@ -39,7 +39,7 @@ namespace BNJMO
             BEvents.PAWNS_PawnSpawned += BEents_OnPawnsPawnSpawned;
         }
 
-        private void BEents_OnPawnsPawnSpawned(BEventHandle<PawnBase> bEventHandle)
+        private void BEents_OnPawnsPawnSpawned(BEventHandle<EPlayerID> bEventHandle)
         {
             // Add an AIPlayerController on the spawned player if he's an AI
             // EPlayerID playerID = bHandle.Arg1;

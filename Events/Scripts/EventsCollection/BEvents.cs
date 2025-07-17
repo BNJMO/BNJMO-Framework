@@ -61,41 +61,43 @@ namespace BNJMO
 
         #region Players
         /* Players */
+        /* Local */
         public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerConnected 
                 = new ("PLAYERS_PlayerConnected");
 
         public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerDisconnected
                 = new ("PLAYERS_PlayerDisconnected");
 
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedControllerID
+        /* Replicatable */
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerChangedControllerID
                 = new ("PLAYERS_PlayerChangedControllerID");
 
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedName
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerChangedName
                 = new ("PLAYERS_PlayerChangedName");
 
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedPicture
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerChangedPicture
                 = new ("PLAYERS_PlayerChangedPicture");
 
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerChangedTeam
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerChangedTeam
                 = new ("PLAYERS_PlayerChangedTeam");
 
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerJoinedTheParty
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerJoinedTheParty
                 = new ("PLAYERS_PlayerJoinedTheParty");
         
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerLeftTheParty
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerLeftTheParty
                 = new ("PLAYERS_PlayerLeftTheParty");
         
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerBecameReady
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerBecameReady
                 = new ("PLAYERS_PlayerReadinessChanged");
         
-        public static BEvent<BEventHandle<PlayerBase>> PLAYERS_PlayerCanceledReady
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerCanceledReady
                 = new ("PLAYERS_PlayerCanceledReady");
 
         /* Pawns */
-        public static BEvent<BEventHandle<PawnBase>> PAWNS_PawnSpawned
+        public static BEvent<BEventHandle<EPlayerID>> PAWNS_PawnSpawned
                 = new ("PAWNS_PawnSpawned");
         
-        public static BEvent<BEventHandle<PawnBase>> PAWNS_PawnDestroyed
+        public static BEvent<BEventHandle<EPlayerID>> PAWNS_PawnDestroyed
                 = new ("PAWNS_PawnDestroyed");
         
         #endregion
