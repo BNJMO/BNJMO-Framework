@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -55,6 +56,7 @@ public class BText : BUIElement
 
         localizedString = newLocalizedString;
         localizedString.RefreshString();
+        ApplyLocalizedText(localizedString);
     }
 
     public void SetFontsize(float newFontSize)
@@ -122,7 +124,7 @@ public class BText : BUIElement
     {
         localizedString.Arguments = values;
         localizedString.RefreshString();
-        ApplyLocalizedText(localizedString.GetLocalizedString());
+        ApplyLocalizedText(localizedString);
     }
 
     public TextAlignmentOptions GetTextAlignment()
@@ -312,11 +314,9 @@ public class BText : BUIElement
     {
         base.Start();
 
-        if (useLocalization 
-            && localizedString != null 
-            && localizedString.IsEmpty == false)
+        if (useLocalization)
         {
-            ApplyLocalizedText(localizedString.GetLocalizedString());
+            ApplyLocalizedText(localizedString);
         }
         else
         {
@@ -399,10 +399,28 @@ public class BText : BUIElement
 
     #region Private Methods
 
-    private void ApplyLocalizedText(string value)
+    private void ApplyLocalizedText(LocalizedString newLocalizedText)
     {
+        if (Application.isPlaying == false
+            || newLocalizedText == null
+            || newLocalizedText.IsEmpty)
+            return;
+        
+        var operation = newLocalizedText.GetLocalizedStringAsync();
+        OnGetLocalizedStringAsync(operation);
+    }
+    
+    private void OnGetLocalizedStringAsync(AsyncOperationHandle<string> value)
+    {
+        if (!value.IsDone)
+        {
+            // Defer the callback until the operation is finished
+            value.Completed += OnGetLocalizedStringAsync;
+            return;
+        }
+        
         isRTL = LocalizationSettings.SelectedLocale.Identifier.Code.StartsWith("ar");
-        SetText(value, isRTL);
+        SetText(value.Result, isRTL);
     }
 
     private bool IsTextComponentInactive()
