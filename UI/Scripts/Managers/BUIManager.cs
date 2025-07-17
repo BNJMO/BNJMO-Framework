@@ -19,7 +19,7 @@ namespace BNJMO
         private bool canPressButton;
 
         // Menu history stack
-        private readonly Stack<BMenu> _menuHistory = new();
+        private readonly Stack<BMenu> menuHistory = new();
 
         #endregion
 
@@ -65,9 +65,10 @@ namespace BNJMO
 
             CurrentBMenuHighlighted = newMenu;
 
-            if (oldMenu != null && (_menuHistory.Count == 0 || _menuHistory.Peek() != oldMenu))
+            if (oldMenu != null 
+                && (menuHistory.Count == 0 || menuHistory.Peek() != oldMenu))
             {
-                _menuHistory.Push(oldMenu);
+                menuHistory.Push(oldMenu);
             }
         }
 
@@ -121,7 +122,9 @@ namespace BNJMO
         {
             EInputButton inputButton = eventHandle.Arg3;
 
-            if (CurrentBButtonHighlighted && inputButton == EInputButton.CONFIRM && canPressButton)
+            if (CurrentBButtonHighlighted 
+                && inputButton == EInputButton.CONFIRM 
+                && canPressButton)
             {
                 CurrentBButtonHighlighted.OnReleased(true);
             }
@@ -133,9 +136,9 @@ namespace BNJMO
 
         public void GoToPreviousMenu()
         {
-            while (_menuHistory.Count > 0)
+            while (menuHistory.Count > 0)
             {
-                BMenu previousMenu = _menuHistory.Pop();
+                BMenu previousMenu = menuHistory.Pop();
 
                 if (previousMenu != null)
                 {
@@ -144,12 +147,12 @@ namespace BNJMO
                 }
             }
 
-            Debug.LogWarning("[BUIManager] No previous menu to return to.");
+            LogConsoleWarning("[BUIManager] No previous menu to return to.");
         }
 
         public void ClearMenuHistory()
         {
-            _menuHistory.Clear();
+            menuHistory.Clear();
         }
 
         #endregion

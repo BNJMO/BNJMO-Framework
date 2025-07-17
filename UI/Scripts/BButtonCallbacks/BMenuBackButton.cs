@@ -33,6 +33,12 @@ namespace BNJMO
         
         #region Variables
         
+        public bool NavigateOnButtonPress
+        {
+            get => navigateOnButtonPress;
+            set => navigateOnButtonPress = value;
+        }
+        
         #endregion
 
         #region Life Cycle
