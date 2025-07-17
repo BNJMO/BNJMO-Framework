@@ -15,7 +15,7 @@ namespace BNJMO
 
         public void NavigateBack()
         {
-            BUIManager.Inst.GoToPreviousMenu();
+            BUIManager.Inst?.GoToPreviousMenu();
         }
 
         #endregion
@@ -32,12 +32,8 @@ namespace BNJMO
         #endregion
         
         #region Variables
-        
-        public bool NavigateOnButtonPress
-        {
-            get => navigateOnButtonPress;
-            set => navigateOnButtonPress = value;
-        }
+
+        public bool NavigateOnButtonPress => navigateOnButtonPress;
         
         #endregion
 
@@ -46,6 +42,7 @@ namespace BNJMO
         protected override void OnValidate()
         {
             base.OnValidate();
+            
             SetComponentIfNull(ref bButtonReference);
         }
 
