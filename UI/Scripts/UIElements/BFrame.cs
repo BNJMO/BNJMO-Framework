@@ -34,7 +34,7 @@ namespace BNJMO
 
         }
 
-        public bool UpdateHighlightedBMenu(BMenu newBBMenu)
+        public bool UpdateHighlightedBMenu(BMenu newBBMenu, bool recordHistory = true)
         {
             if (parentBMenu
                 && parentBMenu.IsHighlighted == false)
@@ -46,6 +46,14 @@ namespace BNJMO
                 && IS_VALUE_CONTAINED(childrenBMenus, newBBMenu))
             {
                 BMenu oldHighlightedBMenu = highlightedBMenuReference;
+                
+                // Push old to stack if it's different
+                if (recordHistory && oldHighlightedBMenu != null 
+                                  && (menuHistory.Count == 0 || menuHistory.Peek() != oldHighlightedBMenu))
+                {
+                    menuHistory.Push(oldHighlightedBMenu);
+                }
+                
                 highlightedBMenuReference = newBBMenu;
 
                 if (Application.isPlaying
@@ -86,6 +94,25 @@ namespace BNJMO
             }
         }
         
+        public void GoToPreviousMenu()
+        {
+            while (menuHistory.Count > 0)
+            {
+                BMenu previousMenu = menuHistory.Pop();
+                if (previousMenu != null)
+                {
+                    UpdateHighlightedBMenu(previousMenu, recordHistory: false);
+                    return;
+                }
+            }
+
+            LogConsoleWarning($"[BFrame: {UIElementName}] No previous menu to return to.");
+        }
+
+        public void ClearMenuHistory()
+        {
+            menuHistory.Clear();
+        }
         #endregion
 
         #region Inspector Variables
@@ -123,6 +150,8 @@ namespace BNJMO
         private bool showNoStartBMenuHighlight = false;
         private const string infoNoStartBMenuHighlight = "You need to select one of the children BMenu as Start Hihghlight!";
 
+        // Menu history stack
+        private readonly Stack<BMenu> menuHistory = new();
 
         #endregion
 

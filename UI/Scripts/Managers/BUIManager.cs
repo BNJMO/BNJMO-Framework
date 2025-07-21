@@ -18,9 +18,6 @@ namespace BNJMO
 
         private bool canPressButton;
 
-        // Menu history stack
-        private readonly Stack<BMenu> menuHistory = new();
-
         #endregion
 
         #region Life Cycle
@@ -60,16 +57,7 @@ namespace BNJMO
 
         private void On_UI_HighlightedBMenuUpdated(BEventHandle<BMenu, BMenu> bEHandle)
         {
-            BMenu newMenu = bEHandle.Arg1;
-            BMenu oldMenu = bEHandle.Arg2;
-
-            CurrentBMenuHighlighted = newMenu;
-
-            if (oldMenu != null 
-                && (menuHistory.Count == 0 || menuHistory.Peek() != oldMenu))
-            {
-                menuHistory.Push(oldMenu);
-            }
+            CurrentBMenuHighlighted = bEHandle.Arg1;
         }
 
         private void On_UI_ButtonHighlighted(BEventHandle<BButton> bEHandle)
@@ -133,27 +121,6 @@ namespace BNJMO
         #endregion
 
         #region Public Methods
-
-        public void GoToPreviousMenu()
-        {
-            while (menuHistory.Count > 0)
-            {
-                BMenu previousMenu = menuHistory.Pop();
-
-                if (previousMenu != null)
-                {
-                    previousMenu.HighlightBMenu();
-                    return;
-                }
-            }
-
-            LogConsoleWarning("[BUIManager] No previous menu to return to.");
-        }
-
-        public void ClearMenuHistory()
-        {
-            menuHistory.Clear();
-        }
 
         #endregion
 

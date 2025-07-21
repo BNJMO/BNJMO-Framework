@@ -15,7 +15,7 @@ namespace BNJMO
 
         public void NavigateBack()
         {
-            BUIManager.Inst?.GoToPreviousMenu();
+            BUIManager.Inst?.CurrentBFrameFocused.GoToPreviousMenu();
         }
 
         #endregion
