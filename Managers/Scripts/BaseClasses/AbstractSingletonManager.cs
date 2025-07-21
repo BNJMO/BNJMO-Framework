@@ -10,7 +10,8 @@ namespace BNJMO
     /// Child class can decide weither to initialize on the Awake or through the public function Initialize.
     /// </summary>
     /// <typeparam name="T"> Child class </typeparam>
-    public abstract class AbstractSingletonManager<T> : AbstractManager where T : AbstractSingletonManager<T>
+    public abstract class AbstractSingletonManager<T> : AbstractManager 
+        where T : AbstractSingletonManager<T>
     {
         [FoldoutGroup("Singleton Manager")]
         [FoldoutGroup("Singleton Manager")] [SerializeField] private bool overrideSingletonReference = true;

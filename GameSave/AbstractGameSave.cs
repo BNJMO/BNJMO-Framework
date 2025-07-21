@@ -5,7 +5,9 @@ using UnityEngine;
 
 namespace BNJMO
 {
-    public abstract class AbstractGameSave<T> : AbstractSingletonManager<AbstractGameSave<T>> where T : Enum
+    public abstract class AbstractGameSave<X,T> : AbstractSingletonManager<X> 
+        where X : AbstractGameSave<X,T> 
+        where T : Enum
     {
         #region Public Events
 
@@ -22,6 +24,16 @@ namespace BNJMO
         public void SaveInt(T saveName, int value)
         {
             PlayerPrefs.SetInt(saveName.ToString(), value);
+        }
+
+        public bool GetSavedBool(T saveName, int defaultValue = 0)
+        {
+            return PlayerPrefs.GetInt(saveName.ToString(), defaultValue) == 1;
+        }
+
+        public void SaveBool(T saveName, bool value)
+        {
+            PlayerPrefs.SetInt(saveName.ToString(), value ? 1 : 0);
         }
 
         public float GetSavedFloat(T saveName, float defaultValue = 0f)
@@ -53,7 +65,7 @@ namespace BNJMO
         {
             SaveInt(saveName, Convert.ToInt32(value));
         }
-
+        
         #endregion
 
         #region Inspector Variables
