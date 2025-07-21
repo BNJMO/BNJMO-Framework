@@ -49,7 +49,7 @@ namespace BNJMO
                 
                 // Push old to stack if it's different
                 if (recordHistory && oldHighlightedBMenu != null 
-                                  && (menuHistory.Count == 0 || menuHistory.Peek() != oldHighlightedBMenu))
+                && (menuHistory.Count == 0 || menuHistory.Peek() != oldHighlightedBMenu))
                 {
                     menuHistory.Push(oldHighlightedBMenu);
                 }
