@@ -180,7 +180,7 @@ namespace BNJMO
         protected bool matchParentSize = false;
         
         [FoldoutGroup("BUIElement/More")] [Button("Show UI")] [HideIf("isUIDisabled")] 
-        private void EnableUIElement_Button() => ShowUI();
+        private void EnableUIElement_Button() => ShowUI(true);
         
         [FoldoutGroup("BUIElement/More")] [Button("Hide UI")] 
         private void DisableUIElement_Button() => HideUI();
