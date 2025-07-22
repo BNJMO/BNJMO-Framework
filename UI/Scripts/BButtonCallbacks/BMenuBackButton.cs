@@ -26,7 +26,7 @@ namespace BNJMO
         [SerializeField, SceneObjectsOnly, ReadOnly]
         private BButton bButtonReference;
 
-        [SerializeField, ReadOnly, BoxGroup("BackButton")]
+        [SerializeField, BoxGroup("BackButton")]
         private BFrame parentBFrame;
         
         [SerializeField, BoxGroup("BackButton")]
