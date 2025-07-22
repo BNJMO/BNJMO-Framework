@@ -47,7 +47,10 @@ namespace BNJMO
             base.OnValidate();
             
             SetComponentIfNull(ref bButtonReference);
-            parentBFrame = bButtonReference?.ParentBFrame;
+            if (parentBFrame == null)
+            {
+                parentBFrame = bButtonReference?.ParentBFrame;
+            }
         }
 
         protected override void OnEnable()
