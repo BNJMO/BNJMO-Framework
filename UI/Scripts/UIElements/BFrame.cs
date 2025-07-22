@@ -96,18 +96,23 @@ namespace BNJMO
         
         public void GoToPreviousMenu()
         {
-            while (menuHistory.Count > 0)
+            if (menuHistory.Count == 0)
             {
-                BMenu previousMenu = menuHistory.Pop();
-                if (previousMenu != null)
-                {
-                    UpdateHighlightedBMenu(previousMenu, recordHistory: false);
-                    return;
-                }
+                LogConsoleWarning($"[BFrame: {UIElementName}] No previous menu to return to.");
+                return;
             }
 
-            LogConsoleWarning($"[BFrame: {UIElementName}] No previous menu to return to.");
+            BMenu previousMenu = menuHistory.Pop();
+            if (previousMenu != null)
+            {
+                UpdateHighlightedBMenu(previousMenu, recordHistory: false);
+            }
+            else
+            {
+                LogConsoleWarning($"[BFrame: {UIElementName}] Previous menu was null.");
+            }
         }
+
 
         public void ClearMenuHistory()
         {
