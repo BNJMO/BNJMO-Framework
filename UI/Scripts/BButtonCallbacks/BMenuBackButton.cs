@@ -15,7 +15,7 @@ namespace BNJMO
 
         public void NavigateBack()
         {
-            BUIManager.Inst?.GoToPreviousMenu();
+            parentBFrame?.GoToPreviousMenu();
         }
 
         #endregion
@@ -26,6 +26,9 @@ namespace BNJMO
         [SerializeField, SceneObjectsOnly, ReadOnly]
         private BButton bButtonReference;
 
+        [SerializeField, BoxGroup("BackButton")]
+        private BFrame parentBFrame;
+        
         [SerializeField, BoxGroup("BackButton")]
         private bool navigateOnButtonPress = true;
 
@@ -44,6 +47,10 @@ namespace BNJMO
             base.OnValidate();
             
             SetComponentIfNull(ref bButtonReference);
+            if (parentBFrame == null)
+            {
+                parentBFrame = bButtonReference?.ParentBFrame;
+            }
         }
 
         protected override void OnEnable()
