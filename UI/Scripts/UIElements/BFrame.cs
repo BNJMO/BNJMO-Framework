@@ -277,6 +277,7 @@ namespace BNJMO
                     // Set this object as parent
                     spawnedObject.transform.parent = transform;
                     spawnedObject.transform.localPosition = Vector3.zero;
+                    spawnedObject.transform.localScale = Vector3.one;
 
                     // Set spawned object as selected
                     Selection.SetActiveObjectWithContext(spawnedObject, Selection.activeContext);
