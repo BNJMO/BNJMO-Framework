@@ -27,6 +27,7 @@ namespace BNJMO
         PERSISTENCE_STAGE,
         OTHER_STAGE, // (like in a Preview Scene)
     }
+
     #endregion
     
     #region Online
@@ -254,6 +255,35 @@ namespace BNJMO
     {
         public EPlayerID PlayerID; 
         public PawnBase Prefab;
+    }
+    
+    #endregion
+    
+    #region Authentication
+    
+    public enum EAuthenticationService
+    {
+        None = 0,
+        Anonymous,
+        UnityPlayerAccount,
+        UsernameAndPassword,
+        Apple,
+        AppleGameCenter,
+        Google,
+        GooglePlayGames,
+        Facebook,
+        Steam,
+        Oculus,
+        OpenIDConnect,
+        CodeLinking,
+        CustomID,
+    }
+
+    public struct SAuthenticationArg
+    {
+        public  EAuthenticationService AuthenticationService;
+        public string PlayerID;
+        public string AccessToken;
     }
     
     #endregion
