@@ -10,7 +10,8 @@ namespace BNJMO
     {
         #region Public Events
 
-        public event Action SubmittedInvalidCode; 
+        public event Action SubmittedInvalidCode;
+        public event Action<bool> LobbyCodeValidityChanged;
 
         #endregion
 
@@ -49,6 +50,7 @@ namespace BNJMO
             inputField.TextSelected += InputField_OnTextSelected;
             inputField.TextEditEnded += InputField_OnTextEditEnded;
             inputField.TextSubmitted += InputField_OnTextSubmitted;
+            inputField.TextUpdated += InputField_OnTextUpdated;
         }
 
 
@@ -76,6 +78,12 @@ namespace BNJMO
             UpdateLobbyCode(inputField, text);
         }
         
+        private void InputField_OnTextUpdated(BInputField inputField, string text)
+        {
+            UpdateLobbyCode(inputField, text);
+        }
+
+
         #endregion
 
         #region Others
@@ -89,21 +97,20 @@ namespace BNJMO
 
         private void UpdateLobbyCode(BInputField inputField, string text)
         {
-            if (LobbyCode != "")
-                return;
-
             if (LobbyCodeText.IsValidLobbyCode(text))
             {
                 LobbyCode = text;
                 string formattedText = LobbyCodeText.FormatLobbyCode(text);
                 inputField.SetInputText(formattedText);
                 inputField.SetInputTextValid(true);
+                LobbyCodeValidityChanged?.Invoke(true);
             }
             else
             {
                 LobbyCode = "";
                 inputField.SetInputTextValid(false);
                 SubmittedInvalidCode?.Invoke();
+                LobbyCodeValidityChanged?.Invoke(false);
             }
         }
 
