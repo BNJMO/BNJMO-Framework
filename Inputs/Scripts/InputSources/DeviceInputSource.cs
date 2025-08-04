@@ -167,11 +167,6 @@ namespace BNJMO
                 LogConsole($"Handling controller disconnection: {disconnectedID}");
                 OnDeviceHasLeft(disconnectedID, playerInputListener);
             }
-            else
-            {
-                // Already removed, likely from PlayerInputListener.onDeviceLost
-                LogConsole($"Disconnected controller ID {disconnectedID} was already cleaned up.");
-            }
         }
 
         #endregion
