@@ -24,10 +24,13 @@ namespace BNJMO
         #region Public Methods
         
         /* Lobby and Matching making */
-        public override void CreatePrivateLobby()
+        public async override void CreatePrivateLobby()
         {
             BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.Private));
 
+            if (await InitUnityServices() == false)
+                return;
+            
             CreateLobby(true);
         }
 
@@ -66,6 +69,9 @@ namespace BNJMO
                 return;
             
             BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.QuickMatch));
+            
+            if (await InitUnityServices() == false)
+                return;
             
             StartNewCoroutine(ref joiningOnlineSessionTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
             
@@ -125,6 +131,9 @@ namespace BNJMO
 
         public override async void SetLobbyLock(bool isLocked)
         {
+            if (await InitUnityServices() == false)
+                return;
+            
             try
             {
                 await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
@@ -295,21 +304,6 @@ namespace BNJMO
                 LogConsoleError($"Failed to initialize Unity Services");
                 Debug.LogException(e);
             }
-            
-            if (!AuthenticationService.Instance.IsSignedIn)
-            {
-                try
-                {
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                }
-                catch (Exception e)
-                {
-                    LogConsoleWarning($"Failed to sign in to Unity Services");
-                    Debug.LogException(e);
-                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
-                }
-                
-            }
         }
         
         protected override void Update()
@@ -353,6 +347,26 @@ namespace BNJMO
         #endregion
 
         #region Others
+
+        private async Task<bool> InitUnityServices()
+        {
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                try
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogConsoleWarning($"Failed to sign in to Unity Services");
+                    Debug.LogException(e);
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
+                    return false;
+                }
+            }
+            return true;
+        }
         
         /* Update */
         private async void UpdateLobbyHeartbeat()   // TODO: Is this necessary? What does it even do?
@@ -463,6 +477,8 @@ namespace BNJMO
 
         private async void StartOnlineSession()
         {
+            await InitUnityServices();
+
             if (StateMachine.CurrentState != EOnlineState.InLobby
                 || Authority != EAuthority.HOST)
                 return;
@@ -513,7 +529,7 @@ namespace BNJMO
         }
 
         /* Relay */
-        public async Task<string> CreateRelay()
+        private async Task<string> CreateRelay()
         {
             try
             {
@@ -544,7 +560,7 @@ namespace BNJMO
             }
         }
 
-        public async void JoinRelay(string joinCode)
+        private async void JoinRelay(string joinCode)
         {
             try
             {
@@ -577,7 +593,7 @@ namespace BNJMO
             }
         }
         
-        public void DisconnectFromRelay()
+        private void DisconnectFromRelay()
         {
             if (StateMachine.CurrentState == EOnlineState.InOnlineSession
                 && NetworkManager.Singleton.IsListening == false)
