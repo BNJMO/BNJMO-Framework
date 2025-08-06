@@ -56,14 +56,7 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BConfig", centerLabel: true)]
-        /* Scene */
-        [FoldoutGroup("BConfig/Scene")]
-        public int StartSceneBuildID;
         
-        [FoldoutGroup("BConfig/Scene")]
-        public SScene[] Scenes;
-        
-
         /* App */
         [FoldoutGroup("BConfig/App")]
         public int TargetFramRate = 30;
@@ -75,31 +68,35 @@ namespace BNJMO
         [FoldoutGroup("BConfig/App")]
         public int VSyncCount = 0;
         
+        /* Authentication */
+        [FoldoutGroup("BConfig/Authentication")] 
+        public bool SignInAnounymousOnStart = false;
         
-        /* Events */
-        [FoldoutGroup("BConfig/Events")]
-        public BEventDispatcherType EventDispatcherType;
-
-        [FoldoutGroup("BConfig/Events")]
-        public EBEHandleSerializationMethod bEHandleSerializationMethod = EBEHandleSerializationMethod.JSON_NEWTONSOFT; // TODO: Use   
-
-        [FoldoutGroup("BConfig/Events")]
-        [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
-        public string UbiiBackendServerIP = "localhost";
-
-        [FoldoutGroup("BConfig/Events")]
-        [DisableIf("@this.EventDispatcherType != BEventDispatcherType.UBI_INTERACT")]
-        public int UbiiBackendServerPort = 8101;
+        /* BEvents */
+        [FoldoutGroup("BConfig/BEvents")]
+        public EBEHandleSerializationMethod bEHandleSerializationMethod = EBEHandleSerializationMethod.JSON_NEWTONSOFT;
         
+        /* Debug Logs */
+        [Header("BEvents")]
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogBEvents = true;
 
-        /* Game */
-        [FoldoutGroup("BConfig/Game")]
-        public bool IsUseDebugGameMode = false;
-
-        [FoldoutGroup("BConfig/Game")]
-        public EGameMode DebugGameMode = EGameMode.NONE;
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogBEventsNetworkID;
         
-                
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogBEventsTimestamp; 
+        
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogBEventsPing;
+
+        [Header("Input")]
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogInputButtonBEvents;
+
+        [FoldoutGroup("BConfig/Debug Logs")]
+        public bool LogInputJoystickBEvents;
+        
         /* Input */
         [FoldoutGroup("BConfig/Input")]
         public bool ConnectTouchController = false;
@@ -109,8 +106,31 @@ namespace BNJMO
 
         [FoldoutGroup("BConfig/Input")]
         public bool TransformInpuAxisToCameraDirection = false;
-        
 
+        /* Online */
+        [FoldoutGroup("BConfig/Online")] 
+        public EOnlineBackend onlineBackend = EOnlineBackend.Netcode;
+        
+        [FoldoutGroup("BConfig/Online")] 
+        public bool AutomaticallyLaunchOnlineSession = true;
+        
+        [FoldoutGroup("BConfig/Online")] 
+        public int NumberOfPlayersInLobbyToStartOnlineSession = 1;     
+        
+        [FoldoutGroup("BConfig/Online")] 
+        public float LobbyUpdateTimeSeconds = 2.0f;    
+        
+        [FoldoutGroup("BConfig/Online")] 
+        public float JoinOnlineSessionTimeout = 30.0f;
+  
+        [FoldoutGroup("BConfig/Online")] 
+        [InfoBox("Only possible when still in Lobby state and Party not started yet (i.e. the relay hasn't been created yet")]
+        public bool HandoffLobbyWhenHostDisconnects = true;
+        
+        [Header("Netcode")]
+        [FoldoutGroup("BConfig/Online")] 
+        public NetworkManager NetcodeNetworkManagerPrefab;
+        
         /* Player */
         [FoldoutGroup("BConfig/Player")]
         [Range(1, 16)]
@@ -156,57 +176,13 @@ namespace BNJMO
         [InfoBox("Must be set in realtime")]
         public Transform PawnSpawnParent;
         
+        /* Scene */
+        [FoldoutGroup("BConfig/Scene")]
+        public int StartSceneBuildID;
         
-        /* Online */
-        [FoldoutGroup("BConfig/Online")] 
-        public EOnlineBackend onlineBackend = EOnlineBackend.Netcode;
+        [FoldoutGroup("BConfig/Scene")]
+        public SScene[] Scenes;
         
-        [FoldoutGroup("BConfig/Online")] 
-        public bool AutomaticallyLaunchOnlineSession = true;
-        
-        [FoldoutGroup("BConfig/Online")] 
-        public int NumberOfPlayersInLobbyToStartOnlineSession = 1;     
-        
-        [FoldoutGroup("BConfig/Online")] 
-        public float LobbyUpdateTimeSeconds = 2.0f;    
-        
-        [FoldoutGroup("BConfig/Online")] 
-        public float JoinOnlineSessionTimeout = 30.0f;
-  
-        [FoldoutGroup("BConfig/Online")] 
-        [InfoBox("Only possible when still in Lobby state and Party not started yet (i.e. the relay hasn't been created yet")]
-        public bool HandoffLobbyWhenHostDisconnects = true;
-        
-        [Header("Netcode")]
-        [FoldoutGroup("BConfig/Online")] 
-        public NetworkManager NetcodeNetworkManagerPrefab;
-        
-        /* Authentication */
-        [FoldoutGroup("BConfig/Authentication")] 
-        public bool SignInAnounymousOnStart = false;
-
-        
-        /* Log */
-        [Header("BEvents")]
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogBEvents = true;
-
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogBEventsNetworkID;
-        
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogBEventsTimestamp; 
-        
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogBEventsPing;
-
-        [Header("Input")]
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogInputButtonBEvents;
-
-        [FoldoutGroup("BConfig/Log")]
-        public bool LogInputJoystickBEvents;
-
         #endregion
 
         #region Variables

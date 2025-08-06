@@ -120,16 +120,6 @@ namespace BNJMO
 
     #endregion
 
-    #region Game
-    public enum EGameMode
-    {
-        NONE = 0,
-        SURVIVAL = 100,
-        NORMAL = 101,
-        TEST = 9000
-    }
-    #endregion
-
     #region Player
 
     public struct SPlayerInit
@@ -445,13 +435,6 @@ namespace BNJMO
     #endregion
 
     #region BEvents
-    public enum BEventDispatcherType
-    {
-        NONE,
-        LOCAL,
-        MIRROR,
-        UBI_INTERACT
-    }
 
     public enum EBEHandleSerializationMethod
     {
