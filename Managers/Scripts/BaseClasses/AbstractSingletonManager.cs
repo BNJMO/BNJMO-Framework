@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BNJMO
 {
@@ -14,9 +15,9 @@ namespace BNJMO
         where T : AbstractSingletonManager<T>
     {
         [FoldoutGroup("Singleton Manager")]
-        [FoldoutGroup("Singleton Manager")] [SerializeField] private bool overrideSingletonReference = true;
-        [FoldoutGroup("Singleton Manager")] [SerializeField] private bool getSingletonReferenceOnValidate = true;
-        [FoldoutGroup("Singleton Manager")] [SerializeField] [ReadOnly] private AbstractManager singletonInstanceReference;
+        [FoldoutGroup("Singleton Manager"), SerializeField] private bool overrideSingletonReference = true;
+        [FoldoutGroup("Singleton Manager"), SerializeField] private bool getSingletonReferenceOnValidate = true;
+        [FoldoutGroup("Singleton Manager"), SerializeField, ReadOnly] private AbstractManager singletonInstRef;
 
         public static T Inst { get; private set; }
 
@@ -85,7 +86,7 @@ namespace BNJMO
                 else
                 {
                     Inst = (T)this;
-                    singletonInstanceReference = Inst;
+                    singletonInstRef = Inst;
                 }
             // }
         }

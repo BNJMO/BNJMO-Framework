@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5681681575506708033}
   - component: {fileID: 8718420935579642568}
   m_Layer: 0
-  m_Name: SceneManager
+  m_Name: Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e98ab8283ff9747b699c590b2de4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 8718420935579642568}
@@ -124,6 +125,54 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &1888323308261229770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 763320784936855296}
+  - component: {fileID: 1494863598710747852}
+  m_Layer: 0
+  m_Name: Authentication
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &763320784936855296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888323308261229770}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5040951269368504735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1494863598710747852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888323308261229770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e332acdda5c864d83d7fb9af8478c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
+  overrideSingletonReference: 1
+  getSingletonReferenceOnValidate: 1
+  singletonInstanceReference: {fileID: 0}
 --- !u!1 &2287099349209428566
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5040951269368504735}
   m_Layer: 0
-  m_Name: BNJMO
+  m_Name: BNJMO Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,14 +202,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5681681575506708033}
-  - {fileID: 4335998295768301884}
-  - {fileID: 7140744973992432358}
-  - {fileID: 4335998295998743996}
-  - {fileID: 4335998296438487354}
-  - {fileID: 2292833682318646804}
-  - {fileID: 4335998296063043095}
+  - {fileID: 763320784936855296}
   - {fileID: 9105520494895256689}
+  - {fileID: 4335998295768301884}
+  - {fileID: 4335998296063043095}
+  - {fileID: 4335998295998743996}
+  - {fileID: 2292833682318646804}
+  - {fileID: 4335998296438487354}
+  - {fileID: 5681681575506708033}
+  - {fileID: 7140744973992432358}
   m_Father: {fileID: 4335998295704777601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3030551581687273704
@@ -174,7 +224,7 @@ GameObject:
   - component: {fileID: 2292833682318646804}
   - component: {fileID: 7670290176053291407}
   m_Layer: 0
-  m_Name: MultiplayerManager
+  m_Name: Multiplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,6 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35f15e7beec74c442b6daf64fb5f6f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 0}
@@ -221,7 +272,7 @@ GameObject:
   - component: {fileID: 7140744973992432358}
   - component: {fileID: 1642504072791720918}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,6 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b052f32b770a3448db5c15c9cf767c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 1642504072791720918}
@@ -302,6 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002f6027214cb3c4fb92cd0eb2b77b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 4409717015928454177}
@@ -317,7 +370,7 @@ GameObject:
   - component: {fileID: 4335998295768301884}
   - component: {fileID: 8089043688875718612}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: Event
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675f3b6f19a34d04994295136e3ed096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 8089043688875718612}
@@ -367,7 +421,7 @@ GameObject:
   - component: {fileID: 6116107700635518129}
   - component: {fileID: 7002237378826352229}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4afb78baba020024abbf254fb40b63a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 7589378005590778989}
@@ -489,7 +544,7 @@ GameObject:
   - component: {fileID: 4335998296063043095}
   - component: {fileID: 8590260387160592060}
   m_Layer: 0
-  m_Name: DebugManager
+  m_Name: Debug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -522,6 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca0090e22b3e8243a7d85e52f5ae491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 8590260387160592060}
@@ -536,7 +592,7 @@ GameObject:
   - component: {fileID: 4335998296438487354}
   - component: {fileID: 4568427878466242402}
   m_Layer: 0
-  m_Name: PlayerManager
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc73d883357b9a74d87242ebd093e696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 4568427878466242402}
@@ -583,7 +640,7 @@ GameObject:
   - component: {fileID: 9105520494895256689}
   - component: {fileID: 304480887967926538}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca429370d6935d44d89dee5164d2aecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setDontDestroyOnLoad: 1
   overrideSingletonReference: 1
   getSingletonReferenceOnValidate: 1
   singletonInstanceReference: {fileID: 0}

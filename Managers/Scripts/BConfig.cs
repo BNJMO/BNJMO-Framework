@@ -181,34 +181,37 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Online")] 
         public NetworkManager NetcodeNetworkManagerPrefab;
         
+        /* Authentication */
+        [FoldoutGroup("BConfig/Authentication")] 
+        public bool SignInAnounymousOnStart = false;
+
+        
         /* Log */
-        [FormerlySerializedAs("LogEvents")]
-        [FormerlySerializedAs("IsLogEvents")]
         [Header("BEvents")]
         [FoldoutGroup("BConfig/Log")]
         public bool LogBEvents = true;
 
-        [FormerlySerializedAs("LogEventsNetworkID")] [FoldoutGroup("BConfig/Log")]
+        [FoldoutGroup("BConfig/Log")]
         public bool LogBEventsNetworkID;
         
-        [FormerlySerializedAs("LogEventsTimestamp")] [FoldoutGroup("BConfig/Log")]
+        [FoldoutGroup("BConfig/Log")]
         public bool LogBEventsTimestamp; 
         
-        [FormerlySerializedAs("LogEventsPing")] [FoldoutGroup("BConfig/Log")]
+        [FoldoutGroup("BConfig/Log")]
         public bool LogBEventsPing;
 
-        [FormerlySerializedAs("LogInputButBtonEvents")]
         [Header("Input")]
         [FoldoutGroup("BConfig/Log")]
         public bool LogInputButtonBEvents;
 
-        [FormerlySerializedAs("LogInputJoystickEvents")] [FoldoutGroup("BConfig/Log")]
+        [FoldoutGroup("BConfig/Log")]
         public bool LogInputJoystickBEvents;
 
         #endregion
 
         #region Variables
 
+        public static BConfig Inst;
 
         #endregion
 

@@ -445,6 +445,7 @@ namespace BNJMO
 #endregion
 
         #region Networking
+        
         public static string GetLocalIPAddress()
         {
             var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());

@@ -261,7 +261,7 @@ namespace BNJMO
     
     #region Authentication
     
-    public enum EAuthenticationService
+    public enum EAuthenticationServiceType
     {
         None = 0,
         Anonymous,
@@ -281,9 +281,16 @@ namespace BNJMO
 
     public struct SAuthenticationArg
     {
-        public  EAuthenticationService AuthenticationService;
+        public  EAuthenticationServiceType AuthenticationServiceType;
         public string PlayerID;
         public string AccessToken;
+    }
+
+    public enum EAuthenticationFailureType
+    {
+        None = 0,
+        NotConnected,
+        SignInWithServiceFailed,
     }
     
     #endregion

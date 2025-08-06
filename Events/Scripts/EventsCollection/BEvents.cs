@@ -149,5 +149,18 @@ namespace BNJMO
         #region Replicated Events
 
         #endregion
+        
+        #region Authentication
+        
+        public static BEvent<BEventHandle<EAuthenticationServiceType>> AUTHENTICATION_Started
+            = new ("AUTHENTICATION_Started");
+        
+        public static BEvent<BEventHandle<SAuthenticationArg>> AUTHENTICATION_Succeeded
+            = new ("AUTHENTICATION_Succeeded"); 
+        
+        public static BEvent<BEventHandle<EAuthenticationFailureType>> AUTHENTICATION_Failed
+            = new ("AUTHENTICATION_Failed");
+        
+        #endregion
     }
 }

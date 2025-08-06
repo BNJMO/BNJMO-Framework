@@ -13,14 +13,13 @@ namespace BNJMO
 
     public class BManager : AbstractSingletonManager<BManager>
     {
-        // When adding a new attribute here, remember to add profile setup in SpawnManager class !!!
-
         #region Public Events
 
 
         #endregion
 
         #region Public Methods
+        
         public void QuitApp()
         {
             Application.Quit();
@@ -31,7 +30,9 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BManager", centerLabel: true)]
-        [SerializeField] private BConfig config;
+        
+        [SerializeField] 
+        private BConfig config;
         
         #endregion
 
@@ -46,7 +47,11 @@ namespace BNJMO
         protected override void Awake()
         {
             base.Awake();
+
+            if (Inst != this)
+                return;
             
+            BConfig.Inst = Config;
             QualitySettings.vSyncCount = Config.VSyncCount;
             Application.targetFrameRate = Config.TargetFramRate;
             Screen.sleepTimeout = Config.SleepTimeout;

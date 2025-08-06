@@ -28,8 +28,12 @@ namespace BNJMO
         {
             BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.Private));
 
-            if (await InitUnityServices() == false)
+            bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
+            if (isSignedIn == false)
+            {
+                OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
                 return;
+            }
             
             CreateLobby(true);
         }
@@ -41,6 +45,13 @@ namespace BNJMO
                 return;
             
             BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.Private));
+            
+            bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
+            if (isSignedIn == false)
+            {
+                OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
+                return;
+            }
             
             StartNewCoroutine(ref joiningOnlineSessionTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
             
@@ -70,8 +81,12 @@ namespace BNJMO
             
             BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.QuickMatch));
             
-            if (await InitUnityServices() == false)
+            bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
+            if (isSignedIn == false)
+            {
+                OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
                 return;
+            }
             
             StartNewCoroutine(ref joiningOnlineSessionTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
             
@@ -131,8 +146,11 @@ namespace BNJMO
 
         public override async void SetLobbyLock(bool isLocked)
         {
-            if (await InitUnityServices() == false)
+            if (BAuthenticationManager.Inst.IsSignedIn == false)
+            {
+                OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
                 return;
+            }
             
             try
             {
@@ -292,18 +310,6 @@ namespace BNJMO
             StateMachine.DebugStateChange = true;
             StateMachine.UpdateState(EOnlineState.NotConnected);
             RemainingAvailableSpotsInLobby = BManager.Inst.Config.MaxNumberOfPlayersInParty;
-            
-            // Initialize Unity Services
-            try
-            {
-                await UnityServices.InitializeAsync();
-                Debug.Log("Unity Services Initialized.");
-            }
-            catch (Exception e)
-            {
-                LogConsoleError($"Failed to initialize Unity Services");
-                Debug.LogException(e);
-            }
         }
         
         protected override void Update()
@@ -347,26 +353,6 @@ namespace BNJMO
         #endregion
 
         #region Others
-
-        private async Task<bool> InitUnityServices()
-        {
-            if (!AuthenticationService.Instance.IsSignedIn)
-            {
-                try
-                {
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    LogConsoleWarning($"Failed to sign in to Unity Services");
-                    Debug.LogException(e);
-                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
-                    return false;
-                }
-            }
-            return true;
-        }
         
         /* Update */
         private async void UpdateLobbyHeartbeat()   // TODO: Is this necessary? What does it even do?
@@ -477,8 +463,6 @@ namespace BNJMO
 
         private async void StartOnlineSession()
         {
-            await InitUnityServices();
-
             if (StateMachine.CurrentState != EOnlineState.InLobby
                 || Authority != EAuthority.HOST)
                 return;
