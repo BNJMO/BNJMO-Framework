@@ -7,11 +7,16 @@ using UnityEditor;
 
 namespace BNJMO
 {
+    #region UI
+    
     public enum BGridType
     {
         Default,
         CenterLastRow
     }
+
+    #endregion
+    
     public class BGridLayoutGroup : GridLayoutGroup
     {
         #region Public Events
@@ -20,11 +25,6 @@ namespace BNJMO
         #endregion
 
         #region Public Methods
-
-        public override void SetLayoutHorizontal()
-        {
-            base.SetLayoutHorizontal();
-        }
 
         public override void SetLayoutVertical()
         {
