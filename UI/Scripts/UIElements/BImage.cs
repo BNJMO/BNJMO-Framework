@@ -53,10 +53,6 @@ namespace BNJMO
         
         public void SetSprite(Sprite newSprite)
         {
-            if (newSprite == null)
-            {
-                return;
-            }
             sprite = newSprite;
 
             if (UnityImage)
