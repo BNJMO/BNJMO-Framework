@@ -61,7 +61,7 @@ namespace BNJMO
             }
             if (UnityRawImage)
             {
-                UnityRawImage.texture = newSprite.texture;
+                UnityRawImage.texture = newSprite ? newSprite.texture : null;
             }
             if (UnitySpriteRenderer)
             {
