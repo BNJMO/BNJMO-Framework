@@ -160,7 +160,7 @@ namespace BNJMO
         /// <param name="category"> Category of the log text </param>
         protected void LogConsoleRed(string logText)
         {
-            Debug.Log("<color=white>[" + name + "]</color> <color=red>" + logText + "</color>");
+            Debug.Log("<color=white>[" + name + "]</color> <color=magenta>" + logText + "</color>");
         }     
         
         /// <summary>
@@ -180,7 +180,7 @@ namespace BNJMO
         /// <param name="category"> Category of the log text </param>
         protected void LogConsoleBlue(string logText)
         {
-            Debug.Log("<color=white>[" + name + "]</color> <color=Blue>" + logText + "</color>");
+            Debug.Log("<color=white>[" + name + "]</color> <color=cyan>" + logText + "</color>");
         }
 
         /// <summary>

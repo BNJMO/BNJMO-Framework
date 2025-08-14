@@ -78,34 +78,47 @@ namespace BNJMO
         
         /* Debug Logs */
         [Header("BEvents")]
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents")]
         public bool LogBEvents = true;
 
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents NetworkID"), DisableIf("@this.LogBEvents == false")]
         public bool LogBEventsNetworkID;
         
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents Time Stamp"), DisableIf("@this.LogBEvents == false")]
         public bool LogBEventsTimestamp; 
         
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents Ping"), DisableIf("@this.LogBEvents == false")]
         public bool LogBEventsPing;
-
+        
+        [Header("UI")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log UIB Events")]
+        public bool LogUIBEvents;
+        
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BMenu Highlight BEvents"), DisableIf("@this.LogUIBEvents == false")]
+        public bool LogBMenuHighlightBEvents;
+        
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BButton BEvents"), DisableIf("@this.LogUIBEvents == false")]
+        public bool LogBButtonBEvents;
+        
         [Header("Input")]
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log Input BEvents")]
+        public bool LogInputBEvents;
+        
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log Input Button BEvents"), DisableIf("@this.LogInputBEvents == false")]
         public bool LogInputButtonBEvents;
 
-        [FoldoutGroup("BConfig/Debug Logs")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log Input Joystick BEvents"), DisableIf("@this.LogInputBEvents == false")]
         public bool LogInputJoystickBEvents;
         
         /* Input */
         [FoldoutGroup("BConfig/Input")]
-        public bool ConnectTouchController = false;
+        public bool ConnectTouchController;
 
         [FoldoutGroup("BConfig/Input")]
-        public bool ConnectAIControllers = false;
+        public bool ConnectAIControllers;
 
         [FoldoutGroup("BConfig/Input")]
-        public bool TransformInpuAxisToCameraDirection = false;
+        public bool TransformInpuAxisToCameraDirection;
 
         /* Online */
         [FoldoutGroup("BConfig/Online")] 

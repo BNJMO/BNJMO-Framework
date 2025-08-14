@@ -20,9 +20,14 @@ namespace BNJMO
         {
             BEventName = bEventName;
 
+            if (bEventName == "")
+            {
+                Debug.LogError($"Trying to register a BEvent with no name!");
+                return;
+            }
             if (BEvents.AllReplicatedBEvents.ContainsKey(BEventName))
             {
-                Debug.LogError($"The BEvent '{BEventName}' already exists in the list of events!");
+                Debug.LogError($"Trying to register the BEvent '{BEventName}' but it is already registered!");
                 return;
             }
             BEvents.AllReplicatedBEvents.Add(BEventName, this);
@@ -66,18 +71,18 @@ namespace BNJMO
                 
                 if (config.LogBEventsNetworkID)
                 {
-                    logText += " | From : " + eventHandle.InvokingNetworkID;
+                    logText += $" {SEPARATOR} From : " + eventHandle.InvokingNetworkID;
                 }
 
                 if (config.LogBEventsTimestamp)
                 {
-                    logText += " | Timestamp : " + eventHandle.InvocationTime;
+                    logText += $" {SEPARATOR} Timestamp : " + eventHandle.InvocationTime;
                 }
 
                 if (config.LogBEventsPing)
                 {
                     float ping = BUtils.GetTimeAsInt() - eventHandle.InvocationTime;
-                    logText += " | Ping : " + ping;
+                    logText += $" {SEPARATOR} Ping : " + ping;
                 }
                 Debug.Log(logText);
             }
@@ -139,6 +144,8 @@ namespace BNJMO
         #endregion
 
         #region Life Cycle
+
+        public const string SEPARATOR = "<color=white>|</color>";
 
         #endregion
 

@@ -192,7 +192,7 @@ namespace BNJMO
                 BEvents.INPUT_ButtonPressed.Invoke(
                     new (controllerID, controllerType,inputButton),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.LogInputButtonBEvents
+                    BConfig.Inst.LogInputBEvents && BConfig.Inst.LogInputButtonBEvents
                 );
             }
         }
@@ -205,7 +205,7 @@ namespace BNJMO
                 BEvents.INPUT_ButtonReleased.Invoke(
                     new (controllerID, controllerType, inputButton),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.LogInputButtonBEvents
+                    BConfig.Inst.LogInputBEvents && BConfig.Inst.LogInputButtonBEvents
                 );
             }
         }
@@ -219,7 +219,7 @@ namespace BNJMO
                 BEvents.INPUT_AxisUpdated.Invoke(
                     new (controllerID, controllerType, inputAxis, x, y),
                     BEventBroadcastType.LOCAL,
-                    BManager.Inst.Config.LogInputJoystickBEvents
+                    BConfig.Inst.LogInputBEvents && BConfig.Inst.LogInputJoystickBEvents
                 );
             }
         }

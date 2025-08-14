@@ -145,6 +145,17 @@ namespace BNJMO
         public ETeamID TeamID;
         public string PlayerName;
         public string PlayerPictureBase64;
+        
+        public override string ToString()
+        {
+            return $"NetworkID: {NetworkID}, " +
+                   $"OwnerControllerID: {OwnerControllerID}, " +
+                   $"OwnerControllerType: {OwnerControllerType}, " +
+                   $"PlayerID: {PlayerID}, " +
+                   $"SpectatorID: {SpectatorID}, " +
+                   $"TeamID: {TeamID}, " +
+                   $"PlayerName: {PlayerName}";
+        }
     }
 
     [Serializable]
@@ -154,6 +165,14 @@ namespace BNJMO
         public EControllerType OwnerControllerType;
         public EPlayerID ToPlayerID;
         public ESpectatorID ToSpectatorID;
+        
+        public override string ToString()
+        {
+            return $"OwnerControllerID: {OwnerControllerID}, " +
+                   $"OwnerControllerType: {OwnerControllerType}, " +
+                   $"ToPlayerID: {ToPlayerID}, " +
+                   $"ToSpectatorID: {ToSpectatorID}";
+        }
     }
     
     public struct SPawnInit

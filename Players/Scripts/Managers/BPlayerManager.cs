@@ -133,7 +133,8 @@ namespace BNJMO
         
         public PlayerBase GetPlayerInLobby(ESpectatorID spectatorID, bool logWarnings = true)
         {
-            if (IS_KEY_NOT_CONTAINED(PlayersInLobby, spectatorID, logWarnings))
+            if (spectatorID == ESpectatorID.NONE
+                || IS_KEY_NOT_CONTAINED(PlayersInLobby, spectatorID, logWarnings))
                 return null;
             
             return PlayersInLobby[spectatorID];
@@ -141,7 +142,8 @@ namespace BNJMO
        
         public PlayerBase GetPlayerInParty(EPlayerID playerID, bool logWarnings = true)
         {
-            if (IS_KEY_NOT_CONTAINED(PlayersInParty, playerID, logWarnings))
+            if (playerID == EPlayerID.NONE
+                || IS_KEY_NOT_CONTAINED(PlayersInParty, playerID, logWarnings))
                 return null;
             
             return PlayersInParty[playerID];
@@ -508,20 +510,20 @@ namespace BNJMO
         
         private void BEvents_ONLINE_OnConfirmPlayerIDsMigration(BEventHandle handle)
         {
-            ENetworkID newNetworkID = handle.InvokingNetworkID;
+            ENetworkID migratedPlayerNetworkID = handle.InvokingNetworkID;
             
             if (ARE_NOT_EQUAL(BOnlineManager.Inst.Authority, EAuthority.HOST, true)
-                || ARE_EQUAL(newNetworkID, ENetworkID.HOST_1, true))
+                || ARE_EQUAL(migratedPlayerNetworkID, ENetworkID.HOST_1, true))
                 return;
 
             foreach (var playerItr in ConnectedPlayers)
             {
                 if (playerItr == null
-                    || playerItr.NetworkID == newNetworkID)
+                    || playerItr.NetworkID == migratedPlayerNetworkID)
                     continue;
 
                 SPlayerReplicationArg playerReplicationArgItr = BUtils.CreatePlayerReplicationArgFromPlayer(playerItr);
-                BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, newNetworkID);
+                BEvents.ONLINE_ReplicatePlayer.Invoke(new (playerReplicationArgItr), BEventBroadcastType.TO_TARGET, true, migratedPlayerNetworkID);
             }
         }
 
@@ -541,6 +543,10 @@ namespace BNJMO
             {
                 LogConsoleWarning("Both PlayerID and SpectatorID of replicated player are NONE!");
             }
+
+            if (GetPlayerInLobby(spectatorID, false) != null
+                || GetPlayerInParty(playerID, false) != null)
+                return;
 
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
