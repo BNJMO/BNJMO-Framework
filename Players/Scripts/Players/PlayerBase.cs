@@ -49,7 +49,7 @@ namespace BNJMO
             return true;
         }
 
-        public bool SetControllerID(EControllerID newControllerID, EControllerType newControllerType)
+        public bool SetControllerID(EControllerID newControllerID, EControllerType newControllerType, bool invokeBEvent = true)
         {
             if (ControllerID == newControllerID
                 || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
@@ -58,13 +58,16 @@ namespace BNJMO
             controllerID = newControllerID;
             controllerType = newControllerType;
 
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerChangedControllerID.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
-            
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_ControllerIDChanged.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
+
             return true;
         }
 
-        public bool SetTeamID(ETeamID newTeamID)
+        public bool SetTeamID(ETeamID newTeamID, bool invokeBEvent = true)
         {
             if (newTeamID == teamID
                 || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
@@ -72,9 +75,12 @@ namespace BNJMO
                 return false;
             
             teamID = newTeamID;
-
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerChangedTeam.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_TeamChanged.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
 
             return true;
         }
@@ -97,23 +103,26 @@ namespace BNJMO
             if (invokeBEvent)
             {
                 SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-                BEvents.PLAYERS_PlayerChangedName.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+                BEvents.PLAYERS_NameChanged.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
             }
         }
 
-        public void SetPlayerPicture(Sprite newPlayerPicture)
+        public void SetPlayerPicture(Sprite newPlayerPicture, bool invokeBEvent = true)
         {
             PlayerPicture = newPlayerPicture;
 
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerChangedPicture.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_PictureChanged.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
         }
-        
-        public bool JoinParty()
+
+        public bool JoinParty(bool invokeBEvent = true)
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
                 return false;
-            
+
             EPlayerID newPlayerID = BPlayerManager.Inst.JoinParty(this);
             if (ARE_ENUMS_EQUAL(newPlayerID, EPlayerID.NONE, true))
                 return false;
@@ -121,15 +130,18 @@ namespace BNJMO
             playerID = newPlayerID;
             spectatorID = ESpectatorID.NONE;
             
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerJoinedTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_JoinedTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
 
-            UpdateObjectNameToPartyState();
+        UpdateObjectNameToPartyState();
             
             return true;
         }
 
-        public bool LeaveParty()
+        public bool LeaveParty(bool invokeBEvent = true)
         {
             if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
                 return false;
@@ -140,16 +152,19 @@ namespace BNJMO
             
             playerID = EPlayerID.NONE;
             spectatorID = newSpectatorID;
-            
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerLeftTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_LeftTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
 
             UpdateObjectNameToPartyState();
             
             return true;
         }
 
-        public bool SetReady()
+        public bool SetReady(bool invokeBEvent = true)
         {
             if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                  || ARE_EQUAL(isReady, true, true))
@@ -157,23 +172,29 @@ namespace BNJMO
             
             isReady = true;
             
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerBecameReady.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
-            
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_BecameReady.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
+
             return true;
         }
         
-        public bool CancelReady()
+        public bool CancelReady(bool invokeBEvent = true)
         {
             if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
                 || ARE_EQUAL(isReady, false, true))
                 return false;
             
             isReady = false;
-            
-            SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-            BEvents.PLAYERS_PlayerCanceledReady.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
-            
+
+            if (invokeBEvent)
+            {
+                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_CanceledReady.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
+
             return true;
         }
 

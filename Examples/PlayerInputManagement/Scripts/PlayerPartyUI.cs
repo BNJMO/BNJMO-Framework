@@ -99,7 +99,7 @@ namespace BNJMO
         {
             base.Start();
             
-            BEvents.PLAYERS_PlayerDisconnected += BEvents_PlayersPlayerDisconnected;
+            BEvents.PLAYERS_Disconnected += BEvents_PlayersPlayerDisconnected;
             
             controllerIDText.SetText("ControllerID : " + Player.ControllerID);
             controllerTypeText.SetText("Controller Type : " + BInputManager.Inst.GetControllerType(Player.ControllerID).ToString());

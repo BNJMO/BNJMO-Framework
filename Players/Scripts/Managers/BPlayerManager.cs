@@ -215,7 +215,7 @@ namespace BNJMO
             
             ActivePawns.Add(playerID, spawnedPawn);
             
-            BEvents.PAWNS_PawnSpawned.Invoke(new(playerID));
+            BEvents.PAWNS_Spawned.Invoke(new(playerID));
             
             return spawnedPawn;
         }
@@ -229,7 +229,7 @@ namespace BNJMO
             pawn.DestroyPawn();
             ActivePawns.Remove(playerID);
             
-            BEvents.PAWNS_PawnDestroyed.Invoke(new(playerID));
+            BEvents.PAWNS_Destroyed.Invoke(new(playerID));
             
             return true;
         }
@@ -643,7 +643,7 @@ namespace BNJMO
                     break;
             }
 
-            BEvents.PLAYERS_PlayerConnected.Invoke(new (spawnedPlayer));
+            BEvents.PLAYERS_Connected.Invoke(new (spawnedPlayer));
 
             // Replicate spawned player
             var replicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(spawnedPlayer);
@@ -684,7 +684,7 @@ namespace BNJMO
             
             ConnectedPlayers.Remove(player);
             
-            BEvents.PLAYERS_PlayerDisconnected.Invoke(new (player));
+            BEvents.PLAYERS_Disconnected.Invoke(new (player));
 
             player.DestroyPlayer();
             return true;

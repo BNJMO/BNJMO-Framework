@@ -36,7 +36,7 @@ namespace BNJMO
         protected override void InitializeEventsCallbacks()
         {
             base.InitializeEventsCallbacks();
-            BEvents.PAWNS_PawnSpawned += BEents_OnPawnsPawnSpawned;
+            BEvents.PAWNS_Spawned += BEents_OnPawnsPawnSpawned;
         }
 
         private void BEents_OnPawnsPawnSpawned(BEventHandle<EPlayerID> bEventHandle)

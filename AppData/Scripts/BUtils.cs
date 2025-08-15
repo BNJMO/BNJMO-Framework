@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using UnityEngine.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -850,14 +851,87 @@ namespace BNJMO
             return deserializedObject;
         }
 
-        public static string EncodeTexture2D(Texture2D texture2D)
+        public static string EncodeTexture2D(Texture source, bool asPng = true, int jpgQuality = 85)
         {
-            if (!texture2D)
-                return "";
-            
-            byte[] pngData = texture2D.EncodeToPNG();
-            return Convert.ToBase64String(pngData);
+            if (!source) return "";
+
+            int w = source.width;
+            int h = source.height;
+
+            // Fast path: readable + uncompressed formats supported by EncodeTo...
+            if (source is Texture2D t2d && IsReadable(t2d) && IsEncodeSupported(t2d.format))
+            {
+                byte[] direct = asPng ? t2d.EncodeToPNG() : t2d.EncodeToJPG(jpgQuality);
+                return Convert.ToBase64String(direct);
+            }
+
+            // Convert to uncompressed, readable RGBA32 first
+            Texture2D readable = ToReadableRGBA32(source, w, h);
+
+            try
+            {
+                byte[] data = asPng ? readable.EncodeToPNG() : readable.EncodeToJPG(jpgQuality);
+                return Convert.ToBase64String(data);
+            }
+            finally
+            {
+                UnityEngine.Object.Destroy(readable);
+            }
         }
+
+        private static Texture2D ToReadableRGBA32(Texture src, int w, int h)
+        {
+            // Try GPU conversion first (works for compressed, non-readable GPU textures)
+            if (SystemInfo.copyTextureSupport != CopyTextureSupport.None)
+            {
+                try
+                {
+                    var dst = new Texture2D(w, h, TextureFormat.RGBA32, false, false);
+                    // Correct overloads:
+                    // Graphics.ConvertTexture(src, dst);
+                    // or Graphics.ConvertTexture(src, 0, dst, 0);
+                    Graphics.ConvertTexture(src, dst);
+                    return dst;
+                }
+                catch
+                {
+                    // fall through to RT path
+                }
+            }
+
+            // Universal fallback: Blit to RT + ReadPixels
+            RenderTexture rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32);
+            var prev = RenderTexture.active;
+            try
+            {
+                Graphics.Blit(src, rt);
+                RenderTexture.active = rt;
+
+                var readable = new Texture2D(w, h, TextureFormat.RGBA32, false, false);
+                readable.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+                readable.Apply(false, false);
+                return readable;
+            }
+            finally
+            {
+                RenderTexture.active = prev;
+                RenderTexture.ReleaseTemporary(rt);
+            }
+        }
+
+        private static bool IsReadable(Texture2D tex)
+        {
+            try { var _ = tex.GetRawTextureData<byte>(); return true; }
+            catch { return false; }
+        }
+
+        private static bool IsEncodeSupported(TextureFormat f) =>
+            f == TextureFormat.RGBA32 ||
+            f == TextureFormat.ARGB32 ||
+            f == TextureFormat.BGRA32 ||
+            f == TextureFormat.RGB24 ||
+            f == TextureFormat.Alpha8 ||
+            f == TextureFormat.R8;
         
         public static Texture2D DecodeTexture2D(string textureBase64)
         {

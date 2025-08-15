@@ -293,6 +293,13 @@ namespace BNJMO
         public  EAuthenticationServiceType AuthenticationServiceType;
         public string PlayerID;
         public string AccessToken;
+
+        public override string ToString()
+        {
+            return $"AuthenticationServiceType: {AuthenticationServiceType}, " +
+                   $"PlayerID: {PlayerID}, " +
+                   $"AccessToken: {AccessToken}";
+        }
     }
 
     public enum EAuthenticationFailureType

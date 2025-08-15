@@ -91,7 +91,7 @@ namespace BNJMO
         public bool LogBEventsPing;
         
         [Header("UI")]
-        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log UIB Events")]
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log UI BEvents")]
         public bool LogUIBEvents;
         
         [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BMenu Highlight BEvents"), DisableIf("@this.LogUIBEvents == false")]

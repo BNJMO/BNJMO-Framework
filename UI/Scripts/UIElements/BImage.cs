@@ -161,20 +161,30 @@ namespace BNJMO
         
         [BoxGroup("BImage", centerLabel: true)]
 
-        [SerializeField] [BoxGroup("BImage")] [LabelText("Use Localization")] [FormerlySerializedAs("UseLocalization")]
+        [BoxGroup("BImage"), SerializeField, LabelText("Use Localization")]
         private bool useLocalization;
     
-        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == false")]
+        [BoxGroup("BImage"), SerializeField, ShowIf("@UseLocalization == false")]
         private Sprite sprite;
 
-        [SerializeField] [BoxGroup("BImage")] [ShowIf("@UseLocalization == true")]
+        [BoxGroup("BImage"), SerializeField, ShowIf("@UseLocalization == true")]
         private LocalizedSprite localizedSprite;
 
-        [SerializeField] [BoxGroup("BImage")]
+        [BoxGroup("BImage"), SerializeField]
         private Color color = Color.white;
         
-        [SerializeField] [BoxGroup("BImage")]
+        [BoxGroup("BImage"), SerializeField]
         private bool matchSpriteResolutionSize = false;
+
+        [Header("References")]
+        [BoxGroup("BImage"), SerializeField] 
+        private Image unityImage;
+
+        [BoxGroup("BImage"), SerializeField] 
+        private RawImage unityRawImage;
+
+        [BoxGroup("BImage"), SerializeField] 
+        private SpriteRenderer unitySpriteRenderer;
 
         [BoxGroup("BImage")] [Button("Match Parent Size")]
         private void MatchParentSize_Button() => MatchParentSize();
@@ -203,11 +213,11 @@ namespace BNJMO
     
         public float ImageOpacity => color.a;
 
-        public Image UnityImage { get; private set; }
+        public Image UnityImage => unityImage;
 
-        public RawImage UnityRawImage { get; private set; }
+        public RawImage UnityRawImage => unityRawImage;
 
-        public SpriteRenderer UnitySpriteRenderer { get; private set; }
+        public SpriteRenderer UnitySpriteRenderer => unitySpriteRenderer;
         
         private Sprite localizedSpriteValue = null;
 
@@ -224,9 +234,9 @@ namespace BNJMO
             base.OnValidate();
 
             // Get or refresh components
-            UnityImage = GetComponent<Image>();
-            UnityRawImage = GetComponent<RawImage>();
-            UnitySpriteRenderer = GetComponent<SpriteRenderer>();
+            SetComponentIfNull(ref unityImage);
+            SetComponentIfNull(ref unityRawImage);
+            SetComponentIfNull(ref unitySpriteRenderer);
 
             // Only assign sprite if not using localization
             if (!useLocalization)
@@ -273,11 +283,13 @@ namespace BNJMO
         {
             base.Awake();
 
-            UnityImage = GetComponent<Image>();
-            UnityRawImage = GetComponent<RawImage>();
-            UnitySpriteRenderer = GetComponent<SpriteRenderer>();
-
-            if ((UnityImage == null) && (UnityRawImage == null) && (UnitySpriteRenderer == null))
+            // Get or refresh components
+            SetComponentIfNull(ref unityImage);
+            SetComponentIfNull(ref unityRawImage);
+            SetComponentIfNull(ref unitySpriteRenderer);
+            if (UnityImage == null 
+                && UnityRawImage == null 
+                && UnitySpriteRenderer == null)
             {
                 LogConsoleError("No Image, RawImage, or SpriteRenderer component found on this GameObject!");
             }

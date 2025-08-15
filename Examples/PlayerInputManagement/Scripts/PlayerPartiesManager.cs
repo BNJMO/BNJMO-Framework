@@ -36,12 +36,12 @@ namespace BNJMO
             
             UpdateReadyText();
             
-            BEvents.PLAYERS_PlayerConnected += BEvents_OnPlayersPlayerConnected;
-            BEvents.PLAYERS_PlayerDisconnected += _ => UpdateReadyText();
-            BEvents.PLAYERS_PlayerBecameReady += _ => UpdateReadyText();
-            BEvents.PLAYERS_PlayerCanceledReady += _ => UpdateReadyText();
-            BEvents.PLAYERS_PlayerJoinedTheParty += _ => UpdateReadyText();
-            BEvents.PLAYERS_PlayerLeftTheParty += _ => UpdateReadyText();
+            BEvents.PLAYERS_Connected += BEvents_OnPlayersPlayerConnected;
+            BEvents.PLAYERS_Disconnected += _ => UpdateReadyText();
+            BEvents.PLAYERS_BecameReady += _ => UpdateReadyText();
+            BEvents.PLAYERS_CanceledReady += _ => UpdateReadyText();
+            BEvents.PLAYERS_JoinedTheParty += _ => UpdateReadyText();
+            BEvents.PLAYERS_LeftTheParty += _ => UpdateReadyText();
         }
 
         private void BEvents_OnPlayersPlayerConnected(BEventHandle<PlayerBase> BEventHandle)

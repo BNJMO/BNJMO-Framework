@@ -18,7 +18,7 @@ namespace BNJMO
 
         #region Inspector Variables
 
-        [SerializeField] private BMenuNavigationButton bMenuNavigationButton;
+        [SerializeField] private BMenu navigateToBMenuOnShutdown;
 
         #endregion
 
@@ -28,13 +28,7 @@ namespace BNJMO
         #endregion
 
         #region Life Cycle
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            SetComponentIfNull(ref bMenuNavigationButton);
-        }
+        
 
         protected override void Start()
         {
@@ -56,10 +50,10 @@ namespace BNJMO
         private void BEvents_ONLINE_OnLaunchSessionFailed(BEventHandle<EJoinOnlineSessionFailureType> bEventHandle)
         {
             if (BButton.IsShown == false
-                || bMenuNavigationButton == null)
+                || navigateToBMenuOnShutdown == null)
                 return;
             
-            bMenuNavigationButton.NavigateToMenu();
+            navigateToBMenuOnShutdown.HighlightBMenu();
         }
 
         private void BEvents_ONLINE_OnShutdownSession(BEventHandle<ELeaveOnlineSessionReason, ENetworkID> bEventHandle)
@@ -67,10 +61,10 @@ namespace BNJMO
             ELeaveOnlineSessionReason sessionReason = bEventHandle.Arg1;
             if (sessionReason == ELeaveOnlineSessionReason.LeaveFromUI
                 || BButton.IsShown == false
-                || bMenuNavigationButton == null)
+                || navigateToBMenuOnShutdown == null)
                 return;
             
-            bMenuNavigationButton.NavigateToMenu();
+            navigateToBMenuOnShutdown.HighlightBMenu();
         }
         
         #endregion
