@@ -31,7 +31,6 @@ RectTransform:
   m_Children:
   - {fileID: 1959408261550299795}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -50,13 +49,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a9fda235872b04eb016a1560cbb41e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIElementName: BFrane
+  uIElementName: BFrame
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
-  overrideGameOjbectName: 1
+  parentBUIElement: {fileID: 0}
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: F_
+  isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startWithFocus: 1
   startHighlightedBMenu: {fileID: 6194425970237128678}
@@ -94,7 +96,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7905068770626205404}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -116,12 +117,15 @@ MonoBehaviour:
   uIElementName: BMenu
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
-  overrideGameOjbectName: 1
+  parentBUIElement: {fileID: 0}
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
   revalidateAllDirectChildren: 1
   objectNamePrefix: M_
+  isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startHighlightedBButton: {fileID: 0}
   highlightedBButtonReference: {fileID: 0}
-  isActive: 0
+  isHighlighted: 0
   childrenBButtonsList: []
