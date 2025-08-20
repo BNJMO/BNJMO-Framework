@@ -99,7 +99,7 @@ namespace BNJMO
         {
             if (LobbyCodeText.IsValidLobbyCode(text))
             {
-                LobbyCode = text;
+                LobbyCode = Regex.Replace(text, @"\s+", "");
                 string formattedText = LobbyCodeText.FormatLobbyCode(text);
                 inputField.SetInputText(formattedText);
                 inputField.SetInputTextValid(true);
