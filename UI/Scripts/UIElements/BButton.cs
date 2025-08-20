@@ -468,153 +468,153 @@ namespace BNJMO
         [SerializeField] [FormerlySerializedAs("isDisabled")] [BoxGroup("BButton")]
         private bool isButtonDisabled = false;
         
-        [FoldoutGroup("BButton/Settings")]
+        [FoldoutGroup("BButton/BButton Settings")]
         /* Image */
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
         private BImage bImageReference;
         
         [Header("Sprite")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
         private bool useImageLocalization = false;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [FormerlySerializedAs("buttonImage")] [ShowIf("@useImageLocalization == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [FormerlySerializedAs("buttonImage")] [ShowIf("@useImageLocalization == false")]
         private Sprite buttonSprite;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [FormerlySerializedAs("localizedSprite")] [ShowIf("@useImageLocalization == true")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [FormerlySerializedAs("localizedSprite")] [ShowIf("@useImageLocalization == true")]
         private LocalizedSprite imageLocalizedSprite;
 
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]        // TODO: Add localization for pressed Sprite
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]        // TODO: Add localization for pressed Sprite
         private bool useImagePressedSprite = false;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")] [HideIf("@this.useImagePressedSprite == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [HideIf("@this.useImagePressedSprite == false")]
         private Sprite buttonPressedImage;
         
         [Header("Colors")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
         private Color imageNormalColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")]
         private Color imageDisabledColor = new Color(1.0f, 1.0f, 1.0f, 0.125f);
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")]
         private bool useImageSpecialColors = false;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
         private Color imageHoveredColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
         private Color imageHighlightedColor = new Color(0.61f, 0.96f, 1.0f, 1.0f);
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
         private Color ImagePressedColor = new Color(0.46f, 0.67f, 0.69f, 1.0f);
         
         [Header("Match Parent Size")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Image")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
         private bool imageMatchesParentSize = false;
         
-        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/Settings/Image")] 
+        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/BButton Settings/Image")] 
         private void MatchImageParentSize_Button() => MatchImageParentSize();
 
         /* Text */
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private BText bTextReference;
         
         [Header("Text")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private bool useTextLocalization = false;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")] [HideIf("@this.useTextLocalization == true")] [TextArea]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")] [HideIf("@this.useTextLocalization == true")] [TextArea]
         private string buttonText = "Button";
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")] [ShowIf("useTextLocalization")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")] [ShowIf("useTextLocalization")]
         private LocalizedString textLocalizedString;
                              
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private TMP_FontAsset defaultFontAsset;
 
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private float textFontSize = 0;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private bool writeButtonTextUppercase = false;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private bool overrideUINameFromText = false;
 
         [Header("Colors")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private Color textNormalColor = Color.black;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")]
         private Color textDisabledColor = Color.black;
 
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")]
         private bool useTextSpecialColors = true;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
         private Color textHoveredColor = Color.black;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
         private Color textHighlightedColor = Color.black;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
         private Color textPressedColor = Color.black;
         
         [Header("Match Parent Size")]
-        [SerializeField] [FoldoutGroup("BButton/Settings/Text")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
         private bool textMatchesParentSize = false;
         
-        [Button("Match Text Parent Size")] [FoldoutGroup("BButton/Settings/Text")] 
+        [Button("Match Text Parent Size")] [FoldoutGroup("BButton/BButton Settings/Text")] 
         private void MatchTextParentSize_Button() => MatchTextParentSize();
         
-        [Button("Derive Button Name From UIElement Name")] [FoldoutGroup("BButton/Settings/Text")] 
+        [Button("Derive Button Name From UIElement Name")] [FoldoutGroup("BButton/BButton Settings/Text")] 
         private void DeriveName_Button() => DeriveName();
 
         /* Sounds */
-        [SerializeField] [FoldoutGroup("BButton/Settings/Sounds")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Sounds")]
         private AudioClip onPressedSound;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Sounds")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Sounds")]
         private AudioClip onSuccessfullyReleasedSound;
 
         /* Navigations */
-        [SerializeField] [FoldoutGroup("BButton/Settings/Navigation")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Navigation")]
         private BButton upperButton;
         
-        [SerializeField] [HorizontalGroup("BButton/Settings/Navigation/LeftRightRow")]
+        [SerializeField] [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow")]
         private BButton leftButton;
         
-        [SerializeField] [HorizontalGroup("BButton/Settings/Navigation/LeftRightRow")]
+        [SerializeField] [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow")]
         private BButton rightButton;
         
-        [SerializeField] [FormerlySerializedAs("buttomButton")] [FoldoutGroup("BButton/Settings/Navigation")]
+        [SerializeField] [FormerlySerializedAs("buttomButton")] [FoldoutGroup("BButton/BButton Settings/Navigation")]
         private BButton bottomButton;
 
-        [FoldoutGroup("BButton/Settings/Navigation")]
+        [FoldoutGroup("BButton/BButton Settings/Navigation")]
         [Button("Set Self On Reciprocal Buttons")]
         private void SetSelfOnReciprocalButtons_Button() => SetSelfOnReciprocalButtons();
         
         /* Events */
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonHighlightedUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonPressedUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonUnhighlightedUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonReleasedUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonCancelReleasedUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonHoveredEnterUEvent;
         
-        [SerializeField] [FoldoutGroup("BButton/Settings/Events")]
+        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
         public UnityEvent ButtonHoveredExitUEvent;
 
         #endregion
