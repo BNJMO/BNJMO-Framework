@@ -59,7 +59,8 @@ namespace BNJMO
                 if (Application.isPlaying
                 && BManager.Inst)
                 {
-                    BEvents.UI_HighlightedBMenuUpdated.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu), 
+                    bool logBMenuHighlightBEvents = BConfig.Inst && BConfig.Inst.LogBMenuHighlightBEvents;
+                    BEvents.UI_HighlightedBMenuUpdated?.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu), 
                         BConfig.Inst.LogUIBEvents && BConfig.Inst.LogBMenuHighlightBEvents);
                 }
 
@@ -238,7 +239,8 @@ namespace BNJMO
 
             if (startWithFocus)
             {
-                BEvents.UI_FocusedFrameUpdated.Invoke(new BEventHandle<BFrame>(this), BConfig.Inst.LogUIBEvents);
+                bool logUIBEvents = BConfig.Inst && BConfig.Inst.LogUIBEvents;
+                BEvents.UI_FocusedFrameUpdated?.Invoke(new BEventHandle<BFrame>(this), logUIBEvents);
             }
 
             if (highlightedBMenuReference)
