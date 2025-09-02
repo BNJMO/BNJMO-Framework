@@ -51,6 +51,9 @@ namespace BNJMO
             
             InitSoundData(soundData);
             
+            if (IS_NOT_VALID(myAudioSource.clip, true))
+                return;
+            
             // Play sound
             myAudioSource.Play();
 
