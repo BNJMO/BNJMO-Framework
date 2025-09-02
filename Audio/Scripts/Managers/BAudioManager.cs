@@ -5,19 +5,57 @@ namespace BNJMO
 {
     public class BAudioManager : AbstractSingletonManager<BAudioManager>
     {
-        private List<SoundObject> aliveSoundObjects = new List<SoundObject>();
-        private SoundObject soundObjectPrefab;
+        #region Public Events
 
-        protected override void Awake()
+
+        #endregion
+
+        #region Public Methods
+
+        public static SoundObject SpawnSoundObject(SoundData soundData, bool destroyWhenFinished = true)
         {
-            base.Awake();
+            SoundObject soundObjectPrefab = Resources.Load<SoundObject>(BConsts.PATH_SoundObject);
 
-            soundObjectPrefab = Resources.Load<SoundObject>(BConsts.PATH_SoundObject);
-            IS_NOT_NULL(soundObjectPrefab);
+            if (soundData != null
+                && soundObjectPrefab)
+            {
+                SoundObject soundObject = Instantiate(soundObjectPrefab);
+                string soundName = "Sound";
+                if (soundData.SoundName != "")
+                {
+                    soundName = soundData.SoundName;
+                }
+                else if (soundData.Clip != null)
+                {
+                    soundName = soundData.Clip.name;
+                }
+                soundObject.gameObject.name = "SO_" + soundName;
+                soundObject.DestroySoundWhenFinishedPlaying = destroyWhenFinished;
+                soundObject.PlaySound(soundData);
+                return soundObject;
+            }
+            return null;
         }
-
+        
         public static SoundObject SpawnSoundObject(AudioClip audioClipToPlay, bool destroyWhenFinished = true)
         {
+            SoundObject soundObjectPrefab = Resources.Load<SoundObject>(BConsts.PATH_SoundObject);
+
+            if (audioClipToPlay != null
+                && soundObjectPrefab)
+            {
+                SoundObject soundObject = Instantiate(soundObjectPrefab);
+                soundObject.gameObject.name = "SO_" + audioClipToPlay.name;
+                soundObject.DestroySoundWhenFinishedPlaying = destroyWhenFinished;
+                soundObject.PlaySound(audioClipToPlay);
+                return soundObject;
+            }
+            return null;
+        }
+
+        public static SoundObject SpawnSoundObject(AudioClip[] audioClipsToPlayFrom, bool destroyWhenFinished = true)
+        {
+            AudioClip audioClipToPlay = BUtils.GetRandomElement(audioClipsToPlayFrom);
             SoundObject soundObject = SpawnSoundObject(audioClipToPlay);
             if (soundObject)
             {
@@ -49,40 +87,38 @@ namespace BNJMO
             return soundObject;
         }
 
-        //private SoundObject SpawnSoundObject(AudioClip audioClipToPlay)
-        //{
-        //    if ((audioClipToPlay != null)
-        //        && (IS_NOT_NULL(soundObjectPrefab)))
-        //    {
-        //        SoundObject soundObject = Instantiate(soundObjectPrefab);
-        //        soundObject.gameObject.name = "SO_" + audioClipToPlay.name;
-        //        aliveSoundObjects.Add(soundObject);
-        //        soundObject.SoundObjectWillGetDestroyed += On_SoundObject_SoundObjectWillGetDestroyed;
-        //        return soundObject;
-        //    }
-        //    return null;
-        //}
 
-        private static SoundObject SpawnSoundObject(AudioClip audioClipToPlay)
-        {
-            SoundObject soundObjectPrefab = Resources.Load<SoundObject>(BConsts.PATH_SoundObject);
+        #endregion
 
-            if ((audioClipToPlay != null)
-                && ((soundObjectPrefab)))
-            {
-                SoundObject soundObject = Instantiate(soundObjectPrefab);
-                soundObject.gameObject.name = "SO_" + audioClipToPlay.name;
-                return soundObject;
-            }
-            return null;
-        }
+        #region Inspector Variables
 
-        private void On_SoundObject_SoundObjectWillGetDestroyed(SoundObject soundObject)
-        {
-            if (IS_VALUE_CONTAINED(aliveSoundObjects, soundObject))
-            {
-                aliveSoundObjects.Remove(soundObject);
-            }
-        }
+
+        #endregion
+
+        #region Variables
+
+
+        #endregion
+
+        #region Life Cycle
+
+
+        #endregion
+
+        #region Events Callbacks
+
+
+        #endregion
+
+        #region Others
+
+
+        #endregion
+        
+        
+
+
+  
+
     }
 }

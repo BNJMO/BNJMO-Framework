@@ -1,4 +1,5 @@
 ﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -476,5 +477,41 @@ namespace BNJMO
         TO_TARGET       // The event invocation is only replicated on a specific targeted client (the designated client is specified as a parameter in the event invocation method).
     }
 
+    #endregion
+    
+    #region Audio
+
+    [Serializable]
+    public class SoundData
+    {
+        [Title("Name")] 
+        public string SoundName;
+        
+        [Title("Audio Clips")]
+        [DisableIf("@RandomClips.Length > 0")]
+        public AudioClip Clip;
+        public AudioClip[] RandomClips;
+        
+        [Title("Spatial")]
+        public bool Is3D;
+        public Vector3 Position;
+        public Transform AtTransform;
+        
+        [Title("Volume")]
+        [HorizontalGroup("Volume Range")] 
+        public float MinVolume = 1.0f;
+        [Title(" ")]
+        [HorizontalGroup("Volume Range")] 
+        public float MaxVolume = 1.0f;
+        
+        [Title("Pitch \n")]
+        [HorizontalGroup("Pitch Range")] 
+        public float MinPitch = 1.0f;
+        [Title(" ")]
+        [HorizontalGroup("Pitch Range")] 
+        public float MaxPitch = 1.0f;
+        
+    }
+    
     #endregion
 }

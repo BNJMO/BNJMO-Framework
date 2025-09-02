@@ -1,46 +1,61 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using System;
+using Random = UnityEngine.Random;
 
 namespace BNJMO
 {
     public class SoundObject : BBehaviour
     {
+        #region Public Events
+
         public event Action<SoundObject> SoundFinishedPlayed;
         public event Action<SoundObject> SoundObjectWillGetDestroyed;
+        
+        #endregion
 
-        public AudioSource AudioSource { get { return myAudioSource; } }
-        public AudioClip AudioClip { get { return AudioClip; } }
-        public bool DestroySoundWhenFinishedPlaying { get { return destroySoundWhenFinishedPlaying; } set { destroySoundWhenFinishedPlaying = value; } }
+        #region Public Methods
 
-        [Header("Sound Object")]
-        [SerializeField]
-        private AudioSource myAudioSource;
-
-        [SerializeField] 
-        private AudioClip audioClip;
-
-        [SerializeField]
-        private AnimationCurve fadeCurve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
-
-        [SerializeField]
-        private bool destroySoundWhenFinishedPlaying = false;
-
-        private IEnumerator onSoundFinishedPlayinEnumerator;
-        private IEnumerator fadeInEnumerator;
-        private IEnumerator fadeOutEnumerator;
-
-        protected override void OnValidate()
+        public void InitSoundData(SoundData soundData)
         {
-            if (!CanValidate()) return;
-            base.OnValidate();
-
-            SetComponentIfNull(ref myAudioSource);
-
-            if (!audioClip && myAudioSource)
+            if (IS_NOT_VALID(myAudioSource, true)
+                || IS_NULL(soundData, true))
+                return;
+            
+            audioClip = null;
+            if (soundData.RandomClips.Length > 0)
             {
-                audioClip = myAudioSource.clip;
+                audioClip = BUtils.GetRandomElement(soundData.RandomClips);
             }
+            else
+            {
+                audioClip = soundData.Clip;
+            }
+            
+            if (IS_NULL(audioClip, true))
+            {
+                LogConsoleWarning($"No valid clip found sound data {soundData.SoundName}.");
+            }
+            myAudioSource.clip = audioClip;
+            myAudioSource.volume = Random.Range(soundData.MinVolume, soundData.MaxVolume);
+            myAudioSource.pitch = Random.Range(soundData.MinPitch, soundData.MaxPitch);
+            myAudioSource.spatialBlend = soundData.Is3D ? 1.0f : 0.0f;
+            myAudioSource.transform.position = soundData.AtTransform ? soundData.AtTransform.position : soundData.Position;
+        }
+
+        public void PlaySound(SoundData soundData)
+        {
+            if (IS_NOT_VALID(myAudioSource, true)
+                || IS_NULL(soundData, true))
+                return;
+            
+            InitSoundData(soundData);
+            
+            // Play sound
+            myAudioSource.Play();
+
+            // Callback for when sound finished playing
+            StartNewCoroutine(ref onSoundFinishedPlayinEnumerator, OnSoundFinishedPlayingCoroutine(myAudioSource.clip.length, DestroySoundWhenFinishedPlaying));
         }
 
         /// <summary>
@@ -138,6 +153,63 @@ namespace BNJMO
 
         }
 
+        #endregion
+
+        #region Inspector Variables
+        
+        [Header("Sound Object")]
+        [SerializeField]
+        private AudioSource myAudioSource;
+
+        [SerializeField] 
+        private AudioClip audioClip;
+
+        [SerializeField]
+        private AnimationCurve fadeCurve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
+
+        [SerializeField]
+        private bool destroySoundWhenFinishedPlaying = false;
+
+        #endregion
+
+        #region Variables
+
+        public AudioSource AudioSource => myAudioSource;
+        public AudioClip AudioClip => audioClip;
+        public bool DestroySoundWhenFinishedPlaying { get { return destroySoundWhenFinishedPlaying; } set { destroySoundWhenFinishedPlaying = value; } }
+
+        private IEnumerator onSoundFinishedPlayinEnumerator;
+        private IEnumerator fadeInEnumerator;
+        private IEnumerator fadeOutEnumerator;
+
+        #endregion
+
+        #region Life Cycle
+
+        protected override void OnValidate()
+        {
+            if (!CanValidate()) return;
+            base.OnValidate();
+
+            SetComponentIfNull(ref myAudioSource);
+
+            if (!audioClip && myAudioSource)
+            {
+                audioClip = myAudioSource.clip;
+            }
+        }
+
+
+        #endregion
+
+        #region Events Callbacks
+
+
+        #endregion
+
+        #region Others
+
+        
         private IEnumerator OnSoundFinishedPlayingCoroutine(float delay, bool destroyWhenFinished)
         {
             yield return new WaitForSeconds(delay);
@@ -193,5 +265,6 @@ namespace BNJMO
             }
         }
 
+        #endregion
     }
 }
