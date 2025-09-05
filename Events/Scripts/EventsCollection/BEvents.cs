@@ -94,7 +94,7 @@ namespace BNJMO
                 = new ("PLAYERS_CanceledReady");
 
         /* Pawns */
-        public static BEvent<BEventHandle<EPlayerID>> PAWNS_Spawned
+        public static BEvent<BEventHandle<PawnBase>> PAWNS_Spawned
                 = new ("PAWNS_Spawned");
         
         public static BEvent<BEventHandle<EPlayerID>> PAWNS_Destroyed
