@@ -215,7 +215,7 @@ namespace BNJMO
             
             ActivePawns.Add(playerID, spawnedPawn);
             
-            BEvents.PAWNS_Spawned.Invoke(new(playerID));
+            BEvents.PAWNS_Spawned.Invoke(new(spawnedPawn));
             
             return spawnedPawn;
         }
