@@ -16,25 +16,25 @@ namespace BNJMO
         {
             SoundObject soundObjectPrefab = Resources.Load<SoundObject>(BConsts.PATH_SoundObject);
 
-            if (soundData != null
-                && soundObjectPrefab)
+            if (soundData == null
+                || (soundData.Clip == null && soundData.RandomClips.Length == 0)
+                || soundObjectPrefab == null)
+                return null;
+            
+            SoundObject soundObject = Instantiate(soundObjectPrefab);
+            string soundName = "Sound";
+            if (soundData.Name != "")
             {
-                SoundObject soundObject = Instantiate(soundObjectPrefab);
-                string soundName = "Sound";
-                if (soundData.SoundName != "")
-                {
-                    soundName = soundData.SoundName;
-                }
-                else if (soundData.Clip != null)
-                {
-                    soundName = soundData.Clip.name;
-                }
-                soundObject.gameObject.name = "SO_" + soundName;
-                soundObject.DestroySoundWhenFinishedPlaying = destroyWhenFinished;
-                soundObject.PlaySound(soundData);
-                return soundObject;
+                soundName = soundData.Name;
             }
-            return null;
+            else if (soundData.Clip != null)
+            {
+                soundName = soundData.Clip.name;
+            }
+            soundObject.gameObject.name = "SO_" + soundName;
+            soundObject.DestroySoundWhenFinishedPlaying = destroyWhenFinished;
+            soundObject.PlaySound(soundData);
+            return soundObject;
         }
         
         public static SoundObject SpawnSoundObject(AudioClip audioClipToPlay, bool destroyWhenFinished = true)

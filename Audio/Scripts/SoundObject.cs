@@ -34,7 +34,7 @@ namespace BNJMO
             
             if (IS_NULL(audioClip, true))
             {
-                LogConsoleWarning($"No valid clip found sound data {soundData.SoundName}.");
+                LogConsoleWarning($"No valid clip found sound data {soundData.Name}.");
             }
             myAudioSource.clip = audioClip;
             myAudioSource.volume = Random.Range(soundData.MinVolume, soundData.MaxVolume);
@@ -48,17 +48,21 @@ namespace BNJMO
             if (IS_NOT_VALID(myAudioSource, true)
                 || IS_NULL(soundData, true))
                 return;
-            
+
             InitSoundData(soundData);
-            
+
             if (IS_NOT_VALID(myAudioSource.clip, true))
                 return;
-            
-            // Play sound
-            myAudioSource.Play();
 
-            // Callback for when sound finished playing
-            StartNewCoroutine(ref onSoundFinishedPlayinEnumerator, OnSoundFinishedPlayingCoroutine(myAudioSource.clip.length, DestroySoundWhenFinishedPlaying));
+            Wait(soundData.Delay, () =>
+            {
+                // Play sound
+                myAudioSource.Play();
+
+                // Callback for when sound finished playing
+                StartNewCoroutine(ref onSoundFinishedPlayinEnumerator,
+                    OnSoundFinishedPlayingCoroutine(myAudioSource.clip.length, DestroySoundWhenFinishedPlaying));
+            });
         }
 
         /// <summary>

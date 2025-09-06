@@ -485,10 +485,10 @@ namespace BNJMO
     public class SoundData
     {
         [Title("Name")] 
-        public string SoundName;
+        public string Name;
         
         [Title("Audio Clips")]
-        [DisableIf("@RandomClips.Length > 0")]
+        [DisableIf("@RandomClips.Length > 0"), OnValueChanged("PopulateName")]
         public AudioClip Clip;
         public AudioClip[] RandomClips;
         
@@ -511,6 +511,17 @@ namespace BNJMO
         [HorizontalGroup("Pitch Range")] 
         public float MaxPitch = 1.0f;
         
+        [Title("Delay")]
+        public float Delay = 0.0f;
+
+        private void PopulateName()
+        {
+            if (Name == ""
+                && Clip != null)
+            {
+                Name = Clip.name;
+            }
+        }
     }
     
     #endregion
