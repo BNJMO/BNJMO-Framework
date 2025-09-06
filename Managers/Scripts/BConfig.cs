@@ -19,6 +19,11 @@ namespace BNJMO
 
         #region Public Methods
 
+        public static C GetInst<C>() where C : BConfig
+        {
+            return Inst as C;
+        }
+        
         public static string GetValueFromProjectConfigFile(string key)
         {
             TextAsset configFile = Resources.Load<TextAsset>("ProjectConfig"); 
