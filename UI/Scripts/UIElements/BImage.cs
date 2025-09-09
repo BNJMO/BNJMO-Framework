@@ -127,6 +127,16 @@ namespace BNJMO
             }
         }
 
+        public float GetFillAmount()
+        {
+            if (UnityImage)
+            {
+                return UnityImage.fillAmount;
+                
+            }
+            return 1.0f;
+        }
+
         public void SetFillAmount(float fillAmount)
         {
             if (UnityImage)
