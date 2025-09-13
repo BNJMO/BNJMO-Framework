@@ -11,7 +11,7 @@ namespace BNJMO
     {
 #if UNITY_EDITOR
 
-        [MenuItem("GameObject/UI/BNJMO/BFrame", false, 0)]
+    [MenuItem("GameObject/UI/BNJMO/BFrame", false, 0)]
     [MenuItem("GameObject/BNJMO/UI/BFrame", false, 0)]
     public static void CreateBFrame()
     {
@@ -87,45 +87,52 @@ namespace BNJMO
     {
         SpawnObject(BConsts.PATH_BScrollView);
     }
+    
+    [MenuItem("GameObject/UI/BNJMO/BScrollViewNested", false, 0)]
+    [MenuItem("GameObject/BNJMO/UI/BScrollViewNested", false, 0)]
+    public static void CreateBScrollViewNested()
+    {
+        SpawnObject(BConsts.PATH_BScrollViewNested);
+    }
 
-        private static GameObject SpawnObject(string resourcePath)
+    private static GameObject SpawnObject(string resourcePath)
+    {
+        GameObject objectPrefab = Resources.Load<GameObject>(resourcePath);
+        if (objectPrefab)
         {
-            GameObject objectPrefab = Resources.Load<GameObject>(resourcePath);
-            if (objectPrefab)
+            GameObject spawnedObject = Instantiate(objectPrefab);
+
+            if (spawnedObject)
             {
-                GameObject spawnedObject = Instantiate(objectPrefab);
+                // Remove (Clone) at the end
+                Debug.Log("spawnedObject : " + spawnedObject.name);
+                spawnedObject.name = spawnedObject.name.Replace("(Clone)", "");
 
-                if (spawnedObject)
+                // Set transform of the selected object as parent
+                GameObject selectedObject = (GameObject)Selection.activeObject;
+                if (selectedObject)
                 {
-                    // Remove (Clone) at the end
-                    Debug.Log("spawnedObject : " + spawnedObject.name);
-                    spawnedObject.name = spawnedObject.name.Replace("(Clone)", "");
-
-                    // Set transform of the selected object as parent
-                    GameObject selectedObject = (GameObject)Selection.activeObject;
-                    if (selectedObject)
-                    {
-                        spawnedObject.transform.parent = selectedObject.transform;
-                    }
-                    spawnedObject.transform.localPosition = Vector3.one;
-                    spawnedObject.transform.localRotation = Quaternion.identity;
-                    spawnedObject.transform.localScale = Vector3.one;
-
-                    // Set spawned object as selected
-                    Selection.SetActiveObjectWithContext(spawnedObject, Selection.activeContext);
-                    return spawnedObject;
+                    spawnedObject.transform.parent = selectedObject.transform;
                 }
-                else
-                {
-                    Debug.LogError("Couldn't spawn object!");
-                }
+                spawnedObject.transform.localPosition = Vector3.one;
+                spawnedObject.transform.localRotation = Quaternion.identity;
+                spawnedObject.transform.localScale = Vector3.one;
+
+                // Set spawned object as selected
+                Selection.SetActiveObjectWithContext(spawnedObject, Selection.activeContext);
+                return spawnedObject;
             }
             else
             {
-                Debug.LogError("The '" + resourcePath + "' prefab was not found in the Resources folder!");
+                Debug.LogError("Couldn't spawn object!");
             }
-            return null;
         }
+        else
+        {
+            Debug.LogError("The '" + resourcePath + "' prefab was not found in the Resources folder!");
+        }
+        return null;
+    }
 #endif
 
     }

@@ -17,7 +17,7 @@ namespace BNJMO
 
     #endregion
     
-    public class BGridLayoutGroup : GridLayoutGroup
+    public class ExtendedGridLayoutGroup : GridLayoutGroup
     {
         #region Public Events
 
@@ -43,7 +43,8 @@ namespace BNJMO
 
         #region Inspector Variables
 
-        [SerializeField] private BGridType gridType = BGridType.Default;
+        [SerializeField] 
+        private BGridType gridType = BGridType.Default;
 
         #endregion
 
@@ -100,25 +101,26 @@ namespace BNJMO
         }
 
     #if UNITY_EDITOR
-        [CustomEditor(typeof(BGridLayoutGroup))]
+        [CustomEditor(typeof(ExtendedGridLayoutGroup))]
         public class BGridLayoutGroupEditor : UnityEditor.UI.GridLayoutGroupEditor
         {
-            private SerializedProperty gridTypeProp;
+            private SerializedProperty gridTypeProperty;
 
             protected override void OnEnable()
             {
                 base.OnEnable();
-                gridTypeProp = serializedObject.FindProperty("gridType");
+                gridTypeProperty = serializedObject.FindProperty("gridType");
             }
 
             public override void OnInspectorGUI()
             {
                 base.OnInspectorGUI();
+                
                 serializedObject.Update();
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("BNJMO Settings", EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(gridTypeProp);
+                EditorGUILayout.PropertyField(gridTypeProperty);
 
                 serializedObject.ApplyModifiedProperties();
             }

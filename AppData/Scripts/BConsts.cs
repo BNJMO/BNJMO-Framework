@@ -34,6 +34,7 @@ namespace BNJMO
         public const string PATH_BText = "T_BText";
         public const string PATH_InputField = "IF_InputField";
         public const string PATH_BScrollView = "SV_BScrollView";
+        public const string PATH_BScrollViewNested = "SV_BScrollViewNested";
 
         /* Multiplayer */
         public const string PATH_NetcodeNetworkManager = "NetcodeNetworkManager";
