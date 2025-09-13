@@ -143,7 +143,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 323079534935605665}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!114 &323079534935605665
@@ -358,7 +358,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 0.3882353}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 4378347217657824}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!222 &4737480521023239304
@@ -482,7 +482,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 6623046694953897252}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!114 &6623046694953897252
@@ -710,7 +710,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 4496728089115392394}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!114 &4496728089115392394
@@ -826,7 +826,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 8227765285773333936}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!114 &8227765285773333936
@@ -989,7 +989,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
   matchSpriteResolutionSize: 0
-  unityImage: {fileID: 3947553998122257573}
+  unityImage: {fileID: 0}
   unityRawImage: {fileID: 0}
   unitySpriteRenderer: {fileID: 0}
 --- !u!114 &3947553998122257573
@@ -1035,7 +1035,7 @@ GameObject:
   - component: {fileID: 3797112038911898453}
   - component: {fileID: 4853065807183885931}
   m_Layer: 5
-  m_Name: SV_BScrollViewNested
+  m_Name: SV_BNestedScrollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d140eec85d5fd7b4cb2ec8d266428380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIElementName: BScrollViewNested
+  uIElementName: BScrollView
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 0}
