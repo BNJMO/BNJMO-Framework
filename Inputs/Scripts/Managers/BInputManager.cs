@@ -83,7 +83,7 @@ namespace BNJMO
         {
             if (!connectedControllers.Contains(controllerID))
             {
-                LogConsoleError("Trying to disconnect a controller that is not connected.");
+                LogConsoleError($"Trying to disconnect a controller that is not connected: {controllerID}");
                 return false;
             }
 
