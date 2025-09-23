@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Sirenix.OdinInspector;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -20,7 +21,7 @@ namespace BNJMO
     // [SelectionBase] // Ensures this object is selected in the editor instead of one of its children (e.g. mesh)
     public abstract class BBehaviour : MonoBehaviour
     {
-#region Life Cycle
+        #region Life Cycle
         public virtual void Revalidate()
         {
             OnValidate();
@@ -33,6 +34,13 @@ namespace BNJMO
         protected virtual void OnValidate()
         {
             
+        }
+        
+        protected bool CanValidate()
+        {
+            return GetObjectStage() == EObjectStage.MAIN_STAGE
+                   || GetObjectStage() == EObjectStage.PREFAB_STAGE
+                   && transform.parent != null ;
         }
 
         protected virtual void Awake()
@@ -119,19 +127,10 @@ namespace BNJMO
         {
 
         }
-
-        //protected virtual void OnGUI()
-        //{
-
-        //}
-
-        //protected virtual void OnDrawGizmos()
-        //{
-
-        //}
+        
 #endregion
 
-#region Debug Log
+        #region Debug Log
         /// <summary>
         /// Prints a log text into the console if logging is enabled and the category of the text to log is not already added into the ignore list.
         /// </summary>
@@ -744,8 +743,7 @@ namespace BNJMO
             }
             return true;
         }
-
-
+        
         /// <summary>
         /// Checks if the given array contains the given value.
         /// Prints a warning in the console if value is not found.
@@ -873,8 +871,6 @@ namespace BNJMO
 
             return true;
         }
-
-
 
         #endregion
 
@@ -1072,13 +1068,6 @@ Complete nesting chain from outermost to original:
         }
 #endif
 #endregion
-
-        protected bool CanValidate()
-        {
-            return GetObjectStage() == EObjectStage.MAIN_STAGE
-                || GetObjectStage() == EObjectStage.PREFAB_STAGE
-                && transform.parent != null ;
-        }
 
         #region Coroutine
         /// <summary>
@@ -1608,5 +1597,12 @@ Complete nesting chain from outermost to original:
             }
         }
 #endregion
+
+        #region Inspector
+        
+        [ShowInInspector, DisplayAsString, PropertyOrder(-1000)]
+        private string Namespace => $"{GetType().Namespace}";
+
+        #endregion
     }
 }
