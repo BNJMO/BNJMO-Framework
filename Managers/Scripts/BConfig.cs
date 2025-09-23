@@ -211,6 +211,10 @@ namespace BNJMO
 
         #region Life Cycle
 
+        protected virtual void OnEnable()
+        {
+            
+        }
 
         #endregion
 
