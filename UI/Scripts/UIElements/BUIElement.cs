@@ -167,7 +167,7 @@ namespace BNJMO
         protected bool propagateUINameToChildren = false;
         
         [FoldoutGroup("BUIElement/More")] [SerializeField] 
-        protected bool revalidateAllDirectChildren = true;
+        protected bool revalidateWithChildren = false;
         
         [FoldoutGroup("BUIElement/More")] [ReadOnly] [SerializeField]
         protected string objectNamePrefix = "C_";
@@ -218,7 +218,6 @@ namespace BNJMO
 
         #region Life Cycle
 
-
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
@@ -230,7 +229,7 @@ namespace BNJMO
             parentBUIElement = GetComponentInDirectParent<BUIElement>();
 
             // Revalidate children UI Elements (only direct children. Revalidation will be propagated if they have revalidateAllDirectChildren set to true)
-            if (revalidateAllDirectChildren)
+            if (revalidateWithChildren)
             {
                 for (int i = 0; i < transform.childCount; i++)
                 {
@@ -271,7 +270,6 @@ namespace BNJMO
             }
         }
 
-
         #endregion
 
         #region Events Callbacks
@@ -286,10 +284,5 @@ namespace BNJMO
 
 
         #endregion
-
-
-
-
-
     }
 }

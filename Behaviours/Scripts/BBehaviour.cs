@@ -1322,11 +1322,11 @@ Complete nesting chain from outermost to original:
             }
         }
 
-        public void SetComponentInParentIfNull<T>(ref T reference)
+        public void SetComponentInParentsIfNull<T>(ref T reference)
         {
             if (reference == null)
             {
-                reference = GetComponentInParent<T>();
+                reference = GetComponentInParents<T>();
             }
         }
 
