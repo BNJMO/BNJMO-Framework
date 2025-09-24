@@ -838,6 +838,7 @@ namespace BNJMO
             UpperButton = null;
             BottomButton = null;
         }
+        
         #endregion
     }
 }

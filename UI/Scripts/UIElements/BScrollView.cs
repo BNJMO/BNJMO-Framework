@@ -15,38 +15,48 @@ namespace BNJMO
         #endregion
 
         #region Inspector Values
+
+        [BoxGroup("Scroll View", centerLabel: true)]
+
+        /* Settings */
+        [FoldoutGroup("Scroll View/Scroll View Settings"), SerializeField]
+        private Vector3 defaultContentLocalPosition;
         
-        [BoxGroup("Scroll View", centerLabel: true)] [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/Scroll View Settings"), SerializeField]
+        private bool resetContentPositionOnUIHidden = true;
+
+        /* References */
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private ScrollRect scrollRect;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private RectTransform viewportTransform;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private RectTransform contentTransform;
 
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage viewportImage;
 
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private Scrollbar verticalScrollbar;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private Scrollbar horizontalScrollbar;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage verticalScrollbarImage;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage horizontalScrollbarImage;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage backgroundImage;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage verticalHandleImage;
         
-        [FoldoutGroup("Scroll View/References")] [SerializeField]
+        [FoldoutGroup("Scroll View/References"), SerializeField]
         private BImage horizontalHandleImage;
         
         #endregion
@@ -103,10 +113,26 @@ namespace BNJMO
             }
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            contentTransform.localPosition = defaultContentLocalPosition;
+        }
+
         #endregion
 
         #region Event Callbacks
 
+        protected override void OnUIHidden()
+        {
+            base.OnUIHidden();
+
+            if (resetContentPositionOnUIHidden)
+            {
+                contentTransform.localPosition = defaultContentLocalPosition;
+            }
+        }
 
         #endregion
 

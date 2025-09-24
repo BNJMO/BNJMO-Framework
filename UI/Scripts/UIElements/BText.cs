@@ -403,7 +403,8 @@ public class BText : BUIElement
     {
         if (Application.isPlaying == false
             || newLocalizedText == null
-            || newLocalizedText.IsEmpty)
+            || newLocalizedText.IsEmpty
+            || useLocalization == false)
             return;
         
         var operation = newLocalizedText.GetLocalizedStringAsync();

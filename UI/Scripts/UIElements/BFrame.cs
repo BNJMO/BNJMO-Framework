@@ -115,11 +115,11 @@ namespace BNJMO
             }
         }
 
-
         public void ClearMenuHistory()
         {
             menuHistory.Clear();
         }
+        
         #endregion
 
         #region Inspector Variables
@@ -284,9 +284,8 @@ namespace BNJMO
 
                     // Set spawned object as selected
                     Selection.SetActiveObjectWithContext(spawnedObject, Selection.activeContext);
-
              
-                    Revalidate();
+                    RevalidateWithChildren();
                 }
                 else
                 {

@@ -65,7 +65,10 @@ namespace BNJMO
         {
             base.OnDisable();
 
-            button.Released -= On_ButtonReleased;
+            if (button)
+            {
+                button.Released -= On_ButtonReleased;
+            }
         }
 
         #endregion

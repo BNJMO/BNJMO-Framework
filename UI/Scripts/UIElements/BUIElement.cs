@@ -140,6 +140,8 @@ namespace BNJMO
                     transform.GetChild(i).GetComponent<BUIElement>().Revalidate();
                 }
             }
+            
+            Revalidate();
         }
         
         #endregion
