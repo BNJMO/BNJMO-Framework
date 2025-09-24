@@ -149,7 +149,7 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Online")] 
         public NetworkManager NetcodeNetworkManagerPrefab;
         
-        /* Player */
+        /* Players */
         [FoldoutGroup("BConfig/Player")]
         [Range(1, 16)]
         public int MaxNumberOfSpectators = 16;
