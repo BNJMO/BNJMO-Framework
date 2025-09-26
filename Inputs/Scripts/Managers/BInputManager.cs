@@ -31,7 +31,7 @@ namespace BNJMO
 
         #region Public Methods
 
-        public bool ConnectController(EControllerID controllerID, EControllerType controllerType)
+        public bool ConnectController(EControllerID controllerID, EControllerType controllerType = EControllerType.None)
         {
             if (controllerID == EControllerID.NONE)
             {
@@ -46,6 +46,27 @@ namespace BNJMO
             }
 
             connectedControllers.Add(controllerID);
+
+            // Determine controller type
+            if (controllerType == EControllerType.None)
+            {
+                if (BUtils.IsControllerIDAI(controllerID))
+                {
+                    controllerType = EControllerType.AI;
+                }
+                else if (BUtils.IsControllerIDRemote(controllerID))
+                {
+                    controllerType = EControllerType.NetworkRemote;
+                }
+                else if (BUtils.IsControllerIDTouch(controllerID))
+                {
+                    controllerType = EControllerType.TouchScreen;
+                }
+                else if (BUtils.IsControllerIDDevice(controllerID))
+                {
+                    controllerType = EControllerType.MiscController;
+                }
+            }
             RegisterControllerType(controllerID, controllerType);
 
             // Invoke event
@@ -70,7 +91,7 @@ namespace BNJMO
         public EControllerID ConnectNextRemoteController()
         {
             EControllerID controllerID = GetNextFreeRemoteControllerID();
-            if (ConnectController(controllerID, EControllerType.NetworkController))
+            if (ConnectController(controllerID, EControllerType.NetworkRemote))
             {
                 return controllerID;
             }

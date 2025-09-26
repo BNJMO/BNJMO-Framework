@@ -123,7 +123,7 @@ namespace BNJMO
 
     #region Player
 
-    public struct SPlayerInit
+    public struct SPlayerInitArg
     {
         public EPlayerID PlayerID;
         public ESpectatorID SpectatorID;
@@ -149,18 +149,18 @@ namespace BNJMO
         
         public override string ToString()
         {
-            return $"NetworkID: {NetworkID}, " +
-                   $"OwnerControllerID: {OwnerControllerID}, " +
-                   $"OwnerControllerType: {OwnerControllerType}, " +
-                   $"PlayerID: {PlayerID}, " +
-                   $"SpectatorID: {SpectatorID}, " +
-                   $"TeamID: {TeamID}, " +
+            return $"NetworkID: {NetworkID}{BConsts.COMMA} " +
+                   $"OwnerControllerID: {OwnerControllerID}{BConsts.COMMA} " +
+                   $"OwnerControllerType: {OwnerControllerType}{BConsts.COMMA} " +
+                   $"PlayerID: {PlayerID}{BConsts.COMMA} " +
+                   $"SpectatorID: {SpectatorID}{BConsts.COMMA} " +
+                   $"TeamID: {TeamID}{BConsts.COMMA} " +
                    $"PlayerName: {PlayerName}";
         }
     }
 
     [Serializable]
-    public struct SPlayerIDMigration
+    public struct SPlayerIDMigrationArg
     {
         public EControllerID OwnerControllerID;
         public EControllerType OwnerControllerType;
@@ -169,10 +169,36 @@ namespace BNJMO
         
         public override string ToString()
         {
-            return $"OwnerControllerID: {OwnerControllerID}, " +
-                   $"OwnerControllerType: {OwnerControllerType}, " +
-                   $"ToPlayerID: {ToPlayerID}, " +
+            return $"OwnerControllerID: {OwnerControllerID}{BConsts.COMMA} " +
+                   $"OwnerControllerType: {OwnerControllerType}{BConsts.COMMA} " +
+                   $"ToPlayerID: {ToPlayerID}{BConsts.COMMA} " +
                    $"ToSpectatorID: {ToSpectatorID}";
+        }
+    }
+
+    [Serializable]
+    public struct SPlayerJoinedPartydArg
+    {
+        public ESpectatorID OldSpectatorID;
+        public EPlayerID NewPlayerID;
+        
+        public override string ToString()
+        {
+            return $"OldSpectatorID: {OldSpectatorID}{BConsts.COMMA} " +
+                   $"NewPlayerID: {NewPlayerID}";
+        }
+    }
+    
+    [Serializable]
+    public struct SPlayerLeftPartyArg
+    {
+        public ESpectatorID NewSpectatorID;
+        public EPlayerID OldPlayerID;
+        
+        public override string ToString()
+        {
+            return $"NewSpectatorID: {NewSpectatorID}{BConsts.COMMA} " +
+                   $"OldPlayerID: {OldPlayerID}";
         }
     }
     
@@ -249,8 +275,8 @@ namespace BNJMO
     public enum EPlayerPartyState
     {
         NONE = 0,
-        IN_LOBBY = 1,
-        IN_PARTY = 2,
+        SPECTATOR = 1,
+        ACTIVE_PLAYER = 2,
     }
     
     [Serializable]
@@ -297,8 +323,8 @@ namespace BNJMO
 
         public override string ToString()
         {
-            return $"AuthenticationServiceType: {AuthenticationServiceType}, " +
-                   $"PlayerID: {PlayerID}, " +
+            return $"AuthenticationServiceType: {AuthenticationServiceType}{BConsts.COMMA} " +
+                   $"PlayerID: {PlayerID}{BConsts.COMMA} " +
                    $"AccessToken: {AccessToken}";
         }
     }
@@ -385,7 +411,7 @@ namespace BNJMO
         Dualsense = 6,
         XboxSeries = 7,
         MiscController = 8,
-        NetworkController = 9,
+        NetworkRemote = 9,
         Switch = 10,
     }
 
@@ -471,6 +497,7 @@ namespace BNJMO
 
     public enum BEventBroadcastType
     {
+        NONE,           // Default
         LOCAL,          // The event invocation is not replicated and is only invoked on the same instance where it got called.
         TO_ALL,         // The event invocation is replicated to every instance on the network including the one where it got initially called.
         TO_ALL_OTHERS,  // The event invocation is replicated to every instance on the network expect the one where it got initially called.

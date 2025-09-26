@@ -89,6 +89,9 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents NetworkID"), DisableIf("@this.LogBEvents == false")]
         public bool LogBEventsNetworkID;
         
+        [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents Broadcast Type"), DisableIf("@this.LogBEvents == false")]
+        public bool LogBEventsBroadcastType;
+        
         [FoldoutGroup("BConfig/Debug Logs"), LabelText("Log BEvents Time Stamp"), DisableIf("@this.LogBEvents == false")]
         public bool LogBEventsTimestamp; 
         
@@ -154,9 +157,10 @@ namespace BNJMO
         [Range(1, 16)]
         public int MaxNumberOfSpectators = 16;
                 
+        [FormerlySerializedAs("MaxNumberOfPlayersInParty")]
         [FoldoutGroup("BConfig/Player")]
         [Range(1, 16)]
-        public int MaxNumberOfPlayersInParty = 4;
+        public int MaxNumberOfActivePlayers = 4;
         
         [FoldoutGroup("BConfig/Player")]
         [Range(0, 16)]

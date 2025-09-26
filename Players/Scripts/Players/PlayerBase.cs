@@ -14,16 +14,16 @@ namespace BNJMO
 
         #region Public Methods
         
-        public void Init(SPlayerInit playerInit)
+        public void Init(SPlayerInitArg playerInitArg)
         {
-            playerID = playerInit.PlayerID;
-            spectatorID = playerInit.SpectatorID;
-            controllerID = playerInit.ControllerID;
-            controllerType = playerInit.ControllerType;
-            networkID = playerInit.NetworkID;
-            teamID = playerInit.TeamID;
-            playerName = playerInit.PlayerName;
-            PlayerPicture = playerInit.PlayerPicture;
+            playerID = playerInitArg.PlayerID;
+            spectatorID = playerInitArg.SpectatorID;
+            controllerID = playerInitArg.ControllerID;
+            controllerType = playerInitArg.ControllerType;
+            networkID = playerInitArg.NetworkID;
+            teamID = playerInitArg.TeamID;
+            playerName = playerInitArg.PlayerName;
+            PlayerPicture = playerInitArg.PlayerPicture;
             UpdateObjectNameToPartyState(false);
         }
 
@@ -70,7 +70,7 @@ namespace BNJMO
         public bool SetTeamID(ETeamID newTeamID, bool invokeBEvent = true)
         {
             if (newTeamID == teamID
-                || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
+                || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
                 || BPlayerManager.Inst.CanJoinTeam(newTeamID) == false)
                 return false;
             
@@ -117,46 +117,84 @@ namespace BNJMO
                 BEvents.PLAYERS_PictureChanged.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
             }
         }
-
+        
         public bool JoinParty(bool invokeBEvent = true)
         {
-            if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
+            if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true))
                 return false;
 
-            EPlayerID newPlayerID = BPlayerManager.Inst.JoinParty(this);
+            EPlayerID newPlayerID = BPlayerManager.Inst.GetNextFreePlayerID();
             if (ARE_ENUMS_EQUAL(newPlayerID, EPlayerID.NONE, true))
                 return false;
 
+            ESpectatorID oldSpectatorID = spectatorID;
             playerID = newPlayerID;
             spectatorID = ESpectatorID.NONE;
             
             if (invokeBEvent)
             {
-                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-                BEvents.PLAYERS_JoinedTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+                SPlayerJoinedPartydArg playerReplicationArg = new()
+                {
+                    NewPlayerID = playerID,
+                    OldSpectatorID = oldSpectatorID,
+                };
+                BEvents.PLAYERS_JoinedParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
             }
 
-        UpdateObjectNameToPartyState();
+            UpdateObjectNameToPartyState();
+            
+            return true;
+        }
+
+        public bool JoinParty(EPlayerID atPlayerID, bool invokeBEvent = true)
+        {
+            if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
+                || IS_NONE(atPlayerID, true))
+                return false;
+
+            if (IS_NOT_TRUE(BPlayerManager.Inst.IsPlayerIDAvailable(atPlayerID), true))
+                return false;
+
+            ESpectatorID oldSpectatorID = spectatorID;
+            playerID = atPlayerID;
+            spectatorID = ESpectatorID.NONE;
+            
+            if (invokeBEvent)
+            {
+                SPlayerJoinedPartydArg playerJoinedPartyArg = new()
+                {
+                    NewPlayerID = playerID,
+                    OldSpectatorID = oldSpectatorID,
+                };
+                BEvents.PLAYERS_JoinedParty.Invoke(new(playerJoinedPartyArg), BEventBroadcastType.TO_ALL);
+            }
+
+            UpdateObjectNameToPartyState();
             
             return true;
         }
 
         public bool LeaveParty(bool invokeBEvent = true)
         {
-            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true))
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true))
                 return false;
 
-            ESpectatorID newSpectatorID = BPlayerManager.Inst.LeaveParty(this);
+            ESpectatorID newSpectatorID = BPlayerManager.Inst.GetNextFreeSpectatorID();
             if (ARE_ENUMS_EQUAL(newSpectatorID, ESpectatorID.NONE, true))
                 return false;
-            
+
+            EPlayerID oldPlayerID = playerID;
             playerID = EPlayerID.NONE;
             spectatorID = newSpectatorID;
 
             if (invokeBEvent)
             {
-                SPlayerReplicationArg playerReplicationArg = BUtils.CreatePlayerReplicationArgFromPlayer(this);
-                BEvents.PLAYERS_LeftTheParty.Invoke(new(playerReplicationArg), BEventBroadcastType.TO_ALL);
+                SPlayerLeftPartyArg playerLeftPartyArg = new()
+                {
+                    NewSpectatorID = spectatorID,
+                    OldPlayerID = oldPlayerID,
+                };
+                BEvents.PLAYERS_LeftParty.Invoke(new(playerLeftPartyArg), BEventBroadcastType.TO_ALL);
             }
 
             UpdateObjectNameToPartyState();
@@ -166,7 +204,7 @@ namespace BNJMO
 
         public bool SetReady(bool invokeBEvent = true)
         {
-            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
                  || ARE_EQUAL(isReady, true, true))
                 return false;
             
@@ -183,7 +221,7 @@ namespace BNJMO
         
         public bool CancelReady(bool invokeBEvent = true)
         {
-            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.IN_PARTY, true)
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
                 || ARE_EQUAL(isReady, false, true))
                 return false;
             
@@ -277,13 +315,13 @@ namespace BNJMO
                 if (PlayerID == EPlayerID.NONE
                     && SpectatorID != ESpectatorID.NONE)
                 {
-                    return EPlayerPartyState.IN_LOBBY;
+                    return EPlayerPartyState.SPECTATOR;
                 }
                 
                 if (PlayerID != EPlayerID.NONE
                          && SpectatorID == ESpectatorID.NONE)
                 {
-                    return EPlayerPartyState.IN_PARTY;
+                    return EPlayerPartyState.ACTIVE_PLAYER;
                 }
   
                 return EPlayerPartyState.NONE;
@@ -296,11 +334,45 @@ namespace BNJMO
 
         #region Life Cycle
 
+        protected override void Start()
+        {
+            base.Start();
+            
+            BEvents.PLAYERS_JoinedParty += BEvents_PLAYERS_OnJoinedTheParty;
+            BEvents.PLAYERS_LeftParty += BEvents_PLAYERS_OnLeftParty;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            BEvents.PLAYERS_JoinedParty -= BEvents_PLAYERS_OnJoinedTheParty;
+            BEvents.PLAYERS_LeftParty -= BEvents_PLAYERS_OnLeftParty;
+        }
 
         #endregion
 
         #region Events Callbacks
 
+        private void BEvents_PLAYERS_OnJoinedTheParty(BEventHandle<SPlayerJoinedPartydArg> handle)
+        {
+            if (handle.InvokingNetworkID == BOnlineManager.Inst.LocalNetworkID
+                || handle.Arg1.OldSpectatorID != SpectatorID)
+                return;
+
+            spectatorID = ESpectatorID.NONE;
+            playerID = handle.Arg1.NewPlayerID;
+        }
+
+        private void BEvents_PLAYERS_OnLeftParty(BEventHandle<SPlayerLeftPartyArg> handle)
+        {
+            if (handle.InvokingNetworkID == BOnlineManager.Inst.LocalNetworkID
+                || handle.Arg1.OldPlayerID != PlayerID)
+                return;
+
+            spectatorID = handle.Arg1.NewSpectatorID;
+            playerID = EPlayerID.NONE;
+        }
 
         #endregion
 
@@ -313,11 +385,11 @@ namespace BNJMO
             
             switch (PartyState)
             {
-                case EPlayerPartyState.IN_LOBBY:
+                case EPlayerPartyState.SPECTATOR:
                     SetPlayerName(spectatorID.ToString(), invokeBEvent); 
                     break;
                 
-                case EPlayerPartyState.IN_PARTY:
+                case EPlayerPartyState.ACTIVE_PLAYER:
                     SetPlayerName(playerID.ToString(), invokeBEvent);
                     break;
             }

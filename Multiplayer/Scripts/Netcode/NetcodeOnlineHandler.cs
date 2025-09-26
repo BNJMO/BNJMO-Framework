@@ -309,7 +309,7 @@ namespace BNJMO
             
             StateMachine.DebugStateChange = true;
             StateMachine.UpdateState(EOnlineState.NotConnected);
-            RemainingAvailableSpotsInLobby = BManager.Inst.Config.MaxNumberOfPlayersInParty;
+            RemainingAvailableSpotsInLobby = BManager.Inst.Config.MaxNumberOfActivePlayers;
         }
         
         protected override void Update()
@@ -579,11 +579,13 @@ namespace BNJMO
         
         private void DisconnectFromRelay()
         {
+            if (StateMachine == null
+                || NetworkManager.Singleton == null)
+                return;
+            
             if (StateMachine.CurrentState == EOnlineState.InOnlineSession
                 && NetworkManager.Singleton.IsListening == false)
-            {
                 return;
-            }
 
             NetworkManager.Singleton.Shutdown();
         }

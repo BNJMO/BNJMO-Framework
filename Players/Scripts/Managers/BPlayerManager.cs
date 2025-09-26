@@ -17,7 +17,7 @@ namespace BNJMO
         #region Public Methods
 
         /* ControllerID */
-        public PlayerBase GetPlayer(EControllerID controllerID, bool logWarnings = true)
+        public PlayerBase GetPlayerFromControllerID(EControllerID controllerID, bool logWarnings = true)
         {
             if (IS_NONE(controllerID, logWarnings))
                 return null;
@@ -80,7 +80,7 @@ namespace BNJMO
         public PlayerBase[] GetAllPlayersInTeam(ETeamID teamID)
         {
             List<PlayerBase> players = new();
-            foreach (PlayerBase playerItr in PlayersInParty.Values)
+            foreach (PlayerBase playerItr in ConnectedPlayers)
             {
                 if (playerItr.TeamID == teamID)
                 {
@@ -92,79 +92,95 @@ namespace BNJMO
         }
 
         /* Party */
-        public EPlayerID JoinParty(PlayerBase player, bool logWarnings = true)
+        public PlayerBase GetSpectator(ESpectatorID spectatorID, bool logWarnings = true)
         {
-            if (player.PlayerID != EPlayerID.NONE
-                && IS_KEY_CONTAINED(PlayersInParty, player.PlayerID, true))
-                return EPlayerID.NONE;
-            
-            EPlayerID playerID = GetNextFreePlayerID();
-            if (ARE_ENUMS_EQUAL(playerID, EPlayerID.NONE, true))
-                return EPlayerID.NONE;
-
-            if (IS_KEY_CONTAINED(PlayersInLobby, player.SpectatorID))
-            {
-                PlayersInLobby.Remove(player.SpectatorID);
-            }
-            
-            PlayersInParty.Add(playerID, player);
-            return playerID;
-        }
-
-        public ESpectatorID LeaveParty(PlayerBase player, bool logWarnings = true)
-        {
-            if (IS_KEY_NOT_CONTAINED(PlayersInParty, player.PlayerID, logWarnings))
-                return ESpectatorID.NONE;
-            
-            PlayersInParty.Remove(player.PlayerID);
-            
-            ESpectatorID spectatorID = GetNextFreeSpectatorID();
-            if (ARE_ENUMS_EQUAL(spectatorID, ESpectatorID.NONE, true))
-            {
-                LogConsoleError($"Disconnecting player {player} because no free spectatorID found");
-                DestroyPlayer(player.ControllerID);
-                return ESpectatorID.NONE;
-            }
-            
-            PlayersInLobby.Add(spectatorID, player);
-            
-            return spectatorID;
-        }
-        
-        public PlayerBase GetPlayerInLobby(ESpectatorID spectatorID, bool logWarnings = true)
-        {
-            if (spectatorID == ESpectatorID.NONE
-                || IS_KEY_NOT_CONTAINED(PlayersInLobby, spectatorID, logWarnings))
-                return null;
-            
-            return PlayersInLobby[spectatorID];
+            return ConnectedPlayers
+                .FirstOrDefault(playerItr => playerItr.SpectatorID != ESpectatorID.NONE 
+                                             && playerItr.SpectatorID == spectatorID);
         }
        
-        public PlayerBase GetPlayerInParty(EPlayerID playerID, bool logWarnings = true)
+        public PlayerBase GetActivePlayer(EPlayerID playerID, bool logWarnings = true)
         {
-            if (playerID == EPlayerID.NONE
-                || IS_KEY_NOT_CONTAINED(PlayersInParty, playerID, logWarnings))
-                return null;
-            
-            return PlayersInParty[playerID];
+            return ConnectedPlayers
+                .FirstOrDefault(playerItr => playerItr.PlayerID != EPlayerID.NONE 
+                                             && playerItr.PlayerID == playerID);
         }
 
-        public PlayerBase[] GetAllPlayersInLobby()
+        public PlayerBase[] GetAllSpectators()
         {
-            return PlayersInLobby.Values.ToArray();
+            return ConnectedPlayers
+                .Where(playerItr => playerItr.SpectatorID != ESpectatorID.NONE)
+                .ToArray();
         }
         
-        public PlayerBase[] GetAllPlayersInTheParty()
+        public ESpectatorID[] GetAllConnectedSpectatorIDs()
         {
-            return PlayersInParty.Values.ToArray();
+            return ConnectedPlayers
+                .Where(playerItr => playerItr.SpectatorID != ESpectatorID.NONE)
+                .Select(playerItr => playerItr.SpectatorID)
+                .ToArray();
         }
-   
+        
+        public PlayerBase[] GetAllActivePlayers()
+        {
+           return ConnectedPlayers
+               .Where(playerItr => playerItr.PlayerID != EPlayerID.NONE)
+               .ToArray();
+        }
+        
+        public EPlayerID[] GetAllConnectedPlayerIDs()
+        {
+            return ConnectedPlayers
+                .Where(playerItr => playerItr.PlayerID != EPlayerID.NONE)
+                .Select(playerItr => playerItr.PlayerID)
+                .ToArray();
+        }
+        
+        public ESpectatorID GetNextFreeSpectatorID()
+        {
+            HashSet<ESpectatorID> spectatorIDSet = new(GetAllConnectedSpectatorIDs());
+            for (int i = 1; i <= BManager.Inst.Config.MaxNumberOfSpectators; i++)
+            {
+                var spectatorIDItr = (ESpectatorID)i;
+                if (spectatorIDSet.Contains(spectatorIDItr) == false)
+                {
+                    return spectatorIDItr;
+                }
+            }
+            return ESpectatorID.NONE;
+        }
+
+        public bool IsSpectatorIDAvailable(ESpectatorID spectatorID)
+        {
+            return ConnectedPlayers.All(playerItr => playerItr.SpectatorID != spectatorID);
+        }
+
+        public EPlayerID GetNextFreePlayerID()
+        {
+            HashSet<EPlayerID> playerIDSet = new(GetAllConnectedPlayerIDs());
+            for (int i = 1; i <= BManager.Inst.Config.MaxNumberOfActivePlayers; i++)
+            {
+                var playerIDItr = (EPlayerID)i;
+                if (playerIDSet.Contains(playerIDItr) == false)
+                {
+                    return playerIDItr;
+                }
+            }
+            return EPlayerID.NONE;
+        }
+        
+        public bool IsPlayerIDAvailable(EPlayerID playerID)
+        {
+            return ConnectedPlayers.All(playerItr => playerItr.PlayerID != playerID);
+        }
+        
         public bool AreAllPlayersReady(bool logWarnings = true)
         {
-            if (PlayersInParty.Count == 0)
+            var allActivePlayers = GetAllActivePlayers();
+            if (allActivePlayers.Length < 1)
                 return false;
             
-            foreach (PlayerBase playerItr in PlayersInParty.Values)
+            foreach (PlayerBase playerItr in allActivePlayers)
             {
                 if (IS_NULL(playerItr, logWarnings))
                     continue;
@@ -178,10 +194,10 @@ namespace BNJMO
         /* Pawn */
         public PawnBase SpawnPawn(EPlayerID playerID, bool logWarnings = true)
         {
-            if (IS_KEY_CONTAINED(ActivePawns, playerID, logWarnings))
+            if (IS_KEY_CONTAINED(ActivePawnMap, playerID, logWarnings))
                 return null;
             
-            PlayerBase player = GetPlayerInParty(playerID);
+            PlayerBase player = GetActivePlayer(playerID);
             if (IS_NULL(player, logWarnings))
                 return null;
 
@@ -213,7 +229,7 @@ namespace BNJMO
                 Rotation = pawnSpawnPosition.Rotation,
             }); 
             
-            ActivePawns.Add(playerID, spawnedPawn);
+            ActivePawnMap.Add(playerID, spawnedPawn);
             
             BEvents.PAWNS_Spawned.Invoke(new(spawnedPawn));
             
@@ -222,12 +238,12 @@ namespace BNJMO
 
         public bool DestroyPawn(EPlayerID playerID, bool logWarnings = true)
         {
-            if (IS_KEY_NOT_CONTAINED(ActivePawns, playerID, logWarnings))
+            if (IS_KEY_NOT_CONTAINED(ActivePawnMap, playerID, logWarnings))
                 return false;
             
-            PawnBase pawn = ActivePawns[playerID];
+            PawnBase pawn = ActivePawnMap[playerID];
             pawn.DestroyPawn();
-            ActivePawns.Remove(playerID);
+            ActivePawnMap.Remove(playerID);
             
             BEvents.PAWNS_Destroyed.Invoke(new(playerID));
             
@@ -236,7 +252,7 @@ namespace BNJMO
         
         public PawnBase RespawnPawn(EPlayerID playerID, bool logWarnings = true)
         {
-            if (ActivePawns.ContainsKey(playerID))
+            if (ActivePawnMap.ContainsKey(playerID))
             {
                 DestroyPawn(playerID, logWarnings);
             }
@@ -244,9 +260,9 @@ namespace BNJMO
             return SpawnPawn(playerID, logWarnings);
         }
 
-        public void SpawnAllPawnsFromPlayersInParty(bool logWarnings = true)
+        public void SpawnAllPawnsFromActivePlayers(bool logWarnings = true)
         {
-            foreach (PlayerBase player in PlayersInParty.Values)
+            foreach (PlayerBase player in GetAllActivePlayers())
             {
                 if (IS_NULL(player, logWarnings))
                     continue;
@@ -257,10 +273,10 @@ namespace BNJMO
 
         public PawnBase GetPawn(EPlayerID playerID)
         {
-            if (IS_KEY_NOT_CONTAINED(ActivePawns, playerID, true))
+            if (IS_KEY_NOT_CONTAINED(ActivePawnMap, playerID, true))
                 return null;
             
-            return ActivePawns[playerID];
+            return ActivePawnMap[playerID];
         }
 
         /* Others */
@@ -282,15 +298,9 @@ namespace BNJMO
 
         /// <summary> Added whenever a player is connected. Removed when he disconnects. </summary>
         public List<PlayerBase> ConnectedPlayers { get; } = new();
-        
-        /// <summary> Map with all the players in the lobby. </summary>
-        public Dictionary<ESpectatorID, PlayerBase> PlayersInLobby { get; } = new();        // TODO: Remove?
-
-        /// <summary> Map with all the players in the party. </summary>
-        public Dictionary<EPlayerID, PlayerBase> PlayersInParty { get; } = new();        // TODO: Remove?
 
         /// <summary> Added whenever a pawn has spawned. Removed when he gets destroyed. </summary>
-        public Dictionary<EPlayerID, PawnBase> ActivePawns { get; } = new();        // TODO: Remove?
+        public Dictionary<EPlayerID, PawnBase> ActivePawnMap { get; } = new();
 
         private PlayerBase playerPrefab;
         private Dictionary<EPlayerID, PlayerBase> playerPrefabsMap { get; } = new();
@@ -320,8 +330,8 @@ namespace BNJMO
             BEvents.ONLINE_ShutdownSession += BEvents_ONLINE_OnShutdownSession;
             BEvents.ONLINE_ClientLeft += BEvents_ONLINE_OnClientLeft;
             BEvents.ONLINE_RequestReplicatePlayer += BEvents_ONLINE_OnRequestReplicatePlayer;
-            BEvents.ONLINE_MigratePlayerIDs += BEvents_ONLINE_OnMigratePlayerIDs;
-            BEvents.ONLINE_ConfirmPlayerIDsMigration += BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_MigratePlayerID += BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDMigration += BEvents_ONLINE_OnConfirmPlayerIDsMigration;
             BEvents.ONLINE_ReplicatePlayer += BEvents_ONLINE_OnReplicatePlayer;
         }
 
@@ -336,8 +346,8 @@ namespace BNJMO
             BEvents.ONLINE_ShutdownSession -= BEvents_ONLINE_OnShutdownSession;
             BEvents.ONLINE_ClientLeft -= BEvents_ONLINE_OnClientLeft;
             BEvents.ONLINE_RequestReplicatePlayer -= BEvents_ONLINE_OnRequestReplicatePlayer;
-            BEvents.ONLINE_MigratePlayerIDs -= BEvents_ONLINE_OnMigratePlayerIDs;
-            BEvents.ONLINE_ConfirmPlayerIDsMigration -= BEvents_ONLINE_OnConfirmPlayerIDsMigration;
+            BEvents.ONLINE_MigratePlayerID -= BEvents_ONLINE_OnMigratePlayerIDs;
+            BEvents.ONLINE_ConfirmPlayerIDMigration -= BEvents_ONLINE_OnConfirmPlayerIDsMigration;
             BEvents.ONLINE_ReplicatePlayer -= BEvents_ONLINE_OnReplicatePlayer;
         }
 
@@ -355,7 +365,7 @@ namespace BNJMO
         private void BEvents_INPUT_OnControllerConnected(BEventHandle<EControllerID, EControllerType> eventHandle)
         {
             EControllerID controllerID = eventHandle.Arg1;
-            if (IS_NOT_NULL(GetPlayer(controllerID), true))
+            if (IS_NOT_NULL(GetPlayerFromControllerID(controllerID), true))
                 return;
 
             if (BUtils.IsControllerIDRemote(controllerID))
@@ -458,54 +468,36 @@ namespace BNJMO
             SpawnPlayer(newPlayerID, newSpectatorID, controllerID, controllerType, networkID, teamID, playerName, playerPicture);
 
             // Response to Host
-            SPlayerIDMigration playerIDMigration = new()
+            SPlayerIDMigrationArg playerIDMigrationArg = new()
             {
                 OwnerControllerID = playerReplicationArg.OwnerControllerID,
                 OwnerControllerType = playerReplicationArg.OwnerControllerType,
                 ToPlayerID = newPlayerID,
                 ToSpectatorID = newSpectatorID,
             };
-            BEvents.ONLINE_MigratePlayerIDs.Invoke(new (playerIDMigration), BEventBroadcastType.TO_TARGET, true, networkID);
+            BEvents.ONLINE_MigratePlayerID.Invoke(new (playerIDMigrationArg), BEventBroadcastType.TO_TARGET, true, networkID);
         }
 
-        private void BEvents_ONLINE_OnMigratePlayerIDs(BEventHandle<SPlayerIDMigration> handle)
+        private void BEvents_ONLINE_OnMigratePlayerIDs(BEventHandle<SPlayerIDMigrationArg> handle)
         {
             if (handle.InvokingNetworkID != ENetworkID.HOST_1)
                 return;
 
-            SPlayerIDMigration playerIDMigration = handle.Arg1;
-            EControllerID controllerID = playerIDMigration.OwnerControllerID;
+            SPlayerIDMigrationArg playerIDMigrationArg = handle.Arg1;
+            EControllerID controllerID = playerIDMigrationArg.OwnerControllerID;
 
             
-            PlayerBase player = GetPlayer(controllerID);
+            PlayerBase player = GetPlayerFromControllerID(controllerID);
             if (IS_NULL(player, true))
                 return;
-
-            ESpectatorID oldSpectatorID = player.SpectatorID;
-            if (PlayersInLobby.ContainsKey(oldSpectatorID))
-            {
-                PlayersInLobby.Remove(oldSpectatorID);
-            }
-            ESpectatorID newSpectatorID = playerIDMigration.ToSpectatorID;
+            
+            ESpectatorID newSpectatorID = playerIDMigrationArg.ToSpectatorID;
             player.SetSpectatorID(newSpectatorID);
-            if (IS_KEY_NOT_CONTAINED(PlayersInLobby, newSpectatorID))
-            {
-                PlayersInLobby.Add(newSpectatorID, player);
-            }
             
-            EPlayerID oldPlayerID = player.PlayerID;
-            if (PlayersInParty.ContainsKey(oldPlayerID))
-            {
-                PlayersInParty.Remove(oldPlayerID);
-            }
-            EPlayerID newPlayerID = playerIDMigration.ToPlayerID;
+            EPlayerID newPlayerID = playerIDMigrationArg.ToPlayerID;
             player.SetPlayerID(newPlayerID);
-            if (IS_KEY_NOT_CONTAINED(PlayersInParty, newPlayerID))
-            {
-                PlayersInParty.Add(newPlayerID, player);
-            }
             
-            BEvents.ONLINE_ConfirmPlayerIDsMigration.Invoke(new(), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
+            BEvents.ONLINE_ConfirmPlayerIDMigration.Invoke(new(), BEventBroadcastType.TO_TARGET, true, ENetworkID.HOST_1);
         }
         
         private void BEvents_ONLINE_OnConfirmPlayerIDsMigration(BEventHandle handle)
@@ -542,11 +534,24 @@ namespace BNJMO
                 && spectatorID == ESpectatorID.NONE)
             {
                 LogConsoleWarning("Both PlayerID and SpectatorID of replicated player are NONE!");
+                return;
             }
 
-            if (GetPlayerInLobby(spectatorID, false) != null
-                || GetPlayerInParty(playerID, false) != null)
+            PlayerBase spectatorWithSameID = GetSpectator(spectatorID, false);
+            PlayerBase playerWithSameID = GetActivePlayer(playerID, false);
+            if (spectatorWithSameID != null
+                && playerWithSameID != null)
+            {
+                if (spectatorWithSameID != null)
+                {
+                    LogConsoleWarning($"A player with the same playerID already exists: {playerID}");
+                }
+                else if (playerWithSameID != null)
+                {
+                    LogConsoleWarning($"A player with the same spectatorID already exists: {spectatorID}");
+                }
                 return;
+            }
 
             ETeamID teamID = playerReplicationArg.TeamID;
             string playerName = playerReplicationArg.PlayerName;
@@ -578,19 +583,19 @@ namespace BNJMO
             
             if (spectatorID != ESpectatorID.NONE)
             {
-                PlayerBase playerWithSameSpectatorID = GetPlayerInLobby(spectatorID, false);
+                PlayerBase playerWithSameSpectatorID = GetSpectator(spectatorID, false);
                 if (IS_NOT_NULL(playerWithSameSpectatorID, true))
                     return null;
             }
             
             if (playerID != EPlayerID.NONE)
             {
-                PlayerBase playerWithSamePlayerID = GetPlayerInParty(playerID, false);
+                PlayerBase playerWithSamePlayerID = GetActivePlayer(playerID, false);
                 if (IS_NOT_NULL(playerWithSamePlayerID, true))
                     return null;
             }
             
-            PlayerBase playerWithSameControllerID = GetPlayer(controllerID);
+            PlayerBase playerWithSameControllerID = GetPlayerFromControllerID(controllerID);
             if (IS_NOT_NULL(playerWithSameControllerID, true))
                 return null;
 
@@ -617,7 +622,7 @@ namespace BNJMO
             
             // Instantiate player prefab
             PlayerBase spawnedPlayer = Instantiate(selectedPlayerPrefab, transform, true);
-            spawnedPlayer.Init(new SPlayerInit
+            spawnedPlayer.Init(new SPlayerInitArg
             {
                 PlayerID = playerID,
                 SpectatorID = spectatorID,
@@ -630,18 +635,6 @@ namespace BNJMO
             });
             
             ConnectedPlayers.Add(spawnedPlayer);
-
-            // Update party state
-            switch (spawnedPlayer.PartyState)
-            {
-                case EPlayerPartyState.IN_LOBBY:
-                    PlayersInLobby.Add(spectatorID, spawnedPlayer);
-                    break;
-                
-                case EPlayerPartyState.IN_PARTY:
-                    PlayersInParty.Add(playerID, spawnedPlayer);
-                    break;
-            }
 
             BEvents.PLAYERS_Connected.Invoke(new (spawnedPlayer));
 
@@ -663,23 +656,13 @@ namespace BNJMO
 
         protected virtual bool DestroyPlayer(EControllerID controllerID)
         {
-            PlayerBase player = GetPlayer(controllerID);
+            PlayerBase player = GetPlayerFromControllerID(controllerID);
             if (IS_NULL(player, true))
                 return false;
 
-            if (ActivePawns.ContainsKey(player.PlayerID))
+            if (ActivePawnMap.ContainsKey(player.PlayerID))
             {
                 DestroyPawn(player.PlayerID);
-            }
-
-            if (PlayersInLobby.ContainsKey(player.SpectatorID))
-            {
-                PlayersInLobby.Remove(player.SpectatorID);
-            }
-            
-            if (PlayersInParty.ContainsKey(player.PlayerID))
-            {
-                PlayersInParty.Remove(player.PlayerID);
             }
             
             ConnectedPlayers.Remove(player);
@@ -688,37 +671,6 @@ namespace BNJMO
 
             player.DestroyPlayer();
             return true;
-        }
-
-        /* IDs */
-        private ESpectatorID GetNextFreeSpectatorID()
-        {
-            ESpectatorID spectatorID = ESpectatorID.NONE;
-            for (int i = 1; i <= BManager.Inst.Config.MaxNumberOfSpectators; i++)
-            {
-                ESpectatorID spectatorIDItr = (ESpectatorID) i;
-                if (PlayersInLobby.ContainsKey(spectatorIDItr) == false)
-                {
-                    spectatorID = spectatorIDItr;
-                    break;
-                }
-            }
-            return spectatorID;
-        }
-
-        private EPlayerID GetNextFreePlayerID()
-        {
-            EPlayerID playerID = EPlayerID.NONE;
-            for (int i = 1; i <= BManager.Inst.Config.MaxNumberOfPlayersInParty; i++)
-            {
-                EPlayerID playerIDItr = (EPlayerID) i;
-                if (PlayersInParty.ContainsKey(playerIDItr) == false)
-                {
-                    playerID = playerIDItr;
-                    break;
-                }
-            }
-            return playerID;
         }
 
         /* Initialization */

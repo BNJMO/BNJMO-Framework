@@ -144,7 +144,9 @@ namespace BNJMO
             EControllerID.REMOTE_16,
         };
         
-        public const string None = "None";
+        public const string NONE = "None";
+        public const string SEPARATOR = "<color=white>|</color>";
+        public const string COMMA = "<color=white>,</color>";
 
     }
 }

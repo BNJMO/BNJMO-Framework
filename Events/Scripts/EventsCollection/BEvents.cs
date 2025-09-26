@@ -81,11 +81,11 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_TeamChanged
                 = new ("PLAYERS_TeamChanged");
 
-        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_JoinedTheParty
-                = new ("PLAYERS_JoinedTheParty");
+        public static BEvent<BEventHandle<SPlayerJoinedPartydArg>> PLAYERS_JoinedParty
+                = new ("PLAYERS_JoinedParty");
         
-        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_LeftTheParty
-                = new ("PLAYERS_LeftTheParty");
+        public static BEvent<BEventHandle<SPlayerLeftPartyArg>> PLAYERS_LeftParty
+                = new ("PLAYERS_LeftParty");
         
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_BecameReady
                 = new ("PLAYERS_BecameReady");
@@ -129,11 +129,11 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerReplicationArg>> ONLINE_RequestReplicatePlayer
             = new ("ONLINE_RequestReplicatePlayer");
          
-        public static BEvent<BEventHandle<SPlayerIDMigration>> ONLINE_MigratePlayerIDs
-            = new ("ONLINE_MigratePlayerIDs");
+        public static BEvent<BEventHandle<SPlayerIDMigrationArg>> ONLINE_MigratePlayerID
+            = new ("ONLINE_MigratePlayerID");
         
-        public static BEvent<BEventHandle> ONLINE_ConfirmPlayerIDsMigration
-            = new ("ONLINE_ConfirmPlayerIDsMigration");
+        public static BEvent<BEventHandle> ONLINE_ConfirmPlayerIDMigration
+            = new ("ONLINE_ConfirmPlayerIDMigration");
         
         public static BEvent<BEventHandle<SPlayerReplicationArg>> ONLINE_ReplicatePlayer
             = new ("ONLINE_ReplicatePlayer");

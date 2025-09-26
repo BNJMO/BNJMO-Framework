@@ -78,73 +78,28 @@ namespace BNJMO
         
         public AbstractOnlineHandler OnlineHandler { get; private set; }
 
-        public EAuthority Authority 
-        {
-            get
-            {
-                if (IS_NULL(OnlineHandler, true))
-                    return EAuthority.LOCAL;
+        public EAuthority Authority => OnlineHandler == null ? EAuthority.LOCAL : OnlineHandler.Authority;
 
-                return OnlineHandler.Authority;
-            }
-        }
+        public string LobbyCode => OnlineHandler == null ? "" : OnlineHandler.LobbyCode;
 
-        public string LobbyCode
-        {
-            get
-            {
-                if (IS_NULL(OnlineHandler, true))
-                    return "";
+        public ELobbyType LobbyType => IS_NULL(OnlineHandler, true) ? ELobbyType.None : OnlineHandler.LobbyType;
 
-                return OnlineHandler.LobbyCode;
-            }
-        }
-
-        public ELobbyType LobbyType
-        {
-            get
-            {
-                if (IS_NULL(OnlineHandler, true))
-                    return ELobbyType.None;
-
-                return OnlineHandler.LobbyType;
-            }
-        }
-
-        public ENetworkID LocalNetworkID
-        {
-            get
-            {
-                if (IS_NULL(OnlineHandler, true))
-                    return ENetworkID.NONE;
-
-                return OnlineHandler.LocalNetworkID;
-            }
-        }
+        public ENetworkID LocalNetworkID => OnlineHandler ==null ? ENetworkID.NONE : OnlineHandler.LocalNetworkID;
 
         public ENetworkID[] ConnectedClients
         {
             get
             {
-                if (IS_NULL(OnlineHandler, true)
-                    || ARE_NOT_EQUAL(OnlineHandler.StateMachine.CurrentState, EOnlineState.InOnlineSession, true))
+                if (OnlineHandler == null
+                    || OnlineHandler.StateMachine.CurrentState != EOnlineState.InOnlineSession)
                     return Array.Empty<ENetworkID>();
 
                 return OnlineHandler.ConnectedClientListeners.Keys.ToArray();
             }
         }
         
-        public StateMachine<EOnlineState> HandlerStateMachine
-        {
-            get
-            {
-                if (IS_NULL(OnlineHandler, true))
-                    return null;
+        public StateMachine<EOnlineState> HandlerStateMachine => OnlineHandler == null ? null : OnlineHandler.StateMachine;
 
-                return OnlineHandler.StateMachine;
-            }
-        }
-        
         public string LocalIPAddress => BUtils.GetLocalIPAddress();
 
         #endregion
