@@ -171,38 +171,38 @@ namespace BNJMO
         
         [BoxGroup("BImage", centerLabel: true)]
 
-        [BoxGroup("BImage"), SerializeField, LabelText("Use Localization")]
+        [FoldoutGroup("BImage/Image Settings"), SerializeField, LabelText("Use Localization")]
         private bool useLocalization;
     
-        [BoxGroup("BImage"), SerializeField, ShowIf("@UseLocalization == false")]
+        [FoldoutGroup("BImage/Image Settings"), SerializeField, PreviewField, ShowIf("@UseLocalization == false")]
         private Sprite sprite;
 
-        [BoxGroup("BImage"), SerializeField, ShowIf("@UseLocalization == true")]
+        [FoldoutGroup("BImage/Image Settings"), SerializeField, ShowIf("@UseLocalization == true")]
         private LocalizedSprite localizedSprite;
 
-        [BoxGroup("BImage"), SerializeField]
+        [FoldoutGroup("BImage/Image Settings"), SerializeField]
         private Color color = Color.white;
         
-        [BoxGroup("BImage"), SerializeField]
+        [FoldoutGroup("BImage/Image Settings"), SerializeField]
         private bool matchSpriteResolutionSize = false;
 
         [Header("References")]
-        [BoxGroup("BImage"), SerializeField] 
+        [FoldoutGroup("BImage/Image Settings"), SerializeField]
         private Image unityImage;
 
-        [BoxGroup("BImage"), SerializeField] 
+        [FoldoutGroup("BImage/Image Settings"), SerializeField] 
         private RawImage unityRawImage;
 
-        [BoxGroup("BImage"), SerializeField] 
+        [FoldoutGroup("BImage/Image Settings"), SerializeField] 
         private SpriteRenderer unitySpriteRenderer;
 
-        [BoxGroup("BImage")] [Button("Match Parent Size")]
+        [FoldoutGroup("BImage/Image Settings"), Button("Match Parent Size")]
         private void MatchParentSize_Button() => MatchParentSize();
 
-        [BoxGroup("BImage")] [Button("Match Match Sprite Resolution Size")]
+        [FoldoutGroup("BImage/Image Settings"), Button("Match Match Sprite Resolution Size")]
         private void MatchSpriteResolutionSize_Button() => MatchSpriteResolutionSize();
 
-        [BoxGroup("BImage")] [Button("Refresh Localized Sprite")]
+        [FoldoutGroup("BImage/Image Settings"), Button("Refresh Localized Sprite")]
         private void RefreshLocalizedSprite_Button() => RefreshLocalizedSprite();
         
         #endregion

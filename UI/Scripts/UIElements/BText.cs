@@ -169,43 +169,43 @@ public class BText : BUIElement
     #region Inspector Values
 
     [BoxGroup("BText", centerLabel: true)]
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private bool useLocalization = false;
 
-    [SerializeField, BoxGroup("BText"), HideIf("@this.useLocalization == true"), TextArea(4, 8)]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, HideIf("@this.useLocalization == true"), TextArea(4, 8)]
     private string text = "BText";
 
-    [SerializeField, BoxGroup("BText"), ShowIf("useLocalization")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, ShowIf("useLocalization")]
     private LocalizedString localizedString;
 
-    [SerializeField, BoxGroup("BText"), FormerlySerializedAs("defaultFontAsset")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, FormerlySerializedAs("defaultFontAsset")]
     private TMP_FontAsset defaultTMPFontAsset;
 
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private float fontSize = 0.0f;
 
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private bool isRTL = false;
 
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private bool writeTextUppercase = false;
 
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private bool overrideUINameFromText = false;
 
-    [SerializeField, BoxGroup("BText")]
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
     private Color color = Color.white;
 
-    [SerializeField, BoxGroup("BText"), ReadOnly]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private Text textUI;
 
-    [SerializeField, BoxGroup("BText"), ReadOnly]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private TextMesh textMesh;
 
-    [SerializeField, BoxGroup("BText"), ReadOnly]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private TMP_Text textMeshPro;
 
-    [SerializeField, BoxGroup("BText"), ReadOnly]
+    [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private TextMeshProUGUI tmpTextComponent;
 
     [BoxGroup("BText"), Button("Match Parent Size")]

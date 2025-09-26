@@ -462,161 +462,154 @@ namespace BNJMO
         #region Inspector Variables
         [BoxGroup("BButton", centerLabel: true)]
         
-        [SerializeField] 
+       [SerializeField]
         private bool automaticallyFindChildBUIElements = true;
-        
-        [SerializeField] [FormerlySerializedAs("isDisabled")] [BoxGroup("BButton")]
+
+        [BoxGroup("BButton"), SerializeField, FormerlySerializedAs("isDisabled")]
         private bool isButtonDisabled = false;
-        
+
         [FoldoutGroup("BButton/BButton Settings")]
         /* Image */
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField]
         private BImage bImageReference;
-        
-        [Header("Sprite")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, Header("Sprite")]
         private bool useImageLocalization = false;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [FormerlySerializedAs("buttonImage")] [ShowIf("@useImageLocalization == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, FormerlySerializedAs("buttonImage"), ShowIf("@useImageLocalization == false"), PreviewField]
         private Sprite buttonSprite;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [FormerlySerializedAs("localizedSprite")] [ShowIf("@useImageLocalization == true")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, FormerlySerializedAs("localizedSprite"), ShowIf("@useImageLocalization == true")]
         private LocalizedSprite imageLocalizedSprite;
 
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]        // TODO: Add localization for pressed Sprite
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField] // TODO: Add localization for pressed Sprite
         private bool useImagePressedSprite = false;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")] [HideIf("@this.useImagePressedSprite == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, HideIf("@this.useImagePressedSprite == false"), PreviewField]
         private Sprite buttonPressedImage;
-        
-        [Header("Colors")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, Header("Colors")]
         private Color imageNormalColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image/More Colors"), SerializeField]
         private Color imageDisabledColor = new Color(1.0f, 1.0f, 1.0f, 0.125f);
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image/More Colors"), SerializeField]
         private bool useImageSpecialColors = false;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image/More Colors"), SerializeField, HideIf("@this.useImageSpecialColors == false")]
         private Color imageHoveredColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image/More Colors"), SerializeField, HideIf("@this.useImageSpecialColors == false")]
         private Color imageHighlightedColor = new Color(0.61f, 0.96f, 1.0f, 1.0f);
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image/More Colors")] [HideIf("@this.useImageSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image/More Colors"), SerializeField, HideIf("@this.useImageSpecialColors == false")]
         private Color ImagePressedColor = new Color(0.46f, 0.67f, 0.69f, 1.0f);
-        
-        [Header("Match Parent Size")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Image")]
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), SerializeField, Header("Match Parent Size")]
         private bool imageMatchesParentSize = false;
-        
-        [Button("Match Image Parent Size")] [FoldoutGroup("BButton/BButton Settings/Image")] 
+
+        [FoldoutGroup("BButton/BButton Settings/Image"), Button("Match Image Parent Size")]
         private void MatchImageParentSize_Button() => MatchImageParentSize();
 
         /* Text */
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField]
         private BText bTextReference;
-        
-        [Header("Text")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField, Header("Text")]
         private bool useTextLocalization = false;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")] [HideIf("@this.useTextLocalization == true")] [TextArea]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField, HideIf("@this.useTextLocalization == true"), TextArea]
         private string buttonText = "Button";
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")] [ShowIf("useTextLocalization")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField, ShowIf("useTextLocalization")]
         private LocalizedString textLocalizedString;
-                             
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField]
         private TMP_FontAsset defaultFontAsset;
 
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField]
         private float textFontSize = 0;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField]
         private bool writeButtonTextUppercase = false;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField]
         private bool overrideUINameFromText = false;
 
-        [Header("Colors")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField, Header("Colors")]
         private Color textNormalColor = Color.black;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text/More Colors"), SerializeField]
         private Color textDisabledColor = Color.black;
 
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")]
+        [FoldoutGroup("BButton/BButton Settings/Text/More Colors"), SerializeField]
         private bool useTextSpecialColors = true;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text/More Colors"), SerializeField, HideIf("@this.useTextSpecialColors == false")]
         private Color textHoveredColor = Color.black;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text/More Colors"), SerializeField, HideIf("@this.useTextSpecialColors == false")]
         private Color textHighlightedColor = Color.black;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text/More Colors")] [HideIf("@this.useTextSpecialColors == false")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text/More Colors"), SerializeField, HideIf("@this.useTextSpecialColors == false")]
         private Color textPressedColor = Color.black;
-        
-        [Header("Match Parent Size")]
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Text")]
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), SerializeField, Header("Match Parent Size")]
         private bool textMatchesParentSize = false;
-        
-        [Button("Match Text Parent Size")] [FoldoutGroup("BButton/BButton Settings/Text")] 
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), Button("Match Text Parent Size")]
         private void MatchTextParentSize_Button() => MatchTextParentSize();
-        
-        [Button("Derive Button Name From UIElement Name")] [FoldoutGroup("BButton/BButton Settings/Text")] 
+
+        [FoldoutGroup("BButton/BButton Settings/Text"), Button("Derive Button Name From UIElement Name")]
         private void DeriveName_Button() => DeriveName();
 
         /* Sounds */
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Sounds")]
+        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField]
         private AudioClip onPressedSound;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Sounds")]
+
+        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField]
         private AudioClip onSuccessfullyReleasedSound;
 
         /* Navigations */
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Navigation")]
+        [FoldoutGroup("BButton/BButton Settings/Navigation"), SerializeField]
         private BButton upperButton;
-        
-        [SerializeField] [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow")]
+
+        [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow"), SerializeField]
         private BButton leftButton;
-        
-        [SerializeField] [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow")]
+
+        [HorizontalGroup("BButton/BButton Settings/Navigation/LeftRightRow"), SerializeField]
         private BButton rightButton;
-        
-        [SerializeField] [FormerlySerializedAs("buttomButton")] [FoldoutGroup("BButton/BButton Settings/Navigation")]
+
+        [FoldoutGroup("BButton/BButton Settings/Navigation"), SerializeField, FormerlySerializedAs("buttomButton")]
         private BButton bottomButton;
 
-        [FoldoutGroup("BButton/BButton Settings/Navigation")]
-        [Button("Set Self On Reciprocal Buttons")]
+        [FoldoutGroup("BButton/BButton Settings/Navigation"), Button("Set Self On Reciprocal Buttons")]
         private void SetSelfOnReciprocalButtons_Button() => SetSelfOnReciprocalButtons();
-        
-        /* Events */
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonHighlightedUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonPressedUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonUnhighlightedUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonReleasedUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonCancelReleasedUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonHoveredEnterUEvent;
-        
-        [SerializeField] [FoldoutGroup("BButton/BButton Settings/Events")]
-        public UnityEvent ButtonHoveredExitUEvent;
 
+        /* Events */
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonHighlightedUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonPressedUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonUnhighlightedUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonReleasedUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonCancelReleasedUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonHoveredEnterUEvent;
+
+        [FoldoutGroup("BButton/BButton Settings/Events"), SerializeField]
+        public UnityEvent ButtonHoveredExitUEvent;
+        
         #endregion
 
         #region Variables
