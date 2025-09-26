@@ -43,18 +43,25 @@ namespace BNJMO
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.logEvent = logEvent;
+            LogEvent(eventHandle, BEventBroadcastType.LOCAL);
             BEventManager.Inst?.OnBEventInvoked(this, eventHandle, BEventBroadcastType.LOCAL, targetNetworkID);
         }
 
-        public void Invoke(H eventHandle, BEventBroadcastType eventInvocationType = BEventBroadcastType.LOCAL, 
+        public void Invoke(H eventHandle, BEventBroadcastType broadcastType = BEventBroadcastType.LOCAL, 
             bool logEvent = true, ENetworkID targetNetworkID = ENetworkID.NONE)                                             // TODO: Add another overload to remove bool
         {
             eventHandle.InvokingBEventName = BEventName;
             eventHandle.logEvent = logEvent;
-            BEventManager.Inst?.OnBEventInvoked(this, eventHandle, eventInvocationType, targetNetworkID);
+            LogEvent(eventHandle, broadcastType);
+            BEventManager.Inst?.OnBEventInvoked(this, eventHandle, broadcastType, targetNetworkID);
         }
                 
         public void OnProceedInvocation(H eventHandle)
+        {
+            Event?.Invoke(eventHandle);
+        }
+
+        public void LogEvent(H eventHandle, BEventBroadcastType broadcastType)
         {
             // Log event
             BConfig config = BManager.Inst.Config;
@@ -71,26 +78,26 @@ namespace BNJMO
                 
                 if (config.LogBEventsNetworkID)
                 {
-                    logText += $" {SEPARATOR} From : " + eventHandle.InvokingNetworkID;
+                    logText += $" {BConsts.SEPARATOR} From : " + eventHandle.InvokingNetworkID;
+                }  
+                
+                if (config.LogBEventsBroadcastType
+                    && broadcastType != BEventBroadcastType.NONE)
+                {
+                    logText += $" {BConsts.SEPARATOR} Broadcast : " + broadcastType;
                 }
 
                 if (config.LogBEventsTimestamp)
                 {
-                    logText += $" {SEPARATOR} Timestamp : " + eventHandle.InvocationTime;
+                    logText += $" {BConsts.SEPARATOR} Timestamp : " + eventHandle.InvocationTime;
                 }
 
                 if (config.LogBEventsPing)
                 {
                     float ping = BUtils.GetTimeAsInt() - eventHandle.InvocationTime;
-                    logText += $" {SEPARATOR} Ping : " + ping;
+                    logText += $" {BConsts.SEPARATOR} Ping : " + ping;
                 }
                 Debug.Log(logText);
-            }
-
-            // Invoke event to all local listeners
-            if (Event != null)
-            {
-                Event.Invoke(eventHandle);
             }
         }
 
@@ -99,6 +106,7 @@ namespace BNJMO
             H deserializedBEHandle = BUtils.DeserializeObject<H>(serializedBEHandle);
 
             OnProceedInvocation(deserializedBEHandle);
+            LogEvent(deserializedBEHandle, BEventBroadcastType.NONE);
         }
 
         /* Subscription */
@@ -144,8 +152,7 @@ namespace BNJMO
         #endregion
 
         #region Life Cycle
-
-        public const string SEPARATOR = "<color=white>|</color>";
+        
 
         #endregion
 

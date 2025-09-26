@@ -37,9 +37,11 @@ namespace BNJMO
                         bEvent.OnProceedInvocation(eventHandle);
                         BOnlineManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
                         break;
+                    
                     case BEventBroadcastType.TO_TARGET when BOnlineManager.Inst.LocalNetworkID == targetNetworkID:
                         bEvent.OnProceedInvocation(eventHandle);
                         break;
+                    
                     case BEventBroadcastType.TO_TARGET:
                     case BEventBroadcastType.TO_ALL_OTHERS:
                         BOnlineManager.Inst.RequestBroadcastEvent(eventHandle, broadcastType, targetNetworkID);
