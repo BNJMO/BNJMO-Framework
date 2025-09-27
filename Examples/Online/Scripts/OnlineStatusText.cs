@@ -96,7 +96,7 @@ namespace BNJMO
             };
         }
 
-        private void BEvents_ONLINE_OnStartedLaunchingSession(BEventHandle<ELobbyType> handle)
+        private void BEvents_ONLINE_OnStartedLaunchingSession(BEventHandle<SLobbyArg> handle)
         {
             if (BOnlineManager.Inst == null)
                 return;
@@ -118,7 +118,7 @@ namespace BNJMO
             multiplayerStatusText.SetText($"Started launching multiplayer.");
         }
 
-        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle handle)
+        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle<SLobbyArg> handle)
         {
             var multiplayerManager = BOnlineManager.Inst;
 

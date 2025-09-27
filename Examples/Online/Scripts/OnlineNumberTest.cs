@@ -64,7 +64,7 @@ namespace XOKing
 
         #region Events Callbacks
 
-        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle handle)
+        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle<SLobbyArg> handle)
         {
             container.ShowUI(true);
         }

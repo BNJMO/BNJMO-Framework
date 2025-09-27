@@ -383,7 +383,7 @@ namespace BNJMO
         }
 
         /* Multiplayer */
-        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle handle)
+        private void BEvents_ONLINE_OnLaunchSessionSucceeded(BEventHandle<SLobbyArg> handle)
         {
             foreach (var playerItr in ConnectedPlayers)
             {

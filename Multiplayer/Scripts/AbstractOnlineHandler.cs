@@ -12,11 +12,11 @@ namespace BNJMO
         #region Public Methods
 
         /* Match making */
-        public abstract void CreatePrivateLobby();
+        public abstract void CreatePrivateLobby(string gameMode = "", string lobbyOptions = "");
 
-        public abstract void JoinPrivateLobby(string lobbyCode);
+        public abstract void JoinPrivateLobby(string lobbyCode, string gameMode = "");
 
-        public abstract void QuickMatch();
+        public abstract void QuickMatch(string gameMode = "", string lobbyOptions = "");
 
         public abstract void SetLobbyLock(bool isLocked);
 

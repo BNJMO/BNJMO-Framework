@@ -16,28 +16,28 @@ namespace BNJMO
         #region Public Methods
 
         /* Match making */
-        public void CreatePrivateLobby()
+        public void CreatePrivateLobby(string gameMode = "", string lobbyOptions = "")
         {
             if (IS_NULL(OnlineHandler, true))
                 return;
             
-            OnlineHandler.CreatePrivateLobby();
+            OnlineHandler.CreatePrivateLobby(gameMode, lobbyOptions);
         }
 
-        public void JoinPrivateLobby(string lobbyCode)
+        public void JoinPrivateLobby(string lobbyCode, string gameMode = "")
         {
             if (IS_NULL(OnlineHandler, true))
                 return;
 
-            OnlineHandler.JoinPrivateLobby(lobbyCode);
+            OnlineHandler.JoinPrivateLobby(lobbyCode, gameMode);
         }
 
-        public void QuickMatch()
+        public void QuickMatch(string gameMode = "", string lobbyOptions = "")
         {
             if (IS_NULL(OnlineHandler, true))
                 return;
 
-            OnlineHandler.QuickMatch();
+            OnlineHandler.QuickMatch(gameMode, lobbyOptions);
         }
 
         public void SetLobbyLock(bool isLocked)

@@ -103,10 +103,10 @@ namespace BNJMO
         #endregion
 
         #region Online
-        public static BEvent<BEventHandle<ELobbyType>> ONLINE_StartedLaunchingSession
+        public static BEvent<BEventHandle<SLobbyArg>> ONLINE_StartedLaunchingSession
             = new ("ONLINE_StartedLaunchingSession");
         
-        public static BEvent<BEventHandle> ONLINE_LaunchSessionSucceeded
+        public static BEvent<BEventHandle<SLobbyArg>> ONLINE_LaunchSessionSucceeded
             = new ("ONLINE_LaunchSessionSucceeded");
   
         public static BEvent<BEventHandle<EJoinOnlineSessionFailureType>> ONLINE_LaunchSessionFailed

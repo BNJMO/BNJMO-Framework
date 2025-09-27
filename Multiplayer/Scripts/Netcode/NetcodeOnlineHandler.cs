@@ -24,9 +24,15 @@ namespace BNJMO
         #region Public Methods
         
         /* Lobby and Matching making */
-        public async override void CreatePrivateLobby()
+        public async override void CreatePrivateLobby(string gameMode = "", string lobbyOptions = "")
         {
-            BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.Private));
+            SLobbyArg lobbyArg = new()
+            {
+                LobbyType = ELobbyType.Private,
+                GameMode = gameMode,
+                LobbyOptions = lobbyOptions,
+            };
+            BEvents.ONLINE_StartedLaunchingSession.Invoke(new (lobbyArg));
 
             bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
             if (isSignedIn == false)
@@ -35,35 +41,64 @@ namespace BNJMO
                 return;
             }
             
-            CreateLobby(true);
+            CreateLobby(true, lobbyOptions);
         }
 
-        public override async void JoinPrivateLobby(string lobbyCode)
+        public override async void JoinPrivateLobby(string lobbyCode, string gameMode = "")
         {
             if (ARE_EQUAL(lobbyCode, "", true)
-                || ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EOnlineState.NotConnected, true)) 
+                || ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EOnlineState.NotConnected, true))
                 return;
-            
-            BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.Private));
-            
+
+            SLobbyArg lobbyArg = new()
+            {
+                LobbyType = ELobbyType.Private,
+                GameMode = gameMode,
+            };
+            BEvents.ONLINE_StartedLaunchingSession.Invoke(new(lobbyArg));
+
             bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
             if (isSignedIn == false)
             {
                 OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.NoConnection);
                 return;
             }
-            
+
             StartNewCoroutine(ref joiningOnlineSessionTimeoutEnumerator, JoiningMultiplayerTimeoutCoroutine());
-            
+
             try
             {
+                // 1) Query the lobby info by code WITHOUT joining yet
+                Lobby lobbyInfo = await LobbyService.Instance.GetLobbyAsync(lobbyCode);
+                if (lobbyInfo == null)
+                {
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByCode);
+                    return;
+                }
+
+                // 2) Check if options match
+                string lobbyGameMode = "";
+                if (lobbyInfo.Data != null 
+                    && lobbyInfo.Data.ContainsKey(GAME_MODE))
+                {
+                    lobbyGameMode = lobbyInfo.Data[GAME_MODE].Value;
+                }
+
+                if (ARE_NOT_EQUAL(lobbyGameMode, gameMode, true))
+                {
+                    LogConsoleError($"Lobby game mode mismatch. Expected [{gameMode}], but lobby has [{lobbyGameMode}]");
+                    OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByCode);
+                    return;
+                }
+
+                // 3) Join only if compatible
                 Lobby lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
                 if (lobby == null)
                 {
                     OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByCode);
                     return;
                 }
-                
+
                 joinedLobby = lobby;
                 StateMachine.UpdateState(EOnlineState.InLobby);
             }
@@ -74,12 +109,18 @@ namespace BNJMO
             }
         }
 
-        public override async void QuickMatch()
+        public override async void QuickMatch(string gameMode = "", string lobbyOptions = "")
         {
             if (ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EOnlineState.NotConnected, true))
                 return;
             
-            BEvents.ONLINE_StartedLaunchingSession.Invoke(new (ELobbyType.QuickMatch));
+            SLobbyArg lobbyArg = new()
+            {
+                LobbyType = ELobbyType.QuickMatch,
+                GameMode = gameMode,
+                LobbyOptions = lobbyOptions,
+            };
+            BEvents.ONLINE_StartedLaunchingSession.Invoke(new (lobbyArg));
             
             bool isSignedIn = await BAuthenticationManager.Inst.SignIn();
             if (isSignedIn == false)
@@ -92,49 +133,55 @@ namespace BNJMO
             
             try
             {
-                // 1) Query for any lobby with exactly one slot open
-                QueryLobbiesOptions queryOptions = new QueryLobbiesOptions
-                {
-                    Count = 25,
-                    Filters = new List<QueryFilter>
-                    {
-                        new (
-                            QueryFilter.FieldOptions.AvailableSlots,
-                            "0",
-                            QueryFilter.OpOptions.GT
-                        ),
-                        new (
-                            QueryFilter.FieldOptions.IsLocked,
-                            "0",
-                            QueryFilter.OpOptions.EQ
-                        ),
-                    }
-                };
-                QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync(queryOptions);
-                
-                // 2) Keep only the public ones
-                List<Lobby> publicLobbies = response.Results
-                    .Where(lobby => lobby.IsPrivate == false)
-                    .ToList();
+                var filters = new List<QueryFilter>();
 
+                gameMode = NormalizeLobbyValue(gameMode);
+                if (!string.IsNullOrEmpty(gameMode))
+                {
+                    filters.Add(new(
+                        field: QueryFilter.FieldOptions.S1, 
+                        value: gameMode, 
+                        op: QueryFilter.OpOptions.EQ));
+                }
+                
+                lobbyOptions = NormalizeLobbyValue(lobbyOptions);
+                if (!string.IsNullOrEmpty(lobbyOptions))
+                {
+                    filters.Add(new(
+                        field: QueryFilter.FieldOptions.S2, 
+                        value: lobbyOptions, 
+                        op: QueryFilter.OpOptions.EQ));
+                }
+
+                // Other filters (types must match the field type)
+                filters.Add(new(
+                    field: QueryFilter.FieldOptions.AvailableSlots, 
+                    value: "0", 
+                    op: QueryFilter.OpOptions.GT));
+                
+                filters.Add(new(
+                    field: QueryFilter.FieldOptions.IsLocked,       
+                    value: "false", 
+                    op: QueryFilter.OpOptions.EQ));
+
+                var queryOptions = new QueryLobbiesOptions
+                {
+                    Count = 25, 
+                    Filters = filters
+                };
+                var response = await LobbyService.Instance.QueryLobbiesAsync(queryOptions);
+                LogConsole($"Lobbies found {response.Results.Count}");
+
+                var publicLobbies = response.Results.Where(l => !l.IsPrivate).ToList();
                 if (publicLobbies.Count > 0)
                 {
-                    // 3) Pick a random public lobby
-                    int idx = UnityEngine.Random.Range(0, publicLobbies.Count);
-                    Lobby lobby = publicLobbies[idx];
-
-                    // 4) Join by ID
+                    var lobby = publicLobbies[UnityEngine.Random.Range(0, publicLobbies.Count)];
                     joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
-                    if (joinedLobby == null)
-                    {
-                        OnJoinMultiplayerFailure(EJoinOnlineSessionFailureType.JoinLobbyByQuickMatch);
-                    }
-                    
                     StateMachine.UpdateState(EOnlineState.InLobby);
                 }
-                else // no lobby available to join -> Create a new one
+                else
                 {
-                    CreateLobby();
+                    CreateLobby(false, gameMode, lobbyOptions);
                 }
             }
             catch (LobbyServiceException e)
@@ -284,6 +331,8 @@ namespace BNJMO
         public int RemainingAvailableSpotsInLobby { get; set; }
         
         private const string RELAY_CODE = "RELAY_CODE";
+        private const string GAME_MODE = "GAME_MODE";
+        private const string LOBBY_OPTIONS = "LOBBY_OPTIONS";
         
         private Lobby joinedLobby;
         private float heartBeatTimer;
@@ -355,7 +404,7 @@ namespace BNJMO
         #region Others
         
         /* Update */
-        private async void UpdateLobbyHeartbeat()   // TODO: Is this necessary? What does it even do?
+        private async void UpdateLobbyHeartbeat()
         {
             if (StateMachine.CurrentState == EOnlineState.NotConnected
                 || joinedLobby == null
@@ -420,7 +469,7 @@ namespace BNJMO
         }
 
         /* Lobby */
-        private async void CreateLobby(bool isPrivate = false)
+        private async void CreateLobby(bool isPrivate = false, string gameMode = "", string lobbyOptions = "")
         {
             if (ARE_ENUMS_NOT_EQUAL(StateMachine.CurrentState, EOnlineState.NotConnected, true))
                 return;
@@ -435,11 +484,25 @@ namespace BNJMO
 
                 var createLobbyOptions = new CreateLobbyOptions
                 {
-                    IsPrivate = isPrivate,
+                    IsPrivate = isPrivate, // Private lobbies never appear in Query results. :contentReference[oaicite:0]{index=0}
                     IsLocked = false,
                     Data = new Dictionary<string, DataObject>
                     {
-                        { RELAY_CODE, new DataObject(DataObject.VisibilityOptions.Member, "0") },
+                        {
+                            RELAY_CODE, new DataObject(DataObject.VisibilityOptions.Member, "0")
+                        },
+                        { 
+                            GAME_MODE, new DataObject(
+                            visibility: DataObject.VisibilityOptions.Public,
+                            value: NormalizeLobbyValue(gameMode),
+                            index: DataObject.IndexOptions.S1) 
+                        },
+                        { 
+                            LOBBY_OPTIONS, new DataObject(
+                            visibility: DataObject.VisibilityOptions.Public,
+                            value: NormalizeLobbyValue(lobbyOptions),
+                            index: DataObject.IndexOptions.S2) 
+                        },
                     }
                 };
 
@@ -450,6 +513,7 @@ namespace BNJMO
                     return;
                 }
                 
+                LogConsole("New lobby created.");
                 joinedLobby = lobby;
                 StateMachine.UpdateState(EOnlineState.InLobby);
                 
@@ -461,6 +525,11 @@ namespace BNJMO
             }
         }
 
+        private static string NormalizeLobbyValue(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "" : value.Trim().ToLowerInvariant();
+        }
+        
         private async void StartOnlineSession()
         {
             if (StateMachine.CurrentState != EOnlineState.InLobby

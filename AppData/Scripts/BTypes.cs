@@ -53,6 +53,20 @@ namespace BNJMO
         QuickMatch,
         Private,
     }
+
+    public struct SLobbyArg
+    {
+        public ELobbyType LobbyType;
+        public string GameMode;
+        public string LobbyOptions;
+        
+        public override string ToString()
+        {
+            return $"LobbyType: {LobbyType}{BConsts.COMMA} " +
+                   $"GameMode: {GameMode}{BConsts.COMMA} " +
+                   $"LobbyOptions: {LobbyOptions}";
+        }
+    }
     
     public enum EJoinOnlineSessionFailureType
     {
