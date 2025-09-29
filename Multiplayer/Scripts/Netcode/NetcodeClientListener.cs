@@ -140,8 +140,6 @@ namespace BNJMO
         [ClientRpc]
         private void ConfirmNetworkID_ClientRpc(ENetworkID newNetworkID)
         {
-            BEvents.ONLINE_ClientJoined.Invoke(new(NetworkID));
-
             if (IsLocalPlayer)
             {
                 AbstractOnlineHandler onlineHandler = BOnlineManager.Inst.OnlineHandler;
@@ -150,6 +148,7 @@ namespace BNJMO
                     onlineHandler.OnLocalPlayerControllerIDAssigned(this);
                 }
             }
+            BEvents.ONLINE_ClientJoined.Invoke(new(NetworkID));
         }
 
         /* BEvents RPCs */
