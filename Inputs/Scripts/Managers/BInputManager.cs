@@ -73,8 +73,6 @@ namespace BNJMO
             BEvents.INPUT_ControllerConnected.Invoke(new (controllerID, controllerType));
             return true;
         }
-
-        
         
         public EControllerID ConnectNextDeviceController(EControllerType controllerType)
         {

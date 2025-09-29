@@ -294,14 +294,14 @@ namespace BNJMO
     }
     
     [Serializable]
-    public struct PlayerPrefabTupple
+    public struct PlayerPrefabPair
     {
         public EPlayerID PlayerID; 
         public PlayerBase Prefab;
     }
     
     [Serializable]
-    public struct PawnPrefabTupple
+    public struct PawnPrefabPair
     {
         public EPlayerID PlayerID; 
         public PawnBase Prefab;

@@ -215,6 +215,9 @@ namespace BNJMO
         
         public override async void ShutdownLobbyAndMultiplayer(ELeaveOnlineSessionReason leaveReason)
         {
+            if (!BOnlineManager.Inst)
+                return;
+            
             ENetworkID oldLocalNetworkID = LocalNetworkID;
             if (joinedLobby != null)
             {

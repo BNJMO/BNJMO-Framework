@@ -181,7 +181,7 @@ namespace BNJMO
         public PlayerBase PlayerPrefab;     
         
         [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPlayers == true")]
-        public PlayerPrefabTupple[] PlayerPrefabs;
+        public PlayerPrefabPair[] PlayerPrefabs;
 
         [Title("Pawn Prefabs")]
         [FoldoutGroup("BConfig/Player")] 
@@ -191,7 +191,7 @@ namespace BNJMO
         public PawnBase PawnPrefab;   
         
         [FoldoutGroup("BConfig/Player")] [DisableIf("@this.UseSamePrefabForAllPawns == true")]
-        public PawnPrefabTupple[] PawnPrefabs;
+        public PawnPrefabPair[] PawnPrefabs;
                 
         [FoldoutGroup("BConfig/Player")]
         [ReadOnly]

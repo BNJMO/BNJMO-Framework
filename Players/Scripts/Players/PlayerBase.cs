@@ -52,7 +52,7 @@ namespace BNJMO
         public bool SetControllerID(EControllerID newControllerID, EControllerType newControllerType, bool invokeBEvent = true)
         {
             if (ControllerID == newControllerID
-                || BPlayerManager.Inst.IsControllerIDAvailable(newControllerID) == false)
+                || BPlayerManager.Inst.IsAnyPlayerWithControllerID(newControllerID))
                 return false;
             
             controllerID = newControllerID;
@@ -248,6 +248,7 @@ namespace BNJMO
 
         public void DestroyPlayer()
         {
+            BEvents.PLAYERS_Disconnected.Invoke(new (this));
             DestroyPawn(false);
             Destroy(gameObject);
         }
@@ -256,15 +257,34 @@ namespace BNJMO
 
         #region Inspector Variables
 
-        [SerializeField] [ReadOnly] private EPlayerID playerID;
-        [SerializeField] [ReadOnly] private ESpectatorID spectatorID;
-        [SerializeField] [ReadOnly] private EControllerID controllerID;
-        [SerializeField] [ReadOnly] private EControllerType controllerType;
-        [SerializeField] [ReadOnly] private ENetworkID networkID;
-        [SerializeField] [ReadOnly] private bool isLocalPlayer;
-        [SerializeField] [ReadOnly] private ETeamID teamID;
-        [SerializeField] [ReadOnly] private string playerName;
-        [SerializeField] [ReadOnly] private bool isReady;
+        [Title("BNJMO")]
+        
+        [SerializeField, ReadOnly] 
+        private EPlayerID playerID;
+        
+        [SerializeField, ReadOnly] 
+        private ESpectatorID spectatorID;
+        
+        [SerializeField, ReadOnly] 
+        private EControllerID controllerID;
+        
+        [SerializeField, ReadOnly] 
+        private EControllerType controllerType;
+        
+        [SerializeField, ReadOnly] 
+        private ENetworkID networkID;
+        
+        [SerializeField, ReadOnly] 
+        private bool isLocalPlayer;
+        
+        [SerializeField, ReadOnly] 
+        private ETeamID teamID;
+        
+        [SerializeField, ReadOnly] 
+        private string playerName;
+        
+        [SerializeField, ReadOnly] 
+        private bool isReady;
 
         #endregion
 

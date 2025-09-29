@@ -17,7 +17,7 @@ namespace BNJMO
         #region Public Methods
 
         /* ControllerID */
-        public PlayerBase GetPlayerFromControllerID(EControllerID controllerID, bool logWarnings = true)
+        public PlayerBase GetPlayerWithControllerID(EControllerID controllerID, bool logWarnings = true)
         {
             if (IS_NONE(controllerID, logWarnings))
                 return null;
@@ -34,17 +34,9 @@ namespace BNJMO
             return player;
         }
        
-        public bool IsControllerIDAvailable(EControllerID controllerID, bool logWarnings = true)
+        public bool IsAnyPlayerWithControllerID(EControllerID controllerID, bool logWarnings = true)
         {
-            foreach (PlayerBase playerItr in ConnectedPlayers)
-            {
-                if (IS_NULL(playerItr, logWarnings))
-                    continue;
-
-                if (playerItr.ControllerID == controllerID)
-                    return false;
-            }
-            return true;
+            return ConnectedPlayers.Any(playerItr => playerItr.ControllerID == controllerID);
         }
 
         /* NetworkID */
@@ -63,6 +55,11 @@ namespace BNJMO
                 }
             }
             return players.ToArray();
+        }
+
+        public PlayerBase GetPlayerWithNetworkID(ENetworkID networkID, bool logWarnings = true)
+        {
+            return ConnectedPlayers.FirstOrDefault(playerItr => playerItr.NetworkID == networkID);
         }
         
         /* Team */
@@ -201,18 +198,7 @@ namespace BNJMO
             if (IS_NULL(player, logWarnings))
                 return null;
 
-            PawnBase selectedPawnPrefab;
-            if (BManager.Inst.Config.UseSamePrefabForAllPawns)
-            {
-                selectedPawnPrefab = pawnPrefab;
-            }
-            else
-            {
-                if (IS_KEY_NOT_CONTAINED(pawnPrefabsMap, playerID, logWarnings))
-                    return null;
-                
-                selectedPawnPrefab = pawnPrefabsMap[playerID];
-            }
+            PawnBase selectedPawnPrefab = GetPawnPrefab(playerID);
             if (IS_NULL(selectedPawnPrefab, logWarnings))
                 return null;
             
@@ -279,12 +265,6 @@ namespace BNJMO
             return ActivePawnMap[playerID];
         }
 
-        /* Others */
-        public void ReloadPrefabs()
-        {
-            InitializePrefabs();
-        }
-        
         #endregion
 
         #region Inspector Variables
@@ -302,11 +282,6 @@ namespace BNJMO
         /// <summary> Added whenever a pawn has spawned. Removed when he gets destroyed. </summary>
         public Dictionary<EPlayerID, PawnBase> ActivePawnMap { get; } = new();
 
-        private PlayerBase playerPrefab;
-        private Dictionary<EPlayerID, PlayerBase> playerPrefabsMap { get; } = new();
-        private PawnBase pawnPrefab;
-        private Dictionary<EPlayerID, PawnBase> pawnPrefabsMap { get; } = new();
-        
         #endregion
 
         #region Life Cycle
@@ -315,7 +290,6 @@ namespace BNJMO
         {
             base.Start();
 
-            InitializePrefabs();
             FindPlayerSpawnPositionsInScene();
         }
 
@@ -324,6 +298,7 @@ namespace BNJMO
             base.OnEnable();
 
             BEvents.APP_SceneUpdated += BEvents_APP_OnSceneUpdated;
+            BEvents.PLAYERS_Disconnected += BEvents_PLAYERS_OnDisconnected;
             BEvents.INPUT_ControllerConnected += BEvents_INPUT_OnControllerConnected;
             BEvents.INPUT_ControllerDisconnected += BEvents_INPUT_OnControllerDisconnected;
             BEvents.ONLINE_LaunchSessionSucceeded += BEvents_ONLINE_OnLaunchSessionSucceeded;
@@ -340,6 +315,7 @@ namespace BNJMO
             base.OnDisable();
 
             BEvents.APP_SceneUpdated -= BEvents_APP_OnSceneUpdated;
+            BEvents.PLAYERS_Disconnected -= BEvents_PLAYERS_OnDisconnected;
             BEvents.INPUT_ControllerConnected -= BEvents_INPUT_OnControllerConnected;
             BEvents.INPUT_ControllerDisconnected -= BEvents_INPUT_OnControllerDisconnected;
             BEvents.ONLINE_LaunchSessionSucceeded -= BEvents_ONLINE_OnLaunchSessionSucceeded;
@@ -356,30 +332,50 @@ namespace BNJMO
         #region Events Callbacks
                 
         /* Scene */
-        private void BEvents_APP_OnSceneUpdated(BEventHandle<SScene> bEventHandle)
+        private void BEvents_APP_OnSceneUpdated(BEventHandle<SScene> handle)
         {
             FindPlayerSpawnPositionsInScene();
         }
 
-        /* Input */
-        private void BEvents_INPUT_OnControllerConnected(BEventHandle<EControllerID, EControllerType> eventHandle)
+        /* Players */
+        private void BEvents_PLAYERS_OnDisconnected(BEventHandle<PlayerBase> handle)
         {
-            EControllerID controllerID = eventHandle.Arg1;
-            if (IS_NOT_NULL(GetPlayerFromControllerID(controllerID), true))
+            var disconnectedPlayer = handle.Arg1;
+            if (IS_NULL(disconnectedPlayer, true))
+                return;
+
+            if (IS_VALUE_CONTAINED(ConnectedPlayers, disconnectedPlayer))
+            {
+                ConnectedPlayers.Remove(disconnectedPlayer);
+            }
+
+            BInputManager.Inst.DisconnectController(disconnectedPlayer.ControllerID);
+        }
+
+        /* Input */
+        private void BEvents_INPUT_OnControllerConnected(BEventHandle<EControllerID, EControllerType> handle)
+        {
+            var controllerID = handle.Arg1;
+            if (IS_NOT_NULL(GetPlayerWithControllerID(controllerID), true))
                 return;
 
             if (BUtils.IsControllerIDRemote(controllerID))
                 return;
 
             ESpectatorID spectatorID = GetNextFreeSpectatorID();
-            EControllerType controllerType = eventHandle.Arg2;
+            EControllerType controllerType = handle.Arg2;
             SpawnPlayer(EPlayerID.NONE, spectatorID, controllerID, controllerType);
         }
 
-        private void BEvents_INPUT_OnControllerDisconnected(BEventHandle<EControllerID, EControllerType> eventHandle)
+        private void BEvents_INPUT_OnControllerDisconnected(BEventHandle<EControllerID, EControllerType> handle)
         {
-            EControllerID controllerID = eventHandle.Arg1;
-            DestroyPlayer(controllerID);
+            EControllerID controllerID = handle.Arg1;
+
+            var player = GetPlayerWithControllerID(controllerID);
+            if (player)
+            {
+                player.DestroyPlayer();
+            }
         }
 
         /* Multiplayer */
@@ -426,17 +422,14 @@ namespace BNJMO
 
         private void BEvents_ONLINE_OnClientLeft(BEventHandle<ENetworkID> handle)
         {
-            ENetworkID leftNetworkID = handle.Arg1;
-            if (leftNetworkID == BOnlineManager.Inst.LocalNetworkID)
+            ENetworkID playerLeftNetworkID = handle.Arg1;
+            if (playerLeftNetworkID == BOnlineManager.Inst.LocalNetworkID)
                 return;
-            
-            for (int i = ConnectedPlayers.Count - 1; i >= 0; i--)
-            {
-                var playerItr = ConnectedPlayers[i];
-                if (playerItr.NetworkID != leftNetworkID)
-                    continue;
 
-                DestroyPlayer(playerItr.ControllerID);
+            var player = GetPlayerWithNetworkID(playerLeftNetworkID);
+            if (player)
+            {
+                player.DestroyPlayer();
             }
         }
 
@@ -487,7 +480,7 @@ namespace BNJMO
             EControllerID controllerID = playerIDMigrationArg.OwnerControllerID;
 
             
-            PlayerBase player = GetPlayerFromControllerID(controllerID);
+            PlayerBase player = GetPlayerWithControllerID(controllerID);
             if (IS_NULL(player, true))
                 return;
             
@@ -595,7 +588,7 @@ namespace BNJMO
                     return null;
             }
             
-            PlayerBase playerWithSameControllerID = GetPlayerFromControllerID(controllerID);
+            PlayerBase playerWithSameControllerID = GetPlayerWithControllerID(controllerID);
             if (IS_NOT_NULL(playerWithSameControllerID, true))
                 return null;
 
@@ -605,18 +598,7 @@ namespace BNJMO
             }
 
             // Fetch player prefab
-            PlayerBase selectedPlayerPrefab;
-            if (BManager.Inst.Config.UseSamePrefabForAllPlayers)
-            {
-                selectedPlayerPrefab = playerPrefab;
-            }
-            else
-            {
-                if (IS_KEY_NOT_CONTAINED(playerPrefabsMap, playerID, true))
-                    return null;
-                
-                selectedPlayerPrefab = playerPrefabsMap[playerID];
-            }
+            PlayerBase selectedPlayerPrefab = GetPlayerPrefab(playerID);
             if (IS_NULL(selectedPlayerPrefab, true))
                 return null;
             
@@ -653,45 +635,53 @@ namespace BNJMO
             
             return spawnedPlayer;
         }
-
-        protected virtual bool DestroyPlayer(EControllerID controllerID)
+        
+        /* Prefabs */
+        private PlayerBase GetPlayerPrefab(EPlayerID playerID)
         {
-            PlayerBase player = GetPlayerFromControllerID(controllerID);
-            if (IS_NULL(player, true))
-                return false;
-
-            if (ActivePawnMap.ContainsKey(player.PlayerID))
+            PlayerBase playerPrefab;
+            if (BConfig.Inst.UseSamePrefabForAllPawns)
             {
-                DestroyPawn(player.PlayerID);
+                playerPrefab = BConfig.Inst.PlayerPrefab;
             }
-            
-            ConnectedPlayers.Remove(player);
-            
-            BEvents.PLAYERS_Disconnected.Invoke(new (player));
+            else
+            {
+                var playerPrefabs =  BConfig.Inst.PlayerPrefabs.ToList();
+                playerPrefab = playerPrefabs.FirstOrDefault(pair => pair.PlayerID == playerID).Prefab;
 
-            player.DestroyPlayer();
-            return true;
+                if (IS_NULL(playerPrefab))
+                {
+                    playerPrefab = BConfig.Inst.PlayerPrefab;
+                }
+            }
+
+            IS_NOT_NULL(playerPrefab);
+            return playerPrefab;
+        }
+        
+        private PawnBase GetPawnPrefab(EPlayerID playerID)
+        {
+            PawnBase PawnPrefab;
+            if (BConfig.Inst.UseSamePrefabForAllPawns)
+            {
+                PawnPrefab = BConfig.Inst.PawnPrefab;
+            }
+            else
+            {
+                var PawnPrefabs =  BConfig.Inst.PawnPrefabs.ToList();
+                PawnPrefab = PawnPrefabs.FirstOrDefault(pair => pair.PlayerID == playerID).Prefab;
+
+                if (IS_NULL(PawnPrefab))
+                {
+                    PawnPrefab = BConfig.Inst.PawnPrefab;
+                }
+            }
+
+            IS_NOT_NULL(PawnPrefab);
+            return PawnPrefab;
         }
 
         /* Initialization */
-        private void InitializePrefabs()
-        {
-            playerPrefab = BManager.Inst.Config.PlayerPrefab;
-            
-            playerPrefabsMap.Clear();
-            foreach (PlayerPrefabTupple playerPrefabItr in BManager.Inst.Config.PlayerPrefabs)
-            {
-                playerPrefabsMap.Add(playerPrefabItr.PlayerID, playerPrefabItr.Prefab);
-            }
-            
-            pawnPrefab = BManager.Inst.Config.PawnPrefab;
-            
-            foreach (PawnPrefabTupple pawnPrefabItr in BManager.Inst.Config.PawnPrefabs)
-            {
-                pawnPrefabsMap.Add(pawnPrefabItr.PlayerID, pawnPrefabItr.Prefab);
-            }
-        }
-
         private void FindPlayerSpawnPositionsInScene()
         {
             PlayersSpawnPositions.Clear();
