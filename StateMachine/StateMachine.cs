@@ -6,7 +6,16 @@ using UnityEngine;
 
 namespace BNJMO
 {
-    public class StateMachine<T> where T : Enum
+    public interface IStateMachine
+    {
+        public Enum CurrentState { get; }
+        
+        public Enum PreviousState { get; }
+        
+        public Type StateType { get; }
+    }
+    
+    public class StateMachine<T> : IStateMachine where T : Enum
     {
         #region Public Events
 
@@ -61,12 +70,16 @@ namespace BNJMO
 
         #region Variables
         
-        public StateMachineHandler<T> Handler { get; private set; } = new StateMachineHandler<T>();
+        public StateMachineHandler<T> Handler { get; private set; } = new ();
 
         public T CurrentState { get; private set; }
+        Enum IStateMachine.CurrentState => CurrentState;
         
         public T PreviousState { get; private set; }
-        
+        Enum IStateMachine.PreviousState => PreviousState;
+
+        public Type StateType => typeof(T);
+
         public bool DebugStateChange { get; set; }
 
         #endregion
