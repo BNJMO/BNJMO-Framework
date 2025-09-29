@@ -128,20 +128,20 @@ namespace BNJMO
         [BoxGroup("BFrame"), SerializeField] 
         bool startWithFocus = true;
         
-        [BoxGroup("BFrame"), SerializeField, ChildGameObjectsOnly,
-        InfoBox("$infoNoStartBMenuHighlight", InfoMessageType.Error, "showNoStartBMenuHighlight")]
-        private BMenu startHighlightedBMenu;
-        
         [HorizontalGroup("BFrame/Group"), SerializeField] 
         private string newBMenuName = "BMenu";
         
         [HorizontalGroup("BFrame/Group") ,Button("Add BMenu")] 
         private void Button_AddBMenu() => AddBMenu();
-
-        [Title("References")]
+        
+        [Title("BMenu Highlight")]
+        [BoxGroup("BFrame"), SerializeField, ChildGameObjectsOnly,
+         InfoBox("$infoNoStartBMenuHighlight", InfoMessageType.Error, "showNoStartBMenuHighlight")]
+        private BMenu startHighlightedBMenu;
+        
         [BoxGroup("BFrame"), SerializeField, ReadOnly] 
         private BMenu highlightedBMenuReference;
-        
+
         [Space(7)]
         [BoxGroup("BFrame"), SerializeField, TableList(DrawScrollView = true)] 
         private List<BFrameChildBMenu> childrenBMenusList = new ();
