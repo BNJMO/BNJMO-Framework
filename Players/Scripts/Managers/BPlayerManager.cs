@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace BNJMO
@@ -40,32 +38,15 @@ namespace BNJMO
         }
 
         /* NetworkID */
-        public PlayerBase[] GetAllPlayersFromNetworkID(ENetworkID networkID, bool logWarnings = true)
+        public List<PlayerBase> GetPlayersWithNetworkID(ENetworkID networkID, bool logWarnings = true)
         {
-            if (IS_NONE(networkID, logWarnings))
-                return null;
-            
-            List<PlayerBase> players =new();
-            foreach (PlayerBase playerItr in ConnectedPlayers)
-            {
-                if (playerItr.NetworkID == networkID)
-                {
-                    players.Add(playerItr);
-                    break;
-                }
-            }
-            return players.ToArray();
-        }
-
-        public PlayerBase GetPlayerWithNetworkID(ENetworkID networkID, bool logWarnings = true)
-        {
-            return ConnectedPlayers.FirstOrDefault(playerItr => playerItr.NetworkID == networkID);
+            return ConnectedPlayers.Where(playerItr => playerItr.NetworkID == networkID).ToList();
         }
         
         /* Team */
         public bool CanJoinTeam(ETeamID teamID, bool logWarnings = true)
         {
-            int numberOfPlayersInTeam = GetAllPlayersInTeam(teamID).Length;
+            int numberOfPlayersInTeam = GetAllPlayersInTeam(teamID).Count;
             int maxNumberOfPlayersInTeam = BManager.Inst.Config.MaxNumberOfPlayersInTeam;
             
             if (IS_GREATER_OR_EQUAL(numberOfPlayersInTeam, maxNumberOfPlayersInTeam, logWarnings))
@@ -74,18 +55,9 @@ namespace BNJMO
             return true;
         }
         
-        public PlayerBase[] GetAllPlayersInTeam(ETeamID teamID)
+        public List<PlayerBase> GetAllPlayersInTeam(ETeamID teamID)
         {
-            List<PlayerBase> players = new();
-            foreach (PlayerBase playerItr in ConnectedPlayers)
-            {
-                if (playerItr.TeamID == teamID)
-                {
-                    players.Add(playerItr);
-                    break;
-                }
-            }
-            return players.ToArray();
+            return ConnectedPlayers.Where(playerItr => playerItr.TeamID == teamID).ToList();
         }
 
         /* Party */
@@ -103,11 +75,11 @@ namespace BNJMO
                                              && playerItr.PlayerID == playerID);
         }
 
-        public PlayerBase[] GetAllSpectators()
+        public List<PlayerBase> GetAllSpectators()
         {
             return ConnectedPlayers
                 .Where(playerItr => playerItr.SpectatorID != ESpectatorID.NONE)
-                .ToArray();
+                .ToList();
         }
         
         public ESpectatorID[] GetAllConnectedSpectatorIDs()
@@ -118,11 +90,11 @@ namespace BNJMO
                 .ToArray();
         }
         
-        public PlayerBase[] GetAllActivePlayers()
+        public List<PlayerBase> GetAllActivePlayers()
         {
            return ConnectedPlayers
                .Where(playerItr => playerItr.PlayerID != EPlayerID.NONE)
-               .ToArray();
+               .ToList();
         }
         
         public EPlayerID[] GetAllConnectedPlayerIDs()
@@ -174,7 +146,7 @@ namespace BNJMO
         public bool AreAllPlayersReady(bool logWarnings = true)
         {
             var allActivePlayers = GetAllActivePlayers();
-            if (allActivePlayers.Length < 1)
+            if (allActivePlayers.Count < 1)
                 return false;
             
             foreach (PlayerBase playerItr in allActivePlayers)
@@ -422,14 +394,17 @@ namespace BNJMO
 
         private void BEvents_ONLINE_OnClientLeft(BEventHandle<ENetworkID> handle)
         {
-            ENetworkID playerLeftNetworkID = handle.Arg1;
-            if (playerLeftNetworkID == BOnlineManager.Inst.LocalNetworkID)
+            ENetworkID clientLeftNetworkID = handle.Arg1;
+            if (clientLeftNetworkID == BOnlineManager.Inst.LocalNetworkID)
                 return;
 
-            var player = GetPlayerWithNetworkID(playerLeftNetworkID);
-            if (player)
+            var associatedPlayers = GetPlayersWithNetworkID(clientLeftNetworkID);
+            foreach (var playerItr in associatedPlayers)
             {
-                player.DestroyPlayer();
+                if (playerItr == null)
+                    continue;
+                
+                playerItr.DestroyPlayer();
             }
         }
 

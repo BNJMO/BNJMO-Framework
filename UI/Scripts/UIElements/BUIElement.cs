@@ -215,7 +215,6 @@ namespace BNJMO
         [HideInInspector]
         private bool isShown = true;
 
-
         #endregion
 
         #region Life Cycle
