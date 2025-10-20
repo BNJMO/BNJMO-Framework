@@ -646,7 +646,7 @@ namespace BNJMO
                 var PawnPrefabs =  BConfig.Inst.PawnPrefabs.ToList();
                 PawnPrefab = PawnPrefabs.FirstOrDefault(pair => pair.PlayerID == playerID).Prefab;
 
-                if (IS_NULL(PawnPrefab))
+                if (!PawnPrefab)
                 {
                     PawnPrefab = BConfig.Inst.PawnPrefab;
                 }
