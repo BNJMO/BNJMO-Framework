@@ -16,7 +16,7 @@ namespace BNJMO
 
         #region Public Methods
 
-         public override void OnInitializePotentialDrag(PointerEventData eventData)
+        public override void OnInitializePotentialDrag(PointerEventData eventData)
         {
             base.OnInitializePotentialDrag(eventData);
             
@@ -128,6 +128,7 @@ namespace BNJMO
 
         #region Life Cycle
 
+        #if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
@@ -137,6 +138,7 @@ namespace BNJMO
                 parentScrollRect = GetComponentInParents<ScrollRect>();
             }
         }
+        #endif
 
         #endregion
 
