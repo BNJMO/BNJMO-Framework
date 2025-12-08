@@ -87,6 +87,9 @@ namespace BNJMO
         {
             base.UpdateDebugText();
 
+            if (!BDebugManager.Inst)
+                return;
+            
             BDebugManager.Inst.DebugLogCanvas("AppScene", CurrentSceneBuildID.GetType() + " : " + CurrentSceneBuildID);
         }
 

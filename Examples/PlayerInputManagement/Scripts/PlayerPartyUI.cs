@@ -16,7 +16,7 @@ namespace BNJMO
 
         public void Join()
         {
-            if (Player.JoinParty())
+            if (Player.JoinParty() != EPlayerID.NONE)
             {
                 playerIDText.SetText("PlayerID : " + Player.PlayerID);
                 spectatorIDText.SetText("SpectatorID : " + Player.SpectatorID);

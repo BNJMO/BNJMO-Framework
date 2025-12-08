@@ -138,14 +138,14 @@ namespace BNJMO
             }
         }
         
-        public bool JoinParty(bool invokeBEvent = true)
+        public EPlayerID JoinParty(bool invokeBEvent = true)
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true))
-                return false;
+                return EPlayerID.NONE;
 
             EPlayerID newPlayerID = BPlayerManager.Inst.GetNextFreePlayerID();
             if (ARE_ENUMS_EQUAL(newPlayerID, EPlayerID.NONE, true))
-                return false;
+                return EPlayerID.NONE;
 
             ESpectatorID oldSpectatorID = spectatorID;
             playerID = newPlayerID;
@@ -162,8 +162,8 @@ namespace BNJMO
             }
 
             UpdateObjectNameToPartyState();
-            
-            return true;
+
+            return playerID;
         }
 
         public bool JoinPartyAtPlayerID(EPlayerID atPlayerID, bool invokeBEvent = true)
