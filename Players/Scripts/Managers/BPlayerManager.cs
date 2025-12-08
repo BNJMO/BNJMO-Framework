@@ -542,6 +542,7 @@ namespace BNJMO
             EControllerID controllerID, EControllerType controllerType, ENetworkID networkID = ENetworkID.LOCAL, ETeamID teamID = ETeamID.NONE, 
             string playerName = "Player", Sprite playerPicture = null)
         {
+            // Check PlayerID and SpectatorID for NONE
             if (playerID == EPlayerID.NONE
                 && spectatorID == ESpectatorID.NONE)
             {
@@ -549,13 +550,15 @@ namespace BNJMO
                 return null;
             }
             
+            // Check for player with same SpectatorID
             if (spectatorID != ESpectatorID.NONE)
             {
                 PlayerBase playerWithSameSpectatorID = GetSpectator(spectatorID, false);
                 if (IS_NOT_NULL(playerWithSameSpectatorID, true))
                     return null;
             }
-            
+
+            // Check for player with same PlayerID
             if (playerID != EPlayerID.NONE)
             {
                 PlayerBase playerWithSamePlayerID = GetActivePlayer(playerID, false);
@@ -563,10 +566,16 @@ namespace BNJMO
                     return null;
             }
             
+            // Check if ControllerID is connected
+            if (IS_NOT_TRUE(BInputManager.Inst.IsControllerConnected(controllerID), true))
+                return null;
+            
+            // Check for player with same ControllerID
             PlayerBase playerWithSameControllerID = GetPlayerWithControllerID(controllerID);
             if (IS_NOT_NULL(playerWithSameControllerID, true))
                 return null;
 
+            // Set local NetworkID
             if (networkID == ENetworkID.LOCAL)
             {
                 networkID = BOnlineManager.Inst.LocalNetworkID;
@@ -590,9 +599,7 @@ namespace BNJMO
                 PlayerName = playerName,
                 PlayerPicture = playerPicture,
             });
-            
             ConnectedPlayers.Add(spawnedPlayer);
-
             BEvents.PLAYERS_Connected.Invoke(new (spawnedPlayer));
 
             // Replicate spawned player

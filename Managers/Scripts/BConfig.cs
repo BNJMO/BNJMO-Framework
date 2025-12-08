@@ -119,15 +119,15 @@ namespace BNJMO
         public bool LogInputJoystickBEvents;
         
         /* Input */
-        [FoldoutGroup("BConfig/Input")]
-        public bool ConnectTouchController;
+        [FormerlySerializedAs("ConnectTouchController")] [FoldoutGroup("BConfig/Input")]
+        public bool ConnectTouchControllerInLateStart;
 
         [FoldoutGroup("BConfig/Input")]
-        public bool ConnectAIControllers;
+        public int NumberOfAIControllersToSpawnInLateStart = 0;
 
         [FoldoutGroup("BConfig/Input")]
         public bool TransformInpuAxisToCameraDirection;
-
+        
         /* Online */
         [FoldoutGroup("BConfig/Online")] 
         public EOnlineBackend onlineBackend = EOnlineBackend.Netcode;

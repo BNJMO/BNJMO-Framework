@@ -78,6 +78,12 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PictureChanged
                 = new ("PLAYERS_PictureChanged");
 
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_PlayerIDChanged
+                = new ("PLAYERS_PlayerIDChanged");
+        
+        public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_SpectatorIDChanged
+                = new ("PLAYERS_SpectatorIDChanged");
+        
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_TeamChanged
                 = new ("PLAYERS_TeamChanged");
 

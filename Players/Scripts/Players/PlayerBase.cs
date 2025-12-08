@@ -32,7 +32,17 @@ namespace BNJMO
             if (PlayerID == newPlayerID)
                 return false;
 
-            playerID = newPlayerID;
+            if (PartyState == EPlayerPartyState.SPECTATOR)
+            {
+                JoinPartyAtPlayerID(newPlayerID);
+            }
+            else
+            {
+                playerID = newPlayerID;
+                var playerReplicationArg =  BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_PlayerIDChanged.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
+
             UpdateObjectNameToPartyState();
 
             return true;
@@ -43,7 +53,17 @@ namespace BNJMO
             if (SpectatorID == newSpectatorID)
                 return false;
 
-            spectatorID = newSpectatorID;
+            if (PartyState == EPlayerPartyState.ACTIVE_PLAYER)
+            {
+                LeavePartyAtSpectatorID(newSpectatorID);
+            }
+            else
+            {
+                spectatorID = newSpectatorID;
+                var playerReplicationArg =  BUtils.CreatePlayerReplicationArgFromPlayer(this);
+                BEvents.PLAYERS_SpectatorIDChanged.Invoke(new (playerReplicationArg), BEventBroadcastType.TO_ALL);
+            }
+
             UpdateObjectNameToPartyState();
 
             return true;
@@ -146,7 +166,7 @@ namespace BNJMO
             return true;
         }
 
-        public bool JoinParty(EPlayerID atPlayerID, bool invokeBEvent = true)
+        public bool JoinPartyAtPlayerID(EPlayerID atPlayerID, bool invokeBEvent = true)
         {
             if (ARE_ENUMS_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
                 || IS_NONE(atPlayerID, true))
@@ -186,6 +206,34 @@ namespace BNJMO
             EPlayerID oldPlayerID = playerID;
             playerID = EPlayerID.NONE;
             spectatorID = newSpectatorID;
+
+            if (invokeBEvent)
+            {
+                SPlayerLeftPartyArg playerLeftPartyArg = new()
+                {
+                    NewSpectatorID = spectatorID,
+                    OldPlayerID = oldPlayerID,
+                };
+                BEvents.PLAYERS_LeftParty.Invoke(new(playerLeftPartyArg), BEventBroadcastType.TO_ALL);
+            }
+
+            UpdateObjectNameToPartyState();
+            
+            return true;
+        }
+
+        public bool LeavePartyAtSpectatorID(ESpectatorID atSpectatorID, bool invokeBEvent = true)
+        {
+            if (ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
+                || IS_NONE(atSpectatorID, true))
+                return false;
+            
+            if (IS_NOT_TRUE(BPlayerManager.Inst.IsSpectatorIDAvailable(atSpectatorID), true))
+                return false;
+
+            EPlayerID oldPlayerID = playerID;
+            playerID = EPlayerID.NONE;
+            spectatorID = atSpectatorID;
 
             if (invokeBEvent)
             {

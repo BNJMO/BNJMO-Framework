@@ -12,14 +12,7 @@ namespace BNJMO
 
         public void RegisterControllerType(EControllerID id, EControllerType type)
         {
-            if (connectedControllerTypes.ContainsKey(id))
-            {
-                connectedControllerTypes[id] = type;
-            }
-            else
-            {
-                connectedControllerTypes.Add(id, type);
-            }
+            connectedControllerTypes[id] = type;
         }
 
         public EControllerType GetControllerType(EControllerID id)
@@ -168,28 +161,19 @@ namespace BNJMO
         {
             base.Start();
 
-            inputSources = GetComponents<AbstractInputSource>();
-            foreach (AbstractInputSource inputSource in inputSources)
-            {
-                inputSource.ButtonPressed += On_InputSource_ButtonPressed;
-                inputSource.ButtonReleased += On_InputSource_ButtonReleased;
-                inputSource.AxisUpdated += On_InputSource_JoystickMoved;
-            }
+            RegisterInputSourcesEvents();
         }
 
         protected override void LateStart()
         {
             base.LateStart();
 
-            if (BManager.Inst.Config.ConnectTouchController)
+            if (BManager.Inst.Config.ConnectTouchControllerInLateStart)
             {
                 ConnectController(EControllerID.TOUCH_1, EControllerType.TouchScreen);
             }
 
-            if (BManager.Inst.Config.ConnectAIControllers)
-            {
-                ConnectAllAIControllers();
-            }
+            ConnectAIControllers();
         }
 
         protected override void Update()
@@ -246,6 +230,29 @@ namespace BNJMO
         #endregion
 
         #region Others
+        
+        private void RegisterInputSourcesEvents()
+        {
+            inputSources = GetComponents<AbstractInputSource>();
+            foreach (AbstractInputSource inputSource in inputSources)
+            {
+                inputSource.ButtonPressed += On_InputSource_ButtonPressed;
+                inputSource.ButtonReleased += On_InputSource_ButtonReleased;
+                inputSource.AxisUpdated += On_InputSource_JoystickMoved;
+            }
+        }
+        
+        private void ConnectAIControllers()
+        {
+            for (int i = 0; i < BConfig.Inst.NumberOfAIControllersToSpawnInLateStart; i++)
+            {
+                EControllerID aiControllerItr = GetNextFreeAIControllerID();
+                if (IS_NONE(aiControllerItr, true))
+                    continue;
+
+                ConnectController(aiControllerItr);
+            }
+        }
 
         private void ConnectAllAIControllers()
         {
@@ -269,11 +276,11 @@ namespace BNJMO
         private EControllerID GetNextFreeDeviceControllerID()
         {
             EControllerID controllerID = EControllerID.NONE;
-            foreach (EControllerID controllerIDitr in BConsts.DEVICE_CONTROLLERS)
+            foreach (EControllerID controllerIDItr in BConsts.DEVICE_CONTROLLERS)
             {
-                if (connectedControllers.Contains(controllerIDitr) == false)
+                if (connectedControllers.Contains(controllerIDItr) == false)
                 {
-                    controllerID = controllerIDitr;
+                    controllerID = controllerIDItr;
                     break;
                 }
             }
@@ -283,17 +290,30 @@ namespace BNJMO
         private EControllerID GetNextFreeRemoteControllerID()
         {
             EControllerID controllerID = EControllerID.NONE;
-            foreach (EControllerID controllerIDitr in BConsts.REMOTE_CONTROLLERS)
+            foreach (EControllerID controllerIDItr in BConsts.REMOTE_CONTROLLERS)
             {
-                if (connectedControllers.Contains(controllerIDitr) == false)
+                if (connectedControllers.Contains(controllerIDItr) == false)
                 {
-                    controllerID = controllerIDitr;
+                    controllerID = controllerIDItr;
                     break;
                 }
             }
             return controllerID;
         }
-        
+         
+        private EControllerID GetNextFreeAIControllerID()
+        {
+            EControllerID controllerID = EControllerID.NONE;
+            foreach (EControllerID controllerIDItr in BConsts.AI_CONTROLLERS)
+            {
+                if (connectedControllers.Contains(controllerIDItr) == false)
+                {
+                    controllerID = controllerIDItr;
+                    break;
+                }
+            }
+            return controllerID;
+        }
         
         #endregion
     }
