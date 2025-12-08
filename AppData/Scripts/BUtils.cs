@@ -233,7 +233,7 @@ namespace BNJMO
         }
         #endregion
 
-        #region Debug
+        #region Debug Log
 
         /// <summary>
         /// Prints a log text into the console if logging is enabled and the category of the text to log is not already added into the ignore list.
@@ -286,21 +286,12 @@ namespace BNJMO
         {
             Debug.Log("<color=red>ERROR! </color>" + "<color=gray>[" + caller != null ? caller.name : "" + "]</color> " + logText);
         }
+        
+        #endregion
 
-        public static void DrawDebugArrow(Vector3 pos, Vector3 direction, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
-        {
-            if (direction.magnitude > 0.0f)
-            {
-                Debug.DrawRay(pos, direction);
-
-                Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-                Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-                Debug.DrawRay(pos + direction, right * arrowHeadLength);
-                Debug.DrawRay(pos + direction, left * arrowHeadLength);
-            }
-        }
-
-        public static void DrawDebugArrow(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+        #region Debug Draw
+        
+        public static void DrawArrow(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
         {
             if (direction.magnitude > 0.0f)
             {
@@ -312,8 +303,50 @@ namespace BNJMO
                 Debug.DrawRay(pos + direction, left * arrowHeadLength, color);
             }
         }
+        
+        /// <summary>
+        /// Draws a wireframe sphere using Debug.DrawLine.
+        /// </summary>
+        /// <param name="center">World-space center of the sphere.</param>
+        /// <param name="radius">Radius of the sphere.</param>
+        /// <param name="color">Color of the lines.</param>
+        /// <param name="duration">How long the lines should stay visible (in seconds).</param>
+        /// <param name="segments">How many segments per circle (higher = smoother).</param>
+        public static void DrawWireSphere(Vector3 center, float radius, Color color,
+            float duration = 0f, int segments = 24)
+        {
+            if (segments < 4) segments = 4;
 
-#endregion
+            float angleStep = 360f / segments;
+            float radStep = angleStep * Mathf.Deg2Rad;
+
+            // Three great circles: XY, XZ, YZ planes
+            DrawCircle(center, radius, Vector3.right, Vector3.up, color, duration, segments, radStep);
+            DrawCircle(center, radius, Vector3.right, Vector3.forward, color, duration, segments, radStep);
+            DrawCircle(center, radius, Vector3.up, Vector3.forward, color, duration, segments, radStep);
+        }
+
+        public static void DrawCircle(Vector3 center, float radius,
+            Vector3 axis1, Vector3 axis2,
+            Color color, float duration,
+            int segments, float radStep)
+        {
+            Vector3 prevPoint = center + (axis1 * radius);
+
+            for (int i = 1; i <= segments; i++)
+            {
+                float angle = radStep * i;
+                float cos = Mathf.Cos(angle);
+                float sin = Mathf.Sin(angle);
+
+                Vector3 nextPoint = center + (axis1 * cos + axis2 * sin) * radius;
+
+                Debug.DrawLine(prevPoint, nextPoint, color, duration);
+                prevPoint = nextPoint;
+            }
+        }
+
+        #endregion
 
         #region Sound
         /// <summary>

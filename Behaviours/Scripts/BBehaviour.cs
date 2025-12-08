@@ -224,16 +224,38 @@ namespace BNJMO
             }
         }
 
-        protected void DrawArrow(Vector3 pos, Vector3 direction, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f)
+        #endregion
+        
+        #region Debug Draw
+        
+        public static void DrawArrow(Vector3 pos, Vector3 direction, Color color, float arrowHeadLength = 0.25f, 
+            float arrowHeadAngle = 20.0f)
         {
-            Debug.DrawRay(pos, direction);
-
-            Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-            Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-            Debug.DrawRay(pos + direction, right * arrowHeadLength);
-            Debug.DrawRay(pos + direction, left * arrowHeadLength);
+            BUtils.DrawArrow(pos, direction, color, arrowHeadLength, arrowHeadAngle);
+        }
+        
+        /// <summary>
+        /// Draws a wireframe sphere using Debug.DrawLine.
+        /// </summary>
+        /// <param name="center">World-space center of the sphere.</param>
+        /// <param name="radius">Radius of the sphere.</param>
+        /// <param name="color">Color of the lines.</param>
+        /// <param name="duration">How long the lines should stay visible (in seconds).</param>
+        /// <param name="segments">How many segments per circle (higher = smoother).</param>
+        protected void DrawWireSphere(Vector3 center, float radius, Color color,
+            float duration = 0f, int segments = 24)
+        {
+            BUtils.DrawWireSphere(center, radius, color, duration, segments);
         }
 
+        protected void DrawCircle(Vector3 center, float radius,
+            Vector3 axis1, Vector3 axis2,
+            Color color, float duration,
+            int segments, float radStep)
+        {
+            BUtils.DrawCircle(center, radius, axis1, axis2, color, duration, segments, radStep);
+        }
+        
         #endregion
 
         #region Checkers
