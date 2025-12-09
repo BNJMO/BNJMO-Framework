@@ -115,6 +115,10 @@ namespace BNJMO
                 case EOnlineBackend.Netcode:
                     OnlineHandler = gameObject.AddComponent<NetcodeOnlineHandler>();
                     break;
+                
+                case EOnlineBackend.None:
+                    OnlineHandler = gameObject.AddComponent<NoneOnlineHandler>();
+                    break;
             }
         }
 

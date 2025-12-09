@@ -26,7 +26,6 @@ namespace BNJMO
             {
                 if (BOnlineManager.Inst.HandlerStateMachine.CurrentState != EOnlineState.InOnlineSession)
                 {
-
                     bEvent.OnProceedInvocation(eventHandle);
                     return;
                 }
