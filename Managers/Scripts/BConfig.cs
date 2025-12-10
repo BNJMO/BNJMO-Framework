@@ -19,6 +19,11 @@ namespace BNJMO
 
         #region Public Methods
 
+        public virtual void InitConfig()
+        {
+            Inst = this;
+        }
+
         public static C GetInst<C>() where C : BConfig
         {
             return Inst as C;
@@ -215,10 +220,6 @@ namespace BNJMO
 
         #region Life Cycle
 
-        protected virtual void OnEnable()
-        {
-            
-        }
 
         #endregion
 

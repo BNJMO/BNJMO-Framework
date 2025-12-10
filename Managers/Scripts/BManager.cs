@@ -44,6 +44,13 @@ namespace BNJMO
 
         #region Life Cycle
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            Config.InitConfig();
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -51,7 +58,6 @@ namespace BNJMO
             if (Inst != this)
                 return;
             
-            BConfig.Inst = Config;
             QualitySettings.vSyncCount = Config.VSyncCount;
             Application.targetFrameRate = Config.TargetFramRate;
             Screen.sleepTimeout = Config.SleepTimeout;
