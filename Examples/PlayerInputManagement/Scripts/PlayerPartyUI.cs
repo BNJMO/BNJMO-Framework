@@ -27,13 +27,13 @@ namespace BNJMO
 
         public void Leave()
         {
-            if (Player.LeaveParty())
-            {
-                playerIDText.SetText("PlayerID : " + Player.PlayerID);
-                spectatorIDText.SetText("SpectatorID : " + Player.SpectatorID);
+            if (Player.LeaveParty() == ESpectatorID.NONE) 
+                return;
+            
+            playerIDText.SetText("PlayerID : " + Player.PlayerID);
+            spectatorIDText.SetText("SpectatorID : " + Player.SpectatorID);
                 
-                DisableButtons();
-            }
+            DisableButtons();
         }
         
         public void Ready()

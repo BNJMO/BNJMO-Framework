@@ -191,14 +191,16 @@ namespace BNJMO
     }
 
     [Serializable]
-    public struct SPlayerJoinedPartydArg
+    public struct SPlayerJoinedPartyArg
     {
+        public EControllerID ControllerID;
         public ESpectatorID OldSpectatorID;
         public EPlayerID NewPlayerID;
         
         public override string ToString()
         {
-            return $"OldSpectatorID: {OldSpectatorID}{BConsts.COMMA} " +
+            return $"ControllerID: {ControllerID}{BConsts.COMMA} " +
+                   $"OldSpectatorID: {OldSpectatorID}{BConsts.COMMA} " +
                    $"NewPlayerID: {NewPlayerID}";
         }
     }

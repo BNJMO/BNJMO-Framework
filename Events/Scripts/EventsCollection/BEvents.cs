@@ -87,7 +87,7 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_TeamChanged
                 = new ("PLAYERS_TeamChanged");
 
-        public static BEvent<BEventHandle<SPlayerJoinedPartydArg>> PLAYERS_JoinedParty
+        public static BEvent<BEventHandle<SPlayerJoinedPartyArg>> PLAYERS_JoinedParty
                 = new ("PLAYERS_JoinedParty");
         
         public static BEvent<BEventHandle<SPlayerLeftPartyArg>> PLAYERS_LeftParty
