@@ -356,13 +356,19 @@ namespace BNJMO
         /// </summary>
         /// <param name="value"> boolean to check</param>
         /// <returns> True if the given boolean is true, otherwise false</returns>
-        protected bool IS_TRUE(bool booleanToCheck)
+        protected bool IS_TRUE(bool booleanToCheck, bool reverseLogCondition = false)
         {
             if (booleanToCheck == false)
             {
-                LogConsoleWarning("A boolean is false! ");
+                if (!reverseLogCondition)
+                    LogConsoleWarning("A boolean is false! ");
+                
                 return false;
             }
+            
+            if (reverseLogCondition)
+                LogConsoleWarning("A boolean is not false! ");
+            
             return true;
         }
 
