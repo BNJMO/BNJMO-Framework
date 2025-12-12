@@ -55,7 +55,7 @@ namespace BNJMO
             
             if (DebugStateChange)
             {
-                Debug.Log($"<color=white>State updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
+                Debug.Log($"<color=white>{Name} updated</color> from {PreviousState} to <color=white>{CurrentState}</color>");
             }
             
             Handler.Update(CurrentState, PreviousState);
@@ -79,6 +79,8 @@ namespace BNJMO
         Enum IStateMachine.PreviousState => PreviousState;
 
         public Type StateType => typeof(T);
+
+        public string Name = "State Machine";
 
         public bool DebugStateChange { get; set; }
 
