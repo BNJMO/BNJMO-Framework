@@ -672,9 +672,9 @@ namespace BNJMO
             PawnSpawnPositionBase[] spawnPositions = FindObjectsOfType<PawnSpawnPositionBase>();
             foreach (PawnSpawnPositionBase spawnPosition in spawnPositions)
             {
-                if (IS_KEY_NOT_CONTAINED(PlayersSpawnPositions, spawnPosition.PayerID))
+                if (IS_KEY_NOT_CONTAINED(PlayersSpawnPositions, spawnPosition.PlayerID))
                 {
-                    PlayersSpawnPositions.Add(spawnPosition.PayerID, spawnPosition);
+                    PlayersSpawnPositions.Add(spawnPosition.PlayerID, spawnPosition);
                 }
             }
         }
