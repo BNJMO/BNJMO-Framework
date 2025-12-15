@@ -60,7 +60,6 @@ namespace BNJMO
         #endregion
 
         #region Players
-        /* Players */
         /* Local */
         public static BEvent<BEventHandle<PlayerBase>> PLAYERS_Connected 
                 = new ("PLAYERS_Connected");
@@ -99,7 +98,10 @@ namespace BNJMO
         public static BEvent<BEventHandle<SPlayerReplicationArg>> PLAYERS_CanceledReady
                 = new ("PLAYERS_CanceledReady");
 
-        /* Pawns */
+        #endregion
+        
+        #region Pawns
+        
         public static BEvent<BEventHandle<PawnBase>> PAWNS_Spawned
                 = new ("PAWNS_Spawned");
         
