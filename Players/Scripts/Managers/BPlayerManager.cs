@@ -237,6 +237,11 @@ namespace BNJMO
             return ActivePawnMap[playerID];
         }
 
+        public List<PawnBase> GetAllActivePawns()
+        {
+            return ActivePawnMap.Values.ToList();
+        }
+
         #endregion
 
         #region Inspector Variables
