@@ -35,7 +35,5 @@ namespace BNJMO
                 AxisUpdated.Invoke(controllerID, inputAxis, x, y);
             }
         }
-
-
     }
 }

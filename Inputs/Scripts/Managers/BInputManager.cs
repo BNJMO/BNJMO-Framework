@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace BNJMO
@@ -116,27 +118,12 @@ namespace BNJMO
         /// <summary>
         /// Returns (the first) Input Source of type "A" attached on the Input Manager.
         /// </summary>
-        /// <typeparam name="A"> Specification from AbstractInputSource </typeparam>
+        /// <typeparam name="S"> Specification from AbstractInputSource </typeparam>
         /// <returns> The first Input Source found </returns>
-        public A GetInputSource<A>() where A : AbstractInputSource
+        public S GetInputSource<S>() where S : AbstractInputSource
         {
-            A result = null;
-            inputSources = GetComponents<AbstractInputSource>();
-            foreach (AbstractInputSource inputSource in inputSources)
-            {
-                if (inputSource.GetType() == typeof(A))
-                {
-                    result = (A)inputSource;
-                    break;
-                }
-            }
-
-            if (result == null)
-            {
-                LogConsoleError("No Input Source of the given type (<color=cyan>" + typeof(A) + "</color>) found attached on InputManager!");
-            }
-
-            return result;
+            inputSourcesMap.TryGetValue(typeof(S), out var controller);
+            return controller as S;
         }
 
         #endregion
@@ -145,21 +132,21 @@ namespace BNJMO
 
         #endregion
 
-        #region Private Variables
+        #region Variables
 
         public EControllerID[] ConnectedControllers => connectedControllers.ToArray();
 
         private List<EControllerID> connectedControllers = new();
         private Dictionary<EControllerID, EControllerType> connectedControllerTypes = new();
-        private AbstractInputSource[] inputSources;
+        private readonly Dictionary<Type, AbstractInputSource> inputSourcesMap = new ();
 
         #endregion
 
         #region Life Cycle
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
 
             RegisterInputSourcesEvents();
         }
@@ -233,12 +220,18 @@ namespace BNJMO
         
         private void RegisterInputSourcesEvents()
         {
-            inputSources = GetComponents<AbstractInputSource>();
-            foreach (AbstractInputSource inputSource in inputSources)
+            var inputSources = GetComponents<AbstractInputSource>();
+            foreach (AbstractInputSource inputSourceItr in inputSources)
             {
-                inputSource.ButtonPressed += On_InputSource_ButtonPressed;
-                inputSource.ButtonReleased += On_InputSource_ButtonReleased;
-                inputSource.AxisUpdated += On_InputSource_JoystickMoved;
+                if (!inputSourcesMap.TryAdd(inputSourceItr.GetType(), inputSourceItr))
+                {
+                    LogConsoleWarning($"Duplicate Input Source for type {inputSourceItr.GetType()} on {name}.");
+                    continue;
+                }
+                
+                inputSourceItr.ButtonPressed += On_InputSource_ButtonPressed;
+                inputSourceItr.ButtonReleased += On_InputSource_ButtonReleased;
+                inputSourceItr.AxisUpdated += On_InputSource_JoystickMoved;
             }
         }
         
