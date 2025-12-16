@@ -21,17 +21,19 @@ namespace BNJMO
     /// </summary>
     public class BDebugManager : AbstractSingletonManager<BDebugManager>
     {
-        private Dictionary<string, DebugText> debugTexts = new Dictionary<string, DebugText>();
+        private Dictionary<string, CanvasDebugText> debugTexts = new Dictionary<string, CanvasDebugText>();
         private Dictionary<string, bool> reportedDebugTexts = new Dictionary<string, bool>();
         private bool debugTextsInitialized = false;
 
         private NotifcationWindow notifcationWindow;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             
             BEvents.APP_SceneUpdated += BEvents_SceneUpdated;
+            
+            ReinitializeDebugTexts();
         }
 
         private void BEvents_SceneUpdated(BEventHandle<SScene> bEventHandle)
@@ -46,8 +48,8 @@ namespace BNJMO
             debugTexts.Clear();
             reportedDebugTexts.Clear();
 
-            DebugText[] foundDebugTexts = FindObjectsOfType<DebugText>();
-            foreach (DebugText foundDebugText in foundDebugTexts)
+            CanvasDebugText[] foundDebugTexts = FindObjectsOfType<CanvasDebugText>();
+            foreach (CanvasDebugText foundDebugText in foundDebugTexts)
             {
                 if (debugTexts.ContainsKey(foundDebugText.DebugID) == false)
                 {
@@ -68,22 +70,19 @@ namespace BNJMO
         /// </summary>
         public void DebugLogCanvas(string debugID, string logText)
         {
-            if (debugTextsInitialized == true)
+            if (debugTextsInitialized != true) 
+                return;
+            
+            if (debugTexts.ContainsKey(debugID) == true)
             {
-                if (debugTexts.ContainsKey(debugID) == true)
+                debugTexts[debugID].Log(logText);
+            }
+            else
+            {
+                if (reportedDebugTexts.ContainsKey(debugID) == false)
                 {
-                    debugTexts[debugID].Log(logText);
-                }
-                else
-                {
-                    if (reportedDebugTexts.ContainsKey(debugID) == false)
-                    {
-                        reportedDebugTexts.Add(debugID, true);
-                        if (BManager.Inst.Config.LogInputButtonBEvents)
-                        {
-                            LogConsoleWarning("Debug text with ID <color=gray>" + debugID + "</color> not found in this scene!");
-                        }
-                    }
+                    reportedDebugTexts.Add(debugID, true);
+                    LogConsoleWarning("Debug text with ID <color=gray>" + debugID + "</color> not found in this scene!");
                 }
             }
         }
