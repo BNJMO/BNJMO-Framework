@@ -12,16 +12,19 @@ namespace BNJMO
         #region Inspector Variables
         [SerializeField] private BMenu targetMenu;
         [SerializeField] private float transitionTime = 2.0f;
-        [Button("Set Camera Transform To This")]
-        private void SetCameraToThis()
-        {
-            SetCameraTransformToThis();
-        }
-        [Button("Set This To Camera Transform")]
+        
+        [Button("Update This From Camera Transform")]
         private void SetThisToCamera()
         {
             SetThisToCameraTransform();
         }
+        
+        [Button("Update Camera Transform From This")]
+        private void SetCameraToThis()
+        {
+            SetCameraTransformToThis();
+        }
+
         #endregion
 
         #region Variables
