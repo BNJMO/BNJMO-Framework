@@ -208,11 +208,12 @@ namespace BNJMO
         /// </summary>
         /// <param name="debugID"> Debug ID of the Debug Text component </param>
         /// <param name="logText"> Log text to print </param>
-        protected void LogCanvas(string debugID, string logText)
+        /// <param name="incrementText"> Whether to add the new log in a new line after the existing text or overwrite it </param>
+        protected void LogCanvas(string debugID, string logText, bool incrementText = false)
         {
             if (BDebugManager.IsInstanceSet)
             {
-                BDebugManager.Inst.DebugLogCanvas(debugID, logText);
+                BDebugManager.Inst.DebugLogCanvas(debugID, logText, incrementText);
             }
         }
 

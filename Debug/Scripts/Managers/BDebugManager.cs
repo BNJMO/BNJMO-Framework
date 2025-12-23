@@ -68,14 +68,14 @@ namespace BNJMO
         /// Writes a text during this frame on the DebugText in this scene with the given ID. 
         /// Written text is erased on the next frame!
         /// </summary>
-        public void DebugLogCanvas(string debugID, string logText)
+        public void DebugLogCanvas(string debugID, string logText,  bool incrementText = false)
         {
             if (debugTextsInitialized != true) 
                 return;
             
             if (debugTexts.ContainsKey(debugID) == true)
             {
-                debugTexts[debugID].Log(logText);
+                debugTexts[debugID].Log(logText, incrementText);
             }
             else
             {

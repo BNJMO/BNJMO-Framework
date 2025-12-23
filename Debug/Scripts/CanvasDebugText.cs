@@ -16,8 +16,11 @@ namespace BNJMO
         [Header("Debug Text")]
         [SerializeField] private string debugID = "DebugID";
 
+        [SerializeField] private bool clearTextContentOnLateUpdate = false;
+        [SerializeField] private bool clearTextDisplayOnLateUpdate = false;
+
         private BText myBText;
-        // private string myText = "";
+        private string myText = "";
 
         protected override void OnValidate()
         {
@@ -40,24 +43,47 @@ namespace BNJMO
             myBText = GetComponentWithCheck<BText>();
         }
 
-        // protected override void Start()
-        // {
-        //     base.Start();
-        //
-        //     myText = "";
-        // }
-        //
-        // protected override void LateUpdate()
-        // {
-        //     base.LateUpdate();
-        //
-        //     myBText.SetText(myText);
-        //     myText = "";
-        // }
-
-        public void Log(string newText)
+        protected override void Start()
         {
-            myBText.SetText(newText);
+            base.Start();
+        
+            myText = "";
+        }
+        
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+
+            if (clearTextDisplayOnLateUpdate)
+            {
+                myBText.SetText(myText);
+            }
+            
+            if (clearTextContentOnLateUpdate)
+            {
+                myText = "";
+            }
+        }
+
+        public void Log(string newText, bool incrementText = false)
+        {
+            if (incrementText)
+            {
+                if (myText == "")
+                {
+                    myText = newText;
+                }
+                else
+                {
+                    myText += "\n" + newText;
+                }
+            }
+            else
+            {
+                myText = newText;
+            }
+            
+            myBText.SetText(myText);
         }
     }
 }
