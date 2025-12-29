@@ -33,7 +33,8 @@ namespace BNJMO
 
         private Dictionary<BMenu, BFrameCameraTransform> cameraTransforms = new();
         private AnimationLerpTransform cameraTransformLerp;
-        private BFrameCameraTransform lastCameraTransform;
+        private AnimationLerpCameraFOV cameraFOVmLerp;
+        private BFrameCameraTransform lastbFrameCameraTransform;
 
         #endregion
 
@@ -52,6 +53,7 @@ namespace BNJMO
             }
 
             cameraTransformLerp = GetComponentWithCheck<AnimationLerpTransform>();
+            SetComponentIfNull(ref cameraFOVmLerp);
         }
 
         protected override void InitializeEventsCallbacks()
@@ -118,14 +120,22 @@ namespace BNJMO
                 return;
             }
 
-            if (cameraTransforms.TryGetValue(targetMenu, out var camTransform))
+            if (cameraTransforms.TryGetValue(targetMenu, out var bFrameCamTransform))
             {
-                cameraTransformLerp.StartValue = lastCameraTransform?.transform;
-                cameraTransformLerp.EndValue = camTransform.transform;
-                cameraTransformLerp.PlayDuration = camTransform.TransitionTime;
+                cameraTransformLerp.StartValue = lastbFrameCameraTransform?.transform;
+                cameraTransformLerp.EndValue = bFrameCamTransform.transform;
+                cameraTransformLerp.PlayDuration = bFrameCamTransform.TransitionTime;
                 cameraTransformLerp.StartAnimation();
 
-                lastCameraTransform = camTransform;
+                if (lastbFrameCameraTransform)
+                {
+                    cameraFOVmLerp.StartValue = lastbFrameCameraTransform.TargetFOV;
+                    cameraFOVmLerp.EndValue = bFrameCamTransform.TargetFOV;
+                    cameraFOVmLerp.PlayDuration = bFrameCamTransform.TransitionTime;
+                    cameraFOVmLerp.StartAnimation();
+                }
+
+                lastbFrameCameraTransform = bFrameCamTransform;
             }
             else
             {
@@ -159,7 +169,7 @@ namespace BNJMO
             if (targetMenu != null && cameraTransforms.TryGetValue(targetMenu, out var menuTransform))
             {
                 SwitchCameraToTransform(menuTransform.transform, menuTransform.TransitionTime);
-                lastCameraTransform = menuTransform;
+                lastbFrameCameraTransform = menuTransform;
                 InvokeEventIfBound(CameraMovementStarted, targetMenu);
             }
             else

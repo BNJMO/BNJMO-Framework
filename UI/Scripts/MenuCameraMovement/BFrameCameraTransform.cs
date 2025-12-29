@@ -11,6 +11,7 @@ namespace BNJMO
 
         #region Inspector Variables
         [SerializeField] private BMenu targetMenu;
+        [SerializeField] private float targetFOV = 60.0f;
         [SerializeField] private float transitionTime = 2.0f;
         
         [Button("Update This From Camera Transform")]
@@ -29,6 +30,7 @@ namespace BNJMO
 
         #region Variables
         public BMenu TargetMenu => targetMenu;
+        public float TargetFOV => targetFOV;
         public float TransitionTime => transitionTime;
         #endregion
 
@@ -45,6 +47,7 @@ namespace BNJMO
             {
                 Camera.main.transform.position = transform.position;
                 Camera.main.transform.rotation = transform.rotation;
+                Camera.main.fieldOfView = targetFOV;
             }
         }
 
@@ -54,6 +57,7 @@ namespace BNJMO
             {
                 transform.position = Camera.main.transform.position;
                 transform.rotation = Camera.main.transform.rotation;
+                targetFOV = Camera.main.fieldOfView;
             }
         }
         #endregion
