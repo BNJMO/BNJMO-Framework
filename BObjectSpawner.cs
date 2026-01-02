@@ -32,6 +32,13 @@ namespace BNJMO
         SpawnObject(BConsts.PATH_BButton);
     }
 
+    [MenuItem("GameObject/UI/BNJMO/BCarousel", false, 0)]
+    [MenuItem("GameObject/BNJMO/UI/BCarousel", false, 0)]
+    public static void CreateBCarousel()
+    {
+        SpawnObject(BConsts.PATH_BCarousel);
+    }
+
     [MenuItem("GameObject/UI/BNJMO/BContainer", false, 0)]
     [MenuItem("GameObject/BNJMO/UI/BContainer", false, 0)]
     public static void CreateBContainer()

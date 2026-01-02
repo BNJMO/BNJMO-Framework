@@ -27,6 +27,7 @@ namespace BNJMO
         public const string PATH_BMenu = "M_BMenu";
         public const string PATH_BButton = "B_BButton";
         public const string PATH_BContainer = "C_BContainer";
+        public const string PATH_BCarousel = "C_BCarousel";
         public const string PATH_BImage = "I_BImage";
         public const string PATH_BRawImage = "I_BRawImage";
         public const string PATH_BSpriteRenderer = "I_BSpriteRenderer";
