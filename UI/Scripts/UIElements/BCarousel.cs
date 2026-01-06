@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace BNJMO
     {
         #region Public Events
 
-        public System.Action<int> SelectionChanged;
+        public Action<int> SelectionChanged;
 
         #endregion
 
