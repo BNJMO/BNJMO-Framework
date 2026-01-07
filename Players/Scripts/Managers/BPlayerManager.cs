@@ -163,7 +163,7 @@ namespace BNJMO
         /* Pawn */
         public PawnBase SpawnPawn(EPlayerID playerID, bool logWarnings = true)
         {
-            if (IS_KEY_CONTAINED(ActivePawnMap, playerID, logWarnings))
+            if (GetActivePawn(playerID))
                 return null;
             
             PlayerBase player = GetActivePlayer(playerID);
@@ -187,32 +187,17 @@ namespace BNJMO
                 Rotation = pawnSpawnPosition.Rotation,
             }); 
             
-            ActivePawnMap.Add(playerID, spawnedPawn);
-            
             BEvents.PAWNS_Spawned.Invoke(new(spawnedPawn));
             
             return spawnedPawn;
         }
 
-        public bool DestroyPawn(EPlayerID playerID, bool logWarnings = true)
-        {
-            if (IS_KEY_NOT_CONTAINED(ActivePawnMap, playerID, logWarnings))
-                return false;
-            
-            PawnBase pawn = ActivePawnMap[playerID];
-            pawn.DestroyPawn();
-            ActivePawnMap.Remove(playerID);
-            
-            BEvents.PAWNS_Destroyed.Invoke(new(playerID));
-            
-            return true;
-        }
-        
         public PawnBase RespawnPawn(EPlayerID playerID, bool logWarnings = true)
         {
-            if (ActivePawnMap.ContainsKey(playerID))
+            var activePawn = GetActivePawn(playerID);
+            if (activePawn)
             {
-                DestroyPawn(playerID, logWarnings);
+                activePawn.DestroyPawn();
             }
             
             return SpawnPawn(playerID, logWarnings);
@@ -229,17 +214,47 @@ namespace BNJMO
             }
         }
 
-        public PawnBase GetPawn(EPlayerID playerID)
+        public void DestroyAllActivePawns(bool logWarnings = true)
         {
-            if (IS_KEY_NOT_CONTAINED(ActivePawnMap, playerID, true))
+            foreach (var playerItr in GetAllActivePlayers())
+            {
+                if (IS_NOT_VALID(playerItr, true))
+                    continue;
+                
+                var pawnItr = playerItr.ActivePawn;
+                if (!pawnItr)
+                    continue;
+                
+                pawnItr.DestroyPawn();
+            }
+        }
+
+        public PawnBase GetActivePawn(EPlayerID playerID)
+        {
+            if (IS_NONE(playerID, true))
                 return null;
             
-            return ActivePawnMap[playerID];
+            return ConnectedPlayers
+                .FirstOrDefault(playerItr => playerItr.PlayerID == playerID)
+                ?.ActivePawn;
         }
 
         public List<PawnBase> GetAllActivePawns()
         {
-            return ActivePawnMap.Values.ToList();
+            List<PawnBase> list = new();
+            foreach (var playerItr in GetAllActivePlayers())
+            {
+                if (IS_NOT_VALID(playerItr, true))
+                    continue;
+                
+                var pawnItr = playerItr.ActivePawn;
+                if (!pawnItr)
+                    continue;
+                
+                list.Add(pawnItr);
+            }
+
+            return list;
         }
 
         #endregion
@@ -255,9 +270,6 @@ namespace BNJMO
 
         /// <summary> Added whenever a player is connected. Removed when he disconnects. </summary>
         public List<PlayerBase> ConnectedPlayers { get; } = new();
-
-        /// <summary> Added whenever a pawn has spawned. Removed when he gets destroyed. </summary>
-        public Dictionary<EPlayerID, PawnBase> ActivePawnMap { get; } = new();
 
         #endregion
 

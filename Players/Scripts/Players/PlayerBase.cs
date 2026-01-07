@@ -243,14 +243,19 @@ namespace BNJMO
             return true;
         }
 
-        public virtual bool SpawnPawn()
+        public virtual PawnBase SpawnPawn()
         {
-            return BPlayerManager.Inst.SpawnPawn(PlayerID);
+            activePawn = BPlayerManager.Inst.SpawnPawn(PlayerID);
+            return activePawn;
         }
         
         public virtual bool DestroyPawn(bool logWarnings = false)
         {
-            return BPlayerManager.Inst.DestroyPawn(PlayerID, logWarnings);
+            if (IS_NOT_VALID(activePawn, true))
+                return false;
+            
+            activePawn.DestroyPawn();
+            return true;
         }
 
         public virtual void DestroyPlayer()
@@ -291,12 +296,14 @@ namespace BNJMO
         private string playerName;
         
         [SerializeField, ReadOnly] 
-        private bool isReady;
+        private bool isReady;  
+        
+        [SerializeField, ReadOnly] 
+        private PawnBase activePawn;
 
         #endregion
 
         #region Variables
-
 
         public EPlayerID PlayerID => playerID;
 
@@ -357,16 +364,20 @@ namespace BNJMO
 
         public bool IsReady => isReady;
 
+        public PawnBase ActivePawn => activePawn;
+
         #endregion
 
         #region Life Cycle
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             
             BEvents.PLAYERS_JoinedParty += BEvents_PLAYERS_OnJoinedTheParty;
             BEvents.PLAYERS_LeftParty += BEvents_PLAYERS_OnLeftParty;
+            BEvents.PAWNS_Spawned += BEvents_PAWNS_OnSpawned;
+            BEvents.PAWNS_Destroyed += BEvents_PAWNS_OnDestroyed;
         }
 
         protected override void OnDestroy()
@@ -375,7 +386,8 @@ namespace BNJMO
             
             BEvents.PLAYERS_JoinedParty -= BEvents_PLAYERS_OnJoinedTheParty;
             BEvents.PLAYERS_LeftParty -= BEvents_PLAYERS_OnLeftParty;
-        }
+            BEvents.PAWNS_Spawned -= BEvents_PAWNS_OnSpawned;
+            BEvents.PAWNS_Destroyed -= BEvents_PAWNS_OnDestroyed;}
 
         #endregion
 
@@ -399,6 +411,25 @@ namespace BNJMO
 
             spectatorID = handle.Arg1.NewSpectatorID;
             playerID = EPlayerID.NONE;
+        }
+
+        private void BEvents_PAWNS_OnSpawned(BEventHandle<PawnBase> handle)
+        {
+            var spawnedPawn = handle.Arg1;
+            if (!spawnedPawn
+                || spawnedPawn.Player.PlayerID != PlayerID)
+                return;
+
+            activePawn = spawnedPawn;
+        }
+
+        private void BEvents_PAWNS_OnDestroyed(BEventHandle<EPlayerID> handle)
+        {
+            var pawnPlayerID = handle.Arg1;
+            if (pawnPlayerID != PlayerID)
+                return;
+
+            activePawn = null;
         }
 
         #endregion

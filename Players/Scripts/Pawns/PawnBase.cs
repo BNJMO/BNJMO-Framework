@@ -23,6 +23,7 @@ namespace BNJMO
         
         public void DestroyPawn()
         {
+            BEvents.PAWNS_Destroyed.Invoke(new(player.PlayerID));
             Destroy(gameObject);
         }
 
