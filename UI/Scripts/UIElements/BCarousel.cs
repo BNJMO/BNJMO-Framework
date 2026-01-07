@@ -12,7 +12,7 @@ namespace BNJMO
     {
         #region Public Events
 
-        public Action<int> SelectionChanged;
+        public event Action<int> SelectionChanged;
 
         #endregion
 
