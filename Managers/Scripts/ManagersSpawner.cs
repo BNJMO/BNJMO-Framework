@@ -24,8 +24,7 @@ namespace BNJMO
             InitializeComponents();
             InitializeObjecsInScene();
 
-            BManager managersInstance = FindObjectOfType<BManager>();
-            if ((managersInstance == null) || (managersInstance == this))
+            if (!Inst)
             {
                 // Load managers prefab 
 
