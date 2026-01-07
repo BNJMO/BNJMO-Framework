@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,6 +12,7 @@ namespace BNJMO
     {
         #region Public Events
 
+        public event Action<int> SelectionChanged;
 
         #endregion
 
@@ -90,6 +91,9 @@ namespace BNJMO
         #region Variables
 
         public int SelectedIndex => selectedIndex;
+        public IReadOnlyList<RectTransform> Items => items;
+        
+        public RectTransform SelectedItem => items != null && items.Count > 0 ? items[selectedIndex] : null;
 
         private int selectedIndex = 0;
         private bool isAnimating;
@@ -227,6 +231,9 @@ namespace BNJMO
 
             // Finalize states
             ApplyImmediate();
+            
+            // Notify listeners of selection change
+            SelectionChanged?.Invoke(selectedIndex);
 
             isAnimating = false;
         }
