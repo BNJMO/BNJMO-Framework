@@ -74,6 +74,8 @@ namespace BNJMO
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private float centerScale = 1.2f;
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private float nearScale = 1.07f;
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private float sideScale = 0.9f;
+        [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private AnimationCurve spacingByScale =
+            AnimationCurve.Linear(0f, 0.8f, 1f, 1f);
 
         [Header("Animation")]
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private float slideDuration = 0.25f;
@@ -249,6 +251,9 @@ namespace BNJMO
 
             for (int i = 0; i < items.Count; i++)
             {
+                if (!items[i])
+                    continue;
+                
                 items[i].anchoredPosition = GetTargetPositionForItem(i, selectedIndex);
                 items[i].localScale = GetTargetScaleForItem(i, selectedIndex);
 
@@ -264,8 +269,26 @@ namespace BNJMO
         private Vector2 GetTargetPositionForItem(int itemIndex, int centerIndex)
         {
             int rel = RelativeOffset(itemIndex, centerIndex);
-            // rel=0 is centered, rel=-1 is left, rel=+1 is right
-            return new Vector2(rel * spacing, 0f);
+            if (rel == 0)
+                return Vector2.zero;
+
+            int dir = rel > 0 ? 1 : -1;
+            int steps = Mathf.Abs(rel);
+
+            float x = 0f;
+
+            // Accumulate spacing step by step, scaled by neighbor sizes
+            for (int i = 0; i < steps; i++)
+            {
+                float scaleA = GetScaleForRelative(i);
+                float scaleB = GetScaleForRelative(i + 1);
+
+                float avgScale = (scaleA + scaleB) * 0.5f;
+                float scaledSpacing = spacing * spacingByScale.Evaluate(avgScale);
+                x += scaledSpacing;
+            }
+
+            return new Vector2(x * dir, 0f);
         }
 
         private Vector3 GetTargetScaleForItem(int itemIndex, int centerIndex)
@@ -343,6 +366,13 @@ namespace BNJMO
                     canvasGroups[rt] = cg;
                 }
             }
+        }
+        
+        private float GetScaleForRelative(int relAbs)
+        {
+            if (relAbs == 0) return centerScale;
+            if (relAbs == 1) return nearScale;
+            return sideScale;
         }
 
         #endregion
