@@ -9,6 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class BText : BUIElement
 {
     #region Public Events
@@ -196,6 +197,16 @@ public class BText : BUIElement
     [FoldoutGroup("BText/Text Settings"), SerializeField]
     private Color color = Color.white;
 
+    [FoldoutGroup("BText/Text Settings"), SerializeField]
+    private bool bendText = false;
+    
+    [FoldoutGroup("BText/Text Settings"), SerializeField, HideIf("@this.bendText == false")]
+    private AnimationCurve curve = AnimationCurve.Linear(0, 0, 1, 1);
+    
+    [FoldoutGroup("BText/Text Settings"), SerializeField, HideIf("@this.bendText == false")]
+    private float curveScale = 10f;
+    
+    [Header("Text References")]
     [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private Text textUI;
 
@@ -204,7 +215,7 @@ public class BText : BUIElement
 
     [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private TMP_Text textMeshPro;
-
+    
     [FoldoutGroup("BText/Text Settings"), SerializeField, ReadOnly]
     private TextMeshProUGUI tmpTextComponent;
 
@@ -321,6 +332,16 @@ public class BText : BUIElement
         else
         {
             SetText(text, isRTL);
+        }
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (bendText)
+        {
+            UpdateTextBend();
         }
     }
 
@@ -468,6 +489,41 @@ public class BText : BUIElement
         }
 
         return finalText.TrimEnd('\n');
+    }
+
+    private void UpdateTextBend()
+    {
+        if (!textMeshPro)
+            return;
+        
+        textMeshPro.ForceMeshUpdate();
+        var textInfo = textMeshPro.textInfo;
+
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            var charInfo = textInfo.characterInfo[i];
+            if (!charInfo.isVisible) continue;
+
+            int matIndex = charInfo.materialReferenceIndex;
+            int vertIndex = charInfo.vertexIndex;
+
+            Vector3[] vertices = textInfo.meshInfo[matIndex].vertices;
+
+            Vector3 charMid =
+                (vertices[vertIndex] + vertices[vertIndex + 2]) / 2;
+
+            float normalizedX = charMid.x / textMeshPro.rectTransform.rect.width;
+            float yOffset = curve.Evaluate(normalizedX) * curveScale;
+
+            Vector3 offset = new Vector3(0, yOffset, 0);
+
+            for (int j = 0; j < 4; j++)
+            {
+                vertices[vertIndex + j] += offset;
+            }
+        }
+
+        textMeshPro.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
     }
 
     #endregion
