@@ -32,6 +32,7 @@ namespace BNJMO
                 {
                     // Spawn managers prefab
                     BManager spawnedManager = Instantiate(BManagerPrefab).GetComponent<BManager>();
+                    spawnedManager.StartupSceneBuildId = StartupSceneBuildId;
                     spawnedManager.Config = Config;
                 }
             }

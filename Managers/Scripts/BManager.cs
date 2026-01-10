@@ -32,11 +32,16 @@ namespace BNJMO
         [BoxGroup("BManager", centerLabel: true)]
         
         [SerializeField] 
+        private int startupSceneBuildId;  
+        
+        [SerializeField] 
         private BConfig config;
         
         #endregion
 
         #region Variables
+
+        public int StartupSceneBuildId { get => startupSceneBuildId; set => startupSceneBuildId = value; }
         
         public BConfig Config { get => config; set => config = value; }
 

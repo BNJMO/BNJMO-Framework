@@ -205,9 +205,6 @@ namespace BNJMO
         
         /* Scene */
         [FoldoutGroup("BConfig/Scene")]
-        public int StartSceneBuildID;
-        
-        [FoldoutGroup("BConfig/Scene")]
         public SScene[] Scenes;
         
         #endregion

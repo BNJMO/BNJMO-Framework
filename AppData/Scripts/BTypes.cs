@@ -131,6 +131,12 @@ namespace BNJMO
     {
         public string SceneName;
         public int SceneBuildID;
+        
+        public override string ToString()
+        {
+            return $"SceneName: {SceneName}{BConsts.COMMA} " +
+                   $"SceneBuildID: {SceneBuildID};";
+        }
     }
 
     #endregion

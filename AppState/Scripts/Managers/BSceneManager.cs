@@ -63,7 +63,7 @@ namespace BNJMO
         {
             base.Start();
 
-            CurrentSceneBuildID = BManager.Inst.Config.StartSceneBuildID;
+            CurrentSceneBuildID = BManager.Inst.StartupSceneBuildId;
         }
         
         protected override void LateStart()
