@@ -613,7 +613,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4d434a4e-1867-49b7-a436-0be542115e5f"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -635,7 +635,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""93633fed-6ee2-4ccb-929c-ed0dc034a75f"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -646,7 +646,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""680e2420-e747-45fd-b9e7-9a2b7cca28a5"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -668,7 +668,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d08d676a-0008-4f4f-aca2-0791a61b2471"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -701,7 +701,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2c6101f2-62d4-4bf4-83c9-d6dd40058751"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -712,7 +712,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""80f14f8c-8df3-461f-a146-62b0f15835ff"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/alt"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -734,7 +734,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""16b622ca-d3fd-4416-a950-c5b0450ab0fd"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",

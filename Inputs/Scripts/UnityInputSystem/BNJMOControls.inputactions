@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "BNJMOControls",
     "maps": [
         {
@@ -11,7 +12,8 @@
                     "id": "ad494c72-8e78-4488-b4c8-02125bbfdc34",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "CANCEL",
@@ -19,7 +21,8 @@
                     "id": "dc9d2e85-c970-4b2a-abcd-980497b4bf45",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "OPTIONS",
@@ -27,7 +30,8 @@
                     "id": "90c6fb2b-acfd-439e-b305-1351028cb75a",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "WEST",
@@ -35,7 +39,8 @@
                     "id": "76f1f5ca-5963-49f6-9bff-43be516ec773",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SOUTH",
@@ -43,7 +48,8 @@
                     "id": "c2296fd5-c569-4cb8-b65e-c639cc228bf4",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "EAST",
@@ -51,7 +57,8 @@
                     "id": "3d6d8390-5c82-4285-95aa-bbcd5df8cf86",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "NORTH",
@@ -59,7 +66,8 @@
                     "id": "44b05243-f3f7-47da-9286-34d6f5d10790",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SHOULDER_L",
@@ -67,7 +75,8 @@
                     "id": "61c5de57-a6dc-4afe-8d07-15fa9b9d366c",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SHOULDER_R",
@@ -75,7 +84,8 @@
                     "id": "2b7faa3d-22e4-4de2-990a-3b7a5ce30ad1",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TRIGGER_L",
@@ -83,7 +93,8 @@
                     "id": "e9316c1e-2ad6-40ac-9a17-720242f20117",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TRIGGER_R",
@@ -91,7 +102,8 @@
                     "id": "e8fbb400-5ece-441c-a4a9-34f5121d2607",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "JOYSTICK_L",
@@ -99,7 +111,8 @@
                     "id": "4fd7b04f-bc75-49ff-8990-93d43c3fbfcf",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "JOYSTICK_R",
@@ -107,7 +120,8 @@
                     "id": "833195eb-b683-434f-9ceb-bf27a2420094",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "MOVE",
@@ -115,7 +129,8 @@
                     "id": "e23f9ed4-75d6-4eed-9281-f41a74d8d8d9",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "ROTATE",
@@ -123,7 +138,8 @@
                     "id": "2163caf8-b47b-45c5-9005-8349b02c7479",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TRIGGER_AXIS_L",
@@ -131,7 +147,8 @@
                     "id": "192901ed-06d5-4fa5-b125-c284156cb8b2",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TRIGGER_AXIS_R",
@@ -139,7 +156,8 @@
                     "id": "c619fd3a-2a61-49b1-b1e4-c756ab3d8673",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -509,7 +527,7 @@
                 {
                     "name": "",
                     "id": "4d434a4e-1867-49b7-a436-0be542115e5f",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -531,7 +549,7 @@
                 {
                     "name": "",
                     "id": "93633fed-6ee2-4ccb-929c-ed0dc034a75f",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -542,7 +560,7 @@
                 {
                     "name": "",
                     "id": "680e2420-e747-45fd-b9e7-9a2b7cca28a5",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -564,7 +582,7 @@
                 {
                     "name": "",
                     "id": "d08d676a-0008-4f4f-aca2-0791a61b2471",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -597,7 +615,7 @@
                 {
                     "name": "",
                     "id": "2c6101f2-62d4-4bf4-83c9-d6dd40058751",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/space",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -608,7 +626,7 @@
                 {
                     "name": "",
                     "id": "80f14f8c-8df3-461f-a146-62b0f15835ff",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/alt",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -630,7 +648,7 @@
                 {
                     "name": "",
                     "id": "16b622ca-d3fd-4416-a950-c5b0450ab0fd",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
