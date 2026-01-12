@@ -63,7 +63,9 @@ namespace BNJMO
 
         public void LogEvent(H eventHandle, BEventBroadcastType broadcastType)
         {
-            // Log event
+            if (!BManager.Inst)
+                return;
+            
             BConfig config = BManager.Inst.Config;
             if (config.LogBEvents
                 && eventHandle.logEvent)
