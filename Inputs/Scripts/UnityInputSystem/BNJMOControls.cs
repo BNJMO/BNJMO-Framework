@@ -338,7 +338,7 @@ public partial class @BNJMOControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a09860e2-5147-4c4a-8f94-db8cc8c797d0"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
