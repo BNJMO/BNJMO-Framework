@@ -165,6 +165,72 @@ namespace BNJMO
             }
         }
 
+        public void FadeInOpacity(
+            float duration, 
+            bool startWithCurrentOpacity, 
+            float minAlpha = 0.0f, 
+            float maxAlpha = 1.0f, 
+            EEaseType easeType = EEaseType.Linear)
+        {
+            if (fadeColorEnumerator != null)
+            {
+                LogConsoleWarning("Fade in started while color fade is currently running!");
+            }
+
+            StopCoroutineIfRunning(ref fadeOutOpacityEnumerator);
+            StopCoroutineIfRunning(ref fadeColorEnumerator);
+            StartNewCoroutine(ref fadeInOpacityEnumerator, 
+                FadeInOpacityCoroutine(
+                    duration, 
+                    startWithCurrentOpacity ? ImageOpacity : minAlpha, 
+                    maxAlpha, easeType));
+        }
+        
+        public void FadeOutOpacity(
+            float duration, 
+            bool startWithCurrentOpacity, 
+            float minAlpha = 0.0f, 
+            float maxAlpha = 1.0f, 
+            EEaseType easeType = EEaseType.Linear)
+        {
+            if (fadeColorEnumerator != null)
+            {
+                LogConsoleWarning("Fade in started while color fade is currently running!");
+            }
+
+            StopCoroutineIfRunning(ref fadeInOpacityEnumerator);
+            StopCoroutineIfRunning(ref fadeColorEnumerator);
+            StartNewCoroutine(ref fadeOutOpacityEnumerator, 
+                FadeOutOpacityCoroutine(
+                    duration, 
+                    minAlpha, 
+                    startWithCurrentOpacity ? ImageOpacity : maxAlpha, 
+                    easeType));
+        }
+
+        public void FadeColor(
+            float duration, 
+            bool startWithCurrentColor, 
+            Color startColor, 
+            Color targetColor, 
+            EEaseType easeType = EEaseType.Linear)
+        {
+            if (fadeInOpacityEnumerator != null
+                || fadeOutOpacityEnumerator != null)
+            {
+                LogConsoleWarning("Fade Color started while color opacity fade is currently running!");
+            }
+
+            StopCoroutineIfRunning(ref fadeInOpacityEnumerator);
+            StopCoroutineIfRunning(ref fadeOutOpacityEnumerator);
+            StartNewCoroutine(ref fadeInOpacityEnumerator, 
+                FadeColorCoroutine(
+                    duration, 
+                    startWithCurrentColor ? ImageColor : startColor, 
+                    targetColor, 
+                    easeType));
+        }
+
         #endregion
 
         #region Inspector Values
@@ -230,6 +296,10 @@ namespace BNJMO
         public SpriteRenderer UnitySpriteRenderer => unitySpriteRenderer;
         
         private Sprite localizedSpriteValue = null;
+
+        private IEnumerator fadeInOpacityEnumerator;
+        private IEnumerator fadeOutOpacityEnumerator;
+        private IEnumerator fadeColorEnumerator;
 
         #endregion
 
@@ -383,7 +453,6 @@ namespace BNJMO
             }
         }
 
-
         private void RefreshLocalizedSprite()
         {
             if (!useLocalization
@@ -415,6 +484,55 @@ namespace BNJMO
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, sprite.texture.width);
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, sprite.texture.height);
             }
+        }
+        
+        /* Fade Coroutines */
+        private IEnumerator FadeInOpacityCoroutine(float duration, float minAlpha, float maxAlpha, EEaseType easeType)
+        {
+            float startTime = Time.time;
+            float alpha = 0.0f;
+            while (alpha < 1.0f)
+            {
+                alpha = (Time.time - startTime) / duration;
+                var opacity = Mathf.Lerp(minAlpha, maxAlpha, BUtils.Ease(alpha, easeType));
+                SetOpacity(opacity);
+
+                yield return new WaitForEndOfFrame();
+            }
+            SetOpacity(maxAlpha);
+            fadeInOpacityEnumerator = null;
+        }
+        
+        private IEnumerator FadeOutOpacityCoroutine(float duration, float minAlpha, float maxAlpha, EEaseType easeType)
+        {
+            float startTime = Time.time;
+            float alpha = 0.0f;
+            while (alpha < 1.0f)
+            {
+                alpha = (Time.time - startTime) / duration;
+                var newOpacity = Mathf.Lerp(maxAlpha, minAlpha, BUtils.Ease(alpha, easeType));
+                SetOpacity(newOpacity);
+
+                yield return new WaitForEndOfFrame();
+            }
+            SetOpacity(minAlpha);
+            fadeOutOpacityEnumerator = null;
+        }
+          
+        private IEnumerator FadeColorCoroutine(float duration, Color startColor, Color targetColor, EEaseType easeType)
+        {
+            float startTime = Time.time;
+            float alpha = 0.0f;
+            while (alpha < 1.0f)
+            {
+                alpha = (Time.time - startTime) / duration;
+                var newColor = Color.Lerp(startColor, targetColor, BUtils.Ease(alpha, easeType));
+                SetColor(newColor);
+
+                yield return new WaitForEndOfFrame();
+            }
+            SetColor(targetColor);
+            fadeColorEnumerator = null;
         }
         
         #endregion

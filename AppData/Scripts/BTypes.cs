@@ -28,6 +28,26 @@ namespace BNJMO
         PERSISTENCE_STAGE,
         OTHER_STAGE, // (like in a Preview Scene)
     }
+    
+    public enum EEaseType
+    {
+        Linear,
+        OutSine,
+        OutCubic,
+        OutQuad,
+        OutBack,
+        OutBounce,
+        InSine,
+        InCubic,
+        InQuad,
+        InBack,
+        InBounce,
+        InOutSine,
+        InOutCubic,
+        InOutQuad,
+        InOutBack,
+        InOutBounce,
+    }
 
     #endregion
     
@@ -507,6 +527,7 @@ namespace BNJMO
         UP,
         DOWN
     }
+    
     #endregion
 
     #region BEvents

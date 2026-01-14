@@ -158,6 +158,98 @@ namespace BNJMO
             return result;
         }
 
+        public static float Ease(float alpha, EEaseType easeType)
+        {
+            switch (easeType)
+            {
+                case EEaseType.Linear:
+                    return alpha;
+
+                case EEaseType.OutSine:
+                    return Mathf.Sin(alpha * Mathf.PI * 0.5f);
+
+                case EEaseType.OutQuad:
+                    return 1f - (1f - alpha) * (1f - alpha);
+
+                case EEaseType.OutCubic:
+                    return 1f - Mathf.Pow(1f - alpha, 3f);
+
+                case EEaseType.OutBack:
+                {
+                    float c1 = 1.70158f;
+                    float c3 = c1 + 1f;
+                    return 1f + c3 * Mathf.Pow(alpha - 1f, 3f) + c1 * Mathf.Pow(alpha - 1f, 2f);
+                }
+
+                case EEaseType.OutBounce:
+                    return OutBounce(alpha);
+
+                case EEaseType.InSine:
+                    return 1f - Mathf.Cos(alpha * Mathf.PI * 0.5f);
+
+                case EEaseType.InQuad:
+                    return alpha * alpha;
+
+                case EEaseType.InCubic:
+                    return alpha * alpha * alpha;
+
+                case EEaseType.InBack:
+                {
+                    float c1 = 1.70158f;
+                    float c3 = c1 + 1f;
+                    return c3 * alpha * alpha * alpha - c1 * alpha * alpha;
+                }
+
+                case EEaseType.InBounce:
+                    return 1f - OutBounce(1f - alpha);
+
+                case EEaseType.InOutSine:
+                    return -(Mathf.Cos(Mathf.PI * alpha) - 1f) * 0.5f;
+
+                case EEaseType.InOutQuad:
+                    return alpha < 0.5f
+                        ? 2f * alpha * alpha
+                        : 1f - Mathf.Pow(-2f * alpha + 2f, 2f) * 0.5f;
+
+                case EEaseType.InOutCubic:
+                    return alpha < 0.5f
+                        ? 4f * alpha * alpha * alpha
+                        : 1f - Mathf.Pow(-2f * alpha + 2f, 3f) * 0.5f;
+
+                case EEaseType.InOutBack:
+                {
+                    float c1 = 1.70158f;
+                    float c2 = c1 * 1.525f;
+
+                    return alpha < 0.5f
+                        ? (Mathf.Pow(2f * alpha, 2f) * ((c2 + 1f) * 2f * alpha - c2)) * 0.5f
+                        : (Mathf.Pow(2f * alpha - 2f, 2f) * ((c2 + 1f) * (alpha * 2f - 2f) + c2) + 2f) * 0.5f;
+                }
+
+                case EEaseType.InOutBounce:
+                    return alpha < 0.5f
+                        ? (1f - OutBounce(1f - 2f * alpha)) * 0.5f
+                        : (1f + OutBounce(2f * alpha - 1f)) * 0.5f;
+            }
+
+            return alpha;
+        }
+
+        private static float OutBounce(float x)
+        {
+            const float n1 = 7.5625f;
+            const float d1 = 2.75f;
+
+            if (x < 1f / d1)
+                return n1 * x * x;
+            else if (x < 2f / d1)
+                return n1 * (x -= 1.5f / d1) * x + 0.75f;
+            else if (x < 2.5f / d1)
+                return n1 * (x -= 2.25f / d1) * x + 0.9375f;
+            else
+                return n1 * (x -= 2.625f / d1) * x + 0.984375f;
+        }
+
         #endregion
 
         #region Get Component
