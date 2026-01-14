@@ -90,7 +90,7 @@ namespace BNJMO
             return new Vector3(vector2.x, 0.0f, vector2.y);
         }
 
-        public static Vector3 Get3DPlanearVector(Vector3 vector3)
+        public static Vector3 GetPlanarVector(Vector3 vector3)
         {
             return new Vector3(vector3.x, 0.0f, vector3.z);
         }
@@ -106,8 +106,8 @@ namespace BNJMO
 
         public static float GetPlanarDistance(Vector3 from, Vector3 to)
         {
-            Vector3 fromPlanar = Get3DPlanearVector(from);
-            Vector3 toPlanar = Get3DPlanearVector(to);
+            Vector3 fromPlanar = GetPlanarVector(from);
+            Vector3 toPlanar = GetPlanarVector(to);
             return Vector3.Distance(fromPlanar, toPlanar);
         }
 
