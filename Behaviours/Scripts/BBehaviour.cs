@@ -1139,7 +1139,14 @@ Complete nesting chain from outermost to original:
 
         protected void Wait(float waitDuration, Action action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, action));
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke();
+            }
+            else
+            {
+                StartCoroutine(WaitCoroutine(waitDuration, action));
+            }
         }
 
         private IEnumerator WaitCoroutine(float waitDuration, Action action)
