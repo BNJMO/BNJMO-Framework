@@ -36,6 +36,19 @@ namespace BNJMO
             ApplyImmediate();
         }
 
+        /// <summary>
+        /// Directly sets the selected index without animation.
+        /// </summary>
+        public void SetSelectedIndex(int index)
+        {
+            if (items == null || items.Count == 0) return;
+            
+            selectedIndex = Mathf.Clamp(index, 0, Mathf.Max(0, items.Count - 1));
+            EnsureCanvasGroups();
+            ApplyImmediate();
+            SelectionChanged?.Invoke(selectedIndex);
+        }
+
         [FoldoutGroup("BCarousel/Debug"), Button("Move Next")]
         public void MoveNext() => Move(+1);
         
@@ -93,6 +106,7 @@ namespace BNJMO
         #region Variables
 
         public int SelectedIndex => selectedIndex;
+        public bool IsAnimating => isAnimating;
         public IReadOnlyList<RectTransform> Items => items;
         
         public RectTransform SelectedItem => items != null && items.Count > 0 ? items[selectedIndex] : null;
