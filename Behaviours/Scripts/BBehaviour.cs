@@ -1137,7 +1137,7 @@ Complete nesting chain from outermost to original:
             return false;
         }
 
-        protected void Wait(float waitDuration, Action action)
+        protected Coroutine Wait(float waitDuration, Action action)
         {
             if (waitDuration <= 0.0f)
             {
@@ -1145,10 +1145,11 @@ Complete nesting chain from outermost to original:
             }
             else
             {
-                StartCoroutine(WaitCoroutine(waitDuration, action));
+                return StartCoroutine(WaitCoroutine(waitDuration, action));
             }
-        }
 
+            return null;
+        }
         private IEnumerator WaitCoroutine(float waitDuration, Action action)
         {
             yield return new WaitForSeconds(waitDuration);
@@ -1157,11 +1158,19 @@ Complete nesting chain from outermost to original:
         }
 
         /* 1 Parameters */
-        protected void Wait<A>(float waitDuration, A arg1, Action<A> action)
+        protected Coroutine Wait<A>(float waitDuration, A arg1, Action<A> action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, arg1, action));
-        }
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke(arg1);
+            }
+            else
+            {
+                return StartCoroutine(WaitCoroutine(waitDuration, arg1, action));
+            }
 
+            return null;
+        }
         private IEnumerator WaitCoroutine<A>(float waitDuration, A arg1, Action<A> action)
         {
             yield return new WaitForSeconds(waitDuration);
@@ -1170,11 +1179,19 @@ Complete nesting chain from outermost to original:
         }
 
         /* 2 Parameters */
-        protected void Wait<A, B>(float waitDuration, A arg1, B arg2, Action<A, B> action)
+        protected Coroutine Wait<A, B>(float waitDuration, A arg1, B arg2, Action<A, B> action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, action));
-        }
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke(arg1, arg2);
+            }
+            else
+            {
+                return StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, action));
+            }
 
+            return null;
+        }
         private IEnumerator WaitCoroutine<A, B>(float waitDuration, A arg1, B arg2, Action<A, B> action)
         {
             yield return new WaitForSeconds(waitDuration);
@@ -1183,11 +1200,19 @@ Complete nesting chain from outermost to original:
         }
 
         /* 3 Parameters */
-        protected void Wait<A, B, C>(float waitDuration, A arg1, B arg2, C arg3, Action<A, B, C> action)
+        protected Coroutine Wait<A, B, C>(float waitDuration, A arg1, B arg2, C arg3, Action<A, B, C> action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, action));
-        }
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke(arg1, arg2, arg3);
+            }
+            else
+            {
+                return StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, action));
+            }
 
+            return null;
+        }
         protected IEnumerator WaitCoroutine<A, B, C>(float waitDuration, A arg1, B arg2, C arg3, Action<A, B, C> action)
         {
             yield return new WaitForSeconds(waitDuration);
@@ -1196,11 +1221,19 @@ Complete nesting chain from outermost to original:
         }
 
         /* 4 Parameters */
-        protected void Wait<A, B, C, D>(float waitDuration, A arg1, B arg2, C arg3, D arg4, Action<A, B, C, D> action)
+        protected Coroutine Wait<A, B, C, D>(float waitDuration, A arg1, B arg2, C arg3, D arg4, Action<A, B, C, D> action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, arg4, action));
-        }
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke(arg1, arg2, arg3, arg4);
+            }
+            else
+            {
+                return StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, arg4, action));
+            }
 
+            return null;
+        }
         protected IEnumerator WaitCoroutine<A, B, C, D>(float waitDuration, A arg1, B arg2, C arg3, D arg4, Action<A, B, C, D> action)
         {
             yield return new WaitForSeconds(waitDuration);
@@ -1209,11 +1242,19 @@ Complete nesting chain from outermost to original:
         }
 
         /* 5 Parameters */
-        protected void Wait<A, B, C, D, E>(float waitDuration, A arg1, B arg2, C arg3, D arg4, E arg5, Action<A, B, C, D, E> action)
+        protected Coroutine Wait<A, B, C, D, E>(float waitDuration, A arg1, B arg2, C arg3, D arg4, E arg5, Action<A, B, C, D, E> action)
         {
-            StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, arg4, arg5, action));
-        }
+            if (waitDuration <= 0.0f)
+            {
+                action.Invoke(arg1, arg2, arg3, arg4, arg5);
+            }
+            else
+            {
+                return StartCoroutine(WaitCoroutine(waitDuration, arg1, arg2, arg3, arg4, arg5, action));
+            }
 
+            return null;
+        }
         protected IEnumerator WaitCoroutine<A, B, C, D, E>(float waitDuration, A arg1, B arg2, C arg3, D arg4, E arg5, Action<A, B, C, D, E> action)
         {
             yield return new WaitForSeconds(waitDuration);
