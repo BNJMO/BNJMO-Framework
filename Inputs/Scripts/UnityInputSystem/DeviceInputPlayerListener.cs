@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
@@ -133,12 +133,25 @@ namespace BNJMO
                 
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            if (Mathf.Approximately(Time.timeScale, 0.0f))
+            {
+                UpdateDirectionalInput();
+            }
+        }
+
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
 
             //UpdateAxisInput();            // TODO: Why was this commented out?
-            UpdateDirectionalInput();
+            if (Time.timeScale > 0.0f)
+            {
+                UpdateDirectionalInput();
+            }
         }
 
         #endregion
