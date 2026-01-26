@@ -900,6 +900,94 @@ namespace BNJMO
 
             return true;
         }
+        
+        /// <summary>
+        /// Checks if the given list is empty
+        /// </summary>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        protected bool IS_EMPTY<V>(List<V> list, bool reverseLogCondition = false)
+        {
+            if (list.Count == 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("'The list of <color=cyan>" + typeof(V) + "</color> is empty! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("'The list of <color=cyan>" + typeof(V) + "</color> is NOT empty! ");
+
+            return true;
+        }
+        
+        /// <summary>
+        /// Checks if the given list is empty
+        /// </summary>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        protected bool IS_NOT_EMPTY<V>(List<V> list, bool reverseLogCondition = false)
+        {
+            if (list.Count != 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("'The list of <color=cyan>" + typeof(V) + "</color> is not empty! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("'The list of <color=cyan>" + typeof(V) + "</color> IS empty! ");
+
+            return true;
+        }
+        
+        /// <summary>
+        /// Checks if the given list is empty
+        /// </summary>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        protected bool IS_EMPTY<K,V>(Dictionary<K,V> map, bool reverseLogCondition = false)
+        {
+            if (map.Count == 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("'The map of <color=cyan>" + typeof(K) + "</color> is empty! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("'The map of <color=cyan>" + typeof(K) + "</color> is NOT empty! ");
+
+            return true;
+        }
+        
+        /// <summary>
+        /// Checks if the given list is empty
+        /// </summary>
+        /// <typeparam name="V"></typeparam>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        protected bool IS_NOT_EMPTY<K,V>(Dictionary<K,V> map, bool reverseLogCondition = false)
+        {
+            if (map.Count != 0)
+            {
+                if (!reverseLogCondition)
+                    LogConsoleWarning("'The map of <color=cyan>" + typeof(K) + "</color> is not empty! ");
+                
+                return false;
+            }
+
+            if (reverseLogCondition)
+                LogConsoleWarning("'The map of <color=cyan>" + typeof(K) + "</color> IS empty! ");
+
+            return true;
+        }
 
         #endregion
 
