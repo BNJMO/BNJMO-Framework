@@ -1,6 +1,7 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 
 namespace BNJMO
@@ -561,11 +562,17 @@ namespace BNJMO
         [DisableIf("@RandomClips.Length > 0"), OnValueChanged("PopulateName")]
         public AudioClip Clip;
         public AudioClip[] RandomClips;
+
+        [Title("Audio Mixer")] 
+        public AudioMixerGroup AudioMixerGroup; 
         
         [Title("Spatial")]
-        public bool Is3D;
-        public Vector3 Position;
+        [Range(0.0f, 1.0f)]
+        public float SpatialBlend = 0.0f;
         public Transform AtTransform;
+        [DisableIf("@AtTransform != null")]
+        [FormerlySerializedAs("Position")] 
+        public Vector3 AtPosition;
         
         [Title("Volume")]
         [HorizontalGroup("Volume Range")] 
