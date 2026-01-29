@@ -22,25 +22,26 @@ namespace BNJMO
                 || IS_NULL(soundData, true))
                 return;
             
-            audioClip = null;
+            AudioClip = null;
             if (soundData.RandomClips.Length > 0)
             {
-                audioClip = BUtils.GetRandomElement(soundData.RandomClips);
+                AudioClip = BUtils.GetRandomElement(soundData.RandomClips);
             }
             else
             {
-                audioClip = soundData.Clip;
+                AudioClip = soundData.Clip;
             }
             
-            if (IS_NULL(audioClip, true))
+            if (IS_NULL(AudioClip, true))
             {
                 LogConsoleWarning($"No valid clip found sound data {soundData.Name}.");
             }
-            myAudioSource.clip = audioClip;
+            myAudioSource.clip = AudioClip;
+            myAudioSource.outputAudioMixerGroup = soundData.AudioMixerGroup;
             myAudioSource.volume = Random.Range(soundData.MinVolume, soundData.MaxVolume);
             myAudioSource.pitch = Random.Range(soundData.MinPitch, soundData.MaxPitch);
-            myAudioSource.spatialBlend = soundData.Is3D ? 1.0f : 0.0f;
-            myAudioSource.transform.position = soundData.AtTransform ? soundData.AtTransform.position : soundData.Position;
+            myAudioSource.spatialBlend = soundData.SpatialBlend;
+            myAudioSource.transform.position = soundData.AtTransform ? soundData.AtTransform.position : soundData.AtPosition;
         }
 
         public void PlaySound(SoundData soundData)
@@ -83,7 +84,7 @@ namespace BNJMO
             }
             else
             {
-                myAudioSource.clip = audioClip;
+                myAudioSource.clip = AudioClip;
             }
 
             if (IS_NOT_NULL(myAudioSource.clip))
@@ -132,6 +133,14 @@ namespace BNJMO
             PlaySound(audioClipToPlay);
         }
 
+        public void PlaySound()
+        {
+            if (IS_NOT_VALID(myAudioSource, true))
+                return;
+            
+            myAudioSource.Play();
+        }
+
         public void StopSound()
         {
             if (IS_NOT_VALID(myAudioSource, true))
@@ -143,21 +152,23 @@ namespace BNJMO
         [Sirenix.OdinInspector.Button("Fade Volume")]
         public void FadeVolume(float toVolume = 1.0f, float duration = 1.0f, bool stopSoundAtEndOfFade = false)
         {
-            if (IS_NOT_VALID(myAudioSource, true))
+            if (IS_NOT_VALID(myAudioSource, true)
+                || duration <= 0.0f)
                 return;
 
-            StopCoroutineIfRunning(ref fadeInEnumerator);
-            StopCoroutineIfRunning(ref fadeOutEnumerator);
+            StopCoroutineIfRunning(ref controlVolumeFromCurveEnumerator);
+            StartNewCoroutine(ref fadeEnumerator, FadeCoroutine(toVolume, duration, stopSoundAtEndOfFade));
+        }
+        
+        public void ControlVolumeFromCurve(AnimationCurve volumeCurve, float duration = 1.0f, bool stopSoundAtEndOfFade = false)
+        {
+            if (IS_NOT_VALID(myAudioSource, true)
+                || duration <= 0.0f)
+                return;
 
-            if (myAudioSource.volume > toVolume)
-            {
-                StartNewCoroutine(ref fadeOutEnumerator, FadeOutCoroutine(toVolume, duration, stopSoundAtEndOfFade));
-            }
-            else
-            {
-                StartNewCoroutine(ref fadeInEnumerator, FadeInCoroutine(toVolume, duration, stopSoundAtEndOfFade));
-            }
-
+            StopCoroutineIfRunning(ref fadeEnumerator);
+            StartNewCoroutine(ref controlVolumeFromCurveEnumerator, 
+                ControlVolumeFromCurveCoroutine(volumeCurve, duration, stopSoundAtEndOfFade));
         }
 
         #endregion
@@ -167,10 +178,7 @@ namespace BNJMO
         [Header("Sound Object")]
         [SerializeField]
         private AudioSource myAudioSource;
-
-        [SerializeField] 
-        private AudioClip audioClip;
-
+        
         [SerializeField]
         private AnimationCurve fadeCurve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -182,12 +190,12 @@ namespace BNJMO
         #region Variables
 
         public AudioSource AudioSource => myAudioSource;
-        public AudioClip AudioClip => audioClip;
+        public AudioClip AudioClip { get; private set; }
         public bool DestroySoundWhenFinishedPlaying { get { return destroySoundWhenFinishedPlaying; } set { destroySoundWhenFinishedPlaying = value; } }
 
         private IEnumerator onSoundFinishedPlayinEnumerator;
-        private IEnumerator fadeInEnumerator;
-        private IEnumerator fadeOutEnumerator;
+        private IEnumerator fadeEnumerator;
+        private IEnumerator controlVolumeFromCurveEnumerator;
 
         #endregion
 
@@ -199,13 +207,16 @@ namespace BNJMO
             base.OnValidate();
 
             SetComponentIfNull(ref myAudioSource);
-
-            if (!audioClip && myAudioSource)
+            if (!myAudioSource)
             {
-                audioClip = myAudioSource.clip;
+                myAudioSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            if (!AudioClip)
+            {
+                AudioClip = myAudioSource.clip;
             }
         }
-
 
         #endregion
 
@@ -230,7 +241,7 @@ namespace BNJMO
             }
         }
 
-        private IEnumerator FadeInCoroutine(float toVolume, float duration, bool stopSoundAtEndOfFade)
+        private IEnumerator FadeCoroutine(float toVolume, float duration, bool stopSoundAtEndOfFade)
         {
             float startVolume = myAudioSource.volume;
             float startTime = Time.time;
@@ -238,7 +249,7 @@ namespace BNJMO
             while (alpha < 1.0f)
             {
                 alpha = (Time.time - startTime) / duration;
-                myAudioSource.volume = fadeCurve.Evaluate(alpha / (toVolume - startVolume));
+                myAudioSource.volume = Mathf.Lerp(startVolume, toVolume, fadeCurve.Evaluate(alpha));
 
                 yield return new WaitForEndOfFrame();
             }
@@ -251,20 +262,18 @@ namespace BNJMO
             }
         }
 
-        private IEnumerator FadeOutCoroutine(float toVolume, float duration, bool stopSoundAtEndOfFade)
+        private IEnumerator ControlVolumeFromCurveCoroutine(AnimationCurve volumeCurve, float duration, bool stopSoundAtEndOfFade)
         {
-            float startVolume = myAudioSource.volume;
-            float startTime = Time.time;
-            float alpha = 0.0f;
+            var startTime = Time.time;
+            var alpha = 0.0f;
+            var startVolume = myAudioSource.volume;
             while (alpha < 1.0f)
             {
                 alpha = (Time.time - startTime) / duration;
-                myAudioSource.volume = fadeCurve.Evaluate((1.0f - alpha) / (toVolume - startVolume));
-
+                myAudioSource.volume = volumeCurve.Evaluate(alpha) * startVolume;
                 yield return new WaitForEndOfFrame();
             }
-
-            myAudioSource.volume = toVolume;
+            myAudioSource.volume = volumeCurve.Evaluate(1.0f) * startVolume;
 
             if (stopSoundAtEndOfFade)
             {
