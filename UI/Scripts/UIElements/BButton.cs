@@ -252,10 +252,9 @@ namespace BNJMO
                 bTextReference.SetColor(textHighlightedColor);
             }
 
-            if ((onPressedSound)
-                && (cursorInside))
+            if (cursorInside)
             {
-                BAudioManager.SpawnSoundObject(onSuccessfullyReleasedSound);
+                BAudioManager.SpawnSoundObject(onSuccessfullyReleasedSoundData);
             }
 
             InvokeEventIfBound(Released, this, cursorInside);
@@ -300,10 +299,7 @@ namespace BNJMO
                 bTextReference.SetColor(textPressedColor);
             }
 
-            if (onPressedSound)
-            {
-                BAudioManager.SpawnSoundObject(onPressedSound);
-            }
+            BAudioManager.SpawnSoundObject(onPressedSoundData);
 
             if (parentBMenu)
             {
@@ -566,11 +562,18 @@ namespace BNJMO
         private void DeriveName_Button() => DeriveName();
 
         /* Sounds */
-        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField]
-        private AudioClip onPressedSound;
+        [InfoBox("Press and Release Audio clips are deprecated and will be removed soon")]
+        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField, DisableIf("@onPressedSoundData != null")]
+        private AudioClip onPressedSound;   // TODO: deprecated. Remove
 
         [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField]
-        private AudioClip onSuccessfullyReleasedSound;
+        private SoundData onPressedSoundData;
+        
+        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField, DisableIf("@onPressedSoundData != null")]
+        private AudioClip onSuccessfullyReleasedSound;   // TODO: deprecated. Remove
+
+        [FoldoutGroup("BButton/BButton Settings/Sounds"), SerializeField]
+        private SoundData onSuccessfullyReleasedSoundData;
 
         /* Navigations */
         [FoldoutGroup("BButton/BButton Settings/Navigation"), SerializeField]
@@ -717,6 +720,18 @@ namespace BNJMO
                 bImageReference.SetColor(imageNormalColor);
                 bImageReference.SetMatchParentSize(imageMatchesParentSize);
                 bImageReference.UIElementName = UIElementName;
+            }
+            
+            // Update sounds (until completely deprecated)
+            if (onPressedSound
+                && onPressedSoundData != null)
+            {
+                onPressedSoundData.Clip = onPressedSound;
+            }
+            if (onSuccessfullyReleasedSound
+                && onSuccessfullyReleasedSoundData != null)
+            {
+                onSuccessfullyReleasedSoundData.Clip = onSuccessfullyReleasedSound;
             }
 
             if (isButtonDisabled)

@@ -57,13 +57,27 @@ namespace BNJMO
 
         public void Move(int direction)
         {
-            if (items == null || items.Count == 0) return;
-            if (isAnimating) return;
+            if (items == null || items.Count == 0) 
+                return;
+            
+            if (isAnimating) 
+                return;
 
             int next = GetIndex(selectedIndex + direction);
 
             // If not looping and we're at the end, do nothing.
-            if (!loop && (next == selectedIndex)) return;
+            if (!loop && (next == selectedIndex)) 
+                return;
+
+            // Play sound
+            if (direction > 0)
+            {
+                BAudioManager.SpawnSoundObject(moveNextSound);
+            }
+            else
+            {
+                BAudioManager.SpawnSoundObject(movePreviousSound);
+            }
 
             StartCoroutine(AnimateSlide(direction, next));
         }
@@ -96,11 +110,15 @@ namespace BNJMO
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private float fadeDuration = 0.15f;
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private AnimationCurve fadeEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+        [Header("Sounds")]
+        [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private SoundData moveNextSound;
+        [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private SoundData movePreviousSound;
+        
         [Header("Optional Input")]
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private bool enableKeyboardInput = true;
-        [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private KeyCode prevKey = KeyCode.LeftArrow;
         [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private KeyCode nextKey = KeyCode.RightArrow;
-
+        [FoldoutGroup("BCarousel/Carousel Settings"), SerializeField] private KeyCode prevKey = KeyCode.LeftArrow;
+        
         #endregion
 
         #region Variables
