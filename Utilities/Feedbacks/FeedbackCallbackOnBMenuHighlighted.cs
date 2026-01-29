@@ -82,25 +82,12 @@ public class FeedbackCallbackOnBMenuHighlighted : AbstractFeedbackCallback
     {
         if (playOnEnter)
         {
-            LogConsoleBlue(name);
             PlayFeedbacks();
         }
-        // if (stopOnEnter)
-        // {
-        //     StopFeedbacks();
-        // }
     }
 
     private void BMenu_OnHighlightExit(BMenu _)
     {
-        // if (playOnExit)
-        // {
-        //     PlayFeedbacks();
-        // }
-        // if (stopOnExit)
-        // {
-        //     StopFeedbacks();
-        // }
     }
 
     #endregion
