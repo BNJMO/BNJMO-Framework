@@ -13,6 +13,7 @@ namespace BNJMO
         [SerializeField] private BMenu targetMenu;
         [SerializeField] private float targetFOV = 60.0f;
         [SerializeField] private float transitionTime = 2.0f;
+        [SerializeField] private SoundData transitionSound;
         
         [Button("Update This From Camera Transform")]
         private void SetThisToCamera()
@@ -32,6 +33,7 @@ namespace BNJMO
         public BMenu TargetMenu => targetMenu;
         public float TargetFOV => targetFOV;
         public float TransitionTime => transitionTime;
+        public SoundData TransitionSound => transitionSound;
         #endregion
 
         #region Life Cycle

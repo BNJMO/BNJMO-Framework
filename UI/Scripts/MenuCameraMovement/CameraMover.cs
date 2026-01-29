@@ -120,22 +120,23 @@ namespace BNJMO
                 return;
             }
 
-            if (cameraTransforms.TryGetValue(targetMenu, out var bFrameCamTransform))
+            if (cameraTransforms.TryGetValue(targetMenu, out var bMenuCamTransform))
             {
                 cameraTransformLerp.StartValue = lastbFrameCameraTransform?.transform;
-                cameraTransformLerp.EndValue = bFrameCamTransform.transform;
-                cameraTransformLerp.PlayDuration = bFrameCamTransform.TransitionTime;
+                cameraTransformLerp.EndValue = bMenuCamTransform.transform;
+                cameraTransformLerp.PlayDuration = bMenuCamTransform.TransitionTime;
                 cameraTransformLerp.StartAnimation();
+                bMenuCamTransform.TransitionSound?.Play();
 
                 if (lastbFrameCameraTransform)
                 {
                     cameraFOVmLerp.StartValue = lastbFrameCameraTransform.TargetFOV;
-                    cameraFOVmLerp.EndValue = bFrameCamTransform.TargetFOV;
-                    cameraFOVmLerp.PlayDuration = bFrameCamTransform.TransitionTime;
+                    cameraFOVmLerp.EndValue = bMenuCamTransform.TargetFOV;
+                    cameraFOVmLerp.PlayDuration = bMenuCamTransform.TransitionTime;
                     cameraFOVmLerp.StartAnimation();
                 }
-
-                lastbFrameCameraTransform = bFrameCamTransform;
+                
+                lastbFrameCameraTransform = bMenuCamTransform;
             }
             else
             {
