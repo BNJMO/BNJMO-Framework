@@ -555,9 +555,9 @@ namespace BNJMO
     [Serializable]
     public class SoundData
     {
-        public void Play()
+        public SoundObject Play()
         {
-            BAudioManager.SpawnSoundObject(this);
+            return BAudioManager.SpawnSoundObject(this);
         }
         
         [Title("Name")] 
