@@ -1471,33 +1471,33 @@ Complete nesting chain from outermost to original:
             return uppermostParentTransform;
         }
 
-        public void SetComponentIfNull<T>(ref T reference)
+        public void SetComponentIfNull<T>(ref T reference) where T : UnityEngine.Object
         {
-            if (reference == null)
+            if (!reference)
             {
                 reference = GetComponent<T>();
             }
         }
 
-        public void SetComponentInChildrenIfNull<T>(ref T reference)
+        public void SetComponentInChildrenIfNull<T>(ref T reference) where T : UnityEngine.Object
         {
-            if (reference == null)
+            if (!reference)
             {
                 reference = GetComponentInChildren<T>();
             }
         }
 
-        public void SetComponentInParentsIfNull<T>(ref T reference)
+        public void SetComponentInParentsIfNull<T>(ref T reference) where T : UnityEngine.Object
         {
-            if (reference == null)
+            if (!reference)
             {
                 reference = GetComponentInParents<T>();
             }
         }
 
-        public void SetComponentInHierarchyIfNull<T>(ref T reference)
+        public void SetComponentInHierarchyIfNull<T>(ref T reference) where T : UnityEngine.Object
         {
-            if (reference == null)
+            if (!reference)
             {
                 reference = GetComponentInHierarchy<T>();
             }
@@ -1505,9 +1505,9 @@ Complete nesting chain from outermost to original:
 
         public void SetReferenceFromSceneIfNull<T>(ref T reference) where T : UnityEngine.Object
         {
-            if (reference == null)
+            if (!reference)
             {
-                reference = FindObjectOfType<T>();
+                reference = FindFirstObjectByType<T>();
             }
         }
         #endregion
