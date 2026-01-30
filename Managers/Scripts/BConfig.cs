@@ -76,7 +76,16 @@ namespace BNJMO
         public int SleepTimeout = -1;
                 
         [FoldoutGroup("BConfig/App")]
-        public int VSyncCount = 0;
+        public int VSyncCount = 0;     
+        
+        [FoldoutGroup("BConfig/App")]
+        public Texture2D CustomCursorTexture; 
+        
+        [FoldoutGroup("BConfig/App"), HideIf("@CustomCursorTexture == null")]
+        public Vector2 CustomCursorHotspot = Vector2.zero;   
+        
+        [FoldoutGroup("BConfig/App"), HideIf("@CustomCursorTexture == null")]
+        public CursorMode  CursorMode = CursorMode.Auto;
         
         /* Authentication */
         [FoldoutGroup("BConfig/Authentication")] 

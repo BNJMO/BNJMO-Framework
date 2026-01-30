@@ -24,6 +24,23 @@ namespace BNJMO
         {
             Application.Quit();
         }
+        
+        public void TryApplyCursor()
+        {
+            var customTexture = BConfig.Inst.CustomCursorTexture;
+   
+            if (!customTexture) 
+                return;
+            
+            var customCursorHotspot = BConfig.Inst.CustomCursorHotspot;
+            var cursorMode = BConfig.Inst.CursorMode;
+            Cursor.SetCursor(customTexture, customCursorHotspot, cursorMode);
+        }
+
+        public void ResetCursor()
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
 
         #endregion
 
@@ -66,6 +83,13 @@ namespace BNJMO
             QualitySettings.vSyncCount = Config.VSyncCount;
             Application.targetFrameRate = Config.TargetFramRate;
             Screen.sleepTimeout = Config.SleepTimeout;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            TryApplyCursor();
         }
 
         #endregion
