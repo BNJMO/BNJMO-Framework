@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myAudioSource: {fileID: 8329001510610814727}
-  audioClip: {fileID: 0}
   fadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -93,7 +92,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 15
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
