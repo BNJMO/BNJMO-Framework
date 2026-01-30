@@ -574,8 +574,9 @@ namespace BNJMO
         [Title("Spatial")]
         [Range(0.0f, 1.0f)]
         public float SpatialBlend = 0.0f;
-        public Transform AtTransform;
-        [DisableIf("@AtTransform != null")]
+        [FormerlySerializedAs("AtTransform")] 
+        public Transform AttachToTransform;
+        [DisableIf("@AttachToTransform != null")]
         [FormerlySerializedAs("Position")] 
         public Vector3 AtPosition;
         

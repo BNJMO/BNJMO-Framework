@@ -41,7 +41,15 @@ namespace BNJMO
             myAudioSource.volume = Random.Range(soundData.MinVolume, soundData.MaxVolume);
             myAudioSource.pitch = Random.Range(soundData.MinPitch, soundData.MaxPitch);
             myAudioSource.spatialBlend = soundData.SpatialBlend;
-            myAudioSource.transform.position = soundData.AtTransform ? soundData.AtTransform.position : soundData.AtPosition;
+            if (soundData.AttachToTransform)
+            {
+                myAudioSource.transform.parent = soundData.AttachToTransform;
+                myAudioSource.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                myAudioSource.transform.position = soundData.AtPosition;
+            }
         }
 
         public void PlaySound(SoundData soundData)
