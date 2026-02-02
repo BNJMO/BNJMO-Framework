@@ -142,6 +142,9 @@ namespace BNJMO
         [FoldoutGroup("BConfig/Input")]
         public bool TransformInpuAxisToCameraDirection;
         
+        [FoldoutGroup("BConfig/Input")]
+        public float RumbleMaxDuration = 1.0f;
+        
         /* Online */
         [FoldoutGroup("BConfig/Online")] 
         public EOnlineBackend onlineBackend = EOnlineBackend.Netcode;

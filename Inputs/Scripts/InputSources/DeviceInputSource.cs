@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace BNJMO
 {
@@ -96,6 +95,15 @@ namespace BNJMO
             }
 
             return EControllerType.MiscController;
+        }
+        
+        public override void Rumble(EControllerID controllerID, float lowFreq, float highFreq, float duration)
+        {
+            if (IS_KEY_NOT_CONTAINED(connectedDeviceControllers, controllerID, true)
+                || IS_NOT_VALID(connectedDeviceControllers[controllerID], true))
+                return;
+            
+            connectedDeviceControllers[controllerID].Rumble(lowFreq, highFreq, duration);
         }
         
         #endregion

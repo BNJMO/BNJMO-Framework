@@ -26,6 +26,10 @@ namespace BNJMO
         {
             InvokeButtonReleased(controllerID, inputButton);
         }
+        
+        public override void Rumble(EControllerID controllerID, float lowFreq, float highFreq, float duration)
+        {
+        }
 
         #endregion
 

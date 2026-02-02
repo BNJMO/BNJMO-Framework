@@ -11,7 +11,8 @@ namespace BNJMO
         public event Action<EControllerID, EInputButton> ButtonReleased;
         public event Action<EControllerID, EInputAxis, float, float> AxisUpdated;
 
-
+        public abstract void Rumble(EControllerID controllerID, float lowFreq, float highFreq, float duration);
+        
         protected void InvokeButtonPressed(EControllerID controllerID, EInputButton inputButton)
         {
             if (ButtonPressed != null)

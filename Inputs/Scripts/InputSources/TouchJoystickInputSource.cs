@@ -20,6 +20,11 @@ namespace BNJMO
                 touchJoystick.TouchJoystickReleased += On_TouchJoystick_Released;
             }
         }
+        
+        public override void Rumble(EControllerID controllerID, float lowFreq, float highFreq, float duration)
+        {
+            // TODO:
+        }
 
         protected override void Awake()
         {

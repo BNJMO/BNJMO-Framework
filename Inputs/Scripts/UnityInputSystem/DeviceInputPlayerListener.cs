@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
+using System.Linq;
 
 namespace BNJMO
 {
@@ -19,6 +21,26 @@ namespace BNJMO
 
         #region Public Methods
 
+        public void Rumble(float lowFreq, float highFreq, float duration)
+        {
+            if (IS_NOT_VALID(myPlayerInput, true))
+                return;
+            
+            // Get the gamepad paired with THIS player
+            var gamepad = myPlayerInput.devices
+                .FirstOrDefault(d => d is Gamepad) as Gamepad;
+
+            if (gamepad == null)
+                return;
+
+            // Start rumble
+            gamepad.SetMotorSpeeds(lowFreq, highFreq);
+
+            // Stop after duration
+            StartNewCoroutine(
+                ref stopRumbleAfterEnumerator, 
+                StopRumbleAfterCoroutine(gamepad, duration));
+        }
 
         #endregion
 
@@ -84,6 +106,8 @@ namespace BNJMO
         private bool canPerformDirectionalButton = true;
         private EInputButton lastPerformedDirectionalButton = EInputButton.NONE;
         private bool isDisconnected = false;
+
+        private IEnumerator stopRumbleAfterEnumerator;
         
         #endregion
 
@@ -367,6 +391,13 @@ namespace BNJMO
                     lastPerformedDirectionalButton = EInputButton.NONE;
                 }
             }
+        }
+        
+        private IEnumerator StopRumbleAfterCoroutine(Gamepad gamepad, float delay)
+        {
+            yield return new WaitForSeconds(Mathf.Min(delay, BConfig.Inst.RumbleMaxDuration));
+            
+            gamepad.SetMotorSpeeds(0f, 0f);
         }
 
         #endregion

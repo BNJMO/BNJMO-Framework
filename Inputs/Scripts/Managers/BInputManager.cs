@@ -126,6 +126,32 @@ namespace BNJMO
             return controller as S;
         }
 
+        public void Rumble(EControllerID controllerID, float lowFreq, float highFreq, float duration)
+        {
+            if (IS_NONE(controllerID, true)
+                || IS_KEY_NOT_CONTAINED(connectedControllerTypes, controllerID, true)
+                || IS_NONE(connectedControllerTypes[controllerID], true))
+                return;
+
+            var controllerType = connectedControllerTypes[controllerID];
+            if (BUtils.IsDeviceInput(controllerType))
+            {
+                var deviceInputSource = GetInputSource<DeviceInputSource>();
+                if (IS_VALID(deviceInputSource))
+                {
+                    deviceInputSource.Rumble(controllerID, lowFreq, highFreq, duration);
+                }
+            }
+            else if (controllerType == EControllerType.TouchScreen)
+            {
+                // TODO:
+            }
+            else if (controllerType == EControllerType.NetworkRemote)
+            {
+                // TODO:
+            }
+        }
+
         #endregion
 
         #region Inspector Variables

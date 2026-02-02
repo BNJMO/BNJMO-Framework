@@ -924,6 +924,18 @@ namespace BNJMO
 
             return new Vector3(vector[0], vector[1], vector[2]);
         }
+
+        public static bool IsDeviceInput(EControllerType controllerType)
+        {
+            return controllerType
+                is EControllerType.Dualsense
+                or EControllerType.Dualshock4
+                or EControllerType.Switch
+                or EControllerType.MiscController
+                or EControllerType.XboxOne
+                or EControllerType.XboxSeries;
+        }
+        
         #endregion
 
         #region Serialization
