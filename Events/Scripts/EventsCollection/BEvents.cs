@@ -18,9 +18,12 @@ namespace BNJMO
         #endregion
 
         #region UI
+        
+        /* BFrames */
         public static BEvent<BEventHandle<BFrame>> UI_FocusedFrameUpdated
             = new ("UI_FocusedFrameUpdated");
 
+        /* BMenus */
         public static BEvent<BEventHandle<BMenu, BMenu>> UI_HighlightedBMenuUpdated
             = new ("UI_HighlightedBMenuUpdated");
 

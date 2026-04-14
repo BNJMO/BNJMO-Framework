@@ -18,20 +18,19 @@ namespace BNJMO
 
         #region Public Methods
         
-        // TODO
-        public bool HasFocus { get; private set; }
+        public bool HasFocus => hasFocus;
 
-        // TODO
-        public void OnGainedFocus()
+        public void SetFocus()
         {
-
-            //BEventsCollection.UI_FocusedFrameUpdated.Invoke(new BEHandle<BFrame>(this));
-        }
-
-        // TODO
-        public void OnLostFocus()
-        {
-
+            if (hasFocus)
+                return;
+            
+            hasFocus = true;
+            
+            bool logUIBEvents = BConfig.Inst && BConfig.Inst.LogUIBEvents;
+            BEvents.UI_FocusedFrameUpdated?.Invoke(new BEventHandle<BFrame>(this), logUIBEvents);
+            
+            highlightedBMenuReference?.OnHighlighted();
         }
 
         public bool UpdateHighlightedBMenu(BMenu newBBMenu, bool recordHistory = true)
@@ -59,7 +58,6 @@ namespace BNJMO
                 if (Application.isPlaying
                 && BManager.Inst)
                 {
-                    bool logBMenuHighlightBEvents = BConfig.Inst && BConfig.Inst.LogBMenuHighlightBEvents;
                     BEvents.UI_HighlightedBMenuUpdated?.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu), 
                         BConfig.Inst.LogUIBEvents && BConfig.Inst.LogBMenuHighlightBEvents);
                 }
@@ -126,7 +124,7 @@ namespace BNJMO
 
         [BoxGroup("BFrame", centerLabel: true)]
         [BoxGroup("BFrame"), SerializeField] 
-        bool startWithFocus = true;
+        bool startWithFocus = false;
         
         [HorizontalGroup("BFrame/Group"), SerializeField] 
         private string newBMenuName = "BMenu";
@@ -135,6 +133,9 @@ namespace BNJMO
         private void Button_AddBMenu() => AddBMenu();
         
         [Title("BMenu Highlight")]
+        [BoxGroup("BFrame"), SerializeField, ReadOnly]
+        private bool hasFocus = false;
+        
         [BoxGroup("BFrame"), SerializeField, ChildGameObjectsOnly,
          InfoBox("$infoNoStartBMenuHighlight", InfoMessageType.Error, "showNoStartBMenuHighlight")]
         private BMenu startHighlightedBMenu;
@@ -164,17 +165,6 @@ namespace BNJMO
 
         #region Life Cycle
 
-
-
-        #endregion
-
-        #region Events Callbacks
-
-
-        #endregion
-
-        #region Others
-        
         protected override void OnValidate()
         {
             if (!CanValidate()) return;
@@ -233,6 +223,20 @@ namespace BNJMO
             }
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            BEvents.UI_FocusedFrameUpdated += BEvents_UI_OnFocusedFrameUpdated;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            
+            BEvents.UI_FocusedFrameUpdated -= BEvents_UI_OnFocusedFrameUpdated;
+        }
+
         protected override void LateStart()
         {
             base.LateStart();
@@ -252,7 +256,21 @@ namespace BNJMO
                 LogConsoleWarning("BMenu highlight not correctly initialized!");
             }
         }
-  
+
+        #endregion
+
+        #region Events Callbacks
+
+        private void BEvents_UI_OnFocusedFrameUpdated(BEventHandle<BFrame> handle)
+        {
+            var newFocusedBFrame = handle.Arg1;
+            hasFocus = newFocusedBFrame == this;
+        }
+
+        #endregion
+
+        #region Others
+        
         protected override void OnUIShown()
         {
             base.OnUIShown();

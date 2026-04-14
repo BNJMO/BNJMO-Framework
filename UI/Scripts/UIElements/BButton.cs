@@ -222,6 +222,11 @@ namespace BNJMO
                 BEvents.UI_ButtonHighlighted.Invoke(new BEventHandle<BButton>(this), BEventBroadcastType.LOCAL, 
                     BConfig.Inst.LogUIBEvents && BConfig.Inst.LogBButtonBEvents);
             }
+
+            if (parentBFrame)
+            {
+                parentBFrame.SetFocus();
+            }
         }
 
         public void OnReleased(bool cursorInside)
@@ -452,6 +457,37 @@ namespace BNJMO
         {
             OnHoveredExit();
         }
+        
+        /* Navigation */
+        public BButton GetNextButton(EButtonDirection buttonDirection)
+        {
+            BButton fromButton = this;
+            BButton buttonToReturn = null;
+
+            // Iterate maximum 10 times to find next not disabled button
+            for (int i = 0; i < 10; i++)
+            {
+                buttonToReturn = GetNextButtonFrom(fromButton, buttonDirection);
+                fromButton = buttonToReturn;
+
+                if (!buttonToReturn
+                    || (buttonToReturn.IsButtonDisabled == false
+                        && buttonToReturn != this))
+                    break;
+            }
+            
+            return buttonToReturn;
+        }
+
+        public void UnPopulateNavigationButtons()
+        {
+            LogConsole("Unpopulating buttons");
+            LeftButton = null;
+            RightButton = null;
+            UpperButton = null;
+            BottomButton = null;
+        }
+
         
         #endregion
 
@@ -814,39 +850,35 @@ namespace BNJMO
 
         #region Navigation
         
-        public BButton GetNextButton(EButtonDirection buttonDirection)
+        private BButton GetNextButtonFrom(BButton fromButton, EButtonDirection buttonDirection)
         {
+            if (!fromButton)
+                return null;
+            
             BButton buttonToReturn = null;
+            
             switch (buttonDirection)
             {
                 case EButtonDirection.LEFT:
-                    buttonToReturn = leftButton;
+                    buttonToReturn = fromButton.leftButton;
                     break;
 
                 case EButtonDirection.RIGHT:
-                    buttonToReturn = rightButton;
+                    buttonToReturn = fromButton.rightButton;
                     break;
 
                 case EButtonDirection.UP:
-                    buttonToReturn = upperButton;
+                    buttonToReturn = fromButton.upperButton;
                     break;
 
                 case EButtonDirection.DOWN:
-                    buttonToReturn = bottomButton;
+                    buttonToReturn = fromButton.bottomButton;
                     break;
             }
+
             return buttonToReturn;
         }
 
-        public void UnPopulateNavigationButtons()
-        {
-            LogConsole("Unpopulating buttons");
-            LeftButton = null;
-            RightButton = null;
-            UpperButton = null;
-            BottomButton = null;
-        }
-        
         #endregion
     }
 }

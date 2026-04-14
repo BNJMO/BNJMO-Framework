@@ -96,7 +96,7 @@ namespace BNJMO
                         break;
                 }
 
-                if (nextButton != null)
+                if (nextButton)
                 {
                     CurrentBButtonHighlighted.OnUnhighlighted();
                     CurrentBButtonHighlighted = nextButton;

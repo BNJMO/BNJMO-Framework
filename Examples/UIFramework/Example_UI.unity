@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -203,14 +203,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 639343903}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 50460958}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &50460960
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -253,15 +267,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 2102371101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 708502597}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 367005346}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -270,19 +318,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 367005346}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 708502597}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 81752943}
   leftButton: {fileID: 1514450059}
   rightButton: {fileID: 1985262977}
@@ -308,6 +372,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &76044184
 RectTransform:
   m_ObjectHideFlags: 0
@@ -371,15 +438,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 2102371101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
-  isButtonDisabled: 0
+  isButtonDisabled: 1
+  bImageReference: {fileID: 1368141818}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1912652314}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -388,19 +489,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1912652314}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 1368141818}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 1292687061}
   leftButton: {fileID: 1514450059}
   rightButton: {fileID: 1985262977}
@@ -426,6 +543,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &81752944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -489,15 +609,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 505989460}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 930478478}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1101891422}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -506,19 +660,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1101891422}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 930478478}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 1286856101}
   leftButton: {fileID: 1292687061}
   rightButton: {fileID: 1292687061}
@@ -544,6 +714,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &108526107
 RectTransform:
   m_ObjectHideFlags: 0
@@ -726,147 +899,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1514450059}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 198805648}
   tmpTextComponent: {fileID: 198805648}
---- !u!1 &203844586
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 203844589}
-  - component: {fileID: 203844588}
-  - component: {fileID: 203844587}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &203844587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203844586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 1
---- !u!108 &203844588
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203844586}
-  m_Enabled: 1
-  serializedVersion: 11
-  m_Type: 1
-  m_Color: {r: 1, g: 0.9785366, b: 0.92, a: 1}
-  m_Intensity: 3.14159
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 0.8
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
---- !u!4 &203844589
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203844586}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 604712594}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &206750408
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,14 +991,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 798605042}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 206750410}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!114 &206750410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,10 +1103,10 @@ RectTransform:
   - {fileID: 886724172}
   m_Father: {fileID: 1698601223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &242978907
 MonoBehaviour:
@@ -1021,15 +1124,16 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1698601224}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: M_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startHighlightedBButton: {fileID: 1286856101}
   highlightedBButtonReference: {fileID: 1286856101}
-  isActive: 1
+  isHighlighted: 0
   childrenBButtonsList:
   - childBButton: {fileID: 1286856101}
   - childBButton: {fileID: 108526106}
@@ -1074,14 +1178,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1474760466}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 342239445}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!114 &342239445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1292,26 +1410,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 76044183}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 367005344}
   tmpTextComponent: {fileID: 367005344}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &367401770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,7 +1480,7 @@ GameObject:
   - component: {fileID: 367401773}
   - component: {fileID: 367401772}
   m_Layer: 5
-  m_Name: I_BImage
+  m_Name: I_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1340,15 +1495,16 @@ RectTransform:
   m_GameObject: {fileID: 367401770}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 7.613279, y: 1.134122, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1317074967}
   m_Father: {fileID: 1338674511}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5, y: 147}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 782.9176, y: 155.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &367401772
 MonoBehaviour:
@@ -1392,18 +1548,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5970c2ed02ad6be4aab360600ea1b9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIElementName: BImage
+  uIElementName: Background
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1338674512}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 21300000, guid: 54659bdc4c596df4484b3bd8c0f0d797, type: 3}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 0.078431375}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 367401772}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &367401774
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1444,40 +1614,6 @@ Transform:
   - {fileID: 961739753}
   - {fileID: 1160234427}
   - {fileID: 1663014240}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &505702789
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 505702790}
-  m_Layer: 0
-  m_Name: Geometry
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &505702790
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 505702789}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 697948586}
-  - {fileID: 558107427}
-  - {fileID: 7823694312774259421}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &505989457
@@ -1562,11 +1698,12 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1179429999}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
 --- !u!1 &518921651
 GameObject:
@@ -1649,14 +1786,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 2048155238}
   parentBUIElement: {fileID: 2048155238}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 1
+  matchParentSize: 0
   isShown: 0
+  useLocalization: 0
   sprite: {fileID: 21300000, guid: c572e1b99f75d2643bc931055f8a2442, type: 3}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 0}
+  unityRawImage: {fileID: 518921653}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &518921655
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1810,26 +1961,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1985262977}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 542789961}
   tmpTextComponent: {fileID: 542789961}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &542789963
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1838,183 +2026,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542789959}
   m_CullTransparentMesh: 0
---- !u!1 &558107426
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 558107427}
-  m_Layer: 0
-  m_Name: Platform
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &558107427
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558107426}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 652563179}
-  - {fileID: 1806805534}
-  - {fileID: 575893605}
-  - {fileID: 1866269552}
-  - {fileID: 960402686}
-  m_Father: {fileID: 505702790}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &575893604
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 575893605}
-  - component: {fileID: 575893608}
-  - component: {fileID: 575893607}
-  - component: {fileID: 575893606}
-  m_Layer: 0
-  m_Name: Border
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &575893605
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575893604}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 4.05}
-  m_LocalScale: {x: 8.2, y: 0.5, z: 0.1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 558107427}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &575893606
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575893604}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &575893607
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575893604}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 091db917396e11d438d817c2d7a29f22, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &575893608
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575893604}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &604712593
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 604712594}
-  m_Layer: 0
-  m_Name: Lights
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &604712594
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604712593}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 203844589}
-  - {fileID: 2116198339}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &637828543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,26 +2171,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 639343903}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Objects
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 637828545}
   tmpTextComponent: {fileID: 637828545}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &637828547
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2244,15 +2292,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1317074969}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 50460959}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 637828546}
+  useTextLocalization: 0
   buttonText: Objects
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -2261,19 +2343,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 637828546}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 50460959}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 0}
   leftButton: {fileID: 873036033}
   rightButton: {fileID: 1474760466}
@@ -2299,6 +2397,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &639343904
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2320,115 +2421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toBMenu: {fileID: 1965900059}
+  navigateOnButtonPress: 1
   overrideBButtonUIName: 0
---- !u!1 &652563178
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 652563179}
-  - component: {fileID: 652563182}
-  - component: {fileID: 652563181}
-  - component: {fileID: 652563180}
-  m_Layer: 0
-  m_Name: Center
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &652563179
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652563178}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 8, y: 0.5, z: 8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 558107427}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &652563180
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652563178}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &652563181
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652563178}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7b1eafbdbd477964d9830e671e6c7694, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &652563182
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652563178}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  bButtonReference: {fileID: 639343903}
 --- !u!1 &676746340
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2434,8 @@ GameObject:
   m_Component:
   - component: {fileID: 676746342}
   - component: {fileID: 676746341}
+  - component: {fileID: 676746344}
+  - component: {fileID: 676746343}
   m_Layer: 5
   m_Name: F_Menu Tab
   m_TagString: Untagged
@@ -2462,15 +2459,17 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1828484092}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: F_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startWithFocus: 1
-  startHighlightedBMenu: {fileID: 1338674512}
   newBMenuName: BMenu
+  hasFocus: 0
+  startHighlightedBMenu: {fileID: 1338674512}
   highlightedBMenuReference: {fileID: 1338674512}
   childrenBMenusList:
   - childBMenu: {fileID: 1338674512}
@@ -2489,120 +2488,41 @@ RectTransform:
   - {fileID: 1338674511}
   m_Father: {fileID: 1828484091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: 2}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 4.2195, y: -166}
+  m_SizeDelta: {x: 1626.7, y: 227.36}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &697948582
-GameObject:
+--- !u!114 &676746343
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 697948586}
-  - component: {fileID: 697948585}
-  - component: {fileID: 697948584}
-  - component: {fileID: 697948583}
-  m_Layer: 0
-  m_Name: Ground
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!64 &697948583
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697948582}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_GameObject: {fileID: 676746340}
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &697948584
-MeshRenderer:
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7277ff62fff03ab4293c0754684c11e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBFrame: {fileID: 676746341}
+  bImageColorToChange: {fileID: 367401773}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.078431375}
+  focusedColor: {r: 1, g: 0.75786155, b: 0.75786155, a: 0.078431375}
+--- !u!114 &676746344
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697948582}
+  m_GameObject: {fileID: 676746340}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7b1eafbdbd477964d9830e671e6c7694, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &697948585
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697948582}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &697948586
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697948582}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 505702790}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfdca25017245729596376d74ccbd72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBFrame: {fileID: 676746341}
+  exitButton: 2
 --- !u!1 &708502593
 GameObject:
   m_ObjectHideFlags: 0
@@ -2695,14 +2615,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 76044183}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 708502595}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!1 &798605041
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,15 +2671,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 2102371101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 206750409}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1393671031}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -2754,19 +2722,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1393671031}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 206750409}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 76044183}
   leftButton: {fileID: 1286856101}
   rightButton: {fileID: 1985262977}
@@ -2792,6 +2776,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &798605043
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2877,15 +2864,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1317074969}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 944553974}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1025561712}
+  useTextLocalization: 0
   buttonText: Buttons
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -2894,19 +2915,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1025561712}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 944553974}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 0}
   leftButton: {fileID: 1474760466}
   rightButton: {fileID: 639343903}
@@ -2932,6 +2969,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &873036034
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2953,7 +2993,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toBMenu: {fileID: 242978907}
+  navigateOnButtonPress: 1
   overrideBButtonUIName: 0
+  bButtonReference: {fileID: 873036033}
 --- !u!1 &886724171
 GameObject:
   m_ObjectHideFlags: 0
@@ -2989,7 +3031,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -259.2, y: -153}
+  m_AnchoredPosition: {x: -633, y: -449}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &886724173
@@ -3099,26 +3141,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 242978907}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Buttons
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 36
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 1, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 886724173}
   tmpTextComponent: {fileID: 886724173}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &886724175
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3211,14 +3290,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1985262977}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 921553444}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &921553446
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3262,14 +3355,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 108526106}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 930478479}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!114 &930478479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3411,14 +3518,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 873036033}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 944553973}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &944553975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3427,114 +3548,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944553971}
   m_CullTransparentMesh: 0
---- !u!1 &960402685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 960402686}
-  - component: {fileID: 960402689}
-  - component: {fileID: 960402688}
-  - component: {fileID: 960402687}
-  m_Layer: 0
-  m_Name: Border
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &960402686
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960402685}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4.05, y: 0.25, z: -0}
-  m_LocalScale: {x: 8, y: 0.5, z: 0.1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 558107427}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &960402687
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960402685}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &960402688
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960402685}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 091db917396e11d438d817c2d7a29f22, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &960402689
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960402685}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -3756,14 +3769,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1292687061}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 963158941}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &963158943
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3825,13 +3852,14 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 1965900059}
   parentBUIElement: {fileID: 1965900059}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: O_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
-  UIGameObject: {fileID: 1929660678}
+  UIGameObject: {fileID: 982182605}
 --- !u!1 &1025561709
 GameObject:
   m_ObjectHideFlags: 0
@@ -3977,26 +4005,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 873036033}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Buttons
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1025561711}
   tmpTextComponent: {fileID: 1025561711}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &1025561713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4040,14 +4105,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1514450059}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 1062813441}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!114 &1062813441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4258,26 +4337,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 108526106}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1101891420}
   tmpTextComponent: {fileID: 1101891420}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1112899142
 GameObject:
   m_ObjectHideFlags: 0
@@ -4359,14 +4475,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 2048155238}
   parentBUIElement: {fileID: 2048155238}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
+  useLocalization: 0
   sprite: {fileID: 21300000, guid: c572e1b99f75d2643bc931055f8a2442, type: 3}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 0}
+  unityRawImage: {fileID: 1112899144}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &1112899146
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4520,26 +4650,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1292687061}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1150115753}
   tmpTextComponent: {fileID: 1150115753}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &1150115755
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4583,7 +4750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -259.2, y: -153}
+  m_AnchoredPosition: {x: -633, y: -449}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1151042641
@@ -4693,26 +4860,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 1965900059}
   parentBUIElement: {fileID: 982182607}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
-  useLanguages: 0
+  useLocalization: 0
   text: Objects
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 36
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 1, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1151042641}
   tmpTextComponent: {fileID: 1151042641}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &1151042643
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4797,7 +5001,7 @@ RectTransform:
   m_GameObject: {fileID: 1179429996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3359, y: 1.3359, z: 1.3359}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 505989458}
@@ -4807,8 +5011,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -118, y: -8}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 12, y: -45}
+  m_SizeDelta: {x: 489.4291, y: 251.3503}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1179429998
 MonoBehaviour:
@@ -4852,11 +5056,12 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 242978907}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
 --- !u!1 &1286856100
 GameObject:
@@ -4892,15 +5097,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 505989460}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 2032678562}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1636368796}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -4909,19 +5148,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1636368796}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 2032678562}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 1514450059}
   leftButton: {fileID: 1985262977}
   rightButton: {fileID: 798605042}
@@ -4947,6 +5202,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &1286856102
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5039,15 +5297,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 2102371101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 963158942}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1150115754}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -5056,19 +5348,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1150115754}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 963158942}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 798605042}
   leftButton: {fileID: 108526106}
   rightButton: {fileID: 1985262977}
@@ -5094,6 +5402,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1317074966
 GameObject:
   m_ObjectHideFlags: 0
@@ -5120,19 +5431,19 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317074966}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474760467}
   - {fileID: 873036032}
   - {fileID: 639343902}
-  m_Father: {fileID: 1338674511}
+  m_Father: {fileID: 367401771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -297, y: 112}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 1, y: -8}
+  m_SizeDelta: {x: 708.351, y: 91.144104}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1317074968
 MonoBehaviour:
@@ -5151,7 +5462,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 105.4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -5175,12 +5486,13 @@ MonoBehaviour:
   uIElementName: Menu Buttons
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
-  parentBUIElement: {fileID: 1338674512}
-  overrideGameOjbectName: 1
+  parentBUIElement: {fileID: 367401773}
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
 --- !u!1 &1338674510
 GameObject:
@@ -5212,13 +5524,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 367401771}
-  - {fileID: 1317074967}
   m_Father: {fileID: 676746342}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1338674512
 MonoBehaviour:
@@ -5236,15 +5547,16 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 676746341}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: M_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startHighlightedBButton: {fileID: 1474760466}
   highlightedBButtonReference: {fileID: 1474760466}
-  isActive: 0
+  isHighlighted: 0
   childrenBButtonsList:
   - childBButton: {fileID: 1474760466}
   - childBButton: {fileID: 873036033}
@@ -5300,8 +5612,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0.125}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5341,14 +5653,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 81752943}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 1, g: 1, b: 1, a: 1}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  color: {r: 1, g: 1, b: 1, a: 0.125}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 1368141816}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!1001 &1380162289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5563,26 +5889,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 798605042}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1393671029}
   tmpTextComponent: {fileID: 1393671029}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1474760465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5618,15 +5981,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1317074969}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 342239444}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 1966657051}
+  useTextLocalization: 0
   buttonText: Images
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -5635,19 +6032,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 1966657051}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 342239444}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 0}
   leftButton: {fileID: 639343903}
   rightButton: {fileID: 873036033}
@@ -5673,6 +6086,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &1474760467
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5715,7 +6131,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toBMenu: {fileID: 2048155238}
+  navigateOnButtonPress: 1
   overrideBButtonUIName: 0
+  bButtonReference: {fileID: 1474760466}
 --- !u!1 &1514450058
 GameObject:
   m_ObjectHideFlags: 0
@@ -5750,15 +6168,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 505989460}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 1062813440}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 198805650}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -5767,19 +6219,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 198805650}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 1062813440}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 108526106}
   leftButton: {fileID: 81752943}
   rightButton: {fileID: 81752943}
@@ -5805,6 +6273,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &1514450060
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5918,14 +6389,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 2048155238}
   parentBUIElement: {fileID: 2048155238}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
+  useLocalization: 0
   sprite: {fileID: 21300000, guid: c572e1b99f75d2643bc931055f8a2442, type: 3}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 1596542517}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!222 &1596542519
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5969,7 +6454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -259.2, y: -153}
+  m_AnchoredPosition: {x: -633, y: -449}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632607160
@@ -6079,26 +6564,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 2048155238}
   parentBUIElement: {fileID: 2048155238}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
-  useLanguages: 0
+  useLocalization: 0
   text: Images
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 36
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 1, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1632607160}
   tmpTextComponent: {fileID: 1632607160}
+  references:
+    version: 2
+    RefIds: []
 --- !u!222 &1632607162
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6260,26 +6782,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1286856101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1636368794}
   tmpTextComponent: {fileID: 1636368794}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1663014237
 GameObject:
   m_ObjectHideFlags: 0
@@ -6369,6 +6928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1698601223}
   - component: {fileID: 1698601224}
+  - component: {fileID: 1698601225}
   m_Layer: 5
   m_Name: F_Main
   m_TagString: Untagged
@@ -6388,6 +6948,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1762917138}
   - {fileID: 2048155237}
   - {fileID: 242978906}
   - {fileID: 1965900058}
@@ -6395,8 +6956,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1, y: 1}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 4.2112045, y: 6.3519}
+  m_SizeDelta: {x: 1626.7104, y: 983.6643}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1698601224
 MonoBehaviour:
@@ -6414,21 +6975,39 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1828484092}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: F_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   startWithFocus: 1
-  startHighlightedBMenu: {fileID: 2048155238}
   newBMenuName: Objects
+  hasFocus: 0
+  startHighlightedBMenu: {fileID: 2048155238}
   highlightedBMenuReference: {fileID: 2048155238}
   childrenBMenusList:
   - childBMenu: {fileID: 2048155238}
   - childBMenu: {fileID: 242978907}
   - childBMenu: {fileID: 1965900059}
---- !u!1 &1806805533
+--- !u!114 &1698601225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698601222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7277ff62fff03ab4293c0754684c11e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBFrame: {fileID: 1698601224}
+  bImageColorToChange: {fileID: 1762917140}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.047058824}
+  focusedColor: {r: 1, g: 0.77672946, b: 0.77672946, a: 0.047058824}
+--- !u!1 &1762917137
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6436,106 +7015,112 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1806805534}
-  - component: {fileID: 1806805537}
-  - component: {fileID: 1806805536}
-  - component: {fileID: 1806805535}
-  m_Layer: 0
-  m_Name: Border
+  - component: {fileID: 1762917138}
+  - component: {fileID: 1762917141}
+  - component: {fileID: 1762917140}
+  - component: {fileID: 1762917139}
+  m_Layer: 5
+  m_Name: I_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1806805534
-Transform:
+--- !u!224 &1762917138
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806805533}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: -4.05}
-  m_LocalScale: {x: 8.2, y: 0.5, z: 0.1}
+  m_GameObject: {fileID: 1762917137}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 558107427}
+  m_Father: {fileID: 1698601223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1806805535
-BoxCollider:
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 1, y: 1}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1762917139
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806805533}
+  m_GameObject: {fileID: 1762917137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1806805536
-MeshRenderer:
+  m_Color: {r: 1, g: 1, b: 1, a: 0.047058824}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 08a55fe6563e2304db2fb0aec20c25dc, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1762917140
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806805533}
+  m_GameObject: {fileID: 1762917137}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 091db917396e11d438d817c2d7a29f22, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1806805537
-MeshFilter:
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5970c2ed02ad6be4aab360600ea1b9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uIElementName: Background
+  parentBFrame: {fileID: 1698601224}
+  parentBMenu: {fileID: 0}
+  parentBUIElement: {fileID: 1698601224}
+  overrideGameObjectName: 1
+  propagateUINameToChildren: 0
+  revalidateWithChildren: 0
+  objectNamePrefix: I_
+  isUIDisabled: 0
+  matchParentSize: 0
+  isShown: 1
+  useLocalization: 0
+  sprite: {fileID: 21300000, guid: 08a55fe6563e2304db2fb0aec20c25dc, type: 3}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  color: {r: 1, g: 1, b: 1, a: 0.047058824}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 1762917139}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
+--- !u!222 &1762917141
+CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806805533}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_GameObject: {fileID: 1762917137}
+  m_CullTransparentMesh: 0
 --- !u!1 &1812622846
 GameObject:
   m_ObjectHideFlags: 0
@@ -6616,11 +7201,12 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1179429999}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
 --- !u!1 &1828484087
 GameObject:
@@ -6671,10 +7257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -6742,120 +7328,13 @@ MonoBehaviour:
   parentBFrame: {fileID: 0}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 0}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: CN_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
---- !u!1 &1866269551
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1866269552}
-  - component: {fileID: 1866269555}
-  - component: {fileID: 1866269554}
-  - component: {fileID: 1866269553}
-  m_Layer: 0
-  m_Name: Border
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1866269552
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866269551}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4.05, y: 0.25, z: 0}
-  m_LocalScale: {x: 8, y: 0.5, z: 0.1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 558107427}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &1866269553
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866269551}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1866269554
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866269551}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 091db917396e11d438d817c2d7a29f22, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 2
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1866269555
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866269551}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1912652310
 GameObject:
   m_ObjectHideFlags: 0
@@ -7009,183 +7488,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 81752943}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Button
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1912652312}
   tmpTextComponent: {fileID: 1912652312}
---- !u!1 &1925142325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1925142327}
-  - component: {fileID: 1925142326}
-  m_Layer: 0
-  m_Name: UI Disabler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1925142326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925142325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae7856998a3eb414aa92f4de3ae1a208, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  test: {fileID: 886724174}
-  forceSetEnabled: 0
-  setDisabled: 0
---- !u!4 &1925142327
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925142325}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.489146, y: 0.06667155, z: -7.136054}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1929660678
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1929660682}
-  - component: {fileID: 1929660681}
-  - component: {fileID: 1929660680}
-  - component: {fileID: 1929660679}
-  m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!136 &1929660679
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929660678}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!23 &1929660680
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929660678}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1929660681
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929660678}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1929660682
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929660678}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.7, z: -0.94}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1965900057
 GameObject:
   m_ObjectHideFlags: 0
@@ -7218,10 +7577,10 @@ RectTransform:
   - {fileID: 982182606}
   m_Father: {fileID: 1698601223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1965900059
 MonoBehaviour:
@@ -7239,15 +7598,16 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1698601224}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: M_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
   startHighlightedBButton: {fileID: 0}
   highlightedBButtonReference: {fileID: 0}
-  isActive: 0
+  isHighlighted: 0
   childrenBButtonsList: []
 --- !u!1 &1966657047
 GameObject:
@@ -7402,26 +7762,63 @@ MonoBehaviour:
   parentBFrame: {fileID: 676746341}
   parentBMenu: {fileID: 1338674512}
   parentBUIElement: {fileID: 1474760466}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: T_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
-  useLanguages: 0
+  useLocalization: 0
   text: Images
-  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  languageTexts:
-  - Language: 0
-    Text: 
-    CustomFontAsset: {fileID: 0}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultTMPFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  fontSize: 22
+  isRTL: 0
   writeTextUppercase: 0
   overrideUINameFromText: 0
   color: {r: 0, g: 0, b: 0, a: 1}
+  bendText: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveScale: 10
   textUI: {fileID: 0}
   textMesh: {fileID: 0}
   textMeshPro: {fileID: 1966657049}
   tmpTextComponent: {fileID: 1966657049}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1985262974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7485,15 +7882,49 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1812622849}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: B_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
   automaticallyFindChildBUIElements: 1
   isButtonDisabled: 0
+  bImageReference: {fileID: 921553445}
+  useImageLocalization: 0
+  buttonSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  imageLocalizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+  useImagePressedSprite: 0
+  buttonPressedImage: {fileID: 0}
+  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
+  useImageSpecialColors: 1
+  imageHoveredColor: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
+  imageHighlightedColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}
+  ImagePressedColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 1}
+  imageMatchesParentSize: 0
+  bTextReference: {fileID: 542789962}
+  useTextLocalization: 0
   buttonText: Button
+  textLocalizedString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  textFontSize: 22
   writeButtonTextUppercase: 0
   overrideUINameFromText: 0
   textNormalColor: {r: 0, g: 0, b: 0, a: 1}
@@ -7502,19 +7933,35 @@ MonoBehaviour:
   textHoveredColor: {r: 0, g: 0, b: 0, a: 1}
   textHighlightedColor: {r: 0, g: 0, b: 0, a: 1}
   textPressedColor: {r: 0, g: 0, b: 0, a: 1}
-  bTextReference: {fileID: 542789962}
-  buttonImage: {fileID: 0}
-  useImagePressedSprite: 0
-  buttonPressedImage: {fileID: 0}
-  imageNormalColor: {r: 1, g: 1, b: 1, a: 1}
-  imageDisabledColor: {r: 1, g: 1, b: 1, a: 0.125}
-  useImageSpecialColors: 1
-  imageHoveredColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  imageHighlightedColor: {r: 0.8616352, g: 0.8616352, b: 0.8616352, a: 1}
-  ImagePressedColor: {r: 0.72955966, g: 0.72955966, b: 0.72955966, a: 1}
-  bImageReference: {fileID: 921553445}
+  textMatchesParentSize: 0
   onPressedSound: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+  onPressedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 25a9480edb6f5544db7781970a99d03f, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   onSuccessfullyReleasedSound: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+  onSuccessfullyReleasedSoundData:
+    Name: 
+    Clip: {fileID: 8300000, guid: 56c636c618fdacf4d8c6f0f91dc09905, type: 3}
+    RandomClips: []
+    AudioMixerGroup: {fileID: 0}
+    SpatialBlend: 0
+    AttachToTransform: {fileID: 0}
+    AtPosition: {x: 0, y: 0, z: 0}
+    MinVolume: 1
+    MaxVolume: 1
+    MinPitch: 1
+    MaxPitch: 1
+    Delay: 0
   upperButton: {fileID: 0}
   leftButton: {fileID: 798605042}
   rightButton: {fileID: 1286856101}
@@ -7540,6 +7987,9 @@ MonoBehaviour:
   ButtonHoveredExitUEvent:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2032678561
 GameObject:
   m_ObjectHideFlags: 0
@@ -7575,14 +8025,28 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1286856101}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: I_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
+  useLocalization: 0
   sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  localizedSprite:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+  matchSpriteResolutionSize: 0
+  unityImage: {fileID: 2032678563}
+  unityRawImage: {fileID: 0}
+  unitySpriteRenderer: {fileID: 0}
 --- !u!114 &2032678563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7675,10 +8139,10 @@ RectTransform:
   - {fileID: 1632607159}
   m_Father: {fileID: 1698601223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2048155238
 MonoBehaviour:
@@ -7696,15 +8160,16 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 0}
   parentBUIElement: {fileID: 1698601224}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: M_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 0
   startHighlightedBButton: {fileID: 1474760466}
   highlightedBButtonReference: {fileID: 1474760466}
-  isActive: 0
+  isHighlighted: 0
   childrenBButtonsList: []
 --- !u!1 &2102371098
 GameObject:
@@ -7789,116 +8254,17 @@ MonoBehaviour:
   parentBFrame: {fileID: 1698601224}
   parentBMenu: {fileID: 242978907}
   parentBUIElement: {fileID: 1179429999}
-  overrideGameOjbectName: 1
+  overrideGameObjectName: 1
   propagateUINameToChildren: 0
-  revalidateAllDirectChildren: 1
+  revalidateWithChildren: 0
   objectNamePrefix: C_
   isUIDisabled: 0
+  matchParentSize: 0
   isShown: 1
---- !u!1 &2116198337
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2116198339}
-  - component: {fileID: 2116198338}
-  m_Layer: 0
-  m_Name: Reflection Probe
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!215 &2116198338
-ReflectionProbe:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116198337}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Type: 0
-  m_Mode: 0
-  m_RefreshMode: 0
-  m_TimeSlicingMode: 1
-  m_Resolution: 128
-  m_UpdateFrequency: 0
-  m_BoxSize: {x: 10, y: 10, z: 10}
-  m_BoxOffset: {x: 0, y: 3.8, z: 0}
-  m_NearClip: 0.3
-  m_FarClip: 1000
-  m_ShadowDistance: 100
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 51
-  m_IntensityMultiplier: 1
-  m_BlendDistance: 0.5
-  m_HDR: 1
-  m_BoxProjection: 0
-  m_RenderDynamicObjects: 0
-  m_UseOcclusionCulling: 1
-  m_Importance: 1
-  m_CustomBakedTexture: {fileID: 0}
---- !u!4 &2116198339
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116198337}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: -0.25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 604712594}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7482880494889535591
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7823694312774259421}
-  m_Layer: 0
-  m_Name: UnityMaterialBall_Gold
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &7823694312774259421
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7482880494889535591}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 505702790}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1828484091}
-  - {fileID: 604712594}
-  - {fileID: 505702790}
   - {fileID: 397186158}
-  - {fileID: 1929660682}
-  - {fileID: 1925142327}
   - {fileID: 1380162289}
