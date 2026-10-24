@@ -34,13 +34,13 @@ namespace BNJMO
         [SerializeField] public A EndValue;
         [SerializeField] public bool IsLoop;
         [SerializeField] public EUpdateMethod UpdateMethod = EUpdateMethod.UPDATE;
-        [SerializeField] public AnimationCurve Curve     { get { return curve; } }
         [SerializeField] private AnimationCurve curve = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 
         [Header("Debug")]
         [SerializeField] bool logAnimationEvents = false;
         [Button("Start Animation")] private void Button_StartAnimation() { OnTestAnimationButton(); }
 
+        public AnimationCurve Curve     { get { return curve; } }
         public A CurrentValue           { get; private set; }
         public float CurrentPercentage  { get; private set; }
         public float CurrentAlpha       { get; private set; }
