@@ -259,7 +259,7 @@ namespace BNJMO
                 alpha = (Time.time - startTime) / duration;
                 myAudioSource.volume = Mathf.Lerp(startVolume, toVolume, fadeCurve.Evaluate(alpha));
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
 
             myAudioSource.volume = toVolume;
@@ -279,7 +279,7 @@ namespace BNJMO
             {
                 alpha = (Time.time - startTime) / duration;
                 myAudioSource.volume = volumeCurve.Evaluate(alpha) * startVolume;
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             myAudioSource.volume = volumeCurve.Evaluate(1.0f) * startVolume;
 

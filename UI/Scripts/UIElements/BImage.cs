@@ -497,7 +497,7 @@ namespace BNJMO
                 var opacity = Mathf.Lerp(minAlpha, maxAlpha, BUtils.Ease(alpha, easeType));
                 SetOpacity(opacity);
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             SetOpacity(maxAlpha);
             fadeInOpacityEnumerator = null;
@@ -513,7 +513,7 @@ namespace BNJMO
                 var newOpacity = Mathf.Lerp(maxAlpha, minAlpha, BUtils.Ease(alpha, easeType));
                 SetOpacity(newOpacity);
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             SetOpacity(minAlpha);
             fadeOutOpacityEnumerator = null;
@@ -529,7 +529,7 @@ namespace BNJMO
                 var newColor = Color.Lerp(startColor, targetColor, BUtils.Ease(alpha, easeType));
                 SetColor(newColor);
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             SetColor(targetColor);
             fadeColorEnumerator = null;

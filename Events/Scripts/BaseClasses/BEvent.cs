@@ -61,6 +61,10 @@ namespace BNJMO
             Event?.Invoke(eventHandle);
         }
 
+        /// <summary>
+        /// Editor only: calls to this method are compiled out of player builds, so no log strings are built there.
+        /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public void LogEvent(H eventHandle, BEventBroadcastType broadcastType)
         {
             if (!BManager.Inst)

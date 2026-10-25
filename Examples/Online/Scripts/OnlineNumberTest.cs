@@ -60,6 +60,16 @@ namespace XOKing
             numberIncrementButton.Released += NumberIncrementButton_OnReleased;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.ONLINE_LaunchSessionSucceeded -= BEvents_ONLINE_OnLaunchSessionSucceeded;
+            BEvents.ONLINE_ShutdownSession -= BEvents_ONLINE_OnShutdownSession;
+            BEvents.ONLINE_ClientJoined -= BEvents_ONLINE_OnRemotePlayerJoined;
+            BEvents.EXAMPLE_NumberIncremented -= BEvents_EXAMPLE_OnNumberIncremented;
+        }
+
         #endregion
 
         #region Events Callbacks

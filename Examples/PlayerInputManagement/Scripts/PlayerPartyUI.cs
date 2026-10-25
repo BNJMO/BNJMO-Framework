@@ -112,6 +112,13 @@ namespace BNJMO
             DisableButtons();
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.PLAYERS_Disconnected -= BEvents_PlayersPlayerDisconnected;
+        }
+
         #endregion
 
         #region Events Callbacks

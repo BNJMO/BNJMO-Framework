@@ -326,7 +326,7 @@ namespace BNJMO
             {
                 handleImage.fillAmount = (Time.time - startTime) / rechargeTime;
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
     }

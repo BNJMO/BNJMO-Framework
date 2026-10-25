@@ -38,6 +38,14 @@ namespace BNJMO
             BEvents.ONLINE_ShutdownSession += BEvents_ONLINE_OnShutdownSession;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.ONLINE_LaunchSessionFailed -= BEvents_ONLINE_OnLaunchSessionFailed;
+            BEvents.ONLINE_ShutdownSession -= BEvents_ONLINE_OnShutdownSession;
+        }
+
         #endregion
 
         #region Events Callbacks

@@ -83,11 +83,18 @@ namespace BNJMO
             SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
         }
         
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+        }
+
         protected override void UpdateDebugText()
         {
             base.UpdateDebugText();
 
-            if (!BDebugManager.Inst)
+            if (!CanLogCanvas("AppScene"))
                 return;
             
             BDebugManager.Inst.DebugLogCanvas("AppScene", CurrentSceneBuildID.GetType() + " : " + CurrentSceneBuildID);

@@ -239,22 +239,31 @@ namespace BNJMO
                 ?.ActivePawn;
         }
 
+        /// <summary>
+        /// The returned list is shared and rebuilt at most once per frame: iterate it, but don't modify or keep it.
+        /// </summary>
         public List<PawnBase> GetAllActivePawns()
         {
-            List<PawnBase> list = new();
-            foreach (var playerItr in GetAllActivePlayers())
+            if (activePawnsCacheFrame == Time.frameCount)
+                return activePawnsCache;
+            
+            activePawnsCacheFrame = Time.frameCount;
+            activePawnsCache.Clear();
+            foreach (var playerItr in ConnectedPlayers)
             {
-                if (IS_NOT_VALID(playerItr, true))
+                if (playerItr == null
+                    || playerItr.PlayerID == EPlayerID.NONE
+                    || IS_NOT_VALID(playerItr, true))
                     continue;
                 
                 var pawnItr = playerItr.ActivePawn;
                 if (!pawnItr)
                     continue;
                 
-                list.Add(pawnItr);
+                activePawnsCache.Add(pawnItr);
             }
 
-            return list;
+            return activePawnsCache;
         }
 
         #endregion
@@ -270,6 +279,9 @@ namespace BNJMO
 
         /// <summary> Added whenever a player is connected. Removed when he disconnects. </summary>
         public List<PlayerBase> ConnectedPlayers { get; } = new();
+
+        private readonly List<PawnBase> activePawnsCache = new();
+        private int activePawnsCacheFrame = -1;
 
         #endregion
 

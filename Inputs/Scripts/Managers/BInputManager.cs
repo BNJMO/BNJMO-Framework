@@ -283,6 +283,9 @@ namespace BNJMO
 
         private void UpdateControllersDebugText()
         {
+            if (!CanLogCanvas(BConsts.DEBUGTEXT_ConnectedControllers))
+                return;
+            
             string controllersLog = "Connected controllers : \n";
             foreach (EControllerID controllerID in connectedControllers)
             {

@@ -36,6 +36,13 @@ namespace BNJMO
             ReinitializeDebugTexts();
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.APP_SceneUpdated -= BEvents_SceneUpdated;
+        }
+
         private void BEvents_SceneUpdated(BEventHandle<SScene> bEventHandle)
         {
             ReinitializeDebugTexts();
@@ -62,6 +69,16 @@ namespace BNJMO
             }
 
             debugTextsInitialized = true;
+        }
+
+        /// <summary>
+        /// Whether an active DebugText with the given ID was found in this scene.
+        /// Check it before building an expensive log string for DebugLogCanvas.
+        /// </summary>
+        public bool IsDebugTextActive(string debugID)
+        {
+            return debugTextsInitialized
+                   && debugTexts.ContainsKey(debugID);
         }
 
         /// <summary>

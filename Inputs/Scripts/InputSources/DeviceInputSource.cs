@@ -128,6 +128,13 @@ namespace BNJMO
             BEvents.INPUT_ControllerDisconnected += INPUT_OnControllerDisconnected;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.INPUT_ControllerDisconnected -= INPUT_OnControllerDisconnected;
+        }
+
         protected override void FixedUpdate()
         {
             base.FixedUpdate();

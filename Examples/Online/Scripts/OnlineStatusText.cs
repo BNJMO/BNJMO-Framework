@@ -39,6 +39,14 @@ namespace BNJMO
             BEvents.ONLINE_LaunchSessionSucceeded += BEvents_ONLINE_OnLaunchSessionSucceeded;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.ONLINE_StartedLaunchingSession -= BEvents_ONLINE_OnStartedLaunchingSession;
+            BEvents.ONLINE_LaunchSessionSucceeded -= BEvents_ONLINE_OnLaunchSessionSucceeded;
+        }
+
         #endregion
 
         #region Events Callbacks

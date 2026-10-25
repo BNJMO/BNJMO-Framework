@@ -37,11 +37,23 @@ namespace BNJMO
             UpdateReadyText();
             
             BEvents.PLAYERS_Connected += BEvents_OnPlayersPlayerConnected;
-            BEvents.PLAYERS_Disconnected += _ => UpdateReadyText();
-            BEvents.PLAYERS_BecameReady += _ => UpdateReadyText();
-            BEvents.PLAYERS_CanceledReady += _ => UpdateReadyText();
-            BEvents.PLAYERS_JoinedParty += _ => UpdateReadyText();
-            BEvents.PLAYERS_LeftParty += _ => UpdateReadyText();
+            BEvents.PLAYERS_Disconnected += BEvents_OnPlayersPlayerDisconnected;
+            BEvents.PLAYERS_BecameReady += BEvents_OnPlayersReadyChanged;
+            BEvents.PLAYERS_CanceledReady += BEvents_OnPlayersReadyChanged;
+            BEvents.PLAYERS_JoinedParty += BEvents_OnPlayersJoinedParty;
+            BEvents.PLAYERS_LeftParty += BEvents_OnPlayersLeftParty;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            BEvents.PLAYERS_Connected -= BEvents_OnPlayersPlayerConnected;
+            BEvents.PLAYERS_Disconnected -= BEvents_OnPlayersPlayerDisconnected;
+            BEvents.PLAYERS_BecameReady -= BEvents_OnPlayersReadyChanged;
+            BEvents.PLAYERS_CanceledReady -= BEvents_OnPlayersReadyChanged;
+            BEvents.PLAYERS_JoinedParty -= BEvents_OnPlayersJoinedParty;
+            BEvents.PLAYERS_LeftParty -= BEvents_OnPlayersLeftParty;
         }
 
         private void BEvents_OnPlayersPlayerConnected(BEventHandle<PlayerBase> BEventHandle)
@@ -51,6 +63,14 @@ namespace BNJMO
             playerPartyUI.Player = BEventHandle.Arg1;
             UpdateReadyText();
         }
+
+        private void BEvents_OnPlayersPlayerDisconnected(BEventHandle<PlayerBase> BEventHandle) => UpdateReadyText();
+
+        private void BEvents_OnPlayersReadyChanged(BEventHandle<SPlayerReplicationArg> BEventHandle) => UpdateReadyText();
+
+        private void BEvents_OnPlayersJoinedParty(BEventHandle<SPlayerJoinedPartyArg> BEventHandle) => UpdateReadyText();
+
+        private void BEvents_OnPlayersLeftParty(BEventHandle<SPlayerLeftPartyArg> BEventHandle) => UpdateReadyText();
 
         #endregion
 

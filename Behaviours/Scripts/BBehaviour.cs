@@ -217,6 +217,16 @@ namespace BNJMO
             }
         }
 
+        /// <summary>
+        /// Whether a Debug Text component with this ID is in the scene.
+        /// Check it before building a log string for LogCanvas, so nothing is allocated when no one can see it.
+        /// </summary>
+        protected bool CanLogCanvas(string debugID)
+        {
+            return BDebugManager.IsInstanceSet
+                   && BDebugManager.Inst.IsDebugTextActive(debugID);
+        }
+
         protected void LogNotification(string logText)
         {
             if (BDebugManager.IsInstanceSet)

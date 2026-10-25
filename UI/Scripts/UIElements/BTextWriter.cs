@@ -163,7 +163,7 @@ public class BTextWriter : BBehaviour
 		while (WriteRTLTextEnumerator != null
 			|| WriteRegularTextEnumerator != null)
         {
-			yield return new WaitForEndOfFrame();
+			yield return null;
         }
 
 		// Remove all instances from the special wait character from final string

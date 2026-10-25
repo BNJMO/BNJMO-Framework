@@ -98,7 +98,8 @@ namespace BNJMO
             }
 
             // Debug text
-            if (logAnimationEvents == true)
+            if (logAnimationEvents == true
+                && CanLogCanvas("AnimationLerp"))
             {
                 LogCanvas("AnimationLerp", AnimationName + " - Is Running : " + IsPlaying + "\n"
                     + "CurrentPercentage : " + CurrentPercentage + "\n"
@@ -195,7 +196,7 @@ namespace BNJMO
 
                 InvokeEventIfBound(AnimationUpdated, this, CurrentValue);
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             CurrentPercentage = 1.0f;
 
