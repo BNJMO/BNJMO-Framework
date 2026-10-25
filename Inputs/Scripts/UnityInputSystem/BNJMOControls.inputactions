@@ -229,17 +229,6 @@
                 },
                 {
                     "name": "",
-                    "id": "af2ad667-3812-4e9d-b541-f33245de6dff",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "WEST",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "d9d89e2c-c144-4960-93d3-b75e0354922b",
                     "path": "<Keyboard>/leftCtrl",
                     "interactions": "Press(behavior=1)",
@@ -262,19 +251,8 @@
                 },
                 {
                     "name": "",
-                    "id": "1470b350-cfc7-4797-9ac9-9f11108a8ecd",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "SOUTH",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f746cb42-8bc2-4caa-8809-40e905cb3774",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/f",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -289,17 +267,6 @@
                     "interactions": "Press(pressPoint=1,behavior=1)",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "EAST",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ab6ca69d-118e-40e1-952f-ef1eab1e0cd7",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
                     "action": "EAST",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -494,7 +461,7 @@
                 {
                     "name": "",
                     "id": "3ef706c0-41d2-4fd6-a232-4ee22b6b95a9",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/r",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -515,19 +482,8 @@
                 },
                 {
                     "name": "",
-                    "id": "1585ef8e-f8c6-4776-ae67-2060e4d91340",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "NORTH",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4d434a4e-1867-49b7-a436-0be542115e5f",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/space",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -548,19 +504,8 @@
                 },
                 {
                     "name": "",
-                    "id": "93633fed-6ee2-4ccb-929c-ed0dc034a75f",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "SHOULDER_L",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "680e2420-e747-45fd-b9e7-9a2b7cca28a5",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/alt",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -593,7 +538,7 @@
                 {
                     "name": "",
                     "id": "b6da1877-ca55-41b3-a23d-31f35033eccd",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/q",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -615,7 +560,7 @@
                 {
                     "name": "",
                     "id": "2c6101f2-62d4-4bf4-83c9-d6dd40058751",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -626,7 +571,7 @@
                 {
                     "name": "",
                     "id": "80f14f8c-8df3-461f-a146-62b0f15835ff",
-                    "path": "<Keyboard>/alt",
+                    "path": "<Keyboard>/e",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
