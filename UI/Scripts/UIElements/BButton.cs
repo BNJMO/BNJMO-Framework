@@ -373,7 +373,16 @@ namespace BNJMO
                 return;
             }
 
-            OnHighlighted();
+            // Hovering back onto the button that already receives the input must not highlight it again: replaying
+            // the highlight feedbacks (e.g. a scale-up starting from the normal size) moves the button out from under
+            // the cursor and back, which re-triggers enter/exit every frame.
+            bool isAlreadyCurrentButton = IsHighlighted
+                                          && BUIManager.IsInstanceSet
+                                          && BUIManager.Inst.CurrentBButtonHighlighted == this;
+            if (!isAlreadyCurrentButton)
+            {
+                OnHighlighted();
+            }
 
             if (bImageReference
                 && useImagePressedSprite)
