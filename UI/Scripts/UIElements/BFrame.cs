@@ -20,6 +20,8 @@ namespace BNJMO
         
         public bool HasFocus => hasFocus;
 
+        public bool IsLocalFrame => isLocalFrame;
+
         public void SetFocus()
         {
             if (hasFocus)
@@ -35,10 +37,19 @@ namespace BNJMO
 
         public bool UpdateHighlightedBMenu(BMenu newBBMenu, bool recordHistory = true)
         {
+            // In edit mode a local frame previews its menus whatever the state of the menu around it
+            bool isEditModePreview = isLocalFrame && !Application.isPlaying;
             if (parentBMenu
-                && parentBMenu.IsHighlighted == false)
+                && parentBMenu.IsHighlighted == false
+                && !isEditModePreview)
             {
                 return false;
+            }
+
+            // A local frame switches views often (one per state change) and never goes back through its history
+            if (isLocalFrame)
+            {
+                recordHistory = false;
             }
 
             if (IS_NOT_NULL(newBBMenu)
@@ -56,7 +67,8 @@ namespace BNJMO
                 highlightedBMenuReference = newBBMenu;
 
                 if (Application.isPlaying
-                && BManager.Inst)
+                && BManager.Inst
+                && !isLocalFrame)
                 {
                     BEvents.UI_HighlightedBMenuUpdated?.Invoke(new BEventHandle<BMenu, BMenu>(highlightedBMenuReference, oldHighlightedBMenu), 
                         BConfig.Inst.LogUIBEvents && BConfig.Inst.LogBMenuHighlightBEvents);
@@ -123,8 +135,14 @@ namespace BNJMO
         #region Inspector Variables
 
         [BoxGroup("BFrame", centerLabel: true)]
-        [BoxGroup("BFrame"), SerializeField] 
+        [BoxGroup("BFrame"), SerializeField]
         bool startWithFocus = false;
+
+        [BoxGroup("BFrame"), SerializeField]
+        [Tooltip("For views inside another menu, like one card per player: switching menus here stays local. " +
+                 "No UI_HighlightedBMenuUpdated is raised (BUIManager, CameraMover and other listeners keep the " +
+                 "menu around it), no history is kept, and the menus can be previewed in edit mode.")]
+        bool isLocalFrame = false;
         
         [HorizontalGroup("BFrame/Group"), SerializeField] 
         private string newBMenuName = "BMenu";
