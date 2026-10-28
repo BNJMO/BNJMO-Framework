@@ -89,9 +89,10 @@ namespace BNJMO
 
         public virtual bool SetTeamID(ETeamID newTeamID, bool invokeBEvent = true)
         {
+            // Leaving a team (NONE) never needs room in it; checking would count every spectator as a member of "NONE"
             if (newTeamID == teamID
                 || ARE_ENUMS_NOT_EQUAL(PartyState, EPlayerPartyState.ACTIVE_PLAYER, true)
-                || BPlayerManager.Inst.CanJoinTeam(newTeamID) == false)
+                || (newTeamID != ETeamID.NONE && BPlayerManager.Inst.CanJoinTeam(newTeamID) == false))
                 return false;
             
             teamID = newTeamID;
