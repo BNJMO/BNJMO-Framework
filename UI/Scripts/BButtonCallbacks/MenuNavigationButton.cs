@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 
 namespace BNJMO
 {
