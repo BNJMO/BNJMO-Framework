@@ -14,6 +14,35 @@ namespace BNJMO
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Keeps the camera on the entry transform until ReleaseEntryTransition is called,
+        /// e.g. while a start screen covers the menu.
+        /// </summary>
+        public void HoldEntryTransition()
+        {
+            isEntryTransitionHeld = true;
+        }
+
+        /// <summary>
+        /// Lets the camera move to the initial menu, at once if the entry delay is already over.
+        /// </summary>
+        public void ReleaseEntryTransition()
+        {
+            if (isEntryTransitionHeld == false)
+                return;
+
+            isEntryTransitionHeld = false;
+            if (isEntryTransitionDue)
+            {
+                isEntryTransitionDue = false;
+                TransitionToMenu(initialMenuTarget);
+            }
+        }
+
+        #endregion
+
         #region Inspector Variables
 
         [SerializeField] private bool canBeStopped = false;
@@ -35,6 +64,8 @@ namespace BNJMO
         private AnimationLerpTransform cameraTransformLerp;
         private AnimationLerpCameraFOV cameraFOVmLerp;
         private BFrameCameraTransform lastbFrameCameraTransform;
+        private bool isEntryTransitionHeld;
+        private bool isEntryTransitionDue;
 
         #endregion
 
@@ -75,7 +106,7 @@ namespace BNJMO
             if (entryCameraTransform != null)
             {
                 SetCameraToTransform(entryCameraTransform);
-                Wait(delayBeforeInitialMenu, ()=>TransitionToMenu(initialMenuTarget));
+                Wait(delayBeforeInitialMenu, OnEntryDelayOver);
             }
         }
 
@@ -98,6 +129,17 @@ namespace BNJMO
         private void On_UI_HighlightedBMenuUpdated(BEventHandle<BMenu, BMenu> handle)
         {
             SwitchCameraToMenu(handle.Arg1);
+        }
+
+        private void OnEntryDelayOver()
+        {
+            if (isEntryTransitionHeld)
+            {
+                isEntryTransitionDue = true;
+                return;
+            }
+
+            TransitionToMenu(initialMenuTarget);
         }
 
         private void On_LerpTransform_AnimationEnded(AnimationLerp<Transform> animationLerp)

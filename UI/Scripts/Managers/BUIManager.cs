@@ -16,6 +16,9 @@ namespace BNJMO
         public BMenu CurrentBMenuHighlighted        { get; private set; }
         public BButton CurrentBButtonHighlighted    { get; private set; }
 
+        /// <summary> While true, button input is not routed to the menus (e.g. while a start screen covers them). </summary>
+        public bool IsInputLocked                   { get; set; }
+
         private bool canPressButton;
 
         #endregion
@@ -69,6 +72,9 @@ namespace BNJMO
         {
             EInputButton inputButton = eventHandle.Arg3;
 
+            if (IsInputLocked)
+                return;
+
             if (CurrentBButtonHighlighted)
             {
                 BButton nextButton = null;
@@ -110,8 +116,9 @@ namespace BNJMO
         {
             EInputButton inputButton = eventHandle.Arg3;
 
-            if (CurrentBButtonHighlighted 
-                && inputButton == EInputButton.CONFIRM 
+            if (IsInputLocked == false
+                && CurrentBButtonHighlighted
+                && inputButton == EInputButton.CONFIRM
                 && canPressButton)
             {
                 CurrentBButtonHighlighted.OnReleased(true);
